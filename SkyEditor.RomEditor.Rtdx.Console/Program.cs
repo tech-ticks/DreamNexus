@@ -13,20 +13,21 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
     {
         static void Main(string[] args)
         {
+            var basePath = @"D:\01003D200BAA2000";
             //var natureDiagnosis = JsonConvert.DeserializeObject<NatureDiagnosis>(File.ReadAllText(@"D:\01003D200BAA2000\romfs\Data\StreamingAssets\data\nature_diagnosis\diagnosis.json"));
-            //var actorDataInfoPath = @"D:\01003D200BAA2000\romfs\Data\StreamingAssets\native_data\pokemon\pokemon_actor_data_info.bin";
+            //var actorDataInfoPath = basePath + @"\romfs\Data\StreamingAssets\native_data\pokemon\pokemon_actor_data_info.bin";
             //var actorDataInfo = new PokemonActorDataInfo(File.ReadAllBytes(actorDataInfoPath));
 
-            //var graphicsDatabasePath = @"D:\01003D200BAA2000\romfs\Data\StreamingAssets\native_data\pokemon_graphics_database.bin";
+            //var graphicsDatabasePath = basePath + @"\romfs\Data\StreamingAssets\native_data\pokemon_graphics_database.bin";
             //var graphicsDatabase = new PokemonGraphicsDatabase(File.ReadAllBytes(graphicsDatabasePath));
 
-            //var nsoPath = @"D:\01003D200BAA2000\exefs\main";
-            //var nso = MainExecutable.LoadFromNso(nsoPath);
+            var nsoPath = basePath + @"\exefs\main";
+            var nso = MainExecutable.LoadFromNso(nsoPath);
 
-            //var fixedPokemonPath = @"D:\01003D200BAA2000\romfs\Data\StreamingAssets\native_data\dungeon\fixed_pokemon.bin";
+            //var fixedPokemonPath = basePath + @"\romfs\Data\StreamingAssets\native_data\dungeon\fixed_pokemon.bin";
             //var fixedPokemon = new FixedPokemon(File.ReadAllBytes(fixedPokemonPath));
 
-            var messageBinPath = @"D:\01003D200BAA2000\romfs\Data\StreamingAssets\native_data\message_us.bin";
+            var messageBinPath = basePath + @"\romfs\Data\StreamingAssets\native_data\message_us.bin";
             var messageBin = new Farc(File.ReadAllBytes(messageBinPath));
             var common = new MessageBinEntry(messageBin.GetFile("common.bin"), 0);
 
