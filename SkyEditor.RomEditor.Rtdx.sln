@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29911.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyEditor.RomEditor.Rtdx", "SkyEditor.RomEditor.Rtdx\SkyEditor.RomEditor.Rtdx.csproj", "{E1C1FB1A-3E76-43D6-A9FF-5607FC137973}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyEditor.RomEditor.Rtdx.ConsoleApp", "SkyEditor.RomEditor.Rtdx.Console\SkyEditor.RomEditor.Rtdx.ConsoleApp.csproj", "{8E5334AC-BC52-4222-B0B9-8D76902CA684}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyEditor.RomEditor.Rtdx.Tests", "SkyEditor.RomEditor.Rtdx.Tests\SkyEditor.RomEditor.Rtdx.Tests.csproj", "{A85A1E3A-D73E-421A-B7DD-63D82D2D1DB4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{61B46DFC-C2FC-439B-8314-F5075C9ABA61}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E1C1FB1A-3E76-43D6-A9FF-5607FC137973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1C1FB1A-3E76-43D6-A9FF-5607FC137973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1C1FB1A-3E76-43D6-A9FF-5607FC137973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1C1FB1A-3E76-43D6-A9FF-5607FC137973}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E5334AC-BC52-4222-B0B9-8D76902CA684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E5334AC-BC52-4222-B0B9-8D76902CA684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E5334AC-BC52-4222-B0B9-8D76902CA684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E5334AC-BC52-4222-B0B9-8D76902CA684}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A85A1E3A-D73E-421A-B7DD-63D82D2D1DB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A85A1E3A-D73E-421A-B7DD-63D82D2D1DB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A85A1E3A-D73E-421A-B7DD-63D82D2D1DB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A85A1E3A-D73E-421A-B7DD-63D82D2D1DB4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {406B7A2D-D788-441E-809C-78F544B85ADC}
+	EndGlobalSection
+EndGlobal

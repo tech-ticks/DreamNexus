@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Crc32.NET" Version="1.2.0" />
+    <PackageReference Include="NsoElfConverterDotNet" Version="0.1.0" />
+    <PackageReference Include="SkyEditor.IO" Version="5.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="C:\Users\evanl\.nuget\packages\nsoelfconverterdotnet\0.1.0\contentFiles\any\netcoreapp3.1\elf2nso">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\evanl\.nuget\packages\nsoelfconverterdotnet\0.1.0\contentFiles\any\netcoreapp3.1\elf2nso.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\evanl\.nuget\packages\nsoelfconverterdotnet\0.1.0\contentFiles\any\netcoreapp3.1\nx2elf-linux-x64.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\evanl\.nuget\packages\nsoelfconverterdotnet\0.1.0\contentFiles\any\netcoreapp3.1\nx2elf-linux-x86.so">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\evanl\.nuget\packages\nsoelfconverterdotnet\0.1.0\contentFiles\any\netcoreapp3.1\nx2elf-win-x64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="C:\Users\evanl\.nuget\packages\nsoelfconverterdotnet\0.1.0\contentFiles\any\netcoreapp3.1\nx2elf-win-x86.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Domain\Models\" />
+    <Folder Include="Domain\Queries\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+</Project>
