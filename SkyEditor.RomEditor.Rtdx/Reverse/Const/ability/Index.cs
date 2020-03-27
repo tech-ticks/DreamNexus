@@ -1,4 +1,4 @@
-﻿namespace SkyEditor.RomEditor.Rtdx.Domain.Constants
+﻿namespace SkyEditor.RomEditor.Rtdx.Reverse.Const.ability
 {
     public enum Index
     {
@@ -175,7 +175,7 @@
         ABILITY_MAGICIAN,
         ABILITY_BOUDAN,
         ABILITY_KACHIKI,
-        ABILITY_GANJOUAGO,      
+        ABILITY_GANJOUAGO,
         ABILITY_FREEZESKIN,
         ABILITY_SWEETVEIL,
         ABILITY_BATTLESWITCH,

@@ -1,6 +1,6 @@
-﻿namespace SkyEditor.RomEditor.Rtdx.Domain.Constants
+﻿namespace SkyEditor.RomEditor.Rtdx.Reverse.Const.item
 {
-    public enum Item
+    public enum Index
     {
         NONE = 0,
         ARROW_WOOD = 1,

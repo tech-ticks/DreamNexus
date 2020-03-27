@@ -1,4 +1,4 @@
-﻿namespace SkyEditor.RomEditor.Rtdx.Domain.Constants
+﻿namespace SkyEditor.RomEditor.Rtdx.Reverse.Const
 {
     public enum TextIDHash
     {

@@ -1,6 +1,6 @@
-﻿namespace SkyEditor.RomEditor.Rtdx.Domain.Constants
+﻿namespace SkyEditor.RomEditor.Rtdx.Reverse.Const.waza
 {
-    public enum Waza
+    public enum Index
     {
         NONE,
         HATAKU,

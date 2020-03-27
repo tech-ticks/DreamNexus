@@ -1,6 +1,6 @@
-﻿namespace SkyEditor.RomEditor.Rtdx.Domain.Constants
+﻿namespace SkyEditor.RomEditor.Rtdx.Reverse.Const.creature
 {
-    public enum Creature
+    public enum Index
     {
         NONE,
         FUSHIGIDANE,

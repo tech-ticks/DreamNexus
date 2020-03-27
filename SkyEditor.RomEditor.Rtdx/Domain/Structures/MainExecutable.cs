@@ -1,13 +1,18 @@
 ﻿using NsoElfConverterDotNet;
-using SkyEditor.RomEditor.Rtdx.Domain.Constants;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
+using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
+using FixedCreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.fixed_creature.Index;
 
 namespace SkyEditor.RomEditor.Rtdx
 {
-    public class MainExecutable
+    public interface IMainExecutable
+    {
+        IReadOnlyList<StarterFixedPokemonMap> StarterFixedPokemonMaps { get; }
+    }
+
+    public class MainExecutable : IMainExecutable
     {
         public static MainExecutable LoadFromNso(string filename, INsoElfConverter? nsoElfConverter = null)
         {
@@ -42,8 +47,8 @@ namespace SkyEditor.RomEditor.Rtdx
                 var offset = starterFixedPokemonMapOffset + (8 * i);
                 starterFixedPokemonMaps.Add(new StarterFixedPokemonMap
                 {
-                    PokemonId = (Creature)BitConverter.ToInt32(Data, offset),
-                    FixedPokemonId = (FixedCreature)BitConverter.ToInt32(Data, offset + 4)
+                    PokemonId = (CreatureIndex)BitConverter.ToInt32(Data, offset),
+                    FixedPokemonId = (FixedCreatureIndex)BitConverter.ToInt32(Data, offset + 4)
                 });
             }
             this.StarterFixedPokemonMaps = starterFixedPokemonMaps;
@@ -68,13 +73,13 @@ namespace SkyEditor.RomEditor.Rtdx
         }
 
         private byte[] Data { get; }
-        public IReadOnlyList<StarterFixedPokemonMap> StarterFixedPokemonMaps { get; private set; } = default!;
+        public IReadOnlyList<StarterFixedPokemonMap> StarterFixedPokemonMaps { get; private set; } = default!;        
+    }
 
-        [DebuggerDisplay("StarterFixedPokemonMap: {PokemonId} -> {FixedPokemonId}")]
-        public class StarterFixedPokemonMap
-        {
-            public Creature PokemonId { get; set; }
-            public FixedCreature FixedPokemonId { get; set; }
-        }
+    [DebuggerDisplay("StarterFixedPokemonMap: {PokemonId} -> {FixedPokemonId}")]
+    public class StarterFixedPokemonMap
+    {
+        public CreatureIndex PokemonId { get; set; }
+        public FixedCreatureIndex FixedPokemonId { get; set; }
     }
 }

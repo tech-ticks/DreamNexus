@@ -1,6 +1,6 @@
-﻿namespace SkyEditor.RomEditor.Rtdx.Domain.Constants
+﻿namespace SkyEditor.RomEditor.Rtdx.Reverse.Const.fixed_creature
 {
-    public enum FixedCreature
+    public enum Index
     {
         NONE,
         FIXEDMAP_HERO,
