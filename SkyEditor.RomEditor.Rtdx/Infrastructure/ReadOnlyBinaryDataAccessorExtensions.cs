@@ -7,7 +7,7 @@ namespace SkyEditor.RomEditor.Rtdx.Infrastructure
 {
     public static class ReadOnlyBinaryDataAccessorExtensions
     {
-        public static string ReadNullTerminatedUtf16String(this IReadOnlyBinaryDataAccessor accessor, int offset)
+        public static string ReadNullTerminatedUtf16String(this IReadOnlyBinaryDataAccessor accessor, long offset)
         {
             var encoding = Encoding.Unicode;
             var output = new StringBuilder();

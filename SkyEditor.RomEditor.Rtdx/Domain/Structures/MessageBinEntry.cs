@@ -1,4 +1,5 @@
-﻿using SkyEditor.IO.Binary;
+﻿using SkyEditor.IO;
+using SkyEditor.IO.Binary;
 using SkyEditor.RomEditor.Rtdx.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -7,31 +8,35 @@ using System.Text;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 {
-    public class MessageBinEntry : Sir0
+    public class MessageBinEntry
     {
-        public MessageBinEntry(byte[] data, int offset) : base(data, offset)
+        public MessageBinEntry(IReadOnlyBinaryDataAccessor data)
         {
-            var entryCount1 = BitConverter.ToInt32(data, offset + (int)SubHeaderOffset);
-            var entryCount2 = BitConverter.ToInt32(data, offset + (int)SubHeaderOffset + 4);
-            var entriesOffset = offset + BitConverter.ToInt32(data, offset + (int)SubHeaderOffset + 8);
+            var sir0 = new Sir0(data);
+            var entryCount1 = sir0.SubHeader.ReadInt32(0);
+            var entryCount2 = sir0.SubHeader.ReadInt32(4);
+            var entriesOffset = sir0.SubHeader.ReadInt32(8);
 
-            var accessor = new BinaryFile(data);
             var strings = new Dictionary<int, string>();
-            var hashes = new Dictionary<int, int>();
+            var hashes = new Dictionary<long, int>();
             for (int i = 0; i < entryCount1; i++)
             {
                 var entryOffset = entriesOffset + (i * 0x10);
-                var stringOffset = offset + BitConverter.ToInt32(data, entryOffset);
-                var hash = BitConverter.ToInt32(data, entryOffset + 8);
-                var unknown = BitConverter.ToInt32(data, entryOffset + 0xC);
-                strings.Add(hash, accessor.ReadNullTerminatedUtf16String(stringOffset));
+                var stringOffset = sir0.ReadInt32(entryOffset);
+                var hash = sir0.ReadInt32(entryOffset + 8);
+                var unknown = sir0.ReadInt32(entryOffset + 0xC);
+                strings.Add(hash, sir0.ReadNullTerminatedUtf16String(stringOffset));
                 hashes.Add(stringOffset, hash);
             }
             Strings = strings;
-            Hashes = hashes.OrderBy(h => h.Key).Select(h => h.Value).ToArray();
+            OrderedHashes = hashes.OrderBy(h => h.Key).Select(h => h.Value).ToArray();
+        }
+
+        public MessageBinEntry(byte[] data) : this(new BinaryFile(data))
+        {
         }
 
         public IReadOnlyDictionary<int, string> Strings { get; }
-        public IReadOnlyList<int> Hashes { get; }
+        public IReadOnlyList<int> OrderedHashes { get; }
     }
 }

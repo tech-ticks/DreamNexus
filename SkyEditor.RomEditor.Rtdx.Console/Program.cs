@@ -13,7 +13,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
         static void Main(string[] args)
         {
             var basePath = @"D:\01003D200BAA2000";
-            var natureDiagnosis = JsonConvert.DeserializeObject<NDConverterSharedData.DataStore>(File.ReadAllText(@"D:\01003D200BAA2000\romfs\Data\StreamingAssets\data\nature_diagnosis\diagnosis.json"));
+            var natureDiagnosis = JsonConvert.DeserializeObject<NDConverterSharedData.DataStore>(File.ReadAllText(basePath + @"\romfs\Data\StreamingAssets\data\nature_diagnosis\diagnosis.json"));
             //var actorDataInfoPath = basePath + @"\romfs\Data\StreamingAssets\native_data\pokemon\pokemon_actor_data_info.bin";
             //var actorDataInfo = new PokemonActorDataInfo(File.ReadAllBytes(actorDataInfoPath));
 
@@ -28,7 +28,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
 
             var messageBinPath = basePath + @"\romfs\Data\StreamingAssets\native_data\message_us.bin";
             var messageBin = new Farc(File.ReadAllBytes(messageBinPath));
-            var common = new MessageBinEntry(messageBin.GetFile("common.bin"), 0);
+            var common = new MessageBinEntry(messageBin.GetFile("common.bin"));
 
             ICommonStrings commonStrings = new CommonStrings(common);
             IStarterQueries starterQueries = new StarterQueries(commonStrings, nso, natureDiagnosis, fixedPokemon);

@@ -26,7 +26,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             var dataOffset = accessor.ReadInt32(0x2C);
             var dataLength = accessor.ReadInt32(0x30);
 
-            var fat = new FarcFat(data, fatOffset);
+            var fat = new FarcFat(data, fatOffset, fatLength);
 
             var files = new Dictionary<uint, byte[]>();
             foreach (var file in fat.Entries)
@@ -48,13 +48,14 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             return Files.GetValueOrDefault(hash);
         }
 
-        private class FarcFat : Sir0
+        private class FarcFat
         {
-            public FarcFat(byte[] data, int offset) : base(data, offset)
+            public FarcFat(byte[] data, long offset, long length)
             {
-                var dataOffset = offset + BitConverter.ToInt32(data, offset + (int)SubHeaderOffset);
-                var entryCount = BitConverter.ToInt32(data, offset + (int)SubHeaderOffset + 8);
-                var useHashesInsteadOfFilenames = BitConverter.ToInt32(data, offset + (int)SubHeaderOffset + 0xC);
+                var sir0 = new Sir0(data, offset, length);
+                var dataOffset = sir0.SubHeader.ReadInt32(0);
+                var entryCount = sir0.SubHeader.ReadInt32(8);
+                var useHashesInsteadOfFilenames = sir0.SubHeader.ReadInt32(0xC);
                 if (useHashesInsteadOfFilenames != 1)
                 {
                     throw new NotSupportedException("Only FARC files with hashes instead of filenames are supported");

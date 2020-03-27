@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkyEditor.IO;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
@@ -12,16 +13,17 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
         IReadOnlyList<FixedPokemonEntry> Entries { get; }
     }
 
-    public class FixedPokemon : Sir0, IFixedPokemon
+    public class FixedPokemon : IFixedPokemon
     {
         private const int EntrySize = 0x30;
-        public FixedPokemon(byte[] data) : base(data)
+        public FixedPokemon(byte[] data)
         {
-            var entryCount = BitConverter.ToInt32(data, (int)SubHeaderOffset);
+            var sir0 = new Sir0(data);
+            var entryCount = sir0.SubHeader.ReadInt32(0);
             var entries = new List<FixedPokemonEntry>();
             for (int i = 0; i < entryCount; i++)
             {
-                entries.Add(new FixedPokemonEntry(i, data, BitConverter.ToInt32(data, (int)SubHeaderOffset + ((i + 1) * 8))));
+                entries.Add(new FixedPokemonEntry(i, data, sir0.ReadInt32((i + 1) * 8)));
             }
             this.Entries = entries;
         }
