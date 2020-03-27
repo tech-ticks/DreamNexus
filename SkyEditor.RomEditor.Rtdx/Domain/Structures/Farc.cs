@@ -64,7 +64,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 var entries = new List<FarcFatEntry>();
                 for (int i = 0; i < entryCount; i++)
                 {
-                    entries.Add(new FarcFatEntry(data, dataOffset + (i * 16)));
+                    entries.Add(new FarcFatEntry(sir0.ReadArray(dataOffset + (i * 16), 0x10)));
                 }
                 this.Entries = entries;
             }
@@ -73,12 +73,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
             public class FarcFatEntry
             {
-                public FarcFatEntry(byte[] data, int offset)
+                public FarcFatEntry(byte[] data)
                 {
-                    Hash = BitConverter.ToUInt32(data, offset + 0);
-                    Unknown = BitConverter.ToInt32(data, offset + 4);
-                    DataOffset = BitConverter.ToInt32(data, offset + 8);
-                    DataLength = BitConverter.ToInt32(data, offset + 0xC);
+                    Hash = BitConverter.ToUInt32(data, 0);
+                    Unknown = BitConverter.ToInt32(data, 4);
+                    DataOffset = BitConverter.ToInt32(data, 8);
+                    DataLength = BitConverter.ToInt32(data, 0xC);
                 }
 
                 public uint Hash { get; }
