@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
 using NatureType = SkyEditor.RomEditor.Rtdx.Reverse.NDConverterSharedData.NatureType;
-using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
+using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.waza.Index;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain.Models
 {

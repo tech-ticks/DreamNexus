@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace SkyEditor.RomEditor.Rtdx.Reverse
 {
@@ -56,8 +57,14 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
         public class PokemonStrage
         {
             public string m_name { get; set; } = default!;
+
+            [JsonConverter(typeof(StringEnumConverter))]
             public Const.creature.Index m_nameLabel { get; set; }
+
+            [JsonConverter(typeof(StringEnumConverter))]
             public NatureType m_maleNature { get; set; }
+
+            [JsonConverter(typeof(StringEnumConverter))]
             public NatureType m_femaleNature { get; set; }
             public string m_typeA { get; set; } = default!;
             public string m_symbolName { get; set; } = default!;

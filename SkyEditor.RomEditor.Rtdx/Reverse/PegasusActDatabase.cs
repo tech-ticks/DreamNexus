@@ -94,7 +94,7 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
             }
         }
 
-        private static List<ActorData> actorDataList_ = new List<ActorData>
+        public static List<ActorData> ActorDataList = new List<ActorData>
         {
             new ActorData
             {
@@ -2021,7 +2021,7 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
 
         public static ActorData? FindActorData(string symbol)
         {
-            return actorDataList_.Find(d => d.symbolName == symbol);
+            return ActorDataList.Find(d => d.symbolName == symbol);
         }
 
         public static void LoadCharaObject(Creature index, FormType formType, Action<CharacterModel> loadedCb)

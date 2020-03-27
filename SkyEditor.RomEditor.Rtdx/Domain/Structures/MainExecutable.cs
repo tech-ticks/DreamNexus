@@ -10,14 +10,16 @@ namespace SkyEditor.RomEditor.Rtdx
     public interface IMainExecutable
     {
         IReadOnlyList<StarterFixedPokemonMap> StarterFixedPokemonMaps { get; }
+        byte[] ToElf();
+        byte[] ToNso(INsoElfConverter? nsoElfConverter = null);
     }
 
     public class MainExecutable : IMainExecutable
     {
-        public static MainExecutable LoadFromNso(string filename, INsoElfConverter? nsoElfConverter = null)
+        public static MainExecutable LoadFromNso(byte[] file, INsoElfConverter? nsoElfConverter = null)
         {
             nsoElfConverter ??= NsoElfConverter.Instance;
-            var data = nsoElfConverter.ConvertNsoToElf(filename);
+            var data = nsoElfConverter.ConvertNsoToElf(file);
             return new MainExecutable(data);
         }
 
