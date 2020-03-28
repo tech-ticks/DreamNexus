@@ -1,4 +1,4 @@
-﻿using SkyEditor.IO;
+﻿using SkyEditor.IO.Binary;
 using System;
 using System.Collections.Generic;
 using System.Text;

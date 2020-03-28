@@ -35,7 +35,7 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
             var sir0 = builder.Build();
 
             // Assert
-            sir0.Length.Should().BeGreaterThan(
+            sir0.Data.Length.Should().BeGreaterThan(
                 0x20 // Header
                 + (testData.Length * 4) // The integers from testData
                 + (testData.Length * 8) // Pointers to each integer
@@ -52,10 +52,10 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
                 sir0.PointerOffsets[i + 2].Should().Be(entryPointerOffset);
 
                 var entryPointer = sir0.SubHeader.ReadInt64(4 + i * 8);
-                var entryPointerFromAbsolute = sir0.ReadInt64(sir0.SubHeaderOffset + 4 + i * 8);
+                var entryPointerFromAbsolute = sir0.Data.ReadInt64(sir0.SubHeaderOffset + 4 + i * 8);
                 entryPointerFromAbsolute.Should().Be(entryPointer);
 
-                var entry = sir0.ReadInt32(entryPointer);
+                var entry = sir0.Data.ReadInt32(entryPointer);
                 entry.Should().Be(testData[i]);
             }
         }

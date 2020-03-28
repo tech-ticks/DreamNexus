@@ -73,7 +73,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Handlers
             // Save files
             rom.WriteAllBytes(nsoPath, nso.ToNso());
             rom.WriteAllText(natureDiagnosisPath, JsonConvert.SerializeObject(natureDiagnosis));
-            rom.WriteAllBytes(fixedPokemonPath, fixedPokemon.Build().ReadArray());
+            rom.WriteAllBytes(fixedPokemonPath, fixedPokemon.Build().Data.ReadArray());
         }
     }
 }

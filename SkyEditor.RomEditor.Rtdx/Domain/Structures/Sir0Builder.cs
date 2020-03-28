@@ -13,7 +13,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
         public Sir0Builder(int bufferedLength = 1000)
         {
-            Data = new BinaryFile(new byte[bufferedLength]);
+            DataFile = new BinaryFile(new byte[bufferedLength]);
             this.Write(new byte[0x20]); // Placeholder for magic and header pointers
             PointerOffsets = new List<long>();
         }
@@ -22,7 +22,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
         {
         }
 
-        private BinaryFile Data { get; }
+        private BinaryFile DataFile { get; }
+        private IBinaryDataAccessor Data => DataFile;
         private List<long> PointerOffsets { get; }
         public int Length { get; private set; }
         public int SubHeaderOffset { get; set; }
@@ -31,7 +32,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
         {
             if (length > Data.Length)
             {
-                Data.SetLength(Data.Length * 2);
+                DataFile.SetLength(Data.Length * 2);
             }
             this.Length = length;
         }
@@ -117,6 +118,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             Data.Write(value);
         }
 
+        public void Write(long offset, byte[] value)
+        {
+            EnsureLengthIsLargeEnough((int)offset + value.Length);
+            Data.Write(offset, value);
+        }
+
         public void Write(ReadOnlySpan<byte> value)
         {
             EnsureLengthIsLargeEnough(value.Length);
@@ -169,6 +176,24 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
         {
             EnsureLengthIsLargeEnough((int)index + length);
             await Data.WriteAsync(index, length, value).ConfigureAwait(false);
+        }
+
+        public void WriteString(long index, Encoding e, string value)
+        {
+            var bytes = e.GetBytes(value);
+            this.Write(index, bytes);
+        }
+
+        public void WriteInt32(long offset, int value)
+        { 
+            EnsureLengthIsLargeEnough((int)offset + 4);
+            Data.WriteInt32(offset, value);
+        }
+
+        public void WriteInt64(long offset, long value)
+        {
+            EnsureLengthIsLargeEnough((int)offset + 8);
+            Data.WriteInt64(offset, value);
         }
         #endregion
     }

@@ -8,45 +8,46 @@ using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 {
-    public sealed class Sir0 : IReadOnlyBinaryDataAccessor
+    public sealed class Sir0 : IDisposable
     {
         public Sir0(IReadOnlyBinaryDataAccessor data)
         {
-            DataAccessor = data;
+            Data = data;
             Init();
         }
 
         public Sir0(byte[] data, long offset, long length)
         {
-            var binaryFile = new BinaryFile(data);
-            DataAccessor = new ReadOnlyBinaryDataAccessorReference(binaryFile, offset, length);
+            BinaryFile = new BinaryFile(data);
+            Data = (BinaryFile as IReadOnlyBinaryDataAccessor).Slice(offset, length);
             Init();
         }
 
         public Sir0(byte[] data)
         {
-            DataAccessor = new BinaryFile(data);
+            BinaryFile = new BinaryFile(data);
+            Data = BinaryFile;
             Init();
         }
 
         private void Init()
         {
-            Magic = DataAccessor.ReadInt32(0);
-            SubHeaderOffset = DataAccessor.ReadInt32(8);
-            FooterOffset = DataAccessor.ReadInt32(16);
-            SubHeader = DataAccessor.GetReadOnlyDataReference(SubHeaderOffset, FooterOffset - SubHeaderOffset);
+            Magic = Data.ReadInt32(0);
+            SubHeaderOffset = Data.ReadInt32(8);
+            FooterOffset = Data.ReadInt32(16);
+            SubHeader = Data.Slice(SubHeaderOffset, FooterOffset - SubHeaderOffset);
 
             PointerOffsets = new List<long>();
             long pointerIndex = 0;
             var currentFooterOffset = FooterOffset;
-            var rawByte = this.ReadByte(currentFooterOffset++);
+            var rawByte = Data.ReadByte(currentFooterOffset++);
             while (rawByte != 0)
             {
                 if (rawByte < 0x80)
                 {
                     pointerIndex += rawByte;
                     PointerOffsets.Add(pointerIndex);
-                    rawByte = this.ReadByte(currentFooterOffset++);
+                    rawByte = Data.ReadByte(currentFooterOffset++);
                 }
                 else
                 {
@@ -55,7 +56,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                     {
                         workingPointer = rawByte & 0x7F;
                         workingPointer <<= 7;
-                        rawByte = this.ReadByte(currentFooterOffset++);
+                        rawByte = Data.ReadByte(currentFooterOffset++);
                     } while (rawByte >= 0x80);
                     pointerIndex += workingPointer;
                     PointerOffsets.Add(pointerIndex);
@@ -63,26 +64,29 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             }
         }
 
-        private IReadOnlyBinaryDataAccessor DataAccessor { get; }
+        private BinaryFile? BinaryFile { get; }
         public int Magic { get; private set; }
         public long SubHeaderOffset { get; private set; }
         public long FooterOffset { get; private set; }
 
+        /// <summary>
+        /// The raw data of the SIR0 file
+        /// </summary>
+        public IReadOnlyBinaryDataAccessor Data { get; }
+
+        /// <summary>
+        /// The portion of <see cref="Data"/> that is the sub-header
+        /// </summary>
         public IReadOnlyBinaryDataAccessor SubHeader { get; private set; } = default!;
+
+        /// <summary>
+        /// Offsets of 64 bit pointers in <see cref="Data"/>
+        /// </summary>
         public List<long> PointerOffsets { get; private set; } = default!;
 
-        #region IReadOnlyBinaryDataAccessor Implementation
-        public long Length => DataAccessor.Length;
-        public byte[] ReadArray() => DataAccessor.ReadArray();
-        public byte[] ReadArray(long index, int length) => DataAccessor.ReadArray(index, length);
-        public Task<byte[]> ReadArrayAsync() => DataAccessor.ReadArrayAsync();
-        public Task<byte[]> ReadArrayAsync(long index, int length) => DataAccessor.ReadArrayAsync(index, length);
-        public byte ReadByte(long index) => DataAccessor.ReadByte(index);
-        public Task<byte> ReadByteAsync(long index) => DataAccessor.ReadByteAsync(index);
-        public Task<ReadOnlyMemory<byte>> ReadMemoryAsync() => DataAccessor.ReadMemoryAsync();
-        public Task<ReadOnlyMemory<byte>> ReadMemoryAsync(long index, int length) => DataAccessor.ReadMemoryAsync(index, length);
-        public ReadOnlySpan<byte> ReadSpan() => DataAccessor.ReadSpan();
-        public ReadOnlySpan<byte> ReadSpan(long index, int length) => DataAccessor.ReadSpan(index, length);
-        #endregion
+        public void Dispose()
+        {
+            BinaryFile?.Dispose();
+        }
     }
 }

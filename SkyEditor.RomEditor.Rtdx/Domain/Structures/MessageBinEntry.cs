@@ -22,10 +22,10 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             for (int i = 0; i < entryCount1; i++)
             {
                 var entryOffset = entriesOffset + (i * 0x10);
-                var stringOffset = sir0.ReadInt32(entryOffset);
-                var hash = sir0.ReadInt32(entryOffset + 8);
-                var unknown = sir0.ReadInt32(entryOffset + 0xC);
-                strings.Add(hash, sir0.ReadNullTerminatedUtf16String(stringOffset));
+                var stringOffset = sir0.Data.ReadInt32(entryOffset);
+                var hash = sir0.Data.ReadInt32(entryOffset + 8);
+                var unknown = sir0.Data.ReadInt32(entryOffset + 0xC);
+                strings.Add(hash, sir0.Data.ReadNullTerminatedUtf16String(stringOffset));
                 hashes.Add(stringOffset, hash);
             }
             Strings = strings;

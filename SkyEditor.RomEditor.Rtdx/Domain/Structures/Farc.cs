@@ -12,7 +12,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
     {        
         public Farc(byte[] data)
         {
-            var accessor = new BinaryFile(data);
+            using var binaryFile = new BinaryFile(data);
+            IReadOnlyBinaryDataAccessor accessor = binaryFile;
             Magic = accessor.ReadInt32(0);
             UnknownHeaderData = accessor.ReadArray(4, 0x1C);
             FarcVersion = accessor.ReadInt32(0x20);
@@ -64,7 +65,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 var entries = new List<FarcFatEntry>();
                 for (int i = 0; i < entryCount; i++)
                 {
-                    entries.Add(new FarcFatEntry(sir0.ReadArray(dataOffset + (i * 16), 0x10)));
+                    entries.Add(new FarcFatEntry(sir0.Data.ReadArray(dataOffset + (i * 16), 0x10)));
                 }
                 this.Entries = entries;
             }
