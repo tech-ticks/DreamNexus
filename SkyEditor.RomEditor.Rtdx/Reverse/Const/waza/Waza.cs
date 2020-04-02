@@ -3,7 +3,12 @@
     public enum Index
     {
         NONE,
+
+        /// <summary>
+        /// Pound
+        /// </summary>
         HATAKU,
+
         KARATECHOP,
         OUFUKUBINTA,
         RENZOKUPUNCH,
@@ -146,7 +151,12 @@
         KYUUKETSU,
         AKUMANOKISS,
         GODBIRD,
+
+        /// <summary>
+        /// Transform
+        /// </summary>
         HENSHIN,
+
         AWA,
         PIYOPIYOPUNCH,
         KINOKONOHOUSHI,
@@ -217,7 +227,12 @@
         KUROIMANAZASHI,
         MEROMERO,
         NEGOTO,
+
+        /// <summary>
+        /// Heal bell
+        /// </summary>
         IYASHINOSUZU,
+
         ONGAESHI,
         PRESENT,
         YATSUATARI,

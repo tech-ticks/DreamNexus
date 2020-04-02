@@ -8,6 +8,7 @@ using SkyEditor.RomEditor.Rtdx.Domain.Structures;
 using SkyEditor.RomEditor.Rtdx.Reverse;
 using System;
 using System.IO;
+using System.Linq;
 
 namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
 {
@@ -16,7 +17,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
         private static void ChangeStarters()
         {
             var rom = new PhysicalFileSystem();
-            rom.WorkingDirectory = @"F:\atmosphere\contents\01003D200BAA2000";
+            rom.WorkingDirectory = @"H:\atmosphere\contents\01003D200BAA2000";
 
             var handler = new ReplaceStarterHandler(rom);
             // To-do: make a handler to do all this at once
@@ -24,26 +25,33 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             handler.Handle(new ReplaceStarterCommand
             {
                 OldPokemonId = Reverse.Const.creature.Index.FUSHIGIDANE,
-                NewPokemonId = Reverse.Const.creature.Index.MYUU
+                NewPokemonId = Reverse.Const.creature.Index.MYUU,
+                Move1 = Reverse.Const.waza.Index.HATAKU,
+                Move2 = Reverse.Const.waza.Index.TELEPORT,
+                Move3 = Reverse.Const.waza.Index.HENSHIN,
+                Move4 = Reverse.Const.waza.Index.IYASHINOSUZU
             });
-            handler.Handle(new ReplaceStarterCommand
-            {
-                OldPokemonId = Reverse.Const.creature.Index.ACHAMO,
-                NewPokemonId = Reverse.Const.creature.Index.RIORU
-            });
-            handler.Handle(new ReplaceStarterCommand
-            {
-                OldPokemonId = Reverse.Const.creature.Index.HITOKAGE,
-                NewPokemonId = Reverse.Const.creature.Index.IWAAKU
-            });
-            handler.Handle(new ReplaceStarterCommand
-            {
-                OldPokemonId = Reverse.Const.creature.Index.CHIKORIITA,
-                NewPokemonId = Reverse.Const.creature.Index.POCHIENA
-            });
+            //handler.Handle(new ReplaceStarterCommand
+            //{
+            //    OldPokemonId = Reverse.Const.creature.Index.ACHAMO,
+            //    NewPokemonId = Reverse.Const.creature.Index.RIORU
+            //});
+            //handler.Handle(new ReplaceStarterCommand
+            //{
+            //    OldPokemonId = Reverse.Const.creature.Index.HITOKAGE,
+            //    NewPokemonId = Reverse.Const.creature.Index.IWAAKU
+            //});
+            //handler.Handle(new ReplaceStarterCommand
+            //{
+            //    OldPokemonId = Reverse.Const.creature.Index.CHIKORIITA,
+            //    NewPokemonId = Reverse.Const.creature.Index.POCHIENA
+            //});
         }
         static void Main(string[] args)
         {
+            //ChangeStarters();
+            //return;
+
             var basePath = @"D:\01003D200BAA2000";
             var natureDiagnosis = JsonConvert.DeserializeObject<NDConverterSharedData.DataStore>(File.ReadAllText(basePath + @"\romfs\Data\StreamingAssets\data\nature_diagnosis\diagnosis.json"));
             //var actorDataInfoPath = basePath + @"\romfs\Data\StreamingAssets\native_data\pokemon\pokemon_actor_data_info.bin";
