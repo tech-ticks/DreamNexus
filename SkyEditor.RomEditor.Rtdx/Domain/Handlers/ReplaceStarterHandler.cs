@@ -12,25 +12,19 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Handlers
 {
     public class ReplaceStarterHandler
     {
-        public ReplaceStarterHandler(IFileSystem rom)
+        public ReplaceStarterHandler(IRtdxRom rom)
         {
             this.rom = rom ?? throw new ArgumentNullException(nameof(rom));
         }
 
-        private readonly IFileSystem rom;
-
+        private readonly IRtdxRom rom;
 
         public void Handle(ReplaceStarterCommand command)
         {
             // Load files
-            const string nsoPath = "exefs/main";
-            IMainExecutable nso = MainExecutable.LoadFromNso(rom.ReadAllBytes(nsoPath));
-
-            const string natureDiagnosisPath = "romfs/Data/StreamingAssets/data/nature_diagnosis/diagnosis.json";
-            var natureDiagnosis = JsonConvert.DeserializeObject<NDConverterSharedData.DataStore>(rom.ReadAllText(natureDiagnosisPath));
-
-            const string fixedPokemonPath = "romfs/Data/StreamingAssets/native_data/dungeon/fixed_pokemon.bin";
-            IFixedPokemon fixedPokemon = new FixedPokemon(rom.ReadAllBytes(fixedPokemonPath));
+            var nso = rom.GetMainExecutable();
+            var natureDiagnosis = rom.GetNatureDiagnosis();
+            var fixedPokemon = rom.GetFixedPokemon();
 
             // Process
             var map = nso.StarterFixedPokemonMaps.First(m => m.PokemonId == command.OldPokemonId);
@@ -69,11 +63,6 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Handlers
                 ndEntry.m_symbolName = symbolCandiate.symbolName!;
                 ndEntry.m_symbolNameFemale = "";
             }
-
-            // Save files
-            rom.WriteAllBytes(nsoPath, nso.ToNso());
-            rom.WriteAllText(natureDiagnosisPath, JsonConvert.SerializeObject(natureDiagnosis));
-            rom.WriteAllBytes(fixedPokemonPath, fixedPokemon.Build().Data.ReadArray());
         }
     }
 }
