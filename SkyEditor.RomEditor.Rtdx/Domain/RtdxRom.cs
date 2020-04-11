@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SkyEditor.IO.FileSystem;
+using SkyEditor.RomEditor.Rtdx.Domain.Models;
+using SkyEditor.RomEditor.Rtdx.Domain.Queries;
 using SkyEditor.RomEditor.Rtdx.Domain.Structures;
 using SkyEditor.RomEditor.Rtdx.Reverse;
 using System;
@@ -93,6 +95,41 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         private IFixedPokemon? fixedPokemon;
         protected string FixedPokemonPath => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_pokemon.bin");
 
+        public Farc GetUSMessageBin()
+        {
+            if (messageBin == null)
+            {
+                var messageBinPath = MessageBinUSPath;
+                messageBin = new Farc(File.ReadAllBytes(messageBinPath));
+            }
+            return messageBin;
+        }
+        private Farc? messageBin;
+        protected string MessageBinUSPath => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/message_us.bin");
+
+        public ICommonStrings GetCommonStrings()
+        {
+            if (commonStrings == null)
+            {
+                var commonData = GetUSMessageBin().GetFile("common.bin");
+                if (commonData == null)
+                {
+                    throw new Exception("Unable to load common.bin from " + MessageBinUSPath);
+                }
+
+                var common = new MessageBinEntry(commonData);
+                commonStrings = new CommonStrings(common);
+            }
+            return commonStrings;
+        }
+        private ICommonStrings? commonStrings;
+
+        public IEnumerable<StarterModel> QueryStarters()
+        {
+            var starterQueries = new StarterQueries(GetCommonStrings(), GetMainExecutable(), GetNatureDiagnosis(), GetFixedPokemon());
+            return starterQueries.GetStarters();
+        }
+
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
@@ -110,6 +147,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             {
                 fileSystem.WriteAllBytes(FixedPokemonPath, fixedPokemon.Build().Data.ReadArray());
             }
+            // To-do: save commonStrings
+            // To-do: save messageBin
         }
     }
 }

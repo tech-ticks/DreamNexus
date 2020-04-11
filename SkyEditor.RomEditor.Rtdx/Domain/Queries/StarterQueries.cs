@@ -10,7 +10,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Queries
 {
     public interface IStarterQueries
     {
-        IEnumerable<StarterModel> GetStarters();
+        StarterModel[] GetStarters();
     }
 
     public class StarterQueries : IStarterQueries
@@ -31,8 +31,9 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Queries
         protected readonly NDConverterSharedData.DataStore natureDiagnosis;
         protected readonly IFixedPokemon fixedPokemon;
 
-        public IEnumerable<StarterModel> GetStarters()
+        public StarterModel[] GetStarters()
         {
+            var starters = new List<StarterModel>();
             foreach (var starter in natureDiagnosis.m_pokemonNatureAndTypeList)
             {
                 var fixedPokemonSymbol = mainExecutable.StarterFixedPokemonMaps.FirstOrDefault(m => m.PokemonId == starter.m_nameLabel);
@@ -44,7 +45,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Queries
                 }
 
                 var fixedPokemonEntry = fixedPokemon.Entries[(int)fixedPokemonSymbol.FixedPokemonId];
-                yield return new StarterModel
+                starters.Add(new StarterModel
                 {
                     PokemonId = starter.m_nameLabel,
                     PokemonName = commonStrings.Pokemon.GetValueOrDefault((int)starter.m_nameLabel) ?? $"(Unknown: {starter.m_nameLabel})",
@@ -60,8 +61,9 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Queries
                     Move4Name = commonStrings.Moves.GetValueOrDefault((int)fixedPokemonEntry.Move4) ?? $"(Unknown: {fixedPokemonEntry.Move4})",
                     MaleNature = starter.m_maleNature,
                     FemaleNature = starter.m_femaleNature
-                };
+                });
             }
+            return starters.ToArray();
         }
     }
 }

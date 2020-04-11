@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Rtdx.Domain;
+using SkyEditor.RomEditor.Rtdx.Domain.Automation;
 using SkyEditor.RomEditor.Rtdx.Domain.Commands;
 using SkyEditor.RomEditor.Rtdx.Domain.Handlers;
 using SkyEditor.RomEditor.Rtdx.Domain.Queries;
@@ -52,36 +53,17 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             //ChangeStarters();
             //return;
 
-            var basePath = @"E:\01003D200BAA2000-Edited";
-            var natureDiagnosis = JsonConvert.DeserializeObject<NDConverterSharedData.DataStore>(File.ReadAllText(basePath + @"\romfs\Data\StreamingAssets\data\nature_diagnosis\diagnosis.json"));
-            //var actorDataInfoPath = basePath + @"\romfs\Data\StreamingAssets\native_data\pokemon\pokemon_actor_data_info.bin";
-            //var actorDataInfo = new PokemonActorDataInfo(File.ReadAllBytes(actorDataInfoPath));
-
-            var graphicsDatabasePath = basePath + @"\romfs\Data\StreamingAssets\native_data\pokemon_graphics_database.bin";
-            var graphicsDatabase = new PokemonGraphicsDatabase(File.ReadAllBytes(graphicsDatabasePath));
-
-            var nsoPath = basePath + @"\exefs\main";
-            IMainExecutable nso = MainExecutable.LoadFromNso(File.ReadAllBytes(nsoPath));
-
-            var fixedPokemonPath = basePath + @"\romfs\Data\StreamingAssets\native_data\dungeon\fixed_pokemon.bin";
-            IFixedPokemon fixedPokemon = new FixedPokemon(File.ReadAllBytes(fixedPokemonPath));
-
-            var messageBinPath = basePath + @"\romfs\Data\StreamingAssets\native_data\message_us.bin";
-            var messageBin = new Farc(File.ReadAllBytes(messageBinPath));
-            var common = new MessageBinEntry(messageBin.GetFile("common.bin"));
-
-            ICommonStrings commonStrings = new CommonStrings(common);
-            IStarterQueries starterQueries = new StarterQueries(commonStrings, nso, natureDiagnosis, fixedPokemon);
-
-            Console.WriteLine("Starters:");
-            var starters = starterQueries.GetStarters();
-            foreach (var starter in starters)
-            {
-                Console.WriteLine(starter.PokemonName);
-            }
-
-            Console.WriteLine("Press any key to exit");
-            Console.ReadLine();
+            var rom = new RtdxRom(@"E:\01003D200BAA2000-Edited", PhysicalFileSystem.Instance);
+            var luaContext = new SkyEditorLuaContext(rom);
+            luaContext.Execute(@"
+                local starters = rom:QueryStarters()
+                for i = 0,starters.Length-1,1
+                do
+                    local starter = starters[i]
+                    print(i, starter.PokemonName)
+                end
+            ");
+            return;
         }
     }
 }
