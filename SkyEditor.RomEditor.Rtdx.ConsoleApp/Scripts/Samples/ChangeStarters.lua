@@ -32,7 +32,7 @@ end
 
 local chikorita = starters:GetStarterById(Const.creature.Index.CHIKORIITA)
 if chikorita ~= null then
-    chikorita.PokemonId = Const.creature.Index.IWAAKU --Onix
+    chikorita.PokemonId = Const.creature.Index.POCHIENA --Poochyena
 else
     print("Chikorita is not a starter. This ROM could already have had its starters replaced.")
 end
