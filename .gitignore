@@ -349,3 +349,4 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /SkyEditor.RomEditor.Rtdx.Console/Properties/launchSettings.json
+/SkyEditor.RomEditor.Rtdx.ConsoleApp/Properties/launchSettings.json
