@@ -13,4 +13,13 @@
     <ProjectReference Include="..\SkyEditor.RomEditor.Rtdx\SkyEditor.RomEditor.Rtdx.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Scripts\Queries\ListStarters.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Samples\ChangeStarters.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

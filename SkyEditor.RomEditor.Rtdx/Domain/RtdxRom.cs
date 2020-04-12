@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
+using SkyEditor.IO.Binary;
 using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Rtdx.Domain.Models;
-using SkyEditor.RomEditor.Rtdx.Domain.Queries;
 using SkyEditor.RomEditor.Rtdx.Domain.Structures;
 using SkyEditor.RomEditor.Rtdx.Reverse;
 using System;
@@ -13,20 +13,38 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
 {
     public interface IRtdxRom
     {
+        #region Exefs
         /// <summary>
         /// Gets the main executable, loading it if needed
         /// </summary>
         IMainExecutable GetMainExecutable();
+        #endregion
 
+        #region StreamingAssets/data
         /// <summary>
         /// Gets the personality test settings, loading it if needed
         /// </summary>
         NDConverterSharedData.DataStore GetNatureDiagnosis();
+        #endregion
 
+        #region StreamingAssets/native_data/pokemon
+        PokemonDataInfo GetPokemonDataInfo();
+        #endregion
+
+        #region StreamingAssets/native_data/dungeon
         /// <summary>
         /// Gets static Pokemon data, loading it if needed
         /// </summary>
         IFixedPokemon GetFixedPokemon();
+        #endregion
+
+        #region StreamingAssets/native_data
+        ICommonStrings GetCommonStrings();
+        #endregion
+
+        #region Models
+        StarterCollection GetStarters();
+        #endregion
 
         /// <summary>
         /// Saves all loaded files to disk
@@ -53,6 +71,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         protected readonly string directory;
         protected readonly IFileSystem fileSystem;
 
+        #region ExeFs
         /// <summary>
         /// Gets the main executable, loading it if needed
         /// </summary>
@@ -66,7 +85,9 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         }
         private IMainExecutable? mainExecutable;
         protected string NsoPath => Path.Combine(directory, "exefs", "main");
+        #endregion
 
+        #region StreamingAssets/data
         /// <summary>
         /// Gets the personality test settings, loading it if needed
         /// </summary>
@@ -80,7 +101,23 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         }
         private NDConverterSharedData.DataStore? natureDiagnosis;
         protected string NatureDiagnosisPath => Path.Combine(directory, "romfs/Data/StreamingAssets/data/nature_diagnosis/diagnosis.json");
+        #endregion
 
+        #region StreamingAssets/native_data/pokemon
+        public PokemonDataInfo GetPokemonDataInfo()
+        {
+            if (pokemonDataInfo == null)
+            {
+                pokemonDataInfo = new PokemonDataInfo(new BinaryFile(fileSystem.ReadAllBytes(PokemonDataInfoPath)));
+            }
+            return pokemonDataInfo;
+        }
+        private PokemonDataInfo? pokemonDataInfo;
+        protected string PokemonDataInfoPath => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon/pokemon_data_info.bin");
+
+        #endregion
+
+        #region StreamingAssets/native_data/dungeon
         /// <summary>
         /// Gets static Pokemon data, loading it if needed
         /// </summary>
@@ -94,7 +131,9 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         }
         private IFixedPokemon? fixedPokemon;
         protected string FixedPokemonPath => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_pokemon.bin");
+        #endregion
 
+        #region StreamingAssets/native_data
         public Farc GetUSMessageBin()
         {
             if (messageBin == null)
@@ -123,18 +162,29 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             return commonStrings;
         }
         private ICommonStrings? commonStrings;
+        #endregion
 
-        public IEnumerable<StarterModel> QueryStarters()
+        #region Models
+        public StarterCollection GetStarters()
         {
-            var starterQueries = new StarterQueries(GetCommonStrings(), GetMainExecutable(), GetNatureDiagnosis(), GetFixedPokemon());
-            return starterQueries.GetStarters();
+            if (starterCollection == null)
+            {
+                starterCollection = new StarterCollection(this);
+            }
+            return starterCollection;
         }
+        private StarterCollection? starterCollection;
+        #endregion
 
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
         public void Save()
         {
+            if (starterCollection != null)
+            {
+                starterCollection.Flush();
+            }
             if (mainExecutable != null)
             {
                 fileSystem.WriteAllBytes(NsoPath, mainExecutable.ToNso());
@@ -147,6 +197,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             {
                 fileSystem.WriteAllBytes(FixedPokemonPath, fixedPokemon.Build().Data.ReadArray());
             }
+            // To-do: save pokemonDataInfo
             // To-do: save commonStrings
             // To-do: save messageBin
         }

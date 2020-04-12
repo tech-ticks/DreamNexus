@@ -17,16 +17,16 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 PARTY3
             }
 
-            public string? symbolName;
+            public string symbolName = default!;
             public Creature raw_pokemonIndex;
             public FormType raw_formType;
             public bool bIsFemale;
             public PartyID opt_partyId;
-            public PokemonWarehouseId opt_warehouseId;
-            public TextId opt_specialName;
+            public PokemonWarehouseId opt_warehouseId = default!;
+            public TextId opt_specialName = default!;
             public string? debug_name;
 
-            public string Name
+            internal string Name // Should be public when implemented
             {
                 get
                 {
@@ -34,7 +34,7 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 }
             }
 
-            public Creature PokemonIndex
+            internal Creature PokemonIndex // Should be public when implemented
             {
                 get
                 {
@@ -42,7 +42,7 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 }
             }
 
-            public FormType FormType
+            internal FormType FormType // Should be public when implemented
             {
                 get
                 {
@@ -50,48 +50,33 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 }
             }
 
-            public PokemonWarehouseId WarehouseId
+            internal PokemonWarehouseId WarehouseId // Should be public when implemented
             {
                 get
                 {
                     throw new NotImplementedException();
                 }
-            }
-
-            public ActorData()
-            {
             }
         }
 
         public class MapData
         {
-            public string symbolName;
-            public string assetBundleName;
-            public string prefabName;
-
-            public MapData()
-            {
-            }
+            public string? symbolName;
+            public string? assetBundleName;
+            public string? prefabName;
         }
 
         public class GimmickData
         {
-            public string symbolName;
-            public string assetBundleName;
-            public string prefabName;
-
-            public GimmickData()
-            {
-            }
+            public string? symbolName;
+            public string? assetBundleName;
+            public string? prefabName;
         }
 
         public class EffectData
         {
-            public string symbolName;
-            public string effectSymbol;
-            public EffectData()
-            {
-            }
+            public string? symbolName;
+            public string? effectSymbol;
         }
 
         public static List<ActorData> ActorDataList = new List<ActorData>
@@ -100,7 +85,7 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
             {
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
                 opt_specialName = new TextId(0),
-                symbolName = null,
+                symbolName = "", // Originally null, but changed to "" to avoid NRE's
                 debug_name = "",
                 bIsFemale = false,
             },

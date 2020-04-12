@@ -14,3 +14,16 @@ If you want to make use of conversion to/from NSO/ELF files, you'll need to make
 ## Usage
 
 This doesn't yet do anything the average user will care about. SkyEditor.RomEditor.Rtdx.ConsoleApp can be used as a manual test harness if you have the a decrypted and extracted ROM already available.
+
+## Organization
+
+- SkyEditor.RomEditor.Rtdx - Code editing library containg the fun bits
+    - Domain - Custom code dedicated to RTDX stuff
+        - Automation - Code dedicated to giving Lua scripts access to RTDX classes
+        - Models - Aggregations of data into logical units
+        - Structures - Lower level data access to interact with specific file formats
+    - Infrastructure - Helper code not specific to the RTDX domain
+    - Reverse - Stubs and custom implementation of portions of the RTDX executable, such as enumerations and data strutures.
+- SkyEditor.RomEditor.Rtdx.ConsoleApp - Console app made primarily to make the library usable
+    - Scripts - Premade Lua scripts containing queries and other samples
+- SkyEditor.RomEditor.Rtdx.Tests - Exactly what it says on the tin
