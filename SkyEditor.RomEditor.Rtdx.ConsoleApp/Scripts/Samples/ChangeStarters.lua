@@ -36,5 +36,3 @@ if chikorita ~= null then
 else
     print("Chikorita is not a starter. This ROM could already have had its starters replaced.")
 end
-
-rom:Save()
