@@ -3,7 +3,7 @@
     do return end
 end
 
-local starters = rom:QueryStarters()
+local starters = rom:GetStarters().Starters
 for i = 0,starters.Length-1,1
 do
     local starter = starters[i]
