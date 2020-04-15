@@ -134,6 +134,18 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         #endregion
 
         #region StreamingAssets/native_data
+        public PokemonGraphicsDatabase GetPokemonGraphicsDatabase()
+        {
+            if (pokemonGraphicsDatabase == null)
+            {
+                pokemonGraphicsDatabase = new PokemonGraphicsDatabase(File.ReadAllBytes(PokemonGraphicsDatabasePath));
+            }
+            return pokemonGraphicsDatabase;
+        }
+        private PokemonGraphicsDatabase? pokemonGraphicsDatabase;
+        protected string PokemonGraphicsDatabasePath => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon_graphics_database.bin");
+
+
         public Farc GetUSMessageBin()
         {
             if (messageBin == null)

@@ -51,62 +51,6 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             public string String4 { get; set; }
             public string String5 { get; set; }
             public string String6 { get; set; }
-        }
-
-		// This is the likely structure of PokemonGraphicsDatabaseEntry, but more investigation is required
-		private class CharacterDatabaseParameter
-		{
-			public string? stFileName;
-			public string? stCommonMotionName;
-			public string? stCommonMotionName2;
-			public string? stTextureName;
-			public string? stCutPictureName;
-			public string? stCutInName;
-			public string? stFaceName;
-			public string? stDotName;
-			public string? stDotRightName;
-			public uint gfxSymbol;
-			public int sheetId;
-			public EvolutionCameraType evolutionCameraType;
-			public GraphicsBodySizeType bodySize;
-			public float fBaseScale;
-			public float fDungeonBaseScale;
-			public float fPGRootBoneScale;
-			public float fDotOffsetX;
-			public float fDotOffsetY;
-			public float fMotionScale;
-			public float fWalkSpeedDist;
-			public float fWalkSpeedDistG;
-			public float fRunSpeedRatioG;
-			public float fWalkCorrectionValueG;
-			public float fRunCorrectionValueG;
-			public float fFlyHeight;
-			public float fShadowW;
-			public float fShadowH;
-			public float fNullHeadOffsetX;
-			public float fNullHeadOffsetY;
-			public float fNullHeadOffsetZ;
-			public float fNullMouthOffsetX;
-			public float fNullMouthOffsetY;
-			public float fNullMouthOffsetZ;
-			public float fNullRightHandOffsetX;
-			public float fNullRightHandOffsetY;
-			public float fNullRightHandOffsetZ;
-			public float fNullLeftHandOffsetX;
-			public float fNullLeftHandOffsetY;
-			public float fNullLeftHandOffsetZ;
-			public float fBDMinX;
-			public float fBDMinY;
-			public float fBDMinZ;
-			public float fBDMaxX;
-			public float fBDMaxY;
-			public float fBDMaxZ;
-			public bool bEnablePGRootBoneScaleDedicatedMotion;
-			public bool bFace_HANTEN;
-			public bool bFace_FEMALE;
-			public bool bBig;
-			public bool bEffectBaseSet_CH_OffsetPokemon;
-			public List<string>? animationPartsList;
-		}
+        }		
 	}
 }
