@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
 using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.waza.Index;
+using DungeonIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.dungeon.Index;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain
 {
@@ -12,6 +13,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
     {
         Dictionary<int, string> Pokemon { get; }
         Dictionary<int, string> Moves { get; }
+        Dictionary<DungeonIndex, string> Dungeons { get; }
 
         /// <summary>
         /// Gets the name of a Pokemon by the internal Japanese name.
@@ -55,12 +57,26 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
                 var name = common.Strings.GetValueOrDefault(nameHash);
                 Moves.Add((int)waza, name ?? "");
             }
+
+            Dungeons = new Dictionary<DungeonIndex, string>();
+            var dungeons = Enum.GetValues(typeof(DungeonIndex)).Cast<DungeonIndex>().ToArray();
+            foreach (DungeonIndex dungeon in dungeons)
+            {
+                /*if (dungeon == default)
+                {
+                    continue;
+                }*/
+
+                var name = GetDungeonNameByInternalName(dungeon.ToString("f"));
+                Dungeons.Add(dungeon, name ?? "");
+            }
         }
 
         private readonly MessageBinEntry common;
 
         public Dictionary<int, string> Pokemon { get;  }
         public Dictionary<int, string> Moves { get; }
+        public Dictionary<DungeonIndex, string> Dungeons { get; }
 
         /// <summary>
         /// Gets the name of a Pokemon by the internal Japanese name.
@@ -70,6 +86,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         public string? GetPokemonNameByInternalName(string internalName)
         {
             var nameHash = TextIdValues.GetValueOrDefault("POKEMON_NAME__POKEMON_" + internalName.ToUpper());
+            return common.Strings.GetValueOrDefault(nameHash);
+        }
+
+        public string? GetDungeonNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("DUNGEON_NAME__DUNGEON_" + internalName.ToUpper());
             return common.Strings.GetValueOrDefault(nameHash);
         }
     }

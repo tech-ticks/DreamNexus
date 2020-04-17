@@ -15,6 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Scripts\Queries\ListDungeonDataInfo.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\ListPokemonGraphicsDB.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Scripts\Queries\ListStarters.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

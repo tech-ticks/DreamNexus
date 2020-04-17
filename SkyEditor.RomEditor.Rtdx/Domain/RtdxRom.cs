@@ -37,6 +37,10 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         /// Gets static Pokemon data, loading it if needed
         /// </summary>
         IFixedPokemon GetFixedPokemon();
+        
+        DungeonDataInfo GetDungeonDataInfo();
+
+        DungeonExtra GetDungeonExtra();
         #endregion
 
         #region StreamingAssets/native_data
@@ -45,6 +49,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
 
         #region Models
         StarterCollection GetStarters();
+        
+        DungeonCollection GetDungeons();
         #endregion
 
         /// <summary>
@@ -158,6 +164,28 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         private IFixedPokemon? fixedPokemon;
 
         protected static string GetFixedPokemonPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_pokemon.bin");
+        
+        public DungeonDataInfo GetDungeonDataInfo()
+        {
+            if (dungeonDataInfo == null)
+            {
+                dungeonDataInfo = new DungeonDataInfo(fileSystem.ReadAllBytes(GetDungeonDataInfoPath(this.directory)));
+            }
+            return dungeonDataInfo;
+        }
+        private DungeonDataInfo? dungeonDataInfo;
+        protected static string GetDungeonDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_data_info.bin");
+        
+        public DungeonExtra GetDungeonExtra()
+        {
+            if (dungeonExtra == null)
+            {
+                dungeonExtra = new DungeonExtra(fileSystem.ReadAllBytes(GetDungeonExtraPath(this.directory)));
+            }
+            return dungeonExtra;
+        }
+        private DungeonExtra? dungeonExtra;
+		protected static string GetDungeonExtraPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_extra.bin");
         #endregion
 
         #region StreamingAssets/native_data
@@ -223,6 +251,16 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             return starterCollection;
         }
         private StarterCollection? starterCollection;
+
+        public DungeonCollection GetDungeons()
+        {
+            if (dungeonCollection == null)
+            {
+                dungeonCollection = new DungeonCollection(this);
+            }
+            return dungeonCollection;
+        }
+        private DungeonCollection? dungeonCollection;
         #endregion
 
         /// <summary>
@@ -254,6 +292,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             // To-do: save commonStrings when implemented
             // To-do: save messageBin when implemented
             // To-do: save pokemonFormDatabase when implemented
+            // To-do: save dungeonBalance when implemented
+            // To-do: save dungeonExtra when implemented
 
             if (pokemonGraphicsDatabase != null)
             {
