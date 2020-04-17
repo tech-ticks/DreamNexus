@@ -3,52 +3,24 @@
     do return end
 end
 
--- Helper functions ------------------------
-
-local hex2bin = {
-    ['0'] = '0000',
-    ['1'] = '0001',
-    ['2'] = '0010',
-    ['3'] = '0011',
-    ['4'] = '0100',
-    ['5'] = '0101',
-    ['6'] = '0110',
-    ['7'] = '0111',
-    ['8'] = '1000',
-    ['9'] = '1001',
-    ['a'] = '1010',
-    ['b'] = '1011',
-    ['c'] = '1100',
-    ['d'] = '1101',
-    ['e'] = '1110',
-    ['f'] = '1111'
-}
-local function getHex2bin(a) return hex2bin[a] end
-local function int2bin(n)
-    local s = string.format('%x', n)
-    s = s:gsub('.', getHex2bin)
-    return s
-end
-
-function bit(p)
-    return 2 ^ p
-end
-
--- Typical call:  if hasbit(x, bit(3)) then ...
-local function hasbit(x, p)
-    return x % (p + p) >= p       
-end
+luanet.load_assembly("SkyEditor.RomEditor.Rtdx")
+DungeonFeature = luanet.import_type("SkyEditor.RomEditor.Rtdx.Domain.Structures.DungeonDataInfo").DungeonDataInfoEntry.Feature
+Convert = luanet.import_type("System.Convert")
 
 -- Formatters ------------------------------
 
+local function int2bin(n)
+    return Convert.ToString(Convert.ChangeType(n, n:GetTypeCode()), 2)
+end
+
 local function formatFloors(dungeon)
     local prefix = ""
-    if hasbit(dungeon.Data.Flags, bit(0)) then
+    if dungeon.Data.Features:HasFlag(DungeonFeature.FloorDirection) then
         prefix = ""
     else
         prefix = "B"
     end
-    return prefix .. (dungeon.Extra and dungeon.Extra.Floors or 0) .. "F"
+    return prefix .. (dungeon.Extra and dungeon.Extra.Floors or "--") .. "F"
 end
 
 local function formatTeammates(teammates)
@@ -59,50 +31,50 @@ local function formatItems(items)
     if items > 0 then return "yes" else return "no" end
 end
 
-local function formatRecruitable(flags)
-    if hasbit(flags, bit(15)) then return "yes" else return "no" end
+local function formatFeature(features, feature)
+    if features:HasFlag(feature) then return "yes" else return "no" end
 end
 
-local function formatLevelReset(flags)
-    if hasbit(flags, bit(4)) then return "yes" else return "no" end
+local function formatFeatures(features)
+    local featureNames = {}
+    if not features:HasFlag(DungeonFeature.AutoRevive) then table.insert(featureNames, "Auto-revive") end
+    if features:HasFlag(DungeonFeature.Scanning) then table.insert(featureNames, "Scanning") end
+    if features:HasFlag(DungeonFeature.Radar) then table.insert(featureNames, "Radar") end
+    return table.concat(featureNames, ", ")
 end
 
-local function formatFeatures(dungeon)
-    local flags = dungeon.Data.Flags
-    local features = {}
-    if hasbit(flags, bit(17)) then table.insert(features, "Scanning") end
-    if hasbit(flags, bit(18)) then table.insert(features, "Radar") end
-    return table.concat(features, ", ")
+local function formatFeaturesBits(features)
+    return string.gsub(string.gsub(string.format("%019s", int2bin(features)), "0", "-"), "1", "#")
 end
 
 --------------------------------------------
 
-print("#    Index   Dungeon                    Floors   Teammates   Items   Level reset   Recruitable   Features")
+print("#    Index   Dungeon                    Floors   Teammates   Items   Level reset   Recruitable   Features                       210FEDCBA9876543210   0x08   0x0A   d_balance   0x13   0x17   0x18   0x19")
 
 local dungeons = rom:GetDungeons().Dungeons
-for i = 0,dungeons.Length-1,1
+for i = 1,dungeons.Length-1,1
 do
     local dungeon = dungeons[i]
     local data = dungeon.Data
     local extra = dungeon.Extra
-    print(string.format("%-4d %5d   %-28s %4s      %3s       %3s        %3s           %3s       %-30s",
+    print(string.format("%-4d %5d   %-28s %4s      %3s       %3s        %3s           %3s       %-30s %s    %3d    %3d      %3d       %3d    %3d    %3d    %3d",
             i,
             data.Index,
             dungeon.DungeonName,
             formatFloors(dungeon),
             formatTeammates(data.MaxTeammates),
             formatItems(data.MaxItems),
-            formatLevelReset(data.Flags),
-            formatRecruitable(data.Flags),
-            formatFeatures(dungeon)
-        ),
-        string.format("%020s", int2bin(data.Flags)),
-        data.Short08,
-        data.Short0A,
-        data.DungeonBalanceIndex,
-        string.format("0x%x", data.Byte13),
-        string.format("0x%x", data.Byte17),
-        data.Byte18,
-        data.Byte19
+            formatFeature(data.Features, DungeonFeature.LevelReset),
+            formatFeature(data.Features, DungeonFeature.WildPokemonRecruitable),
+            formatFeatures(data.Features),
+            formatFeaturesBits(data.Features),
+            data.Short08,
+            data.Short0A,
+            data.DungeonBalanceIndex,
+            data.Byte13,
+            data.Byte17,
+            data.Byte18,
+            data.Byte19
+        )
     )
 end
