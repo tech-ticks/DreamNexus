@@ -25,7 +25,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             this.Entries = entries;
         }
 
-        [DebuggerDisplay("DungeonDataInfoEntry: {Index}|{Flags}|{Short08}|{Short0A}|{SortKey}|{DungeonBalanceIndex}|{Byte13}|{Byte14}|{Byte15}|{Byte17}|{Byte18}|{Byte19}")]
+        [DebuggerDisplay("DungeonDataInfoEntry: {Index}|{Flags}|{Short08}|{Short0A}|{SortKey}|{DungeonBalanceIndex}|{Byte13}|{MaxItems}|{MaxTeammates}|{Byte17}|{Byte18}|{Byte19}")]
         public class DungeonDataInfoEntry
         {
             public DungeonDataInfoEntry(IReadOnlyBinaryDataAccessor data)
