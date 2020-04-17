@@ -5,6 +5,10 @@ end
 
 local starters = rom:GetStarters()
 
+-- Note: Pokemon types are based on the model being displayed, not the actual Pokemon type
+-- Mew has a high-res model, so Psychic type is used
+-- Riolu doesn't have a high-res model, so the Torchic model is used here, so the type is Fire, making Riolu unable to be used with other Fire type starters
+
 local bulbasaur = starters:GetStarterById(Const.creature.Index.FUSHIGIDANE)
 if bulbasaur ~= null then
     bulbasaur.PokemonId = Const.creature.Index.MYUU --Mew

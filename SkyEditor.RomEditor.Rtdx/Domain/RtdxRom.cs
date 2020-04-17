@@ -134,6 +134,17 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         #endregion
 
         #region StreamingAssets/native_data
+        public PokemonFormDatabase GetPokemonFormDatabase()
+        {
+            if (pokemonFormDatabase == null)
+            {
+                pokemonFormDatabase = new PokemonFormDatabase(File.ReadAllBytes(PokemonFormDatabasePath));
+            }
+            return pokemonFormDatabase;
+        }
+        private PokemonFormDatabase? pokemonFormDatabase;
+        protected string PokemonFormDatabasePath => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon_form_database.bin");
+
         public PokemonGraphicsDatabase GetPokemonGraphicsDatabase()
         {
             if (pokemonGraphicsDatabase == null)
@@ -212,6 +223,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             // To-do: save pokemonDataInfo
             // To-do: save commonStrings
             // To-do: save messageBin
+            // To-do: save pokemonFormDatabase
+            // To-do: save pokemonGraphicsDatabase
         }
     }
 }
