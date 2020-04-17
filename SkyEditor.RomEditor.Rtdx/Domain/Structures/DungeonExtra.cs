@@ -54,15 +54,17 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             Data = entryAccessor.ReadArray();
             Index = (DungeonIndex) entryAccessor.ReadInt32(0x00);
             Floors = entryAccessor.ReadInt32(0x04);
-            DungeonCompletionActions = new List<string>();
             var offset = entryAccessor.ReadInt32(0x08);
             var count = entryAccessor.ReadInt32(0x10);
-            var offset2 = fileAccessor.ReadInt32(offset + 0x08);
+            DungeonEvents = new DungeonEvent[count];
             for (int i = 0; i < count; i++)
             {
-                var str = fileAccessor.ReadNullTerminatedUnicodeString(offset2);
-                DungeonCompletionActions.Add(str);
-                offset2 += (str.Length + 1) * 2;  // FIXME: get the length of the string in bytes
+                var eventNameOffset = fileAccessor.ReadInt32(offset + i * 16 + 0x08);
+                DungeonEvents[i] = new DungeonEvent()
+                {
+                    Floor = fileAccessor.ReadInt32(offset + i * 16),
+                    Name = fileAccessor.ReadNullTerminatedUnicodeString(eventNameOffset)
+                };
             }
         }
 
@@ -71,9 +73,16 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             return Data;
         }
 
+        [DebuggerDisplay("{Floor} : {Name}")]
+        public struct DungeonEvent
+        {
+            public int Floor { get; set; }
+            public string Name { get; set; }
+        }
+
         private byte[] Data { get; }
         public DungeonIndex Index { get; set; }
         public int Floors { get; set; }
-        public List<string> DungeonCompletionActions { get; }
+        public DungeonEvent[] DungeonEvents { get; set; }
     }
 }
