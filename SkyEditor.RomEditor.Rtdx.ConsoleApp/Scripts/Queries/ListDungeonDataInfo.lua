@@ -63,6 +63,10 @@ local function formatRecruitable(flags)
     if hasbit(flags, bit(15)) then return "yes" else return "no" end
 end
 
+local function formatLevelReset(flags)
+    if hasbit(flags, bit(4)) then return "yes" else return "no" end
+end
+
 local function formatFeatures(dungeon)
     local flags = dungeon.Data.Flags
     local features = {}
@@ -73,7 +77,7 @@ end
 
 --------------------------------------------
 
-print("#    Index   Dungeon                    Floors   Teammates   Items   Recruitable   Features")
+print("#    Index   Dungeon                    Floors   Teammates   Items   Level reset   Recruitable   Features")
 
 local dungeons = rom:GetDungeons().Dungeons
 for i = 0,dungeons.Length-1,1
@@ -81,13 +85,14 @@ do
     local dungeon = dungeons[i]
     local data = dungeon.Data
     local extra = dungeon.Extra
-    print(string.format("%-4d %5d   %-28s %4s      %3s       %3s        %3s       %-30s",
+    print(string.format("%-4d %5d   %-28s %4s      %3s       %3s        %3s           %3s       %-30s",
             i,
             data.Index,
             dungeon.DungeonName,
             formatFloors(dungeon),
             formatTeammates(data.MaxTeammates),
             formatItems(data.MaxItems),
+            formatLevelReset(data.Flags),
             formatRecruitable(data.Flags),
             formatFeatures(dungeon)
         ),
