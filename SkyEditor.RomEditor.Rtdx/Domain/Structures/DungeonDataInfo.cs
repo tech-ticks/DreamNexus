@@ -46,8 +46,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
             // bit 0: Floor direction (0 = BxxF, 1 = xxF)
             // bit 15: Can recruit wild Pokemon
-            // bit 17: Permanent Radar status
-            // bit 18: Permanent Scanning status
+            // bit 17: Permanent Scanning status
+            // bit 18: Permanent Radar status
             public int Flags { get; }
             public int Index { get; }
             public short Short08 { get; }

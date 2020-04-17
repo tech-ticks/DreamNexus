@@ -66,8 +66,8 @@ end
 local function formatFeatures(dungeon)
     local flags = dungeon.Data.Flags
     local features = {}
-    if hasbit(flags, bit(17)) then table.insert(features, "Radar") end
-    if hasbit(flags, bit(18)) then table.insert(features, "Scanning") end
+    if hasbit(flags, bit(17)) then table.insert(features, "Scanning") end
+    if hasbit(flags, bit(18)) then table.insert(features, "Radar") end
     return table.concat(features, ", ")
 end
 
