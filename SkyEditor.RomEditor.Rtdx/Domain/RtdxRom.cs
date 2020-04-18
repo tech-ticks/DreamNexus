@@ -41,6 +41,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         DungeonDataInfo GetDungeonDataInfo();
 
         DungeonExtra GetDungeonExtra();
+        
+        DungeonBalance GetDungeonBalance();
         #endregion
 
         #region StreamingAssets/native_data
@@ -186,6 +188,17 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         }
         private DungeonExtra? dungeonExtra;
 		protected static string GetDungeonExtraPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_extra.bin");
+        
+        public DungeonBalance GetDungeonBalance()
+        {
+            if (dungeonBalance == null)
+            {
+                dungeonBalance = new DungeonBalance(fileSystem.ReadAllBytes(GetDungeonBalancePath(this.directory) + ".bin"), fileSystem.ReadAllBytes(GetDungeonBalancePath(this.directory) + ".ent"));
+            }
+            return dungeonBalance;
+        }
+        private DungeonBalance? dungeonBalance;
+        protected static string GetDungeonBalancePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_balance");
         #endregion
 
         #region StreamingAssets/native_data

@@ -13,14 +13,18 @@ local function int2bin(n)
     return Convert.ToString(Convert.ChangeType(n, n:GetTypeCode()), 2)
 end
 
-local function formatFloors(dungeon)
+local function formatFloor(dungeon, floor)
     local prefix = ""
     if dungeon.Data.Features:HasFlag(DungeonFeature.FloorDirection) then
         prefix = ""
     else
         prefix = "B"
     end
-    return prefix .. (dungeon.Extra and dungeon.Extra.Floors or "--") .. "F"
+    return prefix .. floor .. "F"
+end
+
+local function formatFloors(dungeon)
+    return formatFloor(dungeon, dungeon.Extra and dungeon.Extra.Floors or "--")
 end
 
 local function formatTeammates(teammates)
@@ -51,12 +55,14 @@ end
 
 print("#    Index   Dungeon                    Floors   Teammates   Items   Level reset   Recruitable   Features                       210FEDCBA9876543210   0x08   0x0A   d_balance   0x13   0x17   0x18   0x19")
 
+local commonStrings = rom:GetCommonStrings()
 local dungeons = rom:GetDungeons().Dungeons
 for i = 1,dungeons.Length-1,1
 do
     local dungeon = dungeons[i]
     local data = dungeon.Data
     local extra = dungeon.Extra
+    local balance = dungeon.Balance
     print(string.format("%-4d %5d   %-28s %4s      %3s       %3s        %3s           %3s       %-30s %s    %3d    %3d      %3d       %3d    %3d    %3d    %3d",
             i,
             data.Index,
@@ -77,4 +83,73 @@ do
             data.Byte19
         )
     )
+
+    --[[local floorInfos = balance.FloorInfos
+    for j = 0,floorInfos.Length-1,1
+    do
+        local info = floorInfos[j]
+        print(string.format("   %5d  %5d  %5d  %5d  %5d  %5d  %3d  %3d  %3d  %3d  %5d  %5d  %3d  %3d  %s  %s",
+                info.Index,
+                info.Short02,
+                info.Short24,
+                info.Short26,
+                info.Short28,
+                info.Short2A,
+                info.Byte2C,
+                info.Byte2D,
+                info.Byte2E,
+                info.Byte2F,
+                info.Short30,
+                info.Short32,
+                info.Byte34,
+                info.Byte35,
+                info.Bytes36to61AsString,
+                info.Event
+            )
+        )
+    end]]--
+
+    local wildPokemon = balance.WildPokemon
+    if wildPokemon ~= nil then
+        print("      #   Pokemon         Lvl    HP   Atk   Def   SpA   SpD   Spe    XP Yield")
+        print("             Spawn  Recruit")
+        print("      Floor   rate   level   0x0B")
+        local stats = wildPokemon.Stats
+        local floors = wildPokemon.Floors
+        for j = 0,stats.Length-1,1
+        do
+            local r = stats[j]
+            local index = r.Index + 1
+            local name = commonStrings.Pokemon:ContainsKey(index) and commonStrings.Pokemon[index] or ("(Unknown :" .. index .. ")")
+            if r.XPYield ~= 0 or r.HitPoints ~= 0 or r.Attack ~= 0 or r.Defense ~= 0 or r.SpecialAttack ~= 0 or r.SpecialDefense ~= 0 or r.Speed ~= 0 or r.Level ~= 0 then
+                print(string.format("   %4d   %-14s  %3d   %3d   %3d   %3d   %3d   %3d   %3d    %8d",
+                        index,
+                        name,
+                        r.Level,
+                        r.HitPoints,
+                        r.Attack,
+                        r.Defense,
+                        r.SpecialAttack,
+                        r.SpecialDefense,
+                        r.Speed,
+                        r.XPYield
+                    )
+                )
+
+                for k = 0,dungeon.Extra.Floors-1,1
+                do
+                    local ent = floors[k].Entries[j]
+                    if ent.SpawnRate ~= 0 then
+                        print(string.format("       %4s    %3d    %3d    %3d",
+                                formatFloor(dungeon, k + 1),
+                                ent.SpawnRate,
+                                ent.RecruitmentLevel,
+                                ent.Byte0B
+                            )
+                        )
+                    end
+                end
+            end
+        end
+    end
 end
