@@ -67,10 +67,10 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 _Bit12 = (1 << 12),                  //   ??  (always 0)
                 _Bit13 = (1 << 13),                  //   ??  (always 0)
                 _Bit14 = (1 << 14),                  //   ??  (always 0)
-                WildPokemonRecruitable = (1 << 15),  // Can recruit wild Pokemon
+                WildPokemonRecruitable = (1 << 15),  // Leader can recruit wild Pokemon
                 _Bit16 = (1 << 16),                  //   ??  (0 on both versions of Tiny Woods and Thunderwave Cave, Lapis Cave, Rock/Snow Path, Mt. Blaze, Frosty Forest and Mt. Freeze)
-                                                     //             Since Tiny Woods/Thunderwave Cave are early dungeons and Lapis Cave through Mt. Freeze are visited during the fugitive arc,
-                                                     //             I suspect this bit is related to not being able to go back to the rescue team base after fainting/giving up.
+                                                     //   Since Tiny Woods/Thunderwave Cave are early dungeons and Lapis Cave through Mt. Freeze are visited during the fugitive arc,
+                                                     //   I suspect this bit is related to not being able to go back to the rescue team base after fainting/giving up.
                 Scanning = (1 << 17),                // Permanent Scanning status
                 Radar = (1 << 18)                    // Permanent Radar status
                 // bits 19+ are always 0
