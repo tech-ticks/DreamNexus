@@ -1,10 +1,6 @@
-﻿using SkyEditor.IO;
-using SkyEditor.IO.Binary;
-using SkyEditor.RomEditor.Rtdx.Infrastructure;
-using System;
+﻿using SkyEditor.IO.Binary;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 {
@@ -25,7 +21,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 var stringOffset = sir0.Data.ReadInt32(entryOffset);
                 var hash = sir0.Data.ReadInt32(entryOffset + 8);
                 var unknown = sir0.Data.ReadInt32(entryOffset + 0xC);
-                strings.Add(hash, sir0.Data.ReadNullTerminatedUtf16String(stringOffset));
+                strings.Add(hash, sir0.Data.ReadNullTerminatedUnicodeString(stringOffset));
                 hashes.Add(stringOffset, hash);
             }
             Strings = strings;

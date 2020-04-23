@@ -156,7 +156,6 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         private PokemonGraphicsDatabase? pokemonGraphicsDatabase;
         protected string PokemonGraphicsDatabasePath => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon_graphics_database.bin");
 
-
         public Farc GetUSMessageBin()
         {
             if (messageBin == null)
@@ -220,11 +219,11 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             {
                 fileSystem.WriteAllBytes(FixedPokemonPath, fixedPokemon.Build().Data.ReadArray());
             }
-            // To-do: save pokemonDataInfo
-            // To-do: save commonStrings
-            // To-do: save messageBin
-            // To-do: save pokemonFormDatabase
-            // To-do: save pokemonGraphicsDatabase
+            // To-do: save pokemonDataInfo when implemented
+            // To-do: save commonStrings when implemented
+            // To-do: save messageBin when implemented
+            // To-do: save pokemonFormDatabase when implemented
+            // To-do: save pokemonGraphicsDatabase when implemented
         }
     }
 }
