@@ -159,6 +159,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                     SpecialAttack = accessor.ReadByte(0x08);
                     SpecialDefense = accessor.ReadByte(0x09);
                     Speed = accessor.ReadByte(0x0A);
+                    StrongFoe = accessor.ReadByte(0x0B);
                     Level = accessor.ReadByte(0x0C);
                 }
 
@@ -170,6 +171,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 public byte SpecialAttack { get; }
                 public byte SpecialDefense { get; }
                 public byte Speed { get; }
+                public byte StrongFoe { get; }
                 public byte Level { get; }
             }
 

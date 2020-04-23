@@ -123,7 +123,9 @@ do
             local index = r.Index + 1
             local name = commonStrings.Pokemon:ContainsKey(index) and commonStrings.Pokemon[index] or ("(Unknown :" .. index .. ")")
             if r.XPYield ~= 0 or r.HitPoints ~= 0 or r.Attack ~= 0 or r.Defense ~= 0 or r.SpecialAttack ~= 0 or r.SpecialDefense ~= 0 or r.Speed ~= 0 or r.Level ~= 0 then
-                print(string.format("   %4d   %-14s  %3d   %3d   %3d   %3d   %3d   %3d   %3d    %8d",
+                local strongFoe = ""
+                if r.StrongFoe ~= 0 then strongFoe = "Strong Foe" end
+                print(string.format("   %4d   %-14s  %3d   %3d   %3d   %3d   %3d   %3d   %3d    %8d   %s",
                         index,
                         name,
                         r.Level,
@@ -133,7 +135,8 @@ do
                         r.SpecialAttack,
                         r.SpecialDefense,
                         r.Speed,
-                        r.XPYield
+                        r.XPYield,
+                        strongFoe
                     )
                 )
 
