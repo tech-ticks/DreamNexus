@@ -88,7 +88,7 @@ do
     for j = 0,floorInfos.Length-1,1
     do
         local info = floorInfos[j]
-        print(string.format("   %5d  %5d  %5d  %5d  %5d  %5d  %3d  %3d  %3d  %3d  %5d  %5d  %3d  %3d  %s  %s",
+        print(string.format("   %5d  %5d  %5d  %5d  %5d  %5d  %3d  %3d  %3d  %3d  %5d  %5d  %3d  %3d  %3d  %s  %s",
                 info.Index,
                 info.Short02,
                 info.Short24,
@@ -103,13 +103,14 @@ do
                 info.Short32,
                 info.Byte34,
                 info.Byte35,
-                info.Bytes36to61AsString,
+                info.Byte36,
+                info.Bytes37to61AsString,
                 info.Event
             )
         )
     end]]--
 
-    local wildPokemon = balance.WildPokemon
+    --[[local wildPokemon = balance.WildPokemon
     if wildPokemon ~= nil then
         print("      #   Pokemon         Lvl    HP   Atk   Def   SpA   SpD   Spe    XP Yield")
         print("             Spawn  Recruit")
@@ -151,5 +152,62 @@ do
                 end
             end
         end
+    end]]--
+
+    local data3 = balance.Data3
+    if data3 ~= nil then
+        local recs = data3.Records
+        local prevIndex = -1
+        local prevShort02s = {}
+        local len = dungeon.Extra.Floors  --recs.Length - 1
+        for j = 0,len-1,1
+        do
+            local rec = recs[j]
+            local ents = rec.Entries
+            local short02s = {}
+
+            for k = 0,ents.Length-1,1
+            do
+                local ent = ents[k]
+                table.insert(short02s, ent.Short02)
+            end
+
+            if #prevShort02s == 0 or table.concat(prevShort02s) ~= table.concat(short02s) then
+                prevShort02s = short02s
+                if prevIndex ~= -1 and prevIndex ~= j then print(".." .. formatFloor(dungeon, j) .. ": *") end
+                print("  " .. formatFloor(dungeon, j + 1) .. ": " .. table.concat(short02s, "  "))
+                prevIndex = j + 1
+            end
+        end
+        if prevIndex ~= -1 and prevIndex ~= len then print(".." .. formatFloor(dungeon, len) .. ": *") end
     end
+
+    --[[local data4 = balance.Data4
+    if data4 ~= nil then
+        local recs = data4.Records
+        for j = 0,recs.Length-1,1
+        do
+            local rec = recs[j]
+            local ents = rec.Entries
+            local short00s = {}
+            local short02s = {}
+            local int04s = {}
+
+            local has02 = false
+            local has04 = false
+            for k = 0,ents.Length-1,1
+            do
+                local ent = ents[k]
+                table.insert(short00s, ent.Short00)
+                table.insert(short02s, ent.Short02)
+                table.insert(int04s, ent.Int04)
+                if ent.Short02 ~= 60 then has02 = true end
+                if ent.Int04 ~= 0 then has04 = true end
+            end
+
+            print("  " .. formatFloor(dungeon, j + 1) .. ": " .. table.concat(short00s, "  "))
+            print("     " .. table.concat(short02s, "  "))
+            print("     " .. table.concat(int04s, "  "))
+        end
+    end]]--
 end

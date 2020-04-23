@@ -94,7 +94,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 Short32 = data.ReadInt16(0x32);
                 Byte34 = data.ReadByte(0x34);
                 Byte35 = data.ReadByte(0x35);
-                Bytes36to61 = data.ReadArray(0x36, 0x61 - 0x36 + 1);
+                Byte36 = data.ReadByte(0x36);
+                Bytes37to61 = data.ReadArray(0x37, 0x61 - 0x37 + 1);
             }
 
             public short Index { get; }
@@ -112,8 +113,9 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             public short Short32 { get; }
             public byte Byte34 { get; }
             public byte Byte35 { get; }
-            public byte[] Bytes36to61 { get; }
-            public string Bytes36to61AsString => string.Join(" ", Bytes36to61);
+            public byte Byte36 { get; }
+            public byte[] Bytes37to61 { get; }
+            public string Bytes37to61AsString => string.Join(" ", Bytes37to61);
         }
 
         public class WildPokemonInfo
@@ -227,19 +229,19 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                     Entries = new Entry[32];
                 }
 
-                [DebuggerDisplay("{Short00}|{Short02}|{Int04}")]
+                [DebuggerDisplay("{Index} : {Short02}|{Int04}")]
                 public struct Entry
                 {
                     public Entry(IReadOnlyBinaryDataAccessor accessor)
                     {
-                        Short00 = accessor.ReadInt16(0x00);
+                        Index = accessor.ReadInt16(0x00);
                         Short02 = accessor.ReadInt16(0x02);
                         Int04 = accessor.ReadInt16(0x04);
                     }
 
-                    public short Short00 { get; }
+                    public short Index { get; }
                     public short Short02 { get; }
-                    public int Int04 { get; }
+                    public int Int04 { get; }  // all 0s
                 }
 
                 public Entry[] Entries { get; }
@@ -283,9 +285,9 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                         Int04 = accessor.ReadInt16(0x04);
                     }
 
-                    public short Short00 { get; }
-                    public short Short02 { get; }
-                    public int Int04 { get; }
+                    public short Short00 { get; }  // 0 through 45, skipping 13
+                    public short Short02 { get; }  // all 60s
+                    public int Int04 { get; }      // all 0s
                 }
 
                 public Entry[] Entries { get; }
