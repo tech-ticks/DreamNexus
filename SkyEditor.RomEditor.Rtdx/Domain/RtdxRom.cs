@@ -49,6 +49,11 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
+        void Save(string directory, IFileSystem fileSystem);
+
+        /// <summary>
+        /// Saves all loaded files to disk
+        /// </summary>
         void Save();
     }
 
@@ -79,12 +84,13 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (mainExecutable == null)
             {
-                mainExecutable = MainExecutable.LoadFromNso(fileSystem.ReadAllBytes(NsoPath));
+                mainExecutable = MainExecutable.LoadFromNso(fileSystem.ReadAllBytes(GetNsoPath(this.directory)));
             }
             return mainExecutable;
         }
         private IMainExecutable? mainExecutable;
-        protected string NsoPath => Path.Combine(directory, "exefs", "main");
+
+        protected static string GetNsoPath(string directory) => Path.Combine(directory, "exefs", "main");
         #endregion
 
         #region StreamingAssets/data
@@ -95,12 +101,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (natureDiagnosis == null)
             {
-                natureDiagnosis = JsonConvert.DeserializeObject<NDConverterSharedData.DataStore>(fileSystem.ReadAllText(NatureDiagnosisPath));
+                natureDiagnosis = JsonConvert.DeserializeObject<NDConverterSharedData.DataStore>(fileSystem.ReadAllText(GetNatureDiagnosisPath(this.directory)));
             }
             return natureDiagnosis;
         }
         private NDConverterSharedData.DataStore? natureDiagnosis;
-        protected string NatureDiagnosisPath => Path.Combine(directory, "romfs/Data/StreamingAssets/data/nature_diagnosis/diagnosis.json");
+        protected static string GetNatureDiagnosisPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/data/nature_diagnosis/diagnosis.json");
         #endregion
 
         #region StreamingAssets/native_data/pokemon
@@ -108,12 +114,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (pokemonDataInfo == null)
             {
-                pokemonDataInfo = new PokemonDataInfo(new BinaryFile(fileSystem.ReadAllBytes(PokemonDataInfoPath)));
+                pokemonDataInfo = new PokemonDataInfo(new BinaryFile(fileSystem.ReadAllBytes(GetPokemonDataInfoPath(this.directory))));
             }
             return pokemonDataInfo;
         }
         private PokemonDataInfo? pokemonDataInfo;
-        protected string PokemonDataInfoPath => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon/pokemon_data_info.bin");
+        protected static string GetPokemonDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon/pokemon_data_info.bin");
 
         #endregion
 
@@ -125,12 +131,13 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (fixedPokemon == null)
             {
-                fixedPokemon = new FixedPokemon(fileSystem.ReadAllBytes(FixedPokemonPath));
+                fixedPokemon = new FixedPokemon(fileSystem.ReadAllBytes(GetFixedPokemonPath(this.directory)));
             }
             return fixedPokemon;
         }
         private IFixedPokemon? fixedPokemon;
-        protected string FixedPokemonPath => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_pokemon.bin");
+
+        protected static string GetFixedPokemonPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_pokemon.bin");
         #endregion
 
         #region StreamingAssets/native_data
@@ -138,23 +145,23 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (pokemonFormDatabase == null)
             {
-                pokemonFormDatabase = new PokemonFormDatabase(File.ReadAllBytes(PokemonFormDatabasePath));
+                pokemonFormDatabase = new PokemonFormDatabase(File.ReadAllBytes(GetPokemonFormDatabasePath(this.directory)));
             }
             return pokemonFormDatabase;
         }
         private PokemonFormDatabase? pokemonFormDatabase;
-        protected string PokemonFormDatabasePath => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon_form_database.bin");
+        protected static string GetPokemonFormDatabasePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon_form_database.bin");
 
         public PokemonGraphicsDatabase GetPokemonGraphicsDatabase()
         {
             if (pokemonGraphicsDatabase == null)
             {
-                pokemonGraphicsDatabase = new PokemonGraphicsDatabase(File.ReadAllBytes(PokemonGraphicsDatabasePath));
+                pokemonGraphicsDatabase = new PokemonGraphicsDatabase(File.ReadAllBytes(GetPokemonGraphicsDatabasePath(this.directory)));
             }
             return pokemonGraphicsDatabase;
         }
         private PokemonGraphicsDatabase? pokemonGraphicsDatabase;
-        protected string PokemonGraphicsDatabasePath => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon_graphics_database.bin");
+        protected static string GetPokemonGraphicsDatabasePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon_graphics_database.bin");
 
         public Farc GetUSMessageBin()
         {
@@ -201,29 +208,41 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
-        public void Save()
+        public void Save(string directory, IFileSystem fileSystem)
         {
+            // Save wrappers around files
             if (starterCollection != null)
             {
                 starterCollection.Flush();
             }
+
+            // Save the files themselves
             if (mainExecutable != null)
             {
-                fileSystem.WriteAllBytes(NsoPath, mainExecutable.ToNso());
+                fileSystem.WriteAllBytes(GetNsoPath(directory), mainExecutable.ToNso());
             }
             if (natureDiagnosis != null)
             {
-                fileSystem.WriteAllText(NatureDiagnosisPath, JsonConvert.SerializeObject(natureDiagnosis));
+                fileSystem.WriteAllText(GetNatureDiagnosisPath(directory), JsonConvert.SerializeObject(natureDiagnosis));
             }
             if (fixedPokemon != null)
             {
-                fileSystem.WriteAllBytes(FixedPokemonPath, fixedPokemon.Build().Data.ReadArray());
+                fileSystem.WriteAllBytes(GetFixedPokemonPath(directory), fixedPokemon.Build().Data.ReadArray());
             }
+
             // To-do: save pokemonDataInfo when implemented
             // To-do: save commonStrings when implemented
             // To-do: save messageBin when implemented
             // To-do: save pokemonFormDatabase when implemented
             // To-do: save pokemonGraphicsDatabase when implemented
+        }
+
+        /// <summary>
+        /// Saves all loaded files to disk
+        /// </summary>
+        public void Save()
+        {
+            this.Save(this.directory, this.fileSystem);
         }
     }
 }
