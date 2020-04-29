@@ -1,4 +1,5 @@
-﻿using SkyEditor.IO.FileSystem;
+﻿using AssetStudio;
+using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Rtdx.Domain;
 using SkyEditor.RomEditor.Rtdx.Domain.Automation;
 using System;
@@ -77,12 +78,28 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                         context.Execute(File.ReadAllText(args[i]));
                     }
                 }
+                else if (args[i] == "test")
+                {
+                    if (rom == null || context == null)
+                    {
+                        throw new InvalidOperationException("Argument 'test' must follow a ROM directory argument");
+                    }
+                    Test(rom, context);
+                }
                 else
                 {
                     Console.WriteLine($"Unrecognized argument '{args[i]}'");
                     return;
                 }
             }
+        }
+
+        /// <summary>
+        /// Place C# code here for development/testing purposes, for when lua scripts either aren't enough or when more advanced debugging features are needed.
+        /// </summary>
+        private static void Test(RtdxRom rom, SkyEditorLuaContext context)
+        {
+            var assets = rom.GetAssetBundles();
         }
     }
 }

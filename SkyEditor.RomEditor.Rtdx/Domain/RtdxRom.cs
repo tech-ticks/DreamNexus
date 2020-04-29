@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using AssetStudio;
+using Newtonsoft.Json;
 using SkyEditor.IO.Binary;
 using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Rtdx.Domain.Models;
@@ -107,6 +108,25 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         }
         private NDConverterSharedData.DataStore? natureDiagnosis;
         protected static string GetNatureDiagnosisPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/data/nature_diagnosis/diagnosis.json");
+        #endregion
+
+        #region StreamingAssets/data/ab
+        /// <summary>
+        /// Loads asset bundles
+        /// Note: If the ROM is not a physical file system, exceptions may occur.
+        /// </summary>
+        public AssetsManager GetAssetBundles()
+        {
+            if (_assetBundles == null)
+            {
+                _assetBundles = new AssetsManager();
+                _assetBundles.LoadFolder(this.fileSystem, GetAssetBundlesPath(this.directory));
+            }
+            return _assetBundles;
+        }
+        private AssetsManager? _assetBundles;
+        protected static string GetAssetBundlesPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/ab");
+
         #endregion
 
         #region StreamingAssets/native_data/pokemon

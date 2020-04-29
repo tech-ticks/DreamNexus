@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using SkyEditor.IO.FileSystem;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -63,9 +64,9 @@ namespace AssetStudio
             return CheckFileType(reader);
         }
 
-        public static FileType CheckFileType(string fileName, out EndianBinaryReader reader)
+        public static FileType CheckFileType(string fileName, out EndianBinaryReader reader, IFileSystem fileSystem)
         {
-            reader = new EndianBinaryReader(File.OpenRead(fileName));
+            reader = new EndianBinaryReader(fileSystem.OpenFileReadOnly(fileName));
             return CheckFileType(reader);
         }
 

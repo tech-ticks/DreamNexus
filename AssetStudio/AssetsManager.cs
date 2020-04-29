@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkyEditor.IO.FileSystem;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -16,23 +17,23 @@ namespace AssetStudio
         private HashSet<string> importFilesHash = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         private HashSet<string> assetsFileListHash = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-        public void LoadFiles(params string[] files)
+        public void LoadFiles(IFileSystem fileSystem, params string[] files)
         {
             var path = Path.GetDirectoryName(files[0]);
             MergeSplitAssets(path);
             var toReadFile = ProcessingSplitFiles(files.ToList());
-            Load(toReadFile);
+            Load(toReadFile, fileSystem);
         }
 
-        public void LoadFolder(string path)
+        public void LoadFolder(IFileSystem fileSystem, string path)
         {
             MergeSplitAssets(path, true);
             var files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories).ToList();
             var toReadFile = ProcessingSplitFiles(files);
-            Load(toReadFile);
+            Load(toReadFile, fileSystem);
         }
 
-        private void Load(string[] files)
+        private void Load(string[] files, IFileSystem fileSystem)
         {
             foreach (var file in files)
             {
@@ -44,7 +45,7 @@ namespace AssetStudio
             //use a for loop because list size can change
             for (var i = 0; i < importFiles.Count; i++)
             {
-                LoadFile(importFiles[i]);
+                LoadFile(importFiles[i], fileSystem);
                 Progress.Report(i + 1, importFiles.Count);
             }
 
@@ -56,12 +57,12 @@ namespace AssetStudio
             ProcessAssets();
         }
 
-        private void LoadFile(string fullName)
+        private void LoadFile(string fullName, IFileSystem fileSystem)
         {
-            switch (CheckFileType(fullName, out var reader))
+            switch (CheckFileType(fullName, out var reader, fileSystem))
             {
                 case FileType.AssetsFile:
-                    LoadAssetsFile(fullName, reader);
+                    LoadAssetsFile(fullName, reader, fileSystem);
                     break;
                 case FileType.BundleFile:
                     LoadBundleFile(fullName, reader);
@@ -72,7 +73,7 @@ namespace AssetStudio
             }
         }
 
-        private void LoadAssetsFile(string fullName, EndianBinaryReader reader)
+        private void LoadAssetsFile(string fullName, EndianBinaryReader reader, IFileSystem fileSystem)
         {
             var fileName = Path.GetFileName(fullName);
             if (!assetsFileListHash.Contains(fileName))
@@ -91,16 +92,16 @@ namespace AssetStudio
 
                         if (!importFilesHash.Contains(sharedFileName))
                         {
-                            if (!File.Exists(sharedFilePath))
+                            if (!fileSystem.FileExists(sharedFilePath))
                             {
-                                var findFiles = Directory.GetFiles(Path.GetDirectoryName(fullName), sharedFileName, SearchOption.AllDirectories);
+                                var findFiles = fileSystem.GetFiles(Path.GetDirectoryName(fullName), sharedFileName, false);
                                 if (findFiles.Length > 0)
                                 {
                                     sharedFilePath = findFiles[0];
                                 }
                             }
 
-                            if (File.Exists(sharedFilePath))
+                            if (fileSystem.FileExists(sharedFilePath))
                             {
                                 importFiles.Add(sharedFilePath);
                                 importFilesHash.Add(sharedFileName);

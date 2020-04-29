@@ -18,4 +18,8 @@
     <Folder Include="Properties\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AssetStudio\AssetStudio.csproj" />
+  </ItemGroup>
+
 </Project>
