@@ -45,18 +45,85 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             }
         }
 
+        /// <summary>
+        /// Registers the data at the given index as a pointer
+        /// </summary>
+        /// <param name="index">Index of the pointer</param>
+        public void MarkPointer(long index)
+        {
+            PointerOffsets.Add(index);
+        }
+
+        /// <summary>
+        /// Writes the given data and registers it as a pointer
+        /// </summary>
+        /// <param name="index">Target location to which the pointer should be written, which will be registered as storing a pointer</param>
+        /// <param name="pointer">The pointer to write</param>
         public void WritePointer(long index, long pointer)
         {
             EnsureLengthIsLargeEnough((int)index + 8);
             Data.WriteInt64(index, pointer);
-            PointerOffsets.Add(index);
+            MarkPointer(index);
         }
 
+        /// <summary>
+        /// Writes the given data and registers it as a pointer
+        /// </summary>
+        /// <param name="index">Target location to which the pointer should be written, which will be registered as storing a pointer</param>
+        /// <param name="pointer">The pointer to write</param>
         public async Task WritePointerAsync(long index, long pointer)
         {
             EnsureLengthIsLargeEnough((int)index + 8);
             await Data.WriteInt64Async(index, pointer).ConfigureAwait(false);
-            PointerOffsets.Add(index);
+            MarkPointer(index);
+        }
+
+        public void WritePadding(long index, int paddingLength, byte paddingCharacter = 0)
+        {
+            if (paddingLength == 0)
+            {
+                return;
+            }
+
+            if (paddingLength < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(paddingLength), "Padding length must not be negative");
+            }
+
+            EnsureLengthIsLargeEnough((int)index + paddingLength);
+            Span<byte> padding = stackalloc byte[paddingLength];
+            if (paddingCharacter != 0)
+            {
+                for (int i = 0; i < paddingLength; i++)
+                {
+                    padding[i] = paddingCharacter;
+                }
+            }
+            this.Write(index, paddingLength, padding);
+        }
+
+        public async Task WritePaddingAsync(long index, int paddingLength, byte paddingCharacter = 0)
+        {
+            if (paddingLength == 0)
+            {
+                return;
+            }
+
+            if (paddingLength < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(paddingLength), "Padding length must not be negative");
+            }
+
+            EnsureLengthIsLargeEnough((int)index + paddingLength);
+            byte[] padding = new byte[paddingLength];
+            if (paddingCharacter != 0)
+            {
+                for (int i = 0; i < paddingLength; i++)
+                {
+                    padding[i] = paddingCharacter;
+                }
+            }
+            await this.WriteAsync(index, paddingLength, padding);
         }
 
         public Sir0 Build()
@@ -108,10 +175,10 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
             // Align to 16 bytes
             var paddingLength = 0x10 - (this.Length % 0x10);
-            this.Write(footerOffset, new byte[paddingLength]);
+            this.WritePadding(footerOffset, paddingLength);
         }
 
-        #region IWriteOnlyBinaryDataAccessor
+        #region IWriteOnlyBinaryDataAccessor Implementation
         public void Write(byte[] value)
         {
             EnsureLengthIsLargeEnough(value.Length);
@@ -185,7 +252,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
         }
 
         public void WriteInt32(long offset, int value)
-        { 
+        {
             EnsureLengthIsLargeEnough((int)offset + 4);
             Data.WriteInt32(offset, value);
         }

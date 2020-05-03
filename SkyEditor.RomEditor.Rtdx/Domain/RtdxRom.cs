@@ -254,7 +254,11 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             // To-do: save commonStrings when implemented
             // To-do: save messageBin when implemented
             // To-do: save pokemonFormDatabase when implemented
-            // To-do: save pokemonGraphicsDatabase when implemented
+
+            if (pokemonGraphicsDatabase != null)
+            {
+                fileSystem.WriteAllBytes(GetPokemonGraphicsDatabasePath(directory), pokemonGraphicsDatabase.ToByteArray());
+            }
         }
 
         /// <summary>

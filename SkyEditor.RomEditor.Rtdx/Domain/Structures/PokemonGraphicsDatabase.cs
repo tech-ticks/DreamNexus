@@ -3,6 +3,7 @@ using SkyEditor.RomEditor.Rtdx.Reverse.Const;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 {
@@ -18,71 +19,210 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             var entries = new List<PokemonGraphicsDatabaseEntry>();
             for (int i = 0; i < entryCount; i++)
             {
-                entries.Add(new PokemonGraphicsDatabaseEntry(data, indexOffset + (i * entrySize)));
+                entries.Add(new PokemonGraphicsDatabaseEntry(sir0.Data.Slice(indexOffset + (i * entrySize), entrySize), sir0.Data));
             }
             this.Entries = entries;
         }
 
-        public IReadOnlyList<PokemonGraphicsDatabaseEntry> Entries { get; }
+        public PokemonGraphicsDatabase()
+        {
+            Entries = new List<PokemonGraphicsDatabaseEntry>();
+        }
+
+        public List<PokemonGraphicsDatabaseEntry> Entries { get; }
+
+        public Sir0 ToSir0()
+        {
+            var sir0 = new Sir0Builder();
+
+            void alignToLong() => sir0.WritePadding(sir0.Length, 8 - (sir0.Length % 8));
+
+            // Write the strings
+            foreach (var entry in Entries)
+            {
+                entry.ModelNamePointer = sir0.Length;
+                sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.ModelName);
+                alignToLong();
+
+                entry.AnimationNamePointer = sir0.Length;
+                sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.AnimationName);
+                alignToLong();
+
+                entry.BaseFormModelNamePointer = sir0.Length;
+                sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.BaseFormModelName);
+                alignToLong();
+
+                entry.PortraitSheetNamePointer = sir0.Length;
+                sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.PortraitSheetName);
+                alignToLong();
+
+                entry.RescueCampSheetNamePointer = sir0.Length;
+                sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.RescueCampSheetName);
+                alignToLong();
+
+                entry.RescueCampSheetReverseNamePointer = sir0.Length;
+                sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.RescueCampSheetReverseName);
+                alignToLong();
+            }
+
+            // Write the data
+            var entriesSectionStart = sir0.Length;
+            foreach (var entry in Entries)
+            {
+                var entryOffset = sir0.Length;
+
+                sir0.Write(sir0.Length, entry.ToByteArray());
+
+                sir0.MarkPointer(entryOffset + 0);
+                sir0.MarkPointer(entryOffset + 8);
+                sir0.MarkPointer(entryOffset + 16);
+                sir0.MarkPointer(entryOffset + 24);
+                sir0.MarkPointer(entryOffset + 32);
+                sir0.MarkPointer(entryOffset + 40);
+            }
+
+            // Write the content header
+            sir0.SubHeaderOffset = sir0.Length;
+            sir0.WriteString(sir0.Length, Encoding.ASCII, "PGDB");
+            alignToLong();
+            sir0.WriteInt64(sir0.Length, entriesSectionStart);
+            sir0.WriteInt64(sir0.Length, Entries.Count);
+            return sir0.Build();
+        }
+
+        public byte[] ToByteArray() => ToSir0().Data.ReadArray();
 
         [DebuggerDisplay("PokemonGraphicsDatabaseEntry: {ModelName}")]
         public class PokemonGraphicsDatabaseEntry
         {
-            public PokemonGraphicsDatabaseEntry(byte[] data, int index)
+            public PokemonGraphicsDatabaseEntry(IReadOnlyBinaryDataAccessor entryAccessor, IReadOnlyBinaryDataAccessor rawDataAccessor)
             {
-                this.Data = new byte[entrySize];
-                Array.Copy(data, index, this.Data, 0, entrySize);
+                ModelNamePointer = entryAccessor.ReadInt64(0);
+                AnimationNamePointer = entryAccessor.ReadInt64(8);
+                BaseFormModelNamePointer = entryAccessor.ReadInt64(16);
+                PortraitSheetNamePointer = entryAccessor.ReadInt64(24);
+                RescueCampSheetNamePointer = entryAccessor.ReadInt64(32);
+                RescueCampSheetReverseNamePointer = entryAccessor.ReadInt64(40);
 
-                var accessor = new BinaryFile(data);
-                ModelName = accessor.ReadNullTerminatedUnicodeString(BitConverter.ToInt32(data, index + 0));
-                AnimationName = accessor.ReadNullTerminatedUnicodeString(BitConverter.ToInt32(data, index + 8));
-                BaseFormModelName = accessor.ReadNullTerminatedUnicodeString(BitConverter.ToInt32(data, index + 16));
-                PortraitSheetName = accessor.ReadNullTerminatedUnicodeString(BitConverter.ToInt32(data, index + 24));
-                RescueCampSheetName = accessor.ReadNullTerminatedUnicodeString(BitConverter.ToInt32(data, index + 32));
-                RescueCampSheetReverseName = accessor.ReadNullTerminatedUnicodeString(BitConverter.ToInt32(data, index + 40));
+                ModelName = rawDataAccessor.ReadNullTerminatedUnicodeString(ModelNamePointer);
+                AnimationName = rawDataAccessor.ReadNullTerminatedUnicodeString(AnimationNamePointer);
+                BaseFormModelName = rawDataAccessor.ReadNullTerminatedUnicodeString(BaseFormModelNamePointer);
+                PortraitSheetName = rawDataAccessor.ReadNullTerminatedUnicodeString(PortraitSheetNamePointer);
+                RescueCampSheetName = rawDataAccessor.ReadNullTerminatedUnicodeString(RescueCampSheetNamePointer);
+                RescueCampSheetReverseName = rawDataAccessor.ReadNullTerminatedUnicodeString(RescueCampSheetReverseNamePointer);
 
-                UnkX30 = accessor.ReadSingle(index + 0x30);
-                UnkX34 = accessor.ReadSingle(index + 0x34);
-                UnkX38 = accessor.ReadSingle(index + 0x38);
-                UnkX3C = accessor.ReadSingle(index + 0x3C);
+                UnkX30 = entryAccessor.ReadSingle(0x30);
+                UnkX34 = entryAccessor.ReadSingle(0x34);
+                UnkX38 = entryAccessor.ReadSingle(0x38);
+                UnkX3C = entryAccessor.ReadSingle(0x3C);
 
-                UnkX40 = accessor.ReadSingle(index + 0x40);
-                UnkX44 = accessor.ReadSingle(index + 0x44);
-                UnkX48 = accessor.ReadSingle(index + 0x48);
-                WalkSpeedDistance = accessor.ReadSingle(index + 0x4C); // Referenced by PokemonDatabase_GetWalkSpeed()
+                UnkX40 = entryAccessor.ReadSingle(0x40);
+                UnkX44 = entryAccessor.ReadSingle(0x44);
+                UnkX48 = entryAccessor.ReadSingle(0x48);
+                WalkSpeedDistance = entryAccessor.ReadSingle(0x4C); // Referenced by PokemonDatabase_GetWalkSpeed()
 
-                UnkX50 = accessor.ReadSingle(index + 0x50);
-                RunSpeedRatioGround = accessor.ReadSingle(index + 0x54); // Referenced by PokemonDatabase_GetRunRateGround()
-                UnkX58 = accessor.ReadInt32(index + 0x58);
-                UnkX5C = accessor.ReadInt32(index + 0x5C);
+                UnkX50 = entryAccessor.ReadSingle(0x50);
+                RunSpeedRatioGround = entryAccessor.ReadSingle(0x54); // Referenced by PokemonDatabase_GetRunRateGround()
+                UnkX58 = entryAccessor.ReadInt32(0x58);
+                UnkX5C = entryAccessor.ReadInt32(0x5C);
 
-                UnkX60 = accessor.ReadSingle(index + 0x60);
-                UnkX64 = accessor.ReadSingle(index + 0x64);
-                UnknownBodyType1 = (GraphicsBodySizeType)accessor.ReadInt32(index + 0x68);
-                UnknownBodyType2 = (GraphicsBodySizeType)accessor.ReadInt32(index + 0x6C);
+                UnkX60 = entryAccessor.ReadSingle(0x60);
+                UnkX64 = entryAccessor.ReadSingle(0x64);
+                UnknownBodyType1 = (GraphicsBodySizeType)entryAccessor.ReadInt32(0x68);
+                UnknownBodyType2 = (GraphicsBodySizeType)entryAccessor.ReadInt32(0x6C);
 
-                Flags = (PokemonGraphicsDatabaseEntryFlags)accessor.ReadInt32(index + 0x70);
-                EnabledPortraits = (EnabledPortraitsFlags)accessor.ReadUInt32(index + 0x74); // Bitmask of enabled portraits
-                UnkX78 = accessor.ReadInt32(index + 0x78);
-                UnkX7C = accessor.ReadInt32(index + 0x7C);
+                Flags = (PokemonGraphicsDatabaseEntryFlags)entryAccessor.ReadInt32(0x70);
+                EnabledPortraits = (EnabledPortraitsFlags)entryAccessor.ReadUInt32(0x74); // Bitmask of enabled portraits
+                UnkX78 = entryAccessor.ReadInt32(0x78);
+                UnkX7C = entryAccessor.ReadInt32(0x7C);
 
-                UnkX80 = accessor.ReadInt32(index + 0x80);
-                UnkX84 = accessor.ReadSingle(index + 0x84);
-                UnkX88 = accessor.ReadSingle(index + 0x88);
-                UnkX8C = accessor.ReadSingle(index + 0x8C);
+                UnkX80 = entryAccessor.ReadInt32(0x80);
+                UnkX84 = entryAccessor.ReadSingle(0x84);
+                UnkX88 = entryAccessor.ReadSingle(0x88);
+                UnkX8C = entryAccessor.ReadSingle(0x8C);
 
-                UnkX90 = accessor.ReadSingle(index + 0x90);
-                UnkX94 = accessor.ReadSingle(index + 0x94);
-                UnkX98 = accessor.ReadSingle(index + 0x98);
-                UnkX9C = accessor.ReadSingle(index + 0x9C);
+                UnkX90 = entryAccessor.ReadSingle(0x90);
+                UnkX94 = entryAccessor.ReadSingle(0x94);
+                UnkX98 = entryAccessor.ReadSingle(0x98);
+                UnkX9C = entryAccessor.ReadSingle(0x9C);
 
-                UnkXA0 = accessor.ReadSingle(index + 0xA0);
-                Padding1 = accessor.ReadInt32(index + 0xA4);
-                Padding2 = accessor.ReadInt32(index + 0xA8);
-                Padding3 = accessor.ReadInt32(index + 0xAC);
+                UnkXA0 = entryAccessor.ReadSingle(0xA0);
+                Padding1 = entryAccessor.ReadInt32(0xA4);
+                Padding2 = entryAccessor.ReadInt32(0xA8);
+                Padding3 = entryAccessor.ReadInt32(0xAC);
             }
 
-            public byte[] Data { get; }
+            public PokemonGraphicsDatabaseEntry()
+            {
+                ModelName = "";
+                AnimationName = "";
+                BaseFormModelName = "";
+                PortraitSheetName = "";
+                RescueCampSheetName = "";
+                RescueCampSheetReverseName = "";
+            }
+
+            public byte[] ToByteArray()
+            {
+                var data = new byte[entrySize];
+
+                using var accessor = new BinaryFile(data);
+                accessor.WriteInt64(0, ModelNamePointer);
+                accessor.WriteInt64(8, AnimationNamePointer);
+                accessor.WriteInt64(16, BaseFormModelNamePointer);
+                accessor.WriteInt64(24, PortraitSheetNamePointer);
+                accessor.WriteInt64(32, RescueCampSheetNamePointer);
+                accessor.WriteInt64(40, RescueCampSheetReverseNamePointer);
+
+                accessor.WriteSingle(0x30, UnkX30);
+                accessor.WriteSingle(0x34, UnkX34);
+                accessor.WriteSingle(0x38, UnkX38);
+                accessor.WriteSingle(0x3C, UnkX3C);
+
+                accessor.WriteSingle(0x40, UnkX40);
+                accessor.WriteSingle(0x44, UnkX44);
+                accessor.WriteSingle(0x48, UnkX48);
+                accessor.WriteSingle(0x4C, WalkSpeedDistance);
+
+                accessor.WriteSingle(0x50, UnkX50);
+                accessor.WriteSingle(0x54, RunSpeedRatioGround);
+                accessor.WriteSingle(0x58, UnkX58);
+                accessor.WriteSingle(0x5C, UnkX5C);
+
+                accessor.WriteSingle(0x60, UnkX60);
+                accessor.WriteSingle(0x64, UnkX64);
+                accessor.WriteInt32(0x68, (int)UnknownBodyType1);
+                accessor.WriteInt32(0x6C, (int)UnknownBodyType2);
+
+                accessor.WriteInt32(0x70, (int)Flags);
+                accessor.WriteInt32(0x74, (int)EnabledPortraits);
+                accessor.WriteInt32(0x78, UnkX78);
+                accessor.WriteInt32(0x7C, UnkX7C);
+
+                accessor.WriteInt32(0x80, UnkX80);
+                accessor.WriteSingle(0x84, UnkX84);
+                accessor.WriteSingle(0x88, UnkX88);
+                accessor.WriteSingle(0x8C, UnkX8C);
+
+                accessor.WriteSingle(0x90, UnkX90);
+                accessor.WriteSingle(0x94, UnkX94);
+                accessor.WriteSingle(0x98, UnkX98);
+                accessor.WriteSingle(0x9C, UnkX9C);
+
+                accessor.WriteSingle(0xA0, UnkXA0);
+                accessor.WriteInt32(0xA4, Padding1);
+                accessor.WriteInt32(0xA8, Padding2);
+                accessor.WriteInt32(0xAC, Padding3);
+
+                return data;
+            }
+
+            public long ModelNamePointer { get; set; }
+            public long AnimationNamePointer { get; set; }
+            public long BaseFormModelNamePointer { get; set; }
+            public long PortraitSheetNamePointer { get; set; }
+            public long RescueCampSheetNamePointer { get; set; }
+            public long RescueCampSheetReverseNamePointer { get; set; }
 
             public string ModelName { get; set; }
             public string AnimationName { get; set; }
