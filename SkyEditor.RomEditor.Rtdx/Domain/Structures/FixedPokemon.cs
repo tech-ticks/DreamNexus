@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using DungeonIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.dungeon.Index;
 using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
 using FixedCreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.fixed_creature.Index;
 using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.waza.Index;
@@ -57,16 +58,19 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
         {
             FixedCreatureId = (FixedCreatureIndex)index;
             PokemonId = (CreatureIndex)BitConverter.ToInt16(data, offset + 0);
+            HitPoints = BitConverter.ToInt16(data, offset + 2);
             Move1 = (WazaIndex)BitConverter.ToInt16(data, offset + 8);
             Move2 = (WazaIndex)BitConverter.ToInt16(data, offset + 0xA);
             Move3 = (WazaIndex)BitConverter.ToInt16(data, offset + 0xC);
             Move4 = (WazaIndex)BitConverter.ToInt16(data, offset + 0xE);
-            Level = data[0x16];
-            AttackBoost = data[0x17];
-            SpAttackBoost = data[0x18];
-            DefenseBoost = data[0x19];
-            SpDefenseBoost = data[0x1A];
-            SpeedBoost = data[0x1B];
+            DungeonIndex = (DungeonIndex)data[offset + 0x10];
+            Level = data[offset + 0x1A];
+            AttackBoost = data[offset + 0x1B];
+            SpAttackBoost = data[offset + 0x1C];
+            DefenseBoost = data[offset + 0x1D];
+            SpDefenseBoost = data[offset + 0x1E];
+            SpeedBoost = data[offset + 0x1F];
+            InvitationIndex = data[offset + 0x27];
 
             Data = new byte[FixedPokemon.EntrySize];
             Array.Copy(data, offset, Data, 0, FixedPokemon.EntrySize);
@@ -75,16 +79,19 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
         public byte[] ToByteArray()
         {
             BitConverter.GetBytes((short)PokemonId).CopyTo(Data, 0);
+            BitConverter.GetBytes(HitPoints).CopyTo(Data, 2);
             BitConverter.GetBytes((short)Move1).CopyTo(Data, 8);
             BitConverter.GetBytes((short)Move2).CopyTo(Data, 0xA);
             BitConverter.GetBytes((short)Move3).CopyTo(Data, 0xC);
             BitConverter.GetBytes((short)Move4).CopyTo(Data, 0xE);
-            Data[0x16] = Level;
-            Data[0x17] = AttackBoost;
-            Data[0x18] = SpAttackBoost;
-            Data[0x19] = DefenseBoost;
-            Data[0x1A] = SpDefenseBoost;
-            Data[0x1B] = SpeedBoost;
+            Data[0x10] = (byte)DungeonIndex;
+            Data[0x1A] = Level;
+            Data[0x1B] = AttackBoost;
+            Data[0x1C] = SpAttackBoost;
+            Data[0x1D] = DefenseBoost;
+            Data[0x1E] = SpDefenseBoost;
+            Data[0x1F] = SpeedBoost;
+            Data[0x27] = InvitationIndex;
 
             return Data;
         }
@@ -92,15 +99,18 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
         private byte[] Data { get; }
         public FixedCreatureIndex FixedCreatureId { get; }
         public CreatureIndex PokemonId { get; set; }
+        public short HitPoints { get; set; }
         public WazaIndex Move1 { get; set; }
         public WazaIndex Move2 { get; set; }
         public WazaIndex Move3 { get; set; }
         public WazaIndex Move4 { get; set; }
+        public DungeonIndex DungeonIndex { get; set; }
         public byte Level { get; set; }
         public byte AttackBoost { get; set; }
         public byte SpAttackBoost { get; set; }
         public byte DefenseBoost { get; set; }
         public byte SpDefenseBoost { get; set; }
         public byte SpeedBoost { get; set; }
+        public byte InvitationIndex { get; set; }
     }
 }

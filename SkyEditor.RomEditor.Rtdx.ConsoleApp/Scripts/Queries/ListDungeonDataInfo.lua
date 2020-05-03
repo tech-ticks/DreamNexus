@@ -7,10 +7,20 @@ luanet.load_assembly("SkyEditor.RomEditor.Rtdx")
 DungeonFeature = luanet.import_type("SkyEditor.RomEditor.Rtdx.Domain.Structures.DungeonDataInfo").DungeonDataInfoEntry.Feature
 Convert = luanet.import_type("System.Convert")
 
+local commonStrings = rom:GetCommonStrings()
+
 -- Formatters ------------------------------
 
+local function enumToInt(value)
+    return Convert.ChangeType(value, value:GetTypeCode())
+end
+
+local function getPokemonName(id)
+    return commonStrings.Pokemon:ContainsKey(id) and commonStrings.Pokemon[id] or ("(Unknown :" .. id .. ")")
+end
+
 local function int2bin(n)
-    return Convert.ToString(Convert.ChangeType(n, n:GetTypeCode()), 2)
+    return Convert.ToString(enumToInt(n), 2)
 end
 
 local function formatFloor(dungeon, floor)
@@ -53,9 +63,9 @@ end
 
 --------------------------------------------
 
-print("#    Index   Dungeon                    Floors   Teammates   Items   Level reset   Recruitable   Features                       210FEDCBA9876543210   0x08   0x0A   d_balance   0x13   0x17   0x18   0x19")
-
-local commonStrings = rom:GetCommonStrings()
+print("#    Index   Dungeon                    Floors")
+--print("#    Index   Dungeon                    Floors   Teammates   Items   Level reset   Recruitable   Features                       210FEDCBA9876543210   0x08   0x0A   d_balance   0x13   0x17   0x18   0x19")
+local fixedPokemon = rom:GetFixedPokemon().Entries
 local dungeons = rom:GetDungeons().Dungeons
 for i = 1,dungeons.Length-1,1
 do
@@ -63,7 +73,19 @@ do
     local data = dungeon.Data
     local extra = dungeon.Extra
     local balance = dungeon.Balance
-    print(string.format("%-4d %5d   %-28s %4s      %3s       %3s        %3s           %3s       %-30s %s    %3d    %3d      %3d       %3d    %3d    %3d    %3d",
+    local floorInfos = balance.FloorInfos
+
+    -- Basic dungeon info
+    print(string.format("%-4d %5d   %-28s %4s",
+            i,
+            data.Index,
+            dungeon.DungeonName,
+            formatFloors(dungeon)
+        )
+    )
+
+    -- Complete dungeon info
+    --[[print(string.format("%-4d %5d   %-28s %4s      %3s       %3s        %3s           %3s       %-30s %s    %3d    %3d      %3d       %3d    %3d    %3d    %3d",
             i,
             data.Index,
             dungeon.DungeonName,
@@ -82,14 +104,15 @@ do
             data.Byte18,
             data.Byte19
         )
-    )
+    )]]--
 
-    --[[local floorInfos = balance.FloorInfos
-    for j = 0,floorInfos.Length-1,1
+    -- Info per floor
+    --[[for j = 0,floorInfos.Length-1,1
     do
         local info = floorInfos[j]
         print(string.format("   %5d  %5d  %5d  %5d  %5d  %5d  %3d  %3d  %3d  %3d  %5d  %5d  %3d  %3d  %3d  %s  %s",
                 info.Index,
+                info.InvitationIndex,
                 info.Short02,
                 info.Short24,
                 info.Short26,
@@ -110,6 +133,37 @@ do
         )
     end]]--
 
+    -- Fainted Pokemon
+    local faintedPokemon = {}
+    for j = 0,fixedPokemon.Count-1,1
+    do
+        local entry = fixedPokemon[j]
+        if enumToInt(entry.DungeonIndex) == data.Index then
+            table.insert(faintedPokemon, getPokemonName(enumToInt(entry.PokemonId)))
+        end
+    end
+    if #faintedPokemon > 0 then print(string.format("  Fainted Pokemon: %s", table.concat(faintedPokemon, ", "))) end
+
+    -- Pokemon in Mystery Houses
+    local prevInvitationIndex = -1
+    local mysteryHousePokemon = {}
+    for j = 0,floorInfos.Length-1,1
+    do
+        local info = floorInfos[j]
+        if info.InvitationIndex ~= 0 and prevInvitationIndex ~= info.InvitationIndex then
+            prevInvitationIndex = info.InvitationIndex
+            for k = 0,fixedPokemon.Count-1,1
+            do
+                local entry = fixedPokemon[k]
+                if entry.InvitationIndex == info.InvitationIndex then
+                    table.insert(mysteryHousePokemon, getPokemonName(enumToInt(entry.PokemonId)))
+                end
+            end
+        end
+    end
+    if #mysteryHousePokemon > 0 then print(string.format("  Mystery House Pokemon: %s", table.concat(mysteryHousePokemon, ", "))) end
+
+    -- Wild Pokemon
     --[[local wildPokemon = balance.WildPokemon
     if wildPokemon ~= nil then
         print("      #   Pokemon         Lvl    HP   Atk   Def   SpA   SpD   Spe    XP Yield")
@@ -121,7 +175,7 @@ do
         do
             local r = stats[j]
             local index = r.Index + 1
-            local name = commonStrings.Pokemon:ContainsKey(index) and commonStrings.Pokemon[index] or ("(Unknown :" .. index .. ")")
+            local name = getPokemonName(index)
             if r.XPYield ~= 0 or r.HitPoints ~= 0 or r.Attack ~= 0 or r.Defense ~= 0 or r.SpecialAttack ~= 0 or r.SpecialDefense ~= 0 or r.Speed ~= 0 or r.Level ~= 0 then
                 local strongFoe = ""
                 if r.StrongFoe ~= 0 then strongFoe = "Strong Foe" end
@@ -157,7 +211,8 @@ do
         end
     end]]--
 
-    local data3 = balance.Data3
+    -- Unknown data from the third SIR0 file in dungeon_balance.bin
+    --[[local data3 = balance.Data3
     if data3 ~= nil then
         local recs = data3.Records
         local prevIndex = -1
@@ -183,8 +238,9 @@ do
             end
         end
         if prevIndex ~= -1 and prevIndex ~= len then print(".." .. formatFloor(dungeon, len) .. ": *") end
-    end
+    end]]--
 
+    -- Unknown (and mostly uninteresting) data from the fourth SIR0 file in dungeon_balance.bin
     --[[local data4 = balance.Data4
     if data4 ~= nil then
         local recs = data4.Records

@@ -95,6 +95,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 Byte34 = data.ReadByte(0x34);
                 Byte35 = data.ReadByte(0x35);
                 Byte36 = data.ReadByte(0x36);
+                InvitationIndex = data.ReadByte(0x54);
                 Bytes37to61 = data.ReadArray(0x37, 0x61 - 0x37 + 1);
             }
 
@@ -114,6 +115,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             public byte Byte34 { get; }
             public byte Byte35 { get; }
             public byte Byte36 { get; }
+            public byte InvitationIndex { get; }
             public byte[] Bytes37to61 { get; }
             public string Bytes37to61AsString => string.Join(" ", Bytes37to61);
         }
