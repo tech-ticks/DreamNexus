@@ -1,9 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
+    <LangVersion>8</LangVersion>
     <Nullable>enable</Nullable>
     <Version>5.0.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard2.0'">
+    <DefineConstants>NETSTANDARD2_0</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +16,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLua" Version="1.4.32" />
     <PackageReference Include="NsoElfConverterDotNet" Version="1.0.0" />
-    <PackageReference Include="SkyEditor.IO" Version="5.1.6" />
+    <PackageReference Include="SkyEditor.IO" Version="5.1.7" />
   </ItemGroup>
 
   <ItemGroup>

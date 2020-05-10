@@ -1,4 +1,5 @@
 ﻿using SkyEditor.RomEditor.Rtdx.Domain.Structures;
+using SkyEditor.RomEditor.Rtdx.Infrastructure;
 using SkyEditor.RomEditor.Rtdx.Reverse;
 using System;
 using System.Collections.Generic;

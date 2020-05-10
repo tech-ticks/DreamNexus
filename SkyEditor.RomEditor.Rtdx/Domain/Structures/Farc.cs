@@ -1,6 +1,7 @@
 ﻿using Force.Crc32;
 using SkyEditor.IO;
 using SkyEditor.IO.Binary;
+using SkyEditor.RomEditor.Rtdx.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -6,7 +6,7 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
 {
 	public class WazaForgetParameter
 	{
-		public Index wazaIndex;
+		public Const.waza.Index wazaIndex;
 		public int pp;
 		public int listIndex;
 	}

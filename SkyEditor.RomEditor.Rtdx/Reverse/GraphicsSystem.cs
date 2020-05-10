@@ -370,12 +370,12 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
             throw new NotImplementedException();
         }
                 
-        public static uint CreatureIndexToGfxSymbol(Index index, FormType form)
+        public static uint CreatureIndexToGfxSymbol(Const.pokemon.Index index, FormType form)
         {
             throw new NotImplementedException();
         }
         
-        public static CharacterDatabaseParameter GetCharacterDataFromNativeDatabase(Index index, FormType form)
+        public static CharacterDatabaseParameter GetCharacterDataFromNativeDatabase(Const.pokemon.Index index, FormType form)
         {
             throw new NotImplementedException();
         }

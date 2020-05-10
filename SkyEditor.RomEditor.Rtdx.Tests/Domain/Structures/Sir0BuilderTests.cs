@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using SkyEditor.IO;
+using SkyEditor.IO.Binary;
 using SkyEditor.RomEditor.Rtdx.Domain.Structures;
 using System;
 using System.Collections.Generic;
