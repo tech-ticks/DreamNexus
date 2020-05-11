@@ -71,10 +71,13 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                         throw new InvalidOperationException("Argument '--save-to' must follow a ROM directory argument");
                     }
 
-                    if (!arguments.TryDequeue(out var targetDirectory))
+                    if (!arguments.TryDequeue(out var target))
                     {
                         throw new ArgumentException("Argument '--save-to' must be followed by a ROM directory argument");
                     }
+
+                    var targetDirectory = GetRomDirectory(target, context);
+
                     context.Rom.Save(targetDirectory, fileSystem);
                     Console.WriteLine("Saved to " + targetDirectory);
                 }
@@ -174,6 +177,24 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             var assets = context.Rom.GetAssetBundles();
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
             return Task.CompletedTask;
+        }
+
+        private static string GetRomDirectory(string directoryOrLibrary, ConsoleContext context)
+        {
+            if (directoryOrLibrary.StartsWith("library:"))
+            {
+                var libraryItemName = directoryOrLibrary.Split(':', 2)[1];
+                var libraryItem = context.RomLibrary.GetItem(libraryItemName);
+                if (libraryItem == null)
+                {
+                    throw new DirectoryNotFoundException($"Could not find a library item with the name '{libraryItemName}'");
+                }
+                return libraryItem.FullPath;
+            }
+            else
+            {
+                return directoryOrLibrary;
+            }
         }
 
         private class ConsoleContext
