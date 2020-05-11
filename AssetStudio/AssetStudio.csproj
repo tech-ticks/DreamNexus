@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SkyEditor.IO" Version="5.1.7" />
+    <PackageReference Include="SkyEditor.IO" Version="5.1.8" />
   </ItemGroup>
 
 </Project>
