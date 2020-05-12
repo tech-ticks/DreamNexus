@@ -79,7 +79,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
                 {
                     var variableName = $"starter{i}";
                     script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel)}local {variableName} = starters:GetStarterById({luaGenerator.GenerateLuaExpression(oldPokemon.PokemonId)})");
-                    script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel)}if {variableName} ~= null then");
+                    script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel)}if {variableName} ~= nil then");
                     script.Append(luaGenerator.GenerateSimpleObjectDiff(oldPokemon, starter, variableName, indentLevel + 1));
                     script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel)}else");
                     script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel + 1)}error(\"Could not find starter '{oldPokemon.PokemonName}' with ID {oldPokemon.PokemonId:d}. This ROM may have already been modified.\")");
