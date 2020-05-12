@@ -2,6 +2,8 @@
 
 A work-in-progress ROM editor for Pokémon Mystery Dungeon: Rescue Team DX.
 
+To use this, you need a decrypted and extracted copy of the game. If your console has the update installed, you'll need the updated executable.
+
 ## Building
 
 This is in the early stages of development, so you'll need to import the [skyeditor NuGet feed](https://dev.azure.com/project-pokemon/Sky%20Editor/_packaging?_a=feed&feed=skyeditor%40Local):
@@ -53,7 +55,7 @@ Operations on multiple ROMs can be chained together simply by specifying another
 dotnet SkyEditor.RomEditor.Rtdx.Console.dll ./RTDX ./Scripts/Queries/ListStarters.lua ./RTDX-Copy ./Scripts/Samples/ChangeStarters.lua ./Scripts/Hypothetical/ChangeMoreStarters.lua --save
 ```
 
-In reality, you're likely to have long path names that look something like `G:\atmosphere\titles\01003D200BAA2000` or some variant. If this gets to be a hassle, you can Add the ROM to Sky Editor's library:
+In reality, you're likely to have long path names that look something like `H:\atmosphere\contents\01003D200BAA2000` or some variant. If this gets to be a hassle, you can Add the ROM to Sky Editor's library:
 ```
 dotnet SkyEditor.RomEditor.Rtdx.Console.dll ./RTDX Import MyRom
 ```

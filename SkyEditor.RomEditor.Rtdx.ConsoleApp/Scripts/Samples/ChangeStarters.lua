@@ -49,7 +49,7 @@ end
 
 local starter204 = starters:GetStarterById(Const.creature.Index.HINOARASHI --[[Cyndaquil]])
 if starter204 ~= nil then
-    starter204.PokemonId = Const.creature.Index.BETOBETAA --[[Grimer]]
+    starter204.PokemonId = Const.creature.Index.DONMERU --[[Numel]]
     starter204.Move1 = Const.waza.Index.NAKIGOE --[[Growl]]
     starter204.Move2 = Const.waza.Index.TAIATARI --[[Tackle]]
     starter204.Move3 = Const.waza.Index.HINOKO --[[Ember]]

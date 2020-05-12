@@ -251,15 +251,30 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             // Save the files themselves
             if (mainExecutable != null)
             {
-                fileSystem.WriteAllBytes(GetNsoPath(directory), mainExecutable.ToNso());
+                var path = GetNsoPath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllBytes(path, mainExecutable.ToNso());
             }
             if (natureDiagnosis != null)
             {
-                fileSystem.WriteAllText(GetNatureDiagnosisPath(directory), JsonConvert.SerializeObject(natureDiagnosis));
+                var path = GetNatureDiagnosisPath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllText(path, JsonConvert.SerializeObject(natureDiagnosis));
             }
             if (fixedPokemon != null)
             {
-                fileSystem.WriteAllBytes(GetFixedPokemonPath(directory), fixedPokemon.Build().Data.ReadArray());
+                var path = GetFixedPokemonPath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllBytes(path, fixedPokemon.Build().Data.ReadArray());
             }
 
             // To-do: save pokemonDataInfo when implemented
@@ -269,7 +284,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
 
             if (pokemonGraphicsDatabase != null)
             {
-                fileSystem.WriteAllBytes(GetPokemonGraphicsDatabasePath(directory), pokemonGraphicsDatabase.ToByteArray());
+                var path = GetPokemonGraphicsDatabasePath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllBytes(path, pokemonGraphicsDatabase.ToByteArray());
             }
         }
 
