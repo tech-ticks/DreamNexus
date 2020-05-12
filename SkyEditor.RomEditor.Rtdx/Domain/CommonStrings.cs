@@ -20,6 +20,11 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         /// <param name="internalName">Internal Japanese name such as "FUSHIGIDANE"</param>
         /// <returns>User-facing name such as "Bulbasaur", or null if the internal name could not be found</returns>
         string? GetPokemonNameByInternalName(string internalName);
+
+        /// <summary>
+        /// Gets the name of a move by the internal Japanese name.
+        /// </summary>
+        string? GetMoveNameByInternalName(string internalName);
     }
 
     public class CommonStrings : ICommonStrings
@@ -71,6 +76,15 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         public string? GetPokemonNameByInternalName(string internalName)
         {
             var nameHash = TextIdValues.GetValueOrDefault("POKEMON_NAME__POKEMON_" + internalName.ToUpper());
+            return common.Strings.GetValueOrDefault(nameHash);
+        }
+
+        /// <summary>
+        /// Gets the name of a move by the internal Japanese name.
+        /// </summary>
+        public string? GetMoveNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("WAZA_NAME__WAZA_" + internalName.ToUpper());
             return common.Strings.GetValueOrDefault(nameHash);
         }
     }
