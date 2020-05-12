@@ -1,5 +1,8 @@
-﻿namespace SkyEditor.RomEditor.Rtdx.Reverse.Const.creature
+﻿using SkyEditor.RomEditor.Rtdx.Domain.Automation;
+
+namespace SkyEditor.RomEditor.Rtdx.Reverse.Const.creature
 {
+    [LuaExpressionGenerator(typeof(CreatureIndexLuaExpressionGenerator))]
     public enum Index
     {
         NONE,

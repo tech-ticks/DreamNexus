@@ -1,12 +1,14 @@
 ﻿using AssetStudio;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using SkyEditor.IO.Binary;
 using SkyEditor.IO.FileSystem;
+using SkyEditor.RomEditor.Rtdx.Domain.Automation;
 using SkyEditor.RomEditor.Rtdx.Domain.Models;
 using SkyEditor.RomEditor.Rtdx.Domain.Structures;
+using SkyEditor.RomEditor.Rtdx.Infrastructure.Internal;
 using SkyEditor.RomEditor.Rtdx.Reverse;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -76,6 +78,16 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
 
         protected readonly string directory;
         protected readonly IFileSystem fileSystem;
+
+        protected IServiceProvider GetServiceProvider()
+        {
+            if (serviceProvider == null)
+            {
+                serviceProvider = ServiceProviderBuilder.CreateRtdxRomServiceProvider(this);
+            }
+            return serviceProvider;
+        }
+        private IServiceProvider? serviceProvider;
 
         #region ExeFs
         /// <summary>
@@ -218,7 +230,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (starterCollection == null)
             {
-                starterCollection = new StarterCollection(this);
+                starterCollection = new StarterCollection(this, GetServiceProvider().GetRequiredService<ILuaGenerator>());
             }
             return starterCollection;
         }
@@ -267,6 +279,18 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         public void Save()
         {
             this.Save(this.directory, this.fileSystem);
+        }
+
+        public string GenerateLuaChangeScript(int indentLevel = 0)
+        {
+            var script = new StringBuilder();
+            script.Append(LuaSnippets.RequireSkyEditor);
+            script.AppendLine();
+            if (starterCollection != null)
+            {
+                script.Append(starterCollection.GenerateLuaChangeScript(indentLevel));
+            }
+            return script.ToString();
         }
     }
 }

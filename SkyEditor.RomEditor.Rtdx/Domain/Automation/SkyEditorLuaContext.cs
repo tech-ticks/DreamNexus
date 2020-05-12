@@ -1,6 +1,7 @@
 ﻿using NLua;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
@@ -23,43 +24,62 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
             this.luaState.LoadCLRPackage();
 
             // Load constants
-            this.luaState.DoString($@"
-                Const = {{
-                    ability = {{
-                        Index = {EnumToLuaObject(typeof(Reverse.Const.ability.Index))}
-                    }},
-                    creature = {{
-                        Index = {EnumToLuaObject(typeof(Reverse.Const.creature.Index))}
-                    }},
-                    fixed_creature = {{
-                        Index = {EnumToLuaObject(typeof(Reverse.Const.fixed_creature.Index))}
-                    }},
-                    item = {{
-                        Index = {EnumToLuaObject(typeof(Reverse.Const.item.Index))},
-                        Kind = {EnumToLuaObject(typeof(Reverse.Const.item.Kind))},
-                        PriceType = {EnumToLuaObject(typeof(Reverse.Const.item.PriceType))}
-                    }},
-                    order = {{
-                        Index = {EnumToLuaObject(typeof(Reverse.Const.order.Index))}
-                    }},
-                    pokemon = {{
-                        FixedWarehouseId = {EnumToLuaObject(typeof(Reverse.Const.pokemon.FixedWarehouseId))},
-                        FormType = {EnumToLuaObject(typeof(Reverse.Const.pokemon.FormType))},
-                        GenderType = {EnumToLuaObject(typeof(Reverse.Const.pokemon.GenderType))},
-                        SallyType = {EnumToLuaObject(typeof(Reverse.Const.pokemon.SallyType))},
-                        Type = {EnumToLuaObject(typeof(Reverse.Const.pokemon.Type))},
-                    }},
-                    sugowaza = {{
-                        Index = {EnumToLuaObject(typeof(Reverse.Const.sugowaza.Index))}
-                    }},
-                    waza = {{
-                        Index = {EnumToLuaObject(typeof(Reverse.Const.waza.Index))}
-                    }},
-                    EvolutionCameraType = {EnumToLuaObject(typeof(Reverse.Const.EvolutionCameraType))},
-                    GraphicsBodySizeType = {EnumToLuaObject(typeof(Reverse.Const.GraphicsBodySizeType))},
-                    TextIDHash = {EnumToLuaObject(typeof(Reverse.Const.TextIDHash))}
-                }}
+            // Create the table structure manually, since this.luaState.NewTable doesn't support the depth we're going for
+            this.luaState.DoString(@"
+                Const = {
+                    ability = {
+                        Index = {}
+                    },
+                    creature = {
+                        Index = {}
+                    },
+                    fixed_creature = {
+                        Index = {}
+                    },
+                    item = {
+                        Index = {},
+                        Kind = {},
+                        PriceType = {}
+                    },
+                    order = {
+                        Index = {}
+                    },
+                    pokemon = {
+                        FixedWarehouseId = {},
+                        FormType = {},
+                        GenderType = {},
+                        SallyType = {},
+                        Type = {},
+                    },
+                    sugowaza = {
+                        Index = {}
+                    },
+                    waza = {
+                        Index = {}
+                    },
+                    EvolutionCameraType = {},
+                    GraphicsBodySizeType = {},
+                    TextIDHash = {}
+                }
 ");
+
+            RegisterEnum<Reverse.Const.ability.Index>("Const.ability.Index");
+            RegisterEnum<Reverse.Const.creature.Index>("Const.creature.Index");
+            RegisterEnum<Reverse.Const.fixed_creature.Index>("Const.fixed_creature.Index");
+            RegisterEnum<Reverse.Const.item.Index>("Const.item.Index");
+            RegisterEnum<Reverse.Const.item.Kind>("Const.item.Kind");
+            RegisterEnum<Reverse.Const.item.PriceType>("Const.item.PriceType");
+            RegisterEnum<Reverse.Const.order.Index>("Const.order.Index");
+            RegisterEnum<Reverse.Const.pokemon.FixedWarehouseId>("Const.pokemon.FixedWarehouseId");
+            RegisterEnum<Reverse.Const.pokemon.FormType>("Const.pokemon.FormType");
+            RegisterEnum<Reverse.Const.pokemon.GenderType>("Const.pokemon.GenderType");
+            RegisterEnum<Reverse.Const.pokemon.SallyType>("Const.pokemon.SallyType");
+            RegisterEnum<Reverse.Const.pokemon.Type>("Const.pokemon.Type");
+            RegisterEnum<Reverse.Const.sugowaza.Index>("Const.sugowaza.Index");
+            RegisterEnum<Reverse.Const.waza.Index>("Const.waza.Index");
+            RegisterEnum<Reverse.Const.EvolutionCameraType>("Const.EvolutionCameraType");
+            RegisterEnum<Reverse.Const.GraphicsBodySizeType>("Const.GraphicsBodySizeType");
+            RegisterEnum<Reverse.Const.TextIDHash>("Const.TextIDHash");
 
             // Make the ROM available to the script
             this.luaState["rom"] = rom;
@@ -77,24 +97,24 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
             luaState.DoString(luaScript);
         }
 
-        public static string EnumToLuaObject(Type enumType) 
+        public void RegisterEnum<T>(string targetEnumName)
         {
-            var underlyingType = Enum.GetUnderlyingType(enumType);
-            var luaScript = new StringBuilder();
-            luaScript.Append("{");
-            foreach (var enumValue in Enum.GetValues(enumType))
-            {                
-                if (enumValue == null)
-                {
-                    continue;
-                }
-
-                var underlyingValue = Convert.ChangeType(enumValue, underlyingType);
-                luaScript.Append($"{Enum.GetName(enumType, enumValue)}={underlyingValue},");
+            var type = typeof(T);
+            if (!type.IsEnum)
+            {
+                throw new ArgumentException("T must be an enum");
             }
-            luaScript.Length -= 1; // Trim trailing ','
-            luaScript.Append("}");
-            return luaScript.ToString();
+
+            // This doesn't have enough depth for our needs
+            // this.luaState.NewTable(targetEnumName);
+
+            var names = Enum.GetNames(type);
+            var values = (T[])Enum.GetValues(type);
+            for (int i = 0; i < names.Length; i++)
+            {
+                string path = targetEnumName + "." + names[i];
+                this.luaState.SetObjectToPath(path, values[i]);
+            }
         }
     }
 }

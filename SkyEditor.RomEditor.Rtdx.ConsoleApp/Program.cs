@@ -27,8 +27,9 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             Console.WriteLine("dotnet SkyEditor.RomEditor.Rtdx.Console.dll library:MyRom ./Scripts/Queries/ListStarters.lua");
             Console.WriteLine();
             Console.WriteLine("Built-in commands: ");
-            Console.WriteLine("Import - Adds the currently loaded ROM to the library for future ease of use");
+            Console.WriteLine("Import <TargetName> - Adds the currently loaded ROM to the library for future ease of use");
             Console.WriteLine("ListLibrary - Lists items in the library");
+            Console.WriteLine("Automate [Output.lua] - Creates a Lua change script to automate supported unsaved edits");
 
         }
 
@@ -133,6 +134,8 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
         {
             { "Import", Import },
             { "ListLibrary", ListLibrary },
+            { "Automate", GenerateLuaChangeScript },
+            { "GenerateLuaChangeScript", GenerateLuaChangeScript },
             { "LoadAssets", LoadAssets }
         };
 
@@ -160,6 +163,25 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             {
                 Console.WriteLine(item.Name);
             }
+            return Task.CompletedTask;
+        }
+
+        private static Task GenerateLuaChangeScript(Queue<string> arguments, ConsoleContext context)
+        {
+            if (context.Rom == null)
+            {
+                throw new InvalidOperationException("Import must follow a ROM argument");
+            }
+            var script = context.Rom.GenerateLuaChangeScript();
+
+            Console.WriteLine("Change script:");
+            Console.WriteLine(script);
+
+            if (arguments.TryDequeue(out var targetFileName))
+            {
+                File.WriteAllText(targetFileName, script);
+            }
+
             return Task.CompletedTask;
         }
 

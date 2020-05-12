@@ -1,5 +1,8 @@
-﻿namespace SkyEditor.RomEditor.Rtdx.Reverse.Const.waza
+﻿using SkyEditor.RomEditor.Rtdx.Domain.Automation;
+
+namespace SkyEditor.RomEditor.Rtdx.Reverse.Const.waza
 {
+    [LuaExpressionGenerator(typeof(WazaIndexLuaExpressionGenerator))]
     public enum Index
     {
         NONE,
