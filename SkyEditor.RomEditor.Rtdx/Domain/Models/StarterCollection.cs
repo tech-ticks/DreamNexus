@@ -77,7 +77,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
                 var oldPokemon = OriginalStarters[i];
                 if (starter.PokemonId != oldPokemon.PokemonId) 
                 {
-                    var variableName = $"starter{i}";
+                    var variableName = $"starter{oldPokemon.PokemonId:d}";
                     script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel)}local {variableName} = starters:GetStarterById({luaGenerator.GenerateLuaExpression(oldPokemon.PokemonId)})");
                     script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel)}if {variableName} ~= nil then");
                     script.Append(luaGenerator.GenerateSimpleObjectDiff(oldPokemon, starter, variableName, indentLevel + 1));
