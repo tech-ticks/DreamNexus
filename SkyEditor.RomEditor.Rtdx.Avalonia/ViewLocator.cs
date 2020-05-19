@@ -11,17 +11,25 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia
 
         public IControl Build(object data)
         {
-            var name = data.GetType().FullName.Replace("ViewModel", "View");
+            var typeName = data.GetType().FullName;
+            if (string.IsNullOrEmpty(typeName))
+            {
+                throw new ArgumentException("Unable to get full name of the data's type", nameof(data));
+            }
+
+            var name = typeName.Replace("ViewModel", "View");
             var type = Type.GetType(name);
 
             if (type != null)
             {
-                return (Control)Activator.CreateInstance(type);
+                var control = (Control?)Activator.CreateInstance(type);
+                if (control != null)
+                {
+                    return control;
+                }
             }
-            else
-            {
-                return new TextBlock { Text = "Not Found: " + name };
-            }
+
+            return new TextBlock { Text = "Not Found: " + name };
         }
 
         public bool Match(object data)
