@@ -13,7 +13,13 @@ https://pkgs.dev.azure.com/project-pokemon/4a5da2d7-09b8-4354-9450-562116aac7b5/
 
 ## Usage
 
-For now, the only user interface with the code is a command-line app. A cross-platform UI is planned, but won't be started until the code library is more mature.
+### UI
+
+Run `SkyEditor.RomEditor.Rtdx.Avalonia.exe` or your platform-specific variant. 
+Alternatively run `SkyEditor.RomEditor.Rtdx.Avalonia.exe` if Avalonia supports your platform and no platform-specific option has been provided.
+
+The UI should be self-explanatory, and a tutorial is planned once more progress has been made. 
+In the mean time, feel free to open a [GitHub Issue](https://github.com/evandixon/SkyEditor.RomEditor.Rtdx/issues) if you have any questions.
 
 ### Console App
 

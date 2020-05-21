@@ -27,7 +27,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 throw new ArgumentException("Unsupported value type");
             }
 
-            string? friendlyName = commonStrings?.Pokemon?.GetValueOrDefault((int)index);
+            string? friendlyName = commonStrings?.Pokemon?.GetValueOrDefault(index);
             if (!string.IsNullOrEmpty(friendlyName))
             {
                 return $"Const.creature.Index.{obj:f} --[[{friendlyName}]]";
@@ -55,7 +55,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 throw new ArgumentException("Unsupported value type");
             }
 
-            string? friendlyName = commonStrings?.Moves?.GetValueOrDefault((int)index);
+            string? friendlyName = commonStrings?.Moves?.GetValueOrDefault(index);
             if (!string.IsNullOrEmpty(friendlyName))
             {
                 return $"Const.waza.Index.{obj:f} --[[{friendlyName}]]";

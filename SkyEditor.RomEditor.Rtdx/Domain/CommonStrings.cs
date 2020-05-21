@@ -11,8 +11,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
 {
     public interface ICommonStrings
     {
-        Dictionary<int, string> Pokemon { get; }
-        Dictionary<int, string> Moves { get; }
+        Dictionary<CreatureIndex, string> Pokemon { get; }
+        Dictionary<WazaIndex, string> Moves { get; }
 
         /// <summary>
         /// Gets the name of a Pokemon by the internal Japanese name.
@@ -35,7 +35,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             this.common = common ?? throw new ArgumentNullException(nameof(common));
 
-            Pokemon = new Dictionary<int, string>();
+            Pokemon = new Dictionary<CreatureIndex, string>();
             var creatures = Enum.GetValues(typeof(CreatureIndex)).Cast<CreatureIndex>().ToArray();
             foreach (CreatureIndex creature in creatures)
             {
@@ -45,10 +45,10 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
                 }
 
                 var name = GetPokemonNameByInternalName(creature.ToString("f"));
-                Pokemon.Add((int)creature, name ?? "");
+                Pokemon.Add(creature, name ?? "");
             }
 
-            Moves = new Dictionary<int, string>();
+            Moves = new Dictionary<WazaIndex, string>();
             var moves = Enum.GetValues(typeof(WazaIndex)).Cast<WazaIndex>().ToArray();
             foreach (WazaIndex waza in moves)
             {
@@ -59,14 +59,14 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
 
                 var nameHash = TextIdValues.GetValueOrDefault("WAZA_NAME__WAZA_" + waza.ToString("f"));
                 var name = common.Strings.GetValueOrDefault(nameHash);
-                Moves.Add((int)waza, name ?? "");
+                Moves.Add(waza, name ?? "");
             }
         }
 
         private readonly MessageBinEntry common;
 
-        public Dictionary<int, string> Pokemon { get;  }
-        public Dictionary<int, string> Moves { get; }
+        public Dictionary<CreatureIndex, string> Pokemon { get;  }
+        public Dictionary<WazaIndex, string> Moves { get; }
 
         /// <summary>
         /// Gets the name of a Pokemon by the internal Japanese name.

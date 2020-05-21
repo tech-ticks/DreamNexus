@@ -147,17 +147,17 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
             private readonly ICommonStrings commonStrings;
 
             public CreatureIndex PokemonId { get; set; }
-            public string PokemonName => commonStrings.Pokemon.GetValueOrDefault((int)PokemonId) ?? $"(Unknown: {PokemonId})";
+            public string PokemonName => commonStrings.Pokemon.GetValueOrDefault(PokemonId) ?? $"(Unknown: {PokemonId})";
             public string? NatureDiagnosisMaleModelSymbol { get; set; }
             public string? NatureDiagnosisFemaleModelSymbol { get; set; }
             public WazaIndex Move1 { get; set; }
-            public string Move1Name => commonStrings.Moves.GetValueOrDefault((int)Move1) ?? $"(Unknown: {Move1})";
+            public string Move1Name => commonStrings.Moves.GetValueOrDefault(Move1) ?? $"(Unknown: {Move1})";
             public WazaIndex Move2 { get; set; }
-            public string Move2Name => commonStrings.Moves.GetValueOrDefault((int)Move2) ?? $"(Unknown: {Move2})";
+            public string Move2Name => commonStrings.Moves.GetValueOrDefault(Move2) ?? $"(Unknown: {Move2})";
             public WazaIndex Move3 { get; set; }
-            public string Move3Name => commonStrings.Moves.GetValueOrDefault((int)Move3) ?? $"(Unknown: {Move3})";
+            public string Move3Name => commonStrings.Moves.GetValueOrDefault(Move3) ?? $"(Unknown: {Move3})";
             public WazaIndex Move4 { get; set; }
-            public string Move4Name => commonStrings.Moves.GetValueOrDefault((int)Move4) ?? $"(Unknown: {Move4})";
+            public string Move4Name => commonStrings.Moves.GetValueOrDefault(Move4) ?? $"(Unknown: {Move4})";
 
             public NatureType? MaleNature { get; set; }
             public NatureType? FemaleNature { get; set; }
