@@ -145,5 +145,21 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
                 }
             }
         }
+
+        /// <summary>
+        /// Signals that properties on the model were changed and the view model should emit property changed events where appropriate
+        /// </summary>
+        public void ReloadFromModel()
+        {
+            this.RaisePropertyChanged(nameof(Pokemon));
+            this.RaisePropertyChanged(nameof(NatureDiagnosisMaleModelSymbol));
+            this.RaisePropertyChanged(nameof(NatureDiagnosisFemaleModelSymbol));
+            this.RaisePropertyChanged(nameof(Move1));
+            this.RaisePropertyChanged(nameof(Move2));
+            this.RaisePropertyChanged(nameof(Move3));
+            this.RaisePropertyChanged(nameof(Move4));
+            this.RaisePropertyChanged(nameof(MaleNature));
+            this.RaisePropertyChanged(nameof(FemaleNature));
+        }
     }
 }

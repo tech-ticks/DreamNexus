@@ -34,5 +34,16 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
         }
         private RtdxStarterViewModel _selectedStarter;
 
+        /// <summary>
+        /// Signals that properties on the model were changed and the view model should emit property changed events where appropriate
+        /// </summary>
+        public void ReloadFromModel()
+        {
+            foreach (var starter in Starters)
+            {
+                starter.ReloadFromModel();
+            }
+            SelectedStarter.ReloadFromModel();
+        }
     }
 }

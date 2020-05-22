@@ -10,14 +10,22 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
     {
         public RtdxRomViewModel(RtdxRom model)
         {
-            this.model = model ?? throw new ArgumentNullException(nameof(model));
+            this.Model = model ?? throw new ArgumentNullException(nameof(model));
             StartersCollection = new RtdxStarterCollectionViewModel(model.GetStarters(), model.GetCommonStrings());
         }
 
-        protected readonly RtdxRom model;
+        public RtdxRom Model { get; }
 
-        public override string Name => Path.GetFileName(model.RomDirectory);
+        public override string Name => Path.GetFileName(Model.RomDirectory);
 
         public RtdxStarterCollectionViewModel StartersCollection { get; }
+
+        /// <summary>
+        /// Signals that properties on the model were changed and the view model should emit property changed events where appropriate
+        /// </summary>
+        public void ReloadFromModel()
+        {
+            StartersCollection.ReloadFromModel();
+        }
     }
 }

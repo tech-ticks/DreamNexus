@@ -61,6 +61,51 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to _Automation.
+        /// </summary>
+        public static string Views_MainWindowView_AutomationMenuItem {
+            get {
+                return ResourceManager.GetString("Views_MainWindowView_AutomationMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Create Change Script.
+        /// </summary>
+        public static string Views_MainWindowView_CreateAutomationScriptMenuItem {
+            get {
+                return ResourceManager.GetString("Views_MainWindowView_CreateAutomationScriptMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _File.
+        /// </summary>
+        public static string Views_MainWindowView_FileMenuItem {
+            get {
+                return ResourceManager.GetString("Views_MainWindowView_FileMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Open.
+        /// </summary>
+        public static string Views_MainWindowView_OpenFileMenuItem {
+            get {
+                return ResourceManager.GetString("Views_MainWindowView_OpenFileMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Run Change Script.
+        /// </summary>
+        public static string Views_MainWindowView_RunAutomationScriptMenuItem {
+            get {
+                return ResourceManager.GetString("Views_MainWindowView_RunAutomationScriptMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Starters.
         /// </summary>
         public static string Views_Rtdx_RtdxRomView_StartersCollection {

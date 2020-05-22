@@ -117,6 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Views_MainWindowView_AutomationMenuItem" xml:space="preserve">
+    <value>_Automation</value>
+  </data>
+  <data name="Views_MainWindowView_CreateAutomationScriptMenuItem" xml:space="preserve">
+    <value>_Create Change Script</value>
+  </data>
+  <data name="Views_MainWindowView_FileMenuItem" xml:space="preserve">
+    <value>_File</value>
+  </data>
+  <data name="Views_MainWindowView_OpenFileMenuItem" xml:space="preserve">
+    <value>_Open</value>
+  </data>
+  <data name="Views_MainWindowView_RunAutomationScriptMenuItem" xml:space="preserve">
+    <value>_Run Change Script</value>
+  </data>
   <data name="Views_Rtdx_RtdxRomView_StartersCollection" xml:space="preserve">
     <value>Starters</value>
   </data>
