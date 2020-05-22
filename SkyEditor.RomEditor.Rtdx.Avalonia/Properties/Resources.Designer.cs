@@ -90,9 +90,9 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.Properties {
         /// <summary>
         ///   Looks up a localized string similar to _Open.
         /// </summary>
-        public static string Views_MainWindowView_OpenFileMenuItem {
+        public static string Views_MainWindowView_OpenDirectoryMenuItem {
             get {
-                return ResourceManager.GetString("Views_MainWindowView_OpenFileMenuItem", resourceCulture);
+                return ResourceManager.GetString("Views_MainWindowView_OpenDirectoryMenuItem", resourceCulture);
             }
         }
         
@@ -102,6 +102,24 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.Properties {
         public static string Views_MainWindowView_RunAutomationScriptMenuItem {
             get {
                 return ResourceManager.GetString("Views_MainWindowView_RunAutomationScriptMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Save As....
+        /// </summary>
+        public static string Views_MainWindowView_SaveDirectoryAsMenuItem {
+            get {
+                return ResourceManager.GetString("Views_MainWindowView_SaveDirectoryAsMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to _Save.
+        /// </summary>
+        public static string Views_MainWindowView_SaveMenuItem {
+            get {
+                return ResourceManager.GetString("Views_MainWindowView_SaveMenuItem", resourceCulture);
             }
         }
         

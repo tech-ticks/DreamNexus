@@ -126,11 +126,17 @@
   <data name="Views_MainWindowView_FileMenuItem" xml:space="preserve">
     <value>_File</value>
   </data>
-  <data name="Views_MainWindowView_OpenFileMenuItem" xml:space="preserve">
+  <data name="Views_MainWindowView_OpenDirectoryMenuItem" xml:space="preserve">
     <value>_Open</value>
   </data>
   <data name="Views_MainWindowView_RunAutomationScriptMenuItem" xml:space="preserve">
     <value>_Run Change Script</value>
+  </data>
+  <data name="Views_MainWindowView_SaveDirectoryAsMenuItem" xml:space="preserve">
+    <value>_Save As...</value>
+  </data>
+  <data name="Views_MainWindowView_SaveMenuItem" xml:space="preserve">
+    <value>_Save</value>
   </data>
   <data name="Views_Rtdx_RtdxRomView_StartersCollection" xml:space="preserve">
     <value>Starters</value>

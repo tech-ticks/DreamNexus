@@ -23,12 +23,16 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels
         {
             OpenFiles = new ObservableCollection<OpenFileViewModel>();
 
-            OpenFileMenuItem = new OpenFileMenuItem(this);
+            OpenDirectoryMenuItem = new OpenDirectoryMenuItem(this);
+            SaveDirectoryAsMenuItem = new SaveDirectoryAsMenuItem(this);
+            SaveMenuItem = new SaveMenuItem(this);
             CreateAutomationScriptMenuItem = new CreateAutomationScriptMenuItem(this);
             RunAutomationScriptMenuItem = new RunAutomationScriptMenuItem(this);
         }
 
-        public OpenFileMenuItem OpenFileMenuItem { get; }
+        public OpenDirectoryMenuItem OpenDirectoryMenuItem { get; }
+        public SaveDirectoryAsMenuItem SaveDirectoryAsMenuItem { get; }
+        public SaveMenuItem SaveMenuItem { get; }
         public CreateAutomationScriptMenuItem CreateAutomationScriptMenuItem { get; }
         public RunAutomationScriptMenuItem RunAutomationScriptMenuItem { get; }
 

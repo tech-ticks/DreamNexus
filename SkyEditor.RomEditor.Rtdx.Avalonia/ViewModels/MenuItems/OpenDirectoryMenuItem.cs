@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.MenuItems
 {
-    public class OpenFileMenuItem : MenuItem
+    public class OpenDirectoryMenuItem : MenuItem
     {
-        public OpenFileMenuItem(MainWindowViewModel mainWindowViewModel)
+        public OpenDirectoryMenuItem(MainWindowViewModel mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel ?? throw new ArgumentNullException(nameof(mainWindowViewModel));
         }

@@ -1,4 +1,5 @@
-﻿using SkyEditor.RomEditor.Rtdx.Domain;
+﻿using SkyEditor.IO.FileSystem;
+using SkyEditor.RomEditor.Rtdx.Domain;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,6 +27,22 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
         public void ReloadFromModel()
         {
             StartersCollection.ReloadFromModel();
+        }
+
+        /// <summary>
+        /// Saves the model to the given directory
+        /// </summary>
+        public void Save(string targetDirectory)
+        {
+            Model.Save(targetDirectory, PhysicalFileSystem.Instance);
+        }
+
+        /// <summary>
+        /// Saves the model to the source directory
+        /// </summary>
+        public void Save()
+        {
+            Model.Save();
         }
     }
 }
