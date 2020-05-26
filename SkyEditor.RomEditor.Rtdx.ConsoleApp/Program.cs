@@ -136,7 +136,8 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             { "ListLibrary", ListLibrary },
             { "Automate", GenerateLuaChangeScript },
             { "GenerateLuaChangeScript", GenerateLuaChangeScript },
-            { "LoadAssets", LoadAssets }
+            { "LoadAssets", LoadAssets },
+            { "Test", Test }
         };
 
         private static async Task Import(Queue<string> arguments, ConsoleContext context)
@@ -198,6 +199,25 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
 #pragma warning disable IDE0059 // Unnecessary assignment of a value (Need it in a variable to browse it with the debugger)
             var assets = context.Rom.GetAssetBundles();
 #pragma warning restore IDE0059 // Unnecessary assignment of a value
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// For those times you need to throw together some temporary test code, but don't want to bother with Lua scripts
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private static Task Test(Queue<string> arguments, ConsoleContext context)
+        {
+            if (context.Rom == null)
+            {
+                throw new InvalidOperationException("Test must follow a ROM argument");
+            }
+
+            var graphicsDatabase = context.Rom.GetPokemonGraphicsDatabase();
+            context.Rom.Save("test-output", PhysicalFileSystem.Instance);
+
             return Task.CompletedTask;
         }
 
