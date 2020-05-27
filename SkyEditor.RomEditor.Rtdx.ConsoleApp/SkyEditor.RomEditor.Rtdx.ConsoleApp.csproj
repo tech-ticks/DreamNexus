@@ -16,6 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="Scripts\CSharp\SkyEditor.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\CSharp\Template.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Scripts\Queries\ListStarters.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
