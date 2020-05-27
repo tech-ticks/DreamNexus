@@ -96,7 +96,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 Byte35 = data.ReadByte(0x35);
                 Byte36 = data.ReadByte(0x36);
                 InvitationIndex = data.ReadByte(0x54);
-                Bytes37to61 = data.ReadArray(0x37, 0x61 - 0x37 + 1);
+                Bytes37to53 = data.ReadArray(0x37, 0x53 - 0x37 + 1);
+                Bytes55to61 = data.ReadArray(0x55, 0x61 - 0x55 + 1);
             }
 
             public short Index { get; }
@@ -116,8 +117,10 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             public byte Byte35 { get; }
             public byte Byte36 { get; }
             public byte InvitationIndex { get; }
-            public byte[] Bytes37to61 { get; }
-            public string Bytes37to61AsString => string.Join(" ", Bytes37to61);
+            public byte[] Bytes37to53 { get; }
+            public byte[] Bytes55to61 { get; }
+            public string Bytes37to53AsString => string.Join(",", Bytes37to53);
+            public string Bytes55to61AsString => string.Join(",", Bytes55to61);
         }
 
         public class WildPokemonInfo
@@ -154,6 +157,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 public StatsEntry(int index, IReadOnlyBinaryDataAccessor accessor)
                 {
                     Index = index;
+                    CreatureIndex = (CreatureIndex)(index + 1);
                     XPYield = accessor.ReadInt32(0x00);
                     HitPoints = accessor.ReadInt16(0x04);
                     Attack = accessor.ReadByte(0x06);
@@ -166,6 +170,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 }
 
                 public int Index { get; }
+                public CreatureIndex CreatureIndex { get; }
                 public int XPYield { get; }
                 public short HitPoints { get; }
                 public byte Attack { get; }
