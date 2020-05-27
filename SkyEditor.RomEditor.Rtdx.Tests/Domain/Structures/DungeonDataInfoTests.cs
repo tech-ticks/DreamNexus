@@ -14,7 +14,7 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
         [Fact]
         public void CanBuildDungeonDataInfoTests()
         {
-            // -- Arrange
+            // Arrange
             var db = new DungeonDataInfo();
             
             // Add elements in random order intentionally, as they should be built in ascending order in the file
@@ -49,10 +49,10 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
                 Byte19 = 0x19
             };
 
-            // -- Act
+            // Act
             var data = db.ToByteArray();
 
-            // -- Assert
+            // Assert
             data.Length.Should().Be((int)DungeonIndex.END * DungeonDataInfo.EntrySize);
 
             var rebuiltDb = new DungeonDataInfo(data);

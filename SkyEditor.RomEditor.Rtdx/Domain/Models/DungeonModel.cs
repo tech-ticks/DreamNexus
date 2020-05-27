@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using static SkyEditor.RomEditor.Rtdx.Domain.Structures.DungeonBalance;
+using static SkyEditor.RomEditor.Rtdx.Domain.Structures.DungeonExtra;
 using static SkyEditor.RomEditor.Rtdx.Domain.Structures.DungeonDataInfo;
 using DungeonIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.dungeon.Index;
 

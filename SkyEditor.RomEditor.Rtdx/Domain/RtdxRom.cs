@@ -354,16 +354,15 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
                 fileSystem.WriteAllBytes(path + ".bin", binData);
                 fileSystem.WriteAllBytes(path + ".ent", entData);
             }*/
-            // To-do: save dungeonExtra when implemented
-            /*if (dungeonExtra != null)
+            if (dungeonExtra != null)
             {
                 var path = GetDungeonExtraPath(directory);
                 if (!Directory.Exists(Path.GetDirectoryName(path)))
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(path));
                 }
-                fileSystem.WriteAllBytes(path, dungeonExtra.ToByteArray()); // Similar to pokemonGraphicsDatabase
-            }*/
+                fileSystem.WriteAllBytes(path, dungeonExtra.ToByteArray());
+            }
             if (pokemonGraphicsDatabase != null)
             {
                 var path = GetPokemonGraphicsDatabasePath(directory);
