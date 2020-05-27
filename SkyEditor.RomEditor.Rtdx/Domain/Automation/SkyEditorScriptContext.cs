@@ -18,7 +18,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 Rom = rom ?? throw new ArgumentNullException(nameof(rom))
             };
 
-            this.LuaState = new Lua();
+            this.LuaState = new NLua.Lua();
             this.CSharpScriptImports = new List<string>();
 
             InitLuaState();
@@ -26,7 +26,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
 
         private CSharpGlobals Globals { get; }
 
-        public Lua LuaState { get; }
+        public NLua.Lua LuaState { get; }
 
         public List<string> CSharpScriptImports { get; set; }
 
@@ -92,8 +92,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
             RegisterEnum<Reverse.Const.GraphicsBodySizeType>("Const.GraphicsBodySizeType", "GraphicsBodySizeType");
             RegisterEnum<Reverse.Const.TextIDHash>("Const.TextIDHash", "TextIDHash");
 
-            // Make the ROM available to the script
-            this.LuaState["rom"] = Globals.Rom;
+            // Import globals, such as the ROM
+            var globalsType = Globals.GetType();
+            foreach (var property in globalsType.GetProperties())
+            {
+                this.LuaState[property.Name] = property.GetValue(Globals);
+            }
 
             // Sandbox script to prevent loading additional .Net libraries
             // This is not comprehensive

@@ -1,4 +1,4 @@
-﻿using SkyEditor.RomEditor.Rtdx.Domain.Automation;
+﻿using SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua;
 using SkyEditor.RomEditor.Rtdx.Reverse;
 using System;
 using System.Collections.Generic;

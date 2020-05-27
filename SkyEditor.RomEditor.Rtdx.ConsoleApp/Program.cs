@@ -115,6 +115,16 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                         Console.WriteLine(arg + ": ");
                         context.LuaContext.ExecuteLua(File.ReadAllText(arg));
                     }
+                    else if (string.Equals(extension, ".csx", StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (context.LuaContext == null)
+                        {
+                            throw new InvalidOperationException("ROM directory argument must precede C# script argument");
+                        }
+
+                        Console.WriteLine(arg + ": ");
+                        await context.LuaContext.ExecuteCSharp(File.ReadAllText(arg));
+                    }
                 }
                 else if (Commands.TryGetValue(arg, out var command))
                 {

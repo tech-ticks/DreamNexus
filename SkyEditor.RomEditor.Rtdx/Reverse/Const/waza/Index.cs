@@ -1,4 +1,4 @@
-﻿using SkyEditor.RomEditor.Rtdx.Domain.Automation;
+﻿using SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua;
 
 namespace SkyEditor.RomEditor.Rtdx.Reverse.Const.waza
 {
