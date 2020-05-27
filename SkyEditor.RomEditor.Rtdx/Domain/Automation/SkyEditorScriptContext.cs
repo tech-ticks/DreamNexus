@@ -1,22 +1,28 @@
-﻿using NLua;
+﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Scripting;
+using NLua;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
 {
-    public class SkyEditorLuaContext
+    public class SkyEditorScriptContext
     {
-        public SkyEditorLuaContext(IRtdxRom rom)
+        public SkyEditorScriptContext(IRtdxRom rom)
         {
-            this.rom = rom ?? throw new ArgumentNullException(nameof(rom));
+            this.Globals = new CSharpGlobals
+            {
+                Rom = rom ?? throw new ArgumentNullException(nameof(rom))
+            };
 
             this.LuaState = new Lua();
             InitLuaState();
         }
 
-        protected readonly IRtdxRom rom;
+        private CSharpGlobals Globals { get; }
 
         public Lua LuaState { get; }
 
@@ -64,26 +70,26 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 }
 ");
 
-            RegisterEnum<Reverse.Const.ability.Index>("Const.ability.Index");
-            RegisterEnum<Reverse.Const.creature.Index>("Const.creature.Index");
-            RegisterEnum<Reverse.Const.fixed_creature.Index>("Const.fixed_creature.Index");
-            RegisterEnum<Reverse.Const.item.Index>("Const.item.Index");
-            RegisterEnum<Reverse.Const.item.Kind>("Const.item.Kind");
-            RegisterEnum<Reverse.Const.item.PriceType>("Const.item.PriceType");
-            RegisterEnum<Reverse.Const.order.Index>("Const.order.Index");
-            RegisterEnum<Reverse.Const.pokemon.FixedWarehouseId>("Const.pokemon.FixedWarehouseId");
-            RegisterEnum<Reverse.Const.pokemon.FormType>("Const.pokemon.FormType");
-            RegisterEnum<Reverse.Const.pokemon.GenderType>("Const.pokemon.GenderType");
-            RegisterEnum<Reverse.Const.pokemon.SallyType>("Const.pokemon.SallyType");
-            RegisterEnum<Reverse.Const.pokemon.Type>("Const.pokemon.Type");
-            RegisterEnum<Reverse.Const.sugowaza.Index>("Const.sugowaza.Index");
-            RegisterEnum<Reverse.Const.waza.Index>("Const.waza.Index");
-            RegisterEnum<Reverse.Const.EvolutionCameraType>("Const.EvolutionCameraType");
-            RegisterEnum<Reverse.Const.GraphicsBodySizeType>("Const.GraphicsBodySizeType");
-            RegisterEnum<Reverse.Const.TextIDHash>("Const.TextIDHash");
+            RegisterLuaEnum<Reverse.Const.ability.Index>("Const.ability.Index");
+            RegisterLuaEnum<Reverse.Const.creature.Index>("Const.creature.Index");
+            RegisterLuaEnum<Reverse.Const.fixed_creature.Index>("Const.fixed_creature.Index");
+            RegisterLuaEnum<Reverse.Const.item.Index>("Const.item.Index");
+            RegisterLuaEnum<Reverse.Const.item.Kind>("Const.item.Kind");
+            RegisterLuaEnum<Reverse.Const.item.PriceType>("Const.item.PriceType");
+            RegisterLuaEnum<Reverse.Const.order.Index>("Const.order.Index");
+            RegisterLuaEnum<Reverse.Const.pokemon.FixedWarehouseId>("Const.pokemon.FixedWarehouseId");
+            RegisterLuaEnum<Reverse.Const.pokemon.FormType>("Const.pokemon.FormType");
+            RegisterLuaEnum<Reverse.Const.pokemon.GenderType>("Const.pokemon.GenderType");
+            RegisterLuaEnum<Reverse.Const.pokemon.SallyType>("Const.pokemon.SallyType");
+            RegisterLuaEnum<Reverse.Const.pokemon.Type>("Const.pokemon.Type");
+            RegisterLuaEnum<Reverse.Const.sugowaza.Index>("Const.sugowaza.Index");
+            RegisterLuaEnum<Reverse.Const.waza.Index>("Const.waza.Index");
+            RegisterLuaEnum<Reverse.Const.EvolutionCameraType>("Const.EvolutionCameraType");
+            RegisterLuaEnum<Reverse.Const.GraphicsBodySizeType>("Const.GraphicsBodySizeType");
+            RegisterLuaEnum<Reverse.Const.TextIDHash>("Const.TextIDHash");
 
             // Make the ROM available to the script
-            this.LuaState["rom"] = rom;
+            this.LuaState["rom"] = Globals.Rom;
 
             // Sandbox script to prevent loading additional .Net libraries
             // This is not comprehensive
@@ -93,12 +99,23 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
 	        ");
         }
 
-        public void Execute(string luaScript)
+        public void ExecuteLua(string luaScript)
         {
             LuaState.DoString(luaScript);
         }
 
-        public void RegisterEnum<T>(string targetEnumName)
+        public async Task ExecuteCSharp(string cSharpScript)
+        {
+            await CSharpScript
+                .RunAsync(cSharpScript,                
+                ScriptOptions.Default
+                    .WithReferences(typeof(SkyEditorScriptContext).Assembly)
+                    .WithImports("SkyEditor.RomEditor.Rtdx.Reverse", "SkyEditor.RomEditor.Rtdx.Reverse.Const"),
+                globals: Globals)
+                .ConfigureAwait(false);
+        }
+
+        public void RegisterLuaEnum<T>(string targetEnumName)
         {
             var type = typeof(T);
             if (!type.IsEnum)
@@ -116,6 +133,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 string path = targetEnumName + "." + names[i];
                 this.LuaState.SetObjectToPath(path, values[i]);
             }
+        }
+
+        // This class must be public for CSharp scripts to use it
+        public class CSharpGlobals
+        {
+            public IRtdxRom Rom { get; internal set; } = default!;
         }
     }
 }

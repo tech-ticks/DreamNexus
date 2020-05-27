@@ -33,8 +33,8 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.MenuItems
             if (!string.IsNullOrEmpty(firstPath))
             {
                 var script = File.ReadAllText(firstPath);
-                var context = new SkyEditorLuaContext(viewModel.Model);
-                context.Execute(script);
+                var context = new SkyEditorScriptContext(viewModel.Model);
+                context.ExecuteLua(script);
                 viewModel.ReloadFromModel();
             }
         }

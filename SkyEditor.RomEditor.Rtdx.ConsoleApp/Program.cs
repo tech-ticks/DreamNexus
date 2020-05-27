@@ -92,14 +92,14 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                     }
                     context.Rom = new RtdxRom(libraryItem.FullPath, fileSystem);
                     context.RomDirectory = libraryItem.FullPath;
-                    context.LuaContext = new SkyEditorLuaContext(context.Rom);
+                    context.LuaContext = new SkyEditorScriptContext(context.Rom);
                     Console.WriteLine($"Loaded {arg}");
                 }
                 else if (Directory.Exists(arg))
                 {
                     context.Rom = new RtdxRom(arg, fileSystem);
                     context.RomDirectory = arg;
-                    context.LuaContext = new SkyEditorLuaContext(context.Rom);
+                    context.LuaContext = new SkyEditorScriptContext(context.Rom);
                     Console.WriteLine($"Loaded {arg}");
                 }
                 else if (File.Exists(arg))
@@ -113,7 +113,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                         }
 
                         Console.WriteLine(arg + ": ");
-                        context.LuaContext.Execute(File.ReadAllText(arg));
+                        context.LuaContext.ExecuteLua(File.ReadAllText(arg));
                     }
                 }
                 else if (Commands.TryGetValue(arg, out var command))
@@ -246,7 +246,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
 
             public RtdxRom? Rom { get; set; }
             public string? RomDirectory { get; set; }
-            public SkyEditorLuaContext? LuaContext { get; set; }
+            public SkyEditorScriptContext? LuaContext { get; set; }
         }
     }
 }
