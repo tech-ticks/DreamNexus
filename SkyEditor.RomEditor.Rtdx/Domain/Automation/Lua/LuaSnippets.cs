@@ -10,7 +10,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua
         /// A guard to be placed at the top of the script to ensure the script is run within the context of Sky Editor
         /// </summary>
         public static readonly string RequireSkyEditor = @"
-if rom == nil then
+if Rom == nil then
     error(""Script must be run in the context of Sky Editor"")
 end
 ";

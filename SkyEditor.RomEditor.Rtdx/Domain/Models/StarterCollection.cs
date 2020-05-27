@@ -73,7 +73,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
         public string GenerateLuaChangeScript(int indentLevel = 0)
         {
             var script = new StringBuilder();
-            script.AppendLine(@"local starters = rom:GetStarters()");
+            script.AppendLine(@"local starters = Rom:GetStarters()");
             script.AppendLine();
             for (int i = 0; i < Starters.Length; i++)
             {
