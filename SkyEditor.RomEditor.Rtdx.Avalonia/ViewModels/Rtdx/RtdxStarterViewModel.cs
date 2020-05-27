@@ -1,5 +1,6 @@
 ﻿using ReactiveUI;
 using SkyEditor.RomEditor.Rtdx.Domain;
+using SkyEditor.RomEditor.Rtdx.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +14,7 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
 {
     public class RtdxStarterViewModel : ViewModelBase
     {
-        public RtdxStarterViewModel(StarterModel model, ICommonStrings commonStrings)
+        public RtdxStarterViewModel(IStarterModel model, ICommonStrings commonStrings)
         {
             this.model = model ?? throw new ArgumentNullException(nameof(model));
 
@@ -27,7 +28,7 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
             this.MoveOptionsByValue = MoveOptions.ToDictionary(li => li.Value, li => li);
         }
 
-        private readonly StarterModel model;
+        private readonly IStarterModel model;
 
         public List<ListItem<CreatureIndex>> PokemonOptions { get; }
         public List<ListItem<WazaIndex>> MoveOptions { get; }

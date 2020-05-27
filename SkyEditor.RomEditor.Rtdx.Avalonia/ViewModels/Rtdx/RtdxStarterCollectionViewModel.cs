@@ -10,7 +10,7 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
 {
     public class RtdxStarterCollectionViewModel : ViewModelBase
     {
-        public RtdxStarterCollectionViewModel(StarterCollection starterCollection, ICommonStrings commonStrings)
+        public RtdxStarterCollectionViewModel(IStarterCollection starterCollection, ICommonStrings commonStrings)
         {
             if (starterCollection == null)
             {

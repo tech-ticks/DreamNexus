@@ -46,7 +46,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         #endregion
 
         #region Models
-        StarterCollection GetStarters();
+        IStarterCollection GetStarters();
         #endregion
 
         /// <summary>
@@ -226,7 +226,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         #endregion
 
         #region Models
-        public StarterCollection GetStarters()
+        public IStarterCollection GetStarters()
         {
             if (starterCollection == null)
             {

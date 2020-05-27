@@ -12,20 +12,21 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
         {
             this.rom = rom ?? throw new ArgumentNullException(nameof(rom));
 
-            this.luaState = new Lua();
+            this.LuaState = new Lua();
             InitLuaState();
         }
 
-        protected readonly Lua luaState;
         protected readonly IRtdxRom rom;
+
+        public Lua LuaState { get; }
 
         private void InitLuaState()
         {
-            this.luaState.LoadCLRPackage();
+            this.LuaState.LoadCLRPackage();
 
             // Load constants
             // Create the table structure manually, since this.luaState.NewTable doesn't support the depth we're going for
-            this.luaState.DoString(@"
+            this.LuaState.DoString(@"
                 Const = {
                     ability = {
                         Index = {}
@@ -82,19 +83,19 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
             RegisterEnum<Reverse.Const.TextIDHash>("Const.TextIDHash");
 
             // Make the ROM available to the script
-            this.luaState["rom"] = rom;
+            this.LuaState["rom"] = rom;
 
             // Sandbox script to prevent loading additional .Net libraries
             // This is not comprehensive
             // To-do: Use http://lua-users.org/wiki/SandBoxes to further protect against malicious scripts
-            this.luaState.DoString(@"
+            this.LuaState.DoString(@"
 		        import = function () end
 	        ");
         }
 
         public void Execute(string luaScript)
         {
-            luaState.DoString(luaScript);
+            LuaState.DoString(luaScript);
         }
 
         public void RegisterEnum<T>(string targetEnumName)
@@ -113,7 +114,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
             for (int i = 0; i < names.Length; i++)
             {
                 string path = targetEnumName + "." + names[i];
-                this.luaState.SetObjectToPath(path, values[i]);
+                this.LuaState.SetObjectToPath(path, values[i]);
             }
         }
     }
