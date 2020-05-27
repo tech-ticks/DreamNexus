@@ -232,24 +232,24 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
             public string stAttachBoneName;
             public Vector3 vEffectOffset;
         }
-
-        private static Vector2[] s_aFrameBuffer3dResolutionSize;
-        private FrameBuffer3dResolutionType eFrameBuffer3dResolutionType_;
-        public bool bValidResolutionChangeMode_;
-        private List<IGraphicsUpdater> aGraphicsUpdater_;
-        private bool bRequestCommandBufferUpdate_;
-        private const uint CRC32_MASK = uint.MaxValue;
-        private static byte[] aExchangeShareBuffer_;
-        private static byte[] aTempUpdateGLBuffer_;
-        private static readonly uint[] s_aCRC32Table;
-        private static Dictionary<uint, Dictionary<CharacterShaderStatus, string>> dicCharacterShaderStatus_;
-        private DataExchangeByteMemoryStream temporaryByteStream;
-        private static Dictionary<string, Material> loadMaterialTbl_;
-        private static Dictionary<string, Shader> loadShadersTbl_;
-        private static List<byte> tmpCrcBuff_;
-        private Material fill2dShaderMaterial_;
-        private Material texture2dShaderMaterial_;
-        private Material debugFontShaderMaterial_;
+        
+        //private static Vector2[] s_aFrameBuffer3dResolutionSize;
+        //private FrameBuffer3dResolutionType eFrameBuffer3dResolutionType_;
+        //public bool bValidResolutionChangeMode_;
+        //private List<IGraphicsUpdater> aGraphicsUpdater_;
+        //private bool bRequestCommandBufferUpdate_;
+        //private const uint CRC32_MASK = uint.MaxValue;
+        //private static byte[] aExchangeShareBuffer_;
+        //private static byte[] aTempUpdateGLBuffer_;
+        //private static readonly uint[] s_aCRC32Table;
+        //private static Dictionary<uint, Dictionary<CharacterShaderStatus, string>> dicCharacterShaderStatus_;
+        //private DataExchangeByteMemoryStream temporaryByteStream;
+        //private static Dictionary<string, Material> loadMaterialTbl_;
+        //private static Dictionary<string, Shader> loadShadersTbl_;
+        //private static List<byte> tmpCrcBuff_;
+        //private Material fill2dShaderMaterial_;
+        //private Material texture2dShaderMaterial_;
+        //private Material debugFontShaderMaterial_;
 
         public FrameBuffer3dResolutionType Resolution3dType
         {
@@ -370,12 +370,12 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
             throw new NotImplementedException();
         }
                 
-        public static uint CreatureIndexToGfxSymbol(Index index, FormType form)
+        public static uint CreatureIndexToGfxSymbol(Const.pokemon.Index index, FormType form)
         {
             throw new NotImplementedException();
         }
         
-        public static CharacterDatabaseParameter GetCharacterDataFromNativeDatabase(Index index, FormType form)
+        public static CharacterDatabaseParameter GetCharacterDataFromNativeDatabase(Const.pokemon.Index index, FormType form)
         {
             throw new NotImplementedException();
         }

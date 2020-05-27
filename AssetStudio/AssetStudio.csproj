@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFrameworks>netstandard2.1;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SkyEditor.IO" Version="5.1.6" />
+    <PackageReference Include="SkyEditor.IO" Version="5.1.8" />
   </ItemGroup>
 
 </Project>

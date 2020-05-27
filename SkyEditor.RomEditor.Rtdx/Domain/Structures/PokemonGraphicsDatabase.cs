@@ -35,37 +35,45 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
         {
             var sir0 = new Sir0Builder();
 
-            void alignToLong() => sir0.WritePadding(sir0.Length, 8 - (sir0.Length % 8));
+            void align(int length) 
+            {
+                var paddingLength = length - (sir0.Length % length);
+                if (paddingLength != length)
+                {
+                    sir0.WritePadding(sir0.Length, paddingLength);
+                }
+            }
 
             // Write the strings
             foreach (var entry in Entries)
             {
+                align(8);
                 entry.ModelNamePointer = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.ModelName);
-                alignToLong();
 
+                align(8);
                 entry.AnimationNamePointer = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.AnimationName);
-                alignToLong();
 
+                align(8);
                 entry.BaseFormModelNamePointer = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.BaseFormModelName);
-                alignToLong();
 
+                align(8);
                 entry.PortraitSheetNamePointer = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.PortraitSheetName);
-                alignToLong();
 
+                align(8);
                 entry.RescueCampSheetNamePointer = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.RescueCampSheetName);
-                alignToLong();
 
+                align(8);
                 entry.RescueCampSheetReverseNamePointer = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.RescueCampSheetReverseName);
-                alignToLong();
             }
 
             // Write the data
+            align(8);
             var entriesSectionStart = sir0.Length;
             foreach (var entry in Entries)
             {
@@ -84,8 +92,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             // Write the content header
             sir0.SubHeaderOffset = sir0.Length;
             sir0.WriteString(sir0.Length, Encoding.ASCII, "PGDB");
-            alignToLong();
-            sir0.WriteInt64(sir0.Length, entriesSectionStart);
+            align(8);
+            sir0.WritePointer(sir0.Length, entriesSectionStart);
             sir0.WriteInt64(sir0.Length, Entries.Count);
             return sir0.Build();
         }
@@ -123,8 +131,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
                 UnkX50 = entryAccessor.ReadSingle(0x50);
                 RunSpeedRatioGround = entryAccessor.ReadSingle(0x54); // Referenced by PokemonDatabase_GetRunRateGround()
-                UnkX58 = entryAccessor.ReadInt32(0x58);
-                UnkX5C = entryAccessor.ReadInt32(0x5C);
+                UnkX58 = entryAccessor.ReadSingle(0x58);
+                UnkX5C = entryAccessor.ReadSingle(0x5C);
 
                 UnkX60 = entryAccessor.ReadSingle(0x60);
                 UnkX64 = entryAccessor.ReadSingle(0x64);
@@ -243,8 +251,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
             public float UnkX50 { get; set; } // Possibly WalkSpeedDistanceGround
             public float RunSpeedRatioGround { get; set; }
-            public int UnkX58 { get; set; }
-            public int UnkX5C { get; set; }
+            public float UnkX58 { get; set; }
+            public float UnkX5C { get; set; }
 
             public float UnkX60 { get; set; }
             public float UnkX64 { get; set; }

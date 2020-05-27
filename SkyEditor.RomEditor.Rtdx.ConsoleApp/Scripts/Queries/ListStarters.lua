@@ -1,6 +1,5 @@
 ﻿if rom == nil then
-    print("Script must be run in the context of Sky Editor")
-    do return end
+    error("Script must be run in the context of Sky Editor")
 end
 
 local starters = rom:GetStarters().Starters

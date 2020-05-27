@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
 using FixedCreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.fixed_creature.Index;
 
@@ -39,9 +40,26 @@ namespace SkyEditor.RomEditor.Rtdx
             Init();
         }
 
-        const int starterFixedPokemonMapOffset = 0x04BA3B0C;
+        const int starterFixedPokemonMapOffsetOriginal = 0x04BA3B0C;
+        const int starterFixedPokemonMapOffsetUpdate = 0x04BA4DBC;
+
+        private bool isUpdatedVersion;
 
         private void Init()
+        {
+            Init(starterFixedPokemonMapOffsetOriginal);
+            if (StarterFixedPokemonMaps.All(m => m.PokemonId == CreatureIndex.NONE))
+            {
+                Init(starterFixedPokemonMapOffsetUpdate);
+                isUpdatedVersion = true;
+            }
+            else
+            {
+                isUpdatedVersion = false;
+            }
+        }
+
+        private void Init(int starterFixedPokemonMapOffset)
         {
             var starterFixedPokemonMaps = new List<StarterFixedPokemonMap>();
             for (int i = 0; i < 16; i++)
@@ -58,6 +76,7 @@ namespace SkyEditor.RomEditor.Rtdx
 
         public byte[] ToElf()
         {
+            int starterFixedPokemonMapOffset = isUpdatedVersion ? starterFixedPokemonMapOffsetUpdate : starterFixedPokemonMapOffsetOriginal;
             for (int i = 0; i < 16; i++)
             {
                 var map = StarterFixedPokemonMaps[i];

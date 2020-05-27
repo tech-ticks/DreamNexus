@@ -1,12 +1,14 @@
 ﻿using AssetStudio;
+using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using SkyEditor.IO.Binary;
 using SkyEditor.IO.FileSystem;
+using SkyEditor.RomEditor.Rtdx.Domain.Automation;
 using SkyEditor.RomEditor.Rtdx.Domain.Models;
 using SkyEditor.RomEditor.Rtdx.Domain.Structures;
+using SkyEditor.RomEditor.Rtdx.Infrastructure.Internal;
 using SkyEditor.RomEditor.Rtdx.Reverse;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -50,9 +52,9 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         #endregion
 
         #region Models
-        StarterCollection GetStarters();
+        IStarterCollection GetStarters();
         
-        DungeonCollection GetDungeons();
+        IDungeonCollection GetDungeons();
         #endregion
 
         /// <summary>
@@ -70,7 +72,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
     {
         public RtdxRom(string directory, IFileSystem fileSystem)
         {
-            this.fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
+            this.FileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             if (string.IsNullOrEmpty(directory))
             {
                 throw new ArgumentException("Directory must not be null or empty", nameof(directory));
@@ -79,11 +81,21 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             {
                 throw new DirectoryNotFoundException("Directory must exist in the given file system");
             }
-            this.directory = directory;
+            this.RomDirectory = directory;
         }
 
-        protected readonly string directory;
-        protected readonly IFileSystem fileSystem;
+        public string RomDirectory { get; }
+        protected IFileSystem FileSystem { get; }
+
+        protected IServiceProvider GetServiceProvider()
+        {
+            if (serviceProvider == null)
+            {
+                serviceProvider = ServiceProviderBuilder.CreateRtdxRomServiceProvider(this);
+            }
+            return serviceProvider;
+        }
+        private IServiceProvider? serviceProvider;
 
         #region ExeFs
         /// <summary>
@@ -93,7 +105,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (mainExecutable == null)
             {
-                mainExecutable = MainExecutable.LoadFromNso(fileSystem.ReadAllBytes(GetNsoPath(this.directory)));
+                mainExecutable = MainExecutable.LoadFromNso(FileSystem.ReadAllBytes(GetNsoPath(this.RomDirectory)));
             }
             return mainExecutable;
         }
@@ -110,7 +122,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (natureDiagnosis == null)
             {
-                natureDiagnosis = JsonConvert.DeserializeObject<NDConverterSharedData.DataStore>(fileSystem.ReadAllText(GetNatureDiagnosisPath(this.directory)));
+                natureDiagnosis = JsonConvert.DeserializeObject<NDConverterSharedData.DataStore>(FileSystem.ReadAllText(GetNatureDiagnosisPath(this.RomDirectory)));
             }
             return natureDiagnosis;
         }
@@ -128,7 +140,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             if (_assetBundles == null)
             {
                 _assetBundles = new AssetsManager();
-                _assetBundles.LoadFolder(this.fileSystem, GetAssetBundlesPath(this.directory));
+                _assetBundles.LoadFolder(this.FileSystem, GetAssetBundlesPath(this.RomDirectory));
             }
             return _assetBundles;
         }
@@ -142,7 +154,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (pokemonDataInfo == null)
             {
-                pokemonDataInfo = new PokemonDataInfo(new BinaryFile(fileSystem.ReadAllBytes(GetPokemonDataInfoPath(this.directory))));
+                pokemonDataInfo = new PokemonDataInfo(new BinaryFile(FileSystem.ReadAllBytes(GetPokemonDataInfoPath(this.RomDirectory))));
             }
             return pokemonDataInfo;
         }
@@ -159,7 +171,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (fixedPokemon == null)
             {
-                fixedPokemon = new FixedPokemon(fileSystem.ReadAllBytes(GetFixedPokemonPath(this.directory)));
+                fixedPokemon = new FixedPokemon(FileSystem.ReadAllBytes(GetFixedPokemonPath(this.RomDirectory)));
             }
             return fixedPokemon;
         }
@@ -171,7 +183,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (dungeonDataInfo == null)
             {
-                dungeonDataInfo = new DungeonDataInfo(fileSystem.ReadAllBytes(GetDungeonDataInfoPath(this.directory)));
+                dungeonDataInfo = new DungeonDataInfo(fileSystem.ReadAllBytes(GetDungeonDataInfoPath(this.RomDirectory)));
             }
             return dungeonDataInfo;
         }
@@ -182,7 +194,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (dungeonExtra == null)
             {
-                dungeonExtra = new DungeonExtra(fileSystem.ReadAllBytes(GetDungeonExtraPath(this.directory)));
+                dungeonExtra = new DungeonExtra(fileSystem.ReadAllBytes(GetDungeonExtraPath(this.RomDirectory)));
             }
             return dungeonExtra;
         }
@@ -193,7 +205,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (dungeonBalance == null)
             {
-                dungeonBalance = new DungeonBalance(fileSystem.ReadAllBytes(GetDungeonBalancePath(this.directory) + ".bin"), fileSystem.ReadAllBytes(GetDungeonBalancePath(this.directory) + ".ent"));
+                dungeonBalance = new DungeonBalance(fileSystem.ReadAllBytes(GetDungeonBalancePath(this.RomDirectory) + ".bin"), fileSystem.ReadAllBytes(GetDungeonBalancePath(this.RomDirectory) + ".ent"));
             }
             return dungeonBalance;
         }
@@ -206,7 +218,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (pokemonFormDatabase == null)
             {
-                pokemonFormDatabase = new PokemonFormDatabase(File.ReadAllBytes(GetPokemonFormDatabasePath(this.directory)));
+                pokemonFormDatabase = new PokemonFormDatabase(File.ReadAllBytes(GetPokemonFormDatabasePath(this.RomDirectory)));
             }
             return pokemonFormDatabase;
         }
@@ -217,7 +229,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (pokemonGraphicsDatabase == null)
             {
-                pokemonGraphicsDatabase = new PokemonGraphicsDatabase(File.ReadAllBytes(GetPokemonGraphicsDatabasePath(this.directory)));
+                pokemonGraphicsDatabase = new PokemonGraphicsDatabase(File.ReadAllBytes(GetPokemonGraphicsDatabasePath(this.RomDirectory)));
             }
             return pokemonGraphicsDatabase;
         }
@@ -234,7 +246,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             return messageBin;
         }
         private Farc? messageBin;
-        protected string MessageBinUSPath => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/message_us.bin");
+        protected string MessageBinUSPath => Path.Combine(RomDirectory, "romfs/Data/StreamingAssets/native_data/message_us.bin");
 
         public ICommonStrings GetCommonStrings()
         {
@@ -255,17 +267,17 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         #endregion
 
         #region Models
-        public StarterCollection GetStarters()
+        public IStarterCollection GetStarters()
         {
             if (starterCollection == null)
             {
-                starterCollection = new StarterCollection(this);
+                starterCollection = new StarterCollection(this, GetServiceProvider().GetRequiredService<ILuaGenerator>());
             }
             return starterCollection;
         }
         private StarterCollection? starterCollection;
 
-        public DungeonCollection GetDungeons()
+        public IDungeonCollection GetDungeons()
         {
             if (dungeonCollection == null)
             {
@@ -290,15 +302,30 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             // Save the files themselves
             if (mainExecutable != null)
             {
-                fileSystem.WriteAllBytes(GetNsoPath(directory), mainExecutable.ToNso());
+                var path = GetNsoPath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllBytes(path, mainExecutable.ToNso());
             }
             if (natureDiagnosis != null)
             {
-                fileSystem.WriteAllText(GetNatureDiagnosisPath(directory), JsonConvert.SerializeObject(natureDiagnosis));
+                var path = GetNatureDiagnosisPath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllText(path, JsonConvert.SerializeObject(natureDiagnosis));
             }
             if (fixedPokemon != null)
             {
-                fileSystem.WriteAllBytes(GetFixedPokemonPath(directory), fixedPokemon.Build().Data.ReadArray());
+                var path = GetFixedPokemonPath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllBytes(path, fixedPokemon.Build().Data.ReadArray());
             }
 
             // To-do: save pokemonDataInfo when implemented
@@ -310,7 +337,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
 
             if (pokemonGraphicsDatabase != null)
             {
-                fileSystem.WriteAllBytes(GetPokemonGraphicsDatabasePath(directory), pokemonGraphicsDatabase.ToByteArray());
+                var path = GetPokemonGraphicsDatabasePath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllBytes(path, pokemonGraphicsDatabase.ToByteArray());
             }
         }
 
@@ -319,7 +351,19 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         /// </summary>
         public void Save()
         {
-            this.Save(this.directory, this.fileSystem);
+            this.Save(this.RomDirectory, this.FileSystem);
+        }
+
+        public string GenerateLuaChangeScript(int indentLevel = 0)
+        {
+            var script = new StringBuilder();
+            script.Append(LuaSnippets.RequireSkyEditor);
+            script.AppendLine();
+            if (starterCollection != null)
+            {
+                script.Append(starterCollection.GenerateLuaChangeScript(indentLevel));
+            }
+            return script.ToString();
         }
     }
 }

@@ -340,7 +340,7 @@ namespace AssetStudio
                         }
                         assetsFile.AddObject(obj);
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         /*var sb = new StringBuilder();
                         sb.AppendLine("Unable to load object")

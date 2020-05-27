@@ -6,9 +6,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
     public interface IPokemonWarehouse
     {
         IDataList<IPokemonWarehouseStatus> GetList(bool bFirst);
-        void SetInitializeHero(Index index, GenderType gender);
+        void SetInitializeHero(Const.pokemon.Index index, GenderType gender);
         IPokemonWarehouseStatus GetHeroStatus();
-        void SetInitializePartner(Index index, GenderType gender);
+        void SetInitializePartner(Const.pokemon.Index index, GenderType gender);
         IPokemonWarehouseStatus GetPartnerStatus();
         IPokemonWarehouseStatus GetFixedMemberStatus(FixedWarehouseId id);
     }

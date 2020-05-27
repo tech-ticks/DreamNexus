@@ -175,7 +175,10 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
             // Align to 16 bytes
             var paddingLength = 0x10 - (this.Length % 0x10);
-            this.WritePadding(footerOffset, paddingLength);
+            if (paddingLength != 0x10)
+            {
+                this.WritePadding(footerOffset, paddingLength);
+            }
         }
 
         #region IWriteOnlyBinaryDataAccessor Implementation

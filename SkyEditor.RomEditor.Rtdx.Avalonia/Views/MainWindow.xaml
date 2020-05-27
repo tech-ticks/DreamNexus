@@ -1,0 +1,35 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels;assembly=SkyEditor.RomEditor.Rtdx.Avalonia"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Properties="clr-namespace:SkyEditor.RomEditor.Rtdx.Avalonia.Properties;assembly=SkyEditor.RomEditor.Rtdx.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="SkyEditor.RomEditor.Rtdx.Avalonia.Views.MainWindow"
+        Icon="/Assets/avalonia-logo.ico"
+        Title="SkyEditor.RomEditor.Rtdx.Avalonia">
+
+  <Design.DataContext>
+    <vm:MainWindowViewModel/>
+  </Design.DataContext>
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="20" />
+      <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+    <Menu Grid.Row="0">
+      <MenuItem Header="{x:Static Properties:Resources.Views_MainWindowView_FileMenuItem}">
+        <MenuItem Header="{x:Static Properties:Resources.Views_MainWindowView_OpenDirectoryMenuItem}" Command="{Binding OpenDirectoryMenuItem.Command}" />
+        <MenuItem Header="{x:Static Properties:Resources.Views_MainWindowView_SaveMenuItem}" Command="{Binding SaveMenuItem.Command}" />
+        <MenuItem Header="{x:Static Properties:Resources.Views_MainWindowView_SaveDirectoryAsMenuItem}" Command="{Binding SaveDirectoryAsMenuItem.Command}" />
+      </MenuItem>
+      <MenuItem Header="{x:Static Properties:Resources.Views_MainWindowView_AutomationMenuItem}">
+        <MenuItem Header="{x:Static Properties:Resources.Views_MainWindowView_RunAutomationScriptMenuItem}" Command="{Binding RunAutomationScriptMenuItem.Command}" />
+        <MenuItem Header="{x:Static Properties:Resources.Views_MainWindowView_CreateAutomationScriptMenuItem}" Command="{Binding CreateAutomationScriptMenuItem.Command}" />
+      </MenuItem>
+    </Menu>
+    <ContentControl Grid.Row="1" Content="{Binding CurrentFile}" />
+  </Grid>
+
+</Window>

@@ -6,7 +6,7 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
 {
 	public class WazaOshieParameter
 	{
-		public Index wazaIndex;
+		public Const.waza.Index wazaIndex;
 		public int price;
 	}
 }

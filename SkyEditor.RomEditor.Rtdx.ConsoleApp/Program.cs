@@ -1,10 +1,12 @@
-﻿using AssetStudio;
-using SkyEditor.IO.FileSystem;
+﻿using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Rtdx.Domain;
 using SkyEditor.RomEditor.Rtdx.Domain.Automation;
+using SkyEditor.RomEditor.Rtdx.Domain.Library;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
 {
@@ -13,7 +15,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
         static void PrintUsage()
         {
             Console.WriteLine("Usage: ");
-            Console.WriteLine("dotnet SkyEditor.RomEditor.Rtdx.Console.dll <RomDirectory> <Script1.lua> [Script2.lua] [...] [--save | --save-to <RomDirectory>]");
+            Console.WriteLine("dotnet SkyEditor.RomEditor.Rtdx.Console.dll <RomDirectory|library:itemName> <Script1.lua|Command> [Script2.lua|Command2] [...] [--save | --save-to <RomDirectory>]");
             Console.WriteLine();
             Console.WriteLine("Examples: ");
             Console.WriteLine("dotnet SkyEditor.RomEditor.Rtdx.Console.dll ./RTDX ./Scripts/Queries/ListStarters.lua");
@@ -21,9 +23,17 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             Console.WriteLine("dotnet SkyEditor.RomEditor.Rtdx.Console.dll ./RTDX ./Scripts/Samples/ChangeStarters.lua --save-to ./RTDX-modified");
             Console.WriteLine("dotnet SkyEditor.RomEditor.Rtdx.Console.dll ./RTDX ./Scripts/Samples/ChangeStarters.lua ./Scripts/Hypothetical/ChangeMoreStarters.lua --save-to ./RTDX-modified");
             Console.WriteLine("dotnet SkyEditor.RomEditor.Rtdx.Console.dll ./RTDX ./Scripts/Queries/ListStarters.lua ./RTDX-Copy ./Scripts/Samples/ChangeStarters.lua ./Scripts/Hypothetical/ChangeMoreStarters.lua --save");
+            Console.WriteLine("dotnet SkyEditor.RomEditor.Rtdx.Console.dll ./RTDX Import MyRom");
+            Console.WriteLine("dotnet SkyEditor.RomEditor.Rtdx.Console.dll library:MyRom ./Scripts/Queries/ListStarters.lua");
+            Console.WriteLine();
+            Console.WriteLine("Built-in commands: ");
+            Console.WriteLine("Import <TargetName> - Adds the currently loaded ROM to the library for future ease of use");
+            Console.WriteLine("ListLibrary - Lists items in the library");
+            Console.WriteLine("Automate [Output.lua] - Creates a Lua change script to automate supported unsaved edits");
+
         }
 
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             if (args.Length < 2 || string.Equals(args[0], "--help", StringComparison.OrdinalIgnoreCase))
             {
@@ -31,75 +41,212 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                 return;
             }
 
-            var fileSystem = PhysicalFileSystem.Instance;
-            RtdxRom? rom = null;
-            SkyEditorLuaContext? context = null;
-            for (int i = 0; i < args.Length; i++)
+            var arguments = new Queue<string>();
+            foreach (var argument in args)
             {
-                if (string.Equals(args[i], "--save", StringComparison.OrdinalIgnoreCase))
+                arguments.Enqueue(argument);
+            }
+
+            var fileSystem = PhysicalFileSystem.Instance;
+            var context = new ConsoleContext
+            {
+                FileSystem = fileSystem,
+                RomLibrary = new RomLibrary("Library", fileSystem)
+            };
+
+            while (arguments.TryDequeue(out var arg))
+            {
+                if (string.Equals(arg, "--save", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (rom == null)
+                    if (context.Rom == null)
                     {
                         throw new InvalidOperationException("Argument '--save' must follow a ROM directory argument");
                     }
-                    rom.Save();
+                    context.Rom.Save();
                     Console.WriteLine("Saved");
                 }
-                else if (string.Equals(args[i], "--save-to", StringComparison.OrdinalIgnoreCase))
+                else if (string.Equals(arg, "--save-to", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (rom == null)
+                    if (context.Rom == null)
                     {
                         throw new InvalidOperationException("Argument '--save-to' must follow a ROM directory argument");
                     }
-                    if (i + 1 < args.Length)
+
+                    if (!arguments.TryDequeue(out var target))
                     {
                         throw new ArgumentException("Argument '--save-to' must be followed by a ROM directory argument");
                     }
-                    rom.Save(args[i + 1], fileSystem);
-                    Console.WriteLine("Saved to " + args[i + 1]);
+
+                    var targetDirectory = GetRomDirectory(target, context);
+
+                    context.Rom.Save(targetDirectory, fileSystem);
+                    Console.WriteLine("Saved to " + targetDirectory);
                 }
-                else if (Directory.Exists(args[i]))
+                else if (arg.StartsWith("library:"))
                 {
-                    rom = new RtdxRom(args[i], fileSystem);
-                    context = new SkyEditorLuaContext(rom);
-                    Console.WriteLine("Loaded " + args[i]);
+                    var libraryItemName = arg.Split(':', 2)[1];
+                    var libraryItem = context.RomLibrary.GetItem(libraryItemName);
+                    if (libraryItem == null)
+                    {
+                        throw new DirectoryNotFoundException($"Could not find a library item with the name '{libraryItemName}'");
+                    }
+                    context.Rom = new RtdxRom(libraryItem.FullPath, fileSystem);
+                    context.RomDirectory = libraryItem.FullPath;
+                    context.LuaContext = new SkyEditorScriptContext(context.Rom);
+                    Console.WriteLine($"Loaded {arg}");
                 }
-                else if (File.Exists(args[i]))
+                else if (Directory.Exists(arg))
                 {
-                    var extension = Path.GetExtension(args[i]);
+                    context.Rom = new RtdxRom(arg, fileSystem);
+                    context.RomDirectory = arg;
+                    context.LuaContext = new SkyEditorScriptContext(context.Rom);
+                    Console.WriteLine($"Loaded {arg}");
+                }
+                else if (File.Exists(arg))
+                {
+                    var extension = Path.GetExtension(arg);
                     if (string.Equals(extension, ".lua", StringComparison.OrdinalIgnoreCase))
                     {
-                        if (context == null)
+                        if (context.LuaContext == null)
                         {
                             throw new InvalidOperationException("ROM directory argument must precede Lua script argument");
                         }
 
-                        Console.WriteLine(args[i] + ": ");
-                        context.Execute(File.ReadAllText(args[i]));
+                        Console.WriteLine(arg + ": ");
+                        context.LuaContext.ExecuteLua(File.ReadAllText(arg));
                     }
                 }
-                else if (args[i] == "test")
+                else if (Commands.TryGetValue(arg, out var command))
                 {
-                    if (rom == null || context == null)
-                    {
-                        throw new InvalidOperationException("Argument 'test' must follow a ROM directory argument");
-                    }
-                    Test(rom, context);
+                    await command(arguments, context);
                 }
                 else
                 {
-                    Console.WriteLine($"Unrecognized argument '{args[i]}'");
+                    Console.WriteLine($"Unrecognized argument '{arg}'");
                     return;
                 }
             }
         }
 
+        private delegate Task ConsoleCommand(Queue<string> arguments, ConsoleContext context);
+
+        private static readonly Dictionary<string, ConsoleCommand> Commands = new Dictionary<string, ConsoleCommand>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "Import", Import },
+            { "ListLibrary", ListLibrary },
+            { "Automate", GenerateLuaChangeScript },
+            { "GenerateLuaChangeScript", GenerateLuaChangeScript },
+            { "LoadAssets", LoadAssets },
+            { "Test", Test }
+        };
+
+        private static async Task Import(Queue<string> arguments, ConsoleContext context)
+        {
+            if (context.RomDirectory == null)
+            {
+                throw new InvalidOperationException("Import must follow a ROM argument");
+            }
+
+            if (!arguments.TryDequeue(out var targetName))
+            {
+                throw new ArgumentException("Argument 'Import' must be followed by a target library item name");
+            }
+
+            Console.WriteLine($"Importing '{context.RomDirectory}' to library:{targetName}");
+            await context.RomLibrary.AddDirectoryAsync(context.RomDirectory, context.FileSystem, targetName);
+            Console.WriteLine("Import complete");
+        }
+
+        private static Task ListLibrary(Queue<string> arguments, ConsoleContext context)
+        {
+            Console.WriteLine("Items in library:");
+            foreach (var item in context.RomLibrary.GetItems().OrderBy(i => i.Name))
+            {
+                Console.WriteLine(item.Name);
+            }
+            return Task.CompletedTask;
+        }
+
+        private static Task GenerateLuaChangeScript(Queue<string> arguments, ConsoleContext context)
+        {
+            if (context.Rom == null)
+            {
+                throw new InvalidOperationException("Import must follow a ROM argument");
+            }
+            var script = context.Rom.GenerateLuaChangeScript();
+
+            Console.WriteLine("Change script:");
+            Console.WriteLine(script);
+
+            if (arguments.TryDequeue(out var targetFileName))
+            {
+                File.WriteAllText(targetFileName, script);
+            }
+
+            return Task.CompletedTask;
+        }
+
         /// <summary>
         /// Place C# code here for development/testing purposes, for when lua scripts either aren't enough or when more advanced debugging features are needed.
         /// </summary>
-        private static void Test(RtdxRom rom, SkyEditorLuaContext context)
+        private static Task LoadAssets(Queue<string> arguments, ConsoleContext context)
         {
-            var assets = rom.GetAssetBundles();
+            if (context.Rom == null)
+            {
+                throw new InvalidOperationException("LoadAssets must follow a ROM argument");
+            }
+
+#pragma warning disable IDE0059 // Unnecessary assignment of a value (Need it in a variable to browse it with the debugger)
+            var assets = context.Rom.GetAssetBundles();
+#pragma warning restore IDE0059 // Unnecessary assignment of a value
+            return Task.CompletedTask;
+        }
+
+        /// <summary>
+        /// For those times you need to throw together some temporary test code, but don't want to bother with Lua scripts
+        /// </summary>
+        /// <param name="arguments"></param>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        private static Task Test(Queue<string> arguments, ConsoleContext context)
+        {
+            if (context.Rom == null)
+            {
+                throw new InvalidOperationException("Test must follow a ROM argument");
+            }
+
+            var graphicsDatabase = context.Rom.GetPokemonGraphicsDatabase();
+            context.Rom.Save("test-output", PhysicalFileSystem.Instance);
+
+            return Task.CompletedTask;
+        }
+
+        private static string GetRomDirectory(string directoryOrLibrary, ConsoleContext context)
+        {
+            if (directoryOrLibrary.StartsWith("library:"))
+            {
+                var libraryItemName = directoryOrLibrary.Split(':', 2)[1];
+                var libraryItem = context.RomLibrary.GetItem(libraryItemName);
+                if (libraryItem == null)
+                {
+                    throw new DirectoryNotFoundException($"Could not find a library item with the name '{libraryItemName}'");
+                }
+                return libraryItem.FullPath;
+            }
+            else
+            {
+                return directoryOrLibrary;
+            }
+        }
+
+        private class ConsoleContext
+        {
+            public IFileSystem FileSystem { get; set; } = default!;
+            public IRomLibrary RomLibrary { get; set; } = default!;
+
+            public RtdxRom? Rom { get; set; }
+            public string? RomDirectory { get; set; }
+            public SkyEditorScriptContext? LuaContext { get; set; }
         }
     }
 }
