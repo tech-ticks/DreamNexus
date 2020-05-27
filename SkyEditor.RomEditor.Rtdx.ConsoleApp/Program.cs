@@ -1,6 +1,7 @@
 ﻿using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Rtdx.Domain;
 using SkyEditor.RomEditor.Rtdx.Domain.Automation;
+using SkyEditor.RomEditor.Rtdx.Domain.Automation.Modpacks;
 using SkyEditor.RomEditor.Rtdx.Domain.Library;
 using System;
 using System.Collections.Generic;
@@ -92,39 +93,26 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                     }
                     context.Rom = new RtdxRom(libraryItem.FullPath, fileSystem);
                     context.RomDirectory = libraryItem.FullPath;
-                    context.LuaContext = new SkyEditorScriptContext(context.Rom);
+                    context.ScriptContext = new SkyEditorScriptContext(context.Rom);
                     Console.WriteLine($"Loaded {arg}");
                 }
                 else if (Directory.Exists(arg))
                 {
-                    context.Rom = new RtdxRom(arg, fileSystem);
-                    context.RomDirectory = arg;
-                    context.LuaContext = new SkyEditorScriptContext(context.Rom);
-                    Console.WriteLine($"Loaded {arg}");
+                    if (File.Exists(Path.Combine(arg, "modpack.json")))
+                    {
+                        await ApplyMod(arg, context);
+                    }
+                    else
+                    {
+                        context.Rom = new RtdxRom(arg, fileSystem);
+                        context.RomDirectory = arg;
+                        context.ScriptContext = new SkyEditorScriptContext(context.Rom);
+                        Console.WriteLine($"Loaded {arg}");
+                    }
                 }
                 else if (File.Exists(arg))
                 {
-                    var extension = Path.GetExtension(arg);
-                    if (string.Equals(extension, ".lua", StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (context.LuaContext == null)
-                        {
-                            throw new InvalidOperationException("ROM directory argument must precede Lua script argument");
-                        }
-
-                        Console.WriteLine(arg + ": ");
-                        context.LuaContext.ExecuteLua(File.ReadAllText(arg));
-                    }
-                    else if (string.Equals(extension, ".csx", StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (context.LuaContext == null)
-                        {
-                            throw new InvalidOperationException("ROM directory argument must precede C# script argument");
-                        }
-
-                        Console.WriteLine(arg + ": ");
-                        await context.LuaContext.ExecuteCSharp(File.ReadAllText(arg));
-                    }
+                    await ApplyMod(arg, context);
                 }
                 else if (Commands.TryGetValue(arg, out var command))
                 {
@@ -136,6 +124,16 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                     return;
                 }
             }
+        }
+
+        private static async Task ApplyMod(string modPath, ConsoleContext context)
+        {
+            if (context.ScriptContext == null)
+            {
+                throw new InvalidOperationException("Modpack or script argument must follow a ROM argument");
+            }
+            var modpack = new Modpack(modPath, context.FileSystem);
+            await modpack.Apply(context.ScriptContext);
         }
 
         private delegate Task ConsoleCommand(Queue<string> arguments, ConsoleContext context);
@@ -276,7 +274,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
 
             public RtdxRom? Rom { get; set; }
             public string? RomDirectory { get; set; }
-            public SkyEditorScriptContext? LuaContext { get; set; }
+            public SkyEditorScriptContext? ScriptContext { get; set; }
         }
     }
 }

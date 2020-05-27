@@ -16,6 +16,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="SampleModpack\CSharpScript.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleModpack\Error.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleModpack\LastMod.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleModpack\modpack.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleModpack\ZLastFile.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Scripts\CSharp\SkyEditor.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

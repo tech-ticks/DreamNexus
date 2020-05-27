@@ -1,0 +1,1 @@
+﻿error("This file should not be executed because it's only included in a disabled mod")
