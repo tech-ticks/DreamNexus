@@ -29,7 +29,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             Console.WriteLine("Built-in commands: ");
             Console.WriteLine("Import <TargetName> - Adds the currently loaded ROM to the library for future ease of use");
             Console.WriteLine("ListLibrary - Lists items in the library");
-            Console.WriteLine("Automate [Output.lua] - Creates a Lua change script to automate supported unsaved edits");
+            Console.WriteLine("LuaGen [Output.lua] - Creates a Lua change script to automate supported unsaved edits");
 
         }
 
@@ -144,7 +144,8 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
         {
             { "Import", Import },
             { "ListLibrary", ListLibrary },
-            { "Automate", GenerateLuaChangeScript },
+            { "LuaGen", GenerateLuaChangeScript },
+            { "CSGen", GenerateCSharpChangeScript },
             { "GenerateLuaChangeScript", GenerateLuaChangeScript },
             { "LoadAssets", LoadAssets },
             { "Test", Test }
@@ -196,6 +197,25 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             return Task.CompletedTask;
         }
 
+        private static Task GenerateCSharpChangeScript(Queue<string> arguments, ConsoleContext context)
+        {
+            if (context.Rom == null)
+            {
+                throw new InvalidOperationException("Import must follow a ROM argument");
+            }
+            var script = context.Rom.GenerateCSharpChangeScript();
+
+            Console.WriteLine("Change script:");
+            Console.WriteLine(script);
+
+            if (arguments.TryDequeue(out var targetFileName))
+            {
+                File.WriteAllText(targetFileName, script);
+            }
+
+            return Task.CompletedTask;
+        }
+
         /// <summary>
         /// Place C# code here for development/testing purposes, for when lua scripts either aren't enough or when more advanced debugging features are needed.
         /// </summary>
@@ -225,7 +245,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                 throw new InvalidOperationException("Test must follow a ROM argument");
             }
 
-            var graphicsDatabase = context.Rom.GetPokemonGraphicsDatabase();
+            context.Rom.GetPokemonGraphicsDatabase();
             context.Rom.Save("test-output", PhysicalFileSystem.Instance);
 
             return Task.CompletedTask;

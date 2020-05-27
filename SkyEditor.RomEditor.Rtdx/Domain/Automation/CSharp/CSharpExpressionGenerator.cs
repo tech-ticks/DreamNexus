@@ -1,18 +1,19 @@
 ﻿using SkyEditor.RomEditor.Rtdx.Infrastructure;
 using System;
 using System.Collections.Generic;
+
 using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
 using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.waza.Index;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua
+namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.CSharp
 {
-    public interface ILuaExpressionGenerator : IScriptExpressionGenerator
+    public interface ICSharpExpressionGenerator : IScriptExpressionGenerator
     {
     }
 
-    public class CreatureIndexLuaExpressionGenerator : ILuaExpressionGenerator
+    public class CreatureIndexCSharpExpressionGenerator : ICSharpExpressionGenerator
     {
-        public CreatureIndexLuaExpressionGenerator(ICommonStrings? commonStrings = null)
+        public CreatureIndexCSharpExpressionGenerator(ICommonStrings? commonStrings = null)
         {
             this.commonStrings = commonStrings;
         }
@@ -29,18 +30,18 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua
             string? friendlyName = commonStrings?.Pokemon?.GetValueOrDefault(index);
             if (!string.IsNullOrEmpty(friendlyName))
             {
-                return $"Const.creature.Index.{obj:f} --[[{friendlyName}]]";
+                return $"CreatureIndex.{obj:f} /* {friendlyName} */";
             }
             else
             {
-                return $"Const.creature.Index.{obj:f}";
+                return $"CreatureIndex.{obj:f}";
             }
         }
     }
 
-    public class WazaIndexLuaExpressionGenerator : ILuaExpressionGenerator
+    public class WazaIndexCSharpExpressionGenerator : ICSharpExpressionGenerator
     {
-        public WazaIndexLuaExpressionGenerator(ICommonStrings? commonStrings = null)
+        public WazaIndexCSharpExpressionGenerator(ICommonStrings? commonStrings = null)
         {
             this.commonStrings = commonStrings;
         }
@@ -57,11 +58,11 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua
             string? friendlyName = commonStrings?.Moves?.GetValueOrDefault(index);
             if (!string.IsNullOrEmpty(friendlyName))
             {
-                return $"Const.waza.Index.{obj:f} --[[{friendlyName}]]";
+                return $"WazaIndex.{obj:f} /* {friendlyName} */";
             }
             else
             {
-                return $"Const.waza.Index.{obj:f}";
+                return $"WazaIndex.{obj:f}";
             }
         }
     }
