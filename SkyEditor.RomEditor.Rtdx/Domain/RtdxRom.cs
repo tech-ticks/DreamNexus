@@ -332,9 +332,38 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             // To-do: save commonStrings when implemented
             // To-do: save messageBin when implemented
             // To-do: save pokemonFormDatabase when implemented
-            // To-do: save dungeonBalance when implemented
-            // To-do: save dungeonExtra when implemented
 
+            if (dungeonDataInfo != null)
+            {
+                var path = GetDungeonDataInfoPath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllBytes(path, dungeonDataInfo.ToByteArray());
+            }
+            // To-do: save dungeonBalance when implemented
+            /*if (dungeonBalance != null)
+            {
+                var path = GetDungeonBalancePath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                var (binData, entData) = dungeonDataInfo.Build(); // The idea here is to write the .bin and .ent files in one go
+                fileSystem.WriteAllBytes(path + ".bin", binData);
+                fileSystem.WriteAllBytes(path + ".ent", entData);
+            }*/
+            // To-do: save dungeonExtra when implemented
+            /*if (dungeonExtra != null)
+            {
+                var path = GetDungeonExtraPath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllBytes(path, dungeonExtra.ToByteArray()); // Similar to pokemonGraphicsDatabase
+            }*/
             if (pokemonGraphicsDatabase != null)
             {
                 var path = GetPokemonGraphicsDatabasePath(directory);

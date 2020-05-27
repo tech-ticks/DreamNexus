@@ -1,6 +1,7 @@
 ﻿using SkyEditor.IO.Binary;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 
@@ -10,7 +11,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 {
     public class DungeonDataInfo
     {
-        private const int EntrySize = 0x1C;
+        public const int EntrySize = 0x1C;
 
         public IDictionary<DungeonIndex, DungeonDataInfoEntry> Entries { get; }
 
@@ -26,9 +27,33 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             this.Entries = entries;
         }
 
+        public DungeonDataInfo()
+        {
+            Entries = new Dictionary<DungeonIndex, DungeonDataInfoEntry>();
+            for (int i = 0; i < (int)DungeonIndex.END; i++)
+            {
+                Entries.Add((DungeonIndex)i, new DungeonDataInfoEntry());
+            }
+        }
+
+        public byte[] ToByteArray()
+        {
+            var file = new BinaryFile(new byte[Entries.Count * EntrySize]);
+            long offset = 0;
+            foreach (var entry in Entries.ToImmutableSortedDictionary())
+            {
+                entry.Value.Write(file.Slice(offset, EntrySize));
+                offset += EntrySize;
+            }
+            return file.ReadArray();
+        }
+
         [DebuggerDisplay("DungeonDataInfoEntry: {Index}|{Features}|{Short08}|{Short0A}|{SortKey}|{DungeonBalanceIndex}|{Byte13}|{MaxItems}|{MaxTeammates}|{Byte17}|{Byte18}|{Byte19}")]
         public class DungeonDataInfoEntry
         {
+            public DungeonDataInfoEntry()
+            { }
+
             public DungeonDataInfoEntry(IReadOnlyBinaryDataAccessor data)
             {
                 Features = (Feature)data.ReadInt32(0x00);
@@ -43,6 +68,23 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 Byte17 = data.ReadByte(0x17);
                 Byte18 = data.ReadByte(0x18);
                 Byte19 = data.ReadByte(0x19);
+                // All unread bytes are zero
+            }
+
+            public void Write(IBinaryDataAccessor data)
+            {
+                data.WriteInt32(0x00, (int)Features);
+                data.WriteInt32(0x04, Index);
+                data.WriteInt16(0x08, Short08);
+                data.WriteInt16(0x0A, Short0A);
+                data.WriteInt32(0x0C, SortKey);
+                data.Write(0x12, DungeonBalanceIndex);
+                data.Write(0x13, Byte13);
+                data.Write(0x14, MaxItems);
+                data.Write(0x15, MaxTeammates);
+                data.Write(0x17, Byte17);
+                data.Write(0x18, Byte18);
+                data.Write(0x19, Byte19);
             }
 
             // TODO: things to check:
@@ -76,12 +118,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 // bits 19+ are always 0
             }
 
-            public readonly Feature Features;
-            public int Index { get; }
-            public short Short08 { get; }
-            public short Short0A { get; }
-            public int SortKey { get; }
-            public byte DungeonBalanceIndex { get; }
+            public Feature Features { get; set; }
+            public int Index { get; set; }
+            public short Short08 { get; set; }
+            public short Short0A { get; set; }
+            public int SortKey { get; set; }
+            public byte DungeonBalanceIndex { get; set; }
 
             // This is either 100 or 255.
             // Dungeons with value = 255:
@@ -91,12 +133,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             // - Meteor Cave
             // - Makuhita Dojo
             // - Illusory Grotto
-            public byte Byte13 { get; }
-            public byte MaxItems { get; }
-            public byte MaxTeammates { get; }
-            public byte Byte17 { get; }  // always 32
-            public byte Byte18 { get; }
-            public byte Byte19 { get; }
+            public byte Byte13 { get; set; }
+            public byte MaxItems { get; set; }
+            public byte MaxTeammates { get; set; }
+            public byte Byte17 { get; set; }  // always 32
+            public byte Byte18 { get; set; }
+            public byte Byte19 { get; set; }
         }
     }
 }
