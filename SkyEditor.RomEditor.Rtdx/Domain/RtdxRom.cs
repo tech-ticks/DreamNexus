@@ -183,7 +183,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (dungeonDataInfo == null)
             {
-                dungeonDataInfo = new DungeonDataInfo(fileSystem.ReadAllBytes(GetDungeonDataInfoPath(this.RomDirectory)));
+                dungeonDataInfo = new DungeonDataInfo(FileSystem.ReadAllBytes(GetDungeonDataInfoPath(this.RomDirectory)));
             }
             return dungeonDataInfo;
         }
@@ -194,7 +194,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (dungeonExtra == null)
             {
-                dungeonExtra = new DungeonExtra(fileSystem.ReadAllBytes(GetDungeonExtraPath(this.RomDirectory)));
+                dungeonExtra = new DungeonExtra(FileSystem.ReadAllBytes(GetDungeonExtraPath(this.RomDirectory)));
             }
             return dungeonExtra;
         }
@@ -205,7 +205,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (dungeonBalance == null)
             {
-                dungeonBalance = new DungeonBalance(fileSystem.ReadAllBytes(GetDungeonBalancePath(this.RomDirectory) + ".bin"), fileSystem.ReadAllBytes(GetDungeonBalancePath(this.RomDirectory) + ".ent"));
+                dungeonBalance = new DungeonBalance(FileSystem.ReadAllBytes(GetDungeonBalancePath(this.RomDirectory) + ".bin"), FileSystem.ReadAllBytes(GetDungeonBalancePath(this.RomDirectory) + ".ent"));
             }
             return dungeonBalance;
         }

@@ -94,15 +94,6 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             var nameHash = TextIdValues.GetValueOrDefault("POKEMON_NAME__POKEMON_" + internalName.ToUpper());
             return common.Strings.GetValueOrDefault(nameHash);
         }
-
-        /// <summary>
-        /// Gets the name of a dungeon by the internal Japanese name.
-        /// </summary>
-        public string? GetDungeonNameByInternalName(string internalName)
-        {
-            var nameHash = TextIdValues.GetValueOrDefault("DUNGEON_NAME__DUNGEON_" + internalName.ToUpper());
-            return common.Strings.GetValueOrDefault(nameHash);
-        }
 		
         /// <summary>
         /// Gets the name of a move by the internal Japanese name.
@@ -110,6 +101,15 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         public string? GetMoveNameByInternalName(string internalName)
         {
             var nameHash = TextIdValues.GetValueOrDefault("WAZA_NAME__WAZA_" + internalName.ToUpper());
+            return common.Strings.GetValueOrDefault(nameHash);
+        }
+
+        /// <summary>
+        /// Gets the name of a dungeon by the internal Japanese name.
+        /// </summary>
+        public string? GetDungeonNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("DUNGEON_NAME__DUNGEON_" + internalName.ToUpper());
             return common.Strings.GetValueOrDefault(nameHash);
         }
     }

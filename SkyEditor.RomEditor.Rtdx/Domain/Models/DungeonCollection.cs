@@ -1,17 +1,18 @@
-﻿using SkyEditor.RomEditor.Rtdx.Domain.Structures;
-using SkyEditor.RomEditor.Rtdx.Reverse;
+﻿using SkyEditor.RomEditor.Rtdx.Infrastructure;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using static SkyEditor.RomEditor.Rtdx.Domain.Structures.DungeonBalance;
-using static SkyEditor.RomEditor.Rtdx.Domain.Structures.DungeonDataInfo;
 using DungeonIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.dungeon.Index;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain.Models
 {
-    public class DungeonCollection
+    public interface IDungeonCollection
+    {
+        IDungeonModel[] Dungeons { get; }
+        IDungeonModel? GetDungeonById(DungeonIndex id);
+    }
+
+    public class DungeonCollection : IDungeonCollection
     {
         public DungeonCollection(IRtdxRom rom)
         {
@@ -22,9 +23,14 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
 
         protected readonly IRtdxRom rom;
 
-        public DungeonModel[] Dungeons { get; }
+        public IDungeonModel[] Dungeons { get; }
 
-        private DungeonModel[] LoadDungeons()
+        public IDungeonModel? GetDungeonById(DungeonIndex id)
+        {
+            return Dungeons.FirstOrDefault(s => s.DungeonId == id);
+        }
+
+        private IDungeonModel[] LoadDungeons()
         {
             var commonStrings = rom.GetCommonStrings();
             var dungeonData = rom.GetDungeonDataInfo();
@@ -34,33 +40,15 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
             var dungeons = new List<DungeonModel>();
             foreach (var dungeon in dungeonData.Entries)
             {
-                dungeons.Add(new DungeonModel(commonStrings)
+                dungeons.Add(new DungeonModel(commonStrings, dungeon.Value)
                 {
                     DungeonId = dungeon.Key,
-                    Data = dungeon.Value,
                     Extra = dungeonExtra.Entries.GetValueOrDefault(dungeon.Key),
                     Balance = dungeonBalance.Entries[dungeon.Value.DungeonBalanceIndex]
                 });
             }
             dungeons.Sort((d1, d2) => d1.Data.SortKey.CompareTo(d2.Data.SortKey));
             return dungeons.ToArray();
-        }
-
-        [DebuggerDisplay("DungeonModel: {DungeonId} -> {DungeonName}")]
-        public class DungeonModel
-        {
-            public DungeonModel(ICommonStrings commonStrings)
-            {
-                this.commonStrings = commonStrings ?? throw new ArgumentNullException(nameof(commonStrings));
-            }
-
-            private readonly ICommonStrings commonStrings;
-
-            public DungeonIndex DungeonId { get; set; }
-            public DungeonDataInfoEntry Data { get; set; }  // TODO: copy from the entry instead of referencing it
-            public DungeonExtraEntry Extra { get; set; }  // TODO: copy from the entry instead of referencing it
-            public DungeonBalanceEntry Balance { get; set; }  // TODO: copy from the entry instead of referencing it
-            public string DungeonName => commonStrings.Dungeons.GetValueOrDefault(DungeonId) ?? $"(Unknown: {DungeonId})";
         }
     }
 }
