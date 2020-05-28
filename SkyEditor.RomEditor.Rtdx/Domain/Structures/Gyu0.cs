@@ -120,7 +120,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 // Otherwise, try copying the least amount of data followed by one of the algorithms.
                 var nextOffset = dataOffset;
                 var shortest = TryCompress(input, output, dataOffset);
-                var length = 2;
+                var length = 1;
                 var copy = new byte[0];
                 while (shortest == null && length < 0x20 && dataOffset + length <= input.Length)
                 {
@@ -175,7 +175,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
         private static byte[] CompressCopy(IReadOnlyBinaryDataAccessor data, long offset, int count)
         {
-            if (count < 2 || count > 0x20) throw new ArgumentOutOfRangeException(nameof(count));
+            if (count < 1 || count > 0x20) throw new ArgumentOutOfRangeException(nameof(count));
             return new byte[] { (byte)(0x80 + count - 1) }.Concat(data.ReadArray(offset, count)).ToArray();
         }
 
