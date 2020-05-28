@@ -28,13 +28,62 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             }
         }
 
-        public DungeonBalanceEntry[] Entries { get; }
+        public DungeonBalance()
+        {
+            Entries = new DungeonBalanceEntry[(int)DungeonIndex.END];
+            for (int i = 0; i < (int)DungeonIndex.END; i++)
+            {
+                Entries[i] = new DungeonBalanceEntry(0);
+            }
+        }
+
+        public (byte[] bin, byte[] ent) Build()
+        {
+            MemoryStream bin = new MemoryStream();
+            var entryPointers = new List<int>();
+
+            // Build the .bin file data
+            entryPointers.Add(0);
+            foreach (var entry in Entries)
+            {
+                // Build SIR0 and compress to GYU0
+                var sir0 = entry.ToSir0();
+                var data = Gyu0.Compress(sir0.Data);
+
+                // Write data to .bin and the pointer to .ent
+                // Align data to 16 bytes
+                var binData = data.ReadArray();
+                bin.Write(binData, 0, binData.Length);
+                var paddingLength = 16 - (bin.Length % 16);
+                if (paddingLength != 16)
+                {
+                    bin.SetLength(bin.Length + paddingLength);
+                    bin.Position = bin.Length;
+                }
+                entryPointers.Add((int)bin.Position);
+            }
+
+            // Build the .ent file data
+            var ent = new byte[entryPointers.Count * sizeof(int)];
+            for (int i = 0; i < entryPointers.Count; i++)
+            {
+                BitConverter.GetBytes(entryPointers[i]).CopyTo(ent, i * sizeof(int));
+            }
+
+            return (bin.ToArray(), ent);
+        }
+
+        public DungeonBalanceEntry[] Entries { get; set; }
 
         public class DungeonBalanceEntry
         {
-            public DungeonBalanceEntry()
+            public DungeonBalanceEntry(short floorCount)
             {
-                FloorInfos = new FloorInfoEntry[0];
+                FloorInfos = new FloorInfoEntry[floorCount];
+                for (short i = 0; i < floorCount; i++)
+                {
+                    FloorInfos[i] = new FloorInfoEntry(i);
+                }
             }
 
             public DungeonBalanceEntry(IReadOnlyBinaryDataAccessor accessor)
@@ -83,22 +132,22 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                     sir0.Write(sir0.Length, floor.ToByteArray());
                 }
 
-                var wildPokemonPointer = sir0.Length;
                 align(16);
+                var wildPokemonPointer = sir0.Length;
                 if (WildPokemon != null)
                 {
                     sir0.Write(sir0.Length, WildPokemon.ToSir0().Data.ReadArray());
                 }
 
-                var data3Pointer = sir0.Length;
                 align(16);
+                var data3Pointer = sir0.Length;
                 if (Data3 != null)
                 {
                     sir0.Write(sir0.Length, Data3.ToSir0().Data.ReadArray());
                 }
 
-                var data4Pointer = sir0.Length;
                 align(16);
+                var data4Pointer = sir0.Length;
                 if (Data4 != null)
                 {
                     sir0.Write(sir0.Length, Data4.ToSir0().Data.ReadArray());
@@ -114,45 +163,10 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 return sir0.Build();
             }
 
-            public FloorInfoEntry[] FloorInfos { get; }
-            public WildPokemonInfo? WildPokemon { get; }
-            public DungeonBalanceDataEntry3? Data3 { get; }
-            public DungeonBalanceDataEntry4? Data4 { get; }
-        }
-
-        public (byte[] bin, byte[] ent) Build()
-        {
-            MemoryStream bin = new MemoryStream();
-            var entryPointers = new List<int>();
-
-            // Build the .bin file data
-            entryPointers.Add(0);
-            foreach (var entry in Entries)
-            {
-                // Build SIR0 and compress to GYU0
-                var data = Gyu0.Compress(entry.ToSir0().Data);
-
-                // Write data to .bin and the pointer to .ent
-                // Align data to 16 bytes
-                var paddingLength = 16 - (bin.Length % 16);
-                if (paddingLength != 16)
-                {
-                    bin.SetLength(bin.Length + paddingLength);
-                    bin.Position = bin.Length;
-                }
-                var binData = data.ReadArray();
-                bin.Write(binData, 0, binData.Length);
-                entryPointers.Add((int)bin.Position);
-            }
-
-            // Build the .ent file data
-            var ent = new byte[entryPointers.Count * sizeof(int)];
-            for (int i = 0; i < entryPointers.Count; i++)
-            {
-                BitConverter.GetBytes(entryPointers[i]).CopyTo(ent, i * sizeof(int));
-            }
-
-            return (bin.ToArray(), ent);
+            public FloorInfoEntry[] FloorInfos { get; set; }
+            public WildPokemonInfo? WildPokemon { get; set; }
+            public DungeonBalanceDataEntry3? Data3 { get; set; }
+            public DungeonBalanceDataEntry4? Data4 { get; set; }
         }
 
         [DebuggerDisplay("{Index} : {Event}|{Short02}")]
@@ -400,6 +414,11 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                     }
                 }
 
+                public FloorInfo()
+                {
+                    Entries = new Entry[0];
+                }
+
                 [DebuggerDisplay("{PokemonIndex} : {SpawnRate}|{RecruitmentLevel}|{Byte0B}")]
                 public class Entry
                 {
@@ -461,7 +480,11 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
             public DungeonBalanceDataEntry3()
             {
-                Records = new Record[0];
+                Records = new Record[99];
+                for (int i = 0; i < 99; i++)
+                {
+                    Records[i] = new Record();
+                }
             }
 
             public Sir0 ToSir0()
@@ -500,6 +523,10 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 public Record()
                 {
                     Entries = new Entry[33];
+                    for (int i = 0; i < 33; i++)
+                    {
+                        Entries[i] = new Entry();
+                    }
                 }
 
                 public byte[] ToByteArray()
@@ -566,7 +593,11 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
             public DungeonBalanceDataEntry4()
             {
-                Records = new Record[0];
+                Records = new Record[45];
+                for (int i = 0; i < 45; i++)
+                {
+                    Records[i] = new Record();
+                }
             }
 
             public Sir0 ToSir0()
@@ -606,6 +637,10 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 public Record()
                 {
                     Entries = new Entry[46];
+                    for (int i = 0; i < 46; i++)
+                    {
+                        Entries[i] = new Entry();
+                    }
                 }
 
                 public byte[] ToByteArray()
