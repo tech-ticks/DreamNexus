@@ -15,7 +15,7 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
         public void CanCompressData()
         {
             // Arrange
-            var testData = new byte[] { 55, 66, 55, 66, 77, 0, 11, 0, 22, 0, 33, 0, 0, 0, 0, 44, 44, 44, 44, 55, 66, 77 };
+            var testData = new byte[] { 55, 66, 55, 66, 77, 88, 0, 11, 0, 22, 0, 33, 0, 22, 0, 11, 0, 0, 0, 0, 0, 0, 0, 44, 44, 44, 44, 44, 44, 44, 55, 66, 77, 88, 99 };
 
             // Act
             var compressed = Gyu0.Compress(new BinaryFile(testData));
