@@ -298,7 +298,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 }
 
                 if (matchLength < 2) return new CompressionResult();
-                var matchOffset = matchPos - offset;
+                var matchOffset = matchPos - maxLookbehindDistance;
 
                 return new CompressionResult(matchLength, new byte[] {
                     (byte)((byte)((matchLength - 2) << 2) | (byte)((matchOffset >> 8) & 3)),
