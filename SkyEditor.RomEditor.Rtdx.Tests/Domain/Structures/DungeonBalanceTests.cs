@@ -149,7 +149,6 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
             rebuiltD001.FloorInfos[0].Byte36.Should().Be(0x36);
             rebuiltD001.FloorInfos[0].InvitationIndex.Should().Be(0x54);
 
-            // TODO: assert these
             rebuiltD001.WildPokemon.Should().NotBeNull();
             var rebuiltD001Bulbasaur = rebuiltD001.WildPokemon.Stats[(int)CreatureIndex.FUSHIGIDANE];
             rebuiltD001Bulbasaur.Index.Should().Be((int)CreatureIndex.FUSHIGIDANE);
