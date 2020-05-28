@@ -96,178 +96,202 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
         public static IBinaryDataAccessor Compress(IReadOnlyBinaryDataAccessor input)
         {
-            var output = new BinaryFile(new byte[input.Length / 2]);
+            var output = new MemoryStream((int)input.Length / 2);
+            var inputData = input.ReadArray();
 
-            var outPos = 0;
-            void writeOut(byte[] data, bool incPos)
-            {
-                if (data.Length + outPos >= output.Length)
-                {
-                    output.SetLength((data.Length + outPos) * 2);
-                }
-                output.Write(outPos, data);
-                if (incPos) outPos += data.Length;
-            }
+            void writeArray(byte[] array) {
+                output.Write(array, 0, array.Length);
+            };
 
-            writeOut(Encoding.ASCII.GetBytes("GYU0"), true);
-            writeOut(BitConverter.GetBytes((int)input.Length), true);
+            writeArray(Encoding.ASCII.GetBytes("GYU0"));
+            writeArray(BitConverter.GetBytes(inputData.Length));
 
             long dataOffset = 0;
-            while (dataOffset < input.Length)
+            var compressionResult = new CompressionResult();
+            while (dataOffset < inputData.LongLength)
             {
                 // Try each of the compression algorithms without copying data first.
                 // If we get a result, write that to the output right away.
                 // Otherwise, try copying the least amount of data followed by one of the algorithms.
-                var nextOffset = dataOffset;
-                var shortest = TryCompress(input, dataOffset);
-                var length = 1;
-                var copy = new byte[0];
-                while (shortest == null && length < 0x20 && dataOffset + length <= input.Length)
+                TryCompress(inputData, dataOffset, output, ref compressionResult);
+                if (!compressionResult.Valid)
                 {
-                    copy = CompressCopy(input, dataOffset, length);
-                    writeOut(copy, false);
-                    nextOffset = dataOffset + length;
-                    shortest = TryCompress(input, nextOffset);
-                    length++;
+                    var copyOffset = dataOffset;
+                    var copyCommandOffset = output.Position;
+                    output.Position++;
+                    while (!compressionResult.Valid && copyOffset - dataOffset < 31 && copyOffset < inputData.LongLength)
+                    {
+                        output.WriteByte(inputData[copyOffset]);
+                        copyOffset++;
+                        TryCompress(inputData, copyOffset, output, ref compressionResult);
+                    }
+                    var currPos = output.Position;
+                    output.Position = copyCommandOffset;
+                    output.WriteByte((byte)(0x80 + copyOffset - dataOffset - 1));
+                    output.Position = currPos;
+                    dataOffset = copyOffset;
                 }
-                dataOffset = nextOffset;
-                outPos += copy.Length;
-                if (shortest != null)
+                if (compressionResult.Valid)
                 {
-                    writeOut(shortest.Output, true);
-                    dataOffset += shortest.InputByteCount;
+                    dataOffset += compressionResult.InputByteCount;
                 }
             }
 
             // Write EOF marker
-            writeOut(new byte[] { 0x7F, 0xFF }, true);
-            output.SetLength(outPos);
-            return output;
+            output.WriteByte(0x7F);
+            output.WriteByte(0xFF);
+            // Trim any excess bytes that may have been written by the TryCompress* methods
+            output.SetLength(output.Position);
+            return new BinaryFile(output.ToArray());
         }
 
         private class CompressionResult
         {
-            /// <summary>
-            /// Constructs a compression result indicating failure to compress data.
-            /// </summary>
-            public CompressionResult()
-            {
-                InputByteCount = 0;
-                Output = new byte[0];
-            }
-
-            /// <summary>
-            /// Constructs a compression result indicating success.
-            /// </summary>
-            /// <param name="inputByteCount">The number of bytes compressed</param>
-            /// <param name="output">The compressed output</param>
-            public CompressionResult(long inputByteCount, byte[] output)
-            {
-                InputByteCount = inputByteCount;
-                Output = output;
-            }
-
-            public readonly long InputByteCount;
-            public readonly byte[] Output;
-            public float CompressionRatio => Valid ? (InputByteCount / Output.Length) : 0;
+            public long InputByteCount { get; set; }
+            public long OutputByteCount { get; set; }
+            public float CompressionRatio => Valid ? ((float)InputByteCount / OutputByteCount) : 0;
             public bool Valid => (InputByteCount != 0);
         }
 
-        private static byte[] CompressCopy(IReadOnlyBinaryDataAccessor data, long offset, int count)
+        private static void TryCompress(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
         {
-            if (count < 1 || count > 0x20) throw new ArgumentOutOfRangeException(nameof(count));
-            return new byte[] { (byte)(0x80 + count - 1) }.Concat(data.ReadArray(offset, count)).ToArray();
+            var outputPos = output.Position;
+            result.InputByteCount = 0;
+            TryCompressSplitCopy(data, offset, output, ref result);
+            output.Position = outputPos;
+
+            TryCompressFill(data, offset, output, ref result);
+            output.Position = outputPos;
+
+            TryCompressSkip(data, offset, output, ref result);
+            output.Position = outputPos;
+
+            // FIXME: Redesign this algorithm; too slow
+            // - Move to the main loop
+            // - Use a rolling window instead of recomputing every time
+            //TryCompressPrevious(data, offset, output, ref result);
+            //output.Position = outputPos;
+
+            if (result.Valid) output.Position += result.OutputByteCount;
         }
 
-        private static CompressionResult TryCompress(IReadOnlyBinaryDataAccessor data, long offset)
-        {
-            // Choose the option with the best compression ratio, or failure if none worked
-            CompressionResult[] options = {
-                TryCompressSplitCopy(data, offset),
-                TryCompressFill(data, offset),
-                TryCompressSkip(data, offset),
-                TryCompressPrevious(data, offset)
-            };
-            return options.Where(x => x.Valid).OrderByDescending(x => x?.CompressionRatio).FirstOrDefault();
-        }
-
-        private static CompressionResult TryCompressSplitCopy(IReadOnlyBinaryDataAccessor data, long offset)
+        private static void TryCompressSplitCopy(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
         {
             try
             {
-                var sep = data.ReadByte(offset);
+                var sep = data[offset];
                 var count = 1;
-                var bytes = new List<byte> { data.ReadByte(offset + 1) };
-                while (data.ReadByte(offset + count * 2) == sep && data.ReadByte(offset + count * 2 + 1) != sep && count < 0x21)
+                while (data[offset + count * 2] == sep && data[offset + count * 2 + 1] != sep && count < 0x21)
                 {
-                    bytes.Add(data.ReadByte(offset + count * 2 + 1));
                     count++;
                 }
-                if (count < 2) return new CompressionResult();
-                return new CompressionResult(count * 2, new byte[] { (byte)(0xA0 + count - 2), sep }.Concat(bytes).ToArray());
+
+                if (count >= 2)
+                {
+                    var compressionRatio = count * 2.0f / (2.0f + count);
+                    if (compressionRatio > result.CompressionRatio)
+                    {
+                        result.InputByteCount = count * 2;
+                        result.OutputByteCount = 2 + count;
+                        output.WriteByte((byte)(0xA0 + count - 2));
+                        output.WriteByte(sep);
+                        for (int i = 0; i < count; i++)
+                        {
+                            output.WriteByte(data[offset + i * 2 + 1]);
+                        }
+                    }
+                }
             }
             catch (IndexOutOfRangeException)
             {
                 // EOF means failure
-                return new CompressionResult();
             }
         }
 
-        private static CompressionResult TryCompressFill(IReadOnlyBinaryDataAccessor data, long offset)
+        private static void TryCompressFill(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
         {
             try
             {
-                var fill = data.ReadByte(offset);
+                var fill = data[offset];
                 var count = 1;
-                while (data.ReadByte(offset + count) == fill && count < 0x21)
+                while (data[offset + count] == fill && count < 0x21)
                 {
                     count++;
                 }
-                if (count < 2) return new CompressionResult();
-                return new CompressionResult(count, new byte[] { (byte)(0xC0 + count - 2), fill });
+
+                if (count >= 2)
+                {
+                    var compressionRatio = count * 0.5f;
+                    if (compressionRatio > result.CompressionRatio)
+                    {
+                        result.InputByteCount = count;
+                        result.OutputByteCount = 2;
+                        output.WriteByte((byte)(0xC0 + count - 2));
+                        output.WriteByte(fill);
+                    }
+                }
             }
             catch (IndexOutOfRangeException)
             {
                 // EOF means failure
-                return new CompressionResult();
             }
         }
 
-        private static CompressionResult TryCompressSkip(IReadOnlyBinaryDataAccessor data, long offset)
+        private static void TryCompressSkip(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
         {
             try
             {
                 var count = 0;
-                while (data.ReadByte(offset + count) == 0 && count < 0x11F)
+                while (data[offset + count] == 0 && count < 0x11F)
                 {
                     count++;
                 }
-                if (count == 0) return new CompressionResult();
-                if (count < 0x1F) return new CompressionResult(count, new byte[] { (byte)(0xE0 + count - 1) });
-                return new CompressionResult(count, new byte[] { 0xFF, (byte)(count - 0x20) });
+                if (count > 0)
+                {
+                    if (count < 0x1F)
+                    {
+                        var compressionRatio = count;
+                        if (compressionRatio > result.CompressionRatio)
+                        {
+                            result.InputByteCount = count;
+                            result.OutputByteCount = 1;
+                            output.WriteByte((byte)(0xE0 + count - 1));
+                        }
+                    }
+                    else
+                    {
+                        var compressionRatio = count * 0.5f;
+                        if (compressionRatio > result.CompressionRatio)
+                        {
+                            result.InputByteCount = count;
+                            result.OutputByteCount = 2;
+                            output.WriteByte(0xFF);
+                            output.WriteByte((byte)(count - 0x20));
+                        }
+                    }
+                }
             }
             catch (IndexOutOfRangeException)
             {
                 // EOF means failure
-                return new CompressionResult();
             }
         }
 
-        private static CompressionResult TryCompressPrevious(IReadOnlyBinaryDataAccessor data, long offset)
+        private static void TryCompressPrevious(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
         {
             // Don't waste time trying to look behind if there's nothing written yet
-            if (offset == 0) return new CompressionResult();
+            if (offset == 0) return;
 
             try
             {
                 // Search output up to 0x400 bytes behind for the longest subsequence of bytes found in data starting at offset.
                 // The common substring must be between 2 and 33 bytes long.
                 var maxLookbehindDistance = Math.Min(0x400, (int)offset);
-                if (maxLookbehindDistance < 2) return new CompressionResult();
+                if (maxLookbehindDistance < 2) return;
                 var maxLength = Math.Min(33, (int)Math.Min(maxLookbehindDistance, data.Length - offset));
 
-                var lookbehindData = data.Slice(offset - maxLookbehindDistance, maxLookbehindDistance);
-                var lookaheadData = data.Slice(offset, maxLength);
+                var lookbehindData = new Span<byte>(data, (int)(offset - maxLookbehindDistance), maxLookbehindDistance);
+                var lookaheadData = new Span<byte>(data, (int)offset, maxLength);
 
                 int matchLength = 0;
                 int matchPos = -1;
@@ -281,7 +305,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                         {
                             longestCommonSuffixes[i, j] = 0;
                         }
-                        else if (lookbehindData.ReadByte(i - 1) == lookaheadData.ReadByte(j - 1))
+                        else if (lookbehindData[i - 1] == lookaheadData[j - 1])
                         {
                             longestCommonSuffixes[i, j] = longestCommonSuffixes[i - 1, j - 1] + 1;
                             if (longestCommonSuffixes[i, j] > matchLength && longestCommonSuffixes[i, j] == j)
@@ -297,18 +321,23 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                     }
                 }
 
-                if (matchLength < 2) return new CompressionResult();
-                var matchOffset = matchPos - maxLookbehindDistance;
+                if (matchLength >= 2)
+                {
+                    var compressionRatio = matchLength * 0.5f;
+                    if (compressionRatio > result.CompressionRatio)
+                    {
+                        var matchOffset = matchPos - maxLookbehindDistance;
 
-                return new CompressionResult(matchLength, new byte[] {
-                    (byte)((byte)((matchLength - 2) << 2) | (byte)((matchOffset >> 8) & 3)),
-                    (byte)(matchOffset & 0xFF)
-                });
+                        result.InputByteCount = matchLength;
+                        result.OutputByteCount = 2;
+                        output.WriteByte((byte)((byte)((matchLength - 2) << 2) | (byte)((matchOffset >> 8) & 3)));
+                        output.WriteByte((byte)(matchOffset & 0xFF));
+                    }
+                }
             }
             catch (IndexOutOfRangeException)
             {
                 // EOF means failure
-                return new CompressionResult();
             }
         }
     }
