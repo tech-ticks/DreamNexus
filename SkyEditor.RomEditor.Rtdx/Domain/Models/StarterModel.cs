@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
 using NatureType = SkyEditor.RomEditor.Rtdx.Reverse.NDConverterSharedData.NatureType;
@@ -32,7 +31,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
     }
 
     [DebuggerDisplay("StarterModel: {PokemonName}")]
-    public class StarterModel
+    public class StarterModel : IStarterModel
     {
         public StarterModel(ICommonStrings commonStrings)
         {
@@ -57,7 +56,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
         public NatureType? MaleNature { get; set; }
         public NatureType? FemaleNature { get; set; }
 
-        public StarterModel Clone()
+        public IStarterModel Clone()
         {
             return new StarterModel(commonStrings)
             {

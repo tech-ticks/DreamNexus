@@ -3,25 +3,10 @@ using System;
 using System.Reflection;
 using System.Text;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
+namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua
 {
-    public interface ILuaGenerator 
+    public interface ILuaGenerator : IScriptGenerator
     {
-        /// <summary>
-        /// Generates a simple script to modify a simple object
-        /// </summary>
-        /// <typeparam name="T">Type of the object</typeparam>
-        /// <param name="source">The unmodified object to be used as a baseline</param>
-        /// <param name="modified">The modified object</param>
-        /// <param name="variableName">Name of the Lua variable</param>
-        /// <param name="indentLevel">Level of indentation to apply to each line</param>
-        /// <returns>A lua script segment</returns>
-        string GenerateSimpleObjectDiff<T>(T source, T modified, string variableName, int indentLevel);
-
-        /// <summary>
-        /// Represent the given value as a Lua expression
-        /// </summary>
-        string GenerateLuaExpression(object? value);
     }
 
     public class LuaGenerator : ILuaGenerator
@@ -68,7 +53,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 script.Append(".");
                 script.Append(property.Name);
                 script.Append(" = ");
-                script.Append(GenerateLuaExpression(targetValue));
+                script.Append(GenerateExpression(targetValue));
                 script.AppendLine();
             }
             return script.ToString();
@@ -77,7 +62,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
         /// <summary>
         /// Represent the given value as a Lua expression
         /// </summary>
-        public string GenerateLuaExpression(object? value)
+        public string GenerateExpression(object? value)
         {
             if (value is null)
             {
@@ -111,11 +96,11 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                     var hasValue = (bool)type.GetProperty("HasValue").GetValue(value);
                     if (hasValue)
                     {
-                        return GenerateLuaExpression(type.GetProperty("Value").GetValue(value));
+                        return GenerateExpression(type.GetProperty("Value").GetValue(value));
                     }
                     else
                     {
-                        return GenerateLuaExpression(null);
+                        return GenerateExpression(null);
                     }
                 }
                 var converterAttribute = type.GetCustomAttribute<LuaExpressionGeneratorAttribute>();

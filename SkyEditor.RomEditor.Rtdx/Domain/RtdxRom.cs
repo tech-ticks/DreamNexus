@@ -3,7 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using SkyEditor.IO.Binary;
 using SkyEditor.IO.FileSystem;
-using SkyEditor.RomEditor.Rtdx.Domain.Automation;
+using SkyEditor.RomEditor.Rtdx.Domain.Automation.CSharp;
+using SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua;
 using SkyEditor.RomEditor.Rtdx.Domain.Models;
 using SkyEditor.RomEditor.Rtdx.Domain.Structures;
 using SkyEditor.RomEditor.Rtdx.Infrastructure.Internal;
@@ -271,7 +272,10 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             if (starterCollection == null)
             {
-                starterCollection = new StarterCollection(this, GetServiceProvider().GetRequiredService<ILuaGenerator>());
+                var sp = GetServiceProvider();
+                starterCollection = new StarterCollection(this,
+                    sp.GetRequiredService<ILuaGenerator>(),
+                    sp.GetRequiredService<ICSharpGenerator>());
             }
             return starterCollection;
         }
@@ -389,6 +393,18 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             if (starterCollection != null)
             {
                 script.Append(starterCollection.GenerateLuaChangeScript(indentLevel));
+            }
+            return script.ToString();
+        }
+
+        public string GenerateCSharpChangeScript(int indentLevel = 0)
+        {
+            var script = new StringBuilder();
+            script.Append(CSharpSnippets.RequireSkyEditor);
+            script.AppendLine();
+            if (starterCollection != null)
+            {
+                script.Append(starterCollection.GenerateCSharpChangeScript(indentLevel));
             }
             return script.ToString();
         }

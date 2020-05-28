@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SkyEditor.RomEditor.Rtdx.Domain;
-using SkyEditor.RomEditor.Rtdx.Domain.Automation;
+using SkyEditor.RomEditor.Rtdx.Domain.Automation.CSharp;
+using SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua;
 using System;
 
 namespace SkyEditor.RomEditor.Rtdx.Infrastructure.Internal
@@ -16,7 +17,8 @@ namespace SkyEditor.RomEditor.Rtdx.Infrastructure.Internal
                 .AddSingleton<IRtdxRom>(rom)
                 .AddSingleton<ICommonStrings>(_ => rom.GetCommonStrings())
                 .AddSingleton<ILuaGenerator, LuaGenerator>()
-                .AddCustomLuaValueGeneratorsAsSingleton();
+                .AddSingleton<ICSharpGenerator, CSharpGenerator>()
+                .AddCustomScriptExpressionGeneratorsAsSingleton();
 
             serviceProvider = services.BuildServiceProvider();
 

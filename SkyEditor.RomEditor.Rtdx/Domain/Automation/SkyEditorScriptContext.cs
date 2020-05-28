@@ -5,12 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
 {
     public class SkyEditorScriptContext
     {
+        private readonly static Regex CSharpPreprocessorRegex = new Regex(@"^\s*\#.*?$", RegexOptions.Compiled | RegexOptions.Multiline);
+
         public SkyEditorScriptContext(IRtdxRom rom)
         {
             this.Globals = new CSharpGlobals
@@ -18,7 +21,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 Rom = rom ?? throw new ArgumentNullException(nameof(rom))
             };
 
-            this.LuaState = new Lua();
+            this.LuaState = new NLua.Lua();
             this.CSharpScriptImports = new List<string>();
 
             InitLuaState();
@@ -26,7 +29,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
 
         private CSharpGlobals Globals { get; }
 
-        public Lua LuaState { get; }
+        public NLua.Lua LuaState { get; }
 
         public List<string> CSharpScriptImports { get; set; }
 
@@ -92,8 +95,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
             RegisterEnum<Reverse.Const.GraphicsBodySizeType>("Const.GraphicsBodySizeType", "GraphicsBodySizeType");
             RegisterEnum<Reverse.Const.TextIDHash>("Const.TextIDHash", "TextIDHash");
 
-            // Make the ROM available to the script
-            this.LuaState["rom"] = Globals.Rom;
+            // Import globals, such as the ROM
+            var globalsType = Globals.GetType();
+            foreach (var property in globalsType.GetProperties())
+            {
+                this.LuaState[property.Name] = property.GetValue(Globals);
+            }
 
             // Sandbox script to prevent loading additional .Net libraries
             // This is not comprehensive
@@ -110,8 +117,13 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
 
         public async Task ExecuteCSharp(string cSharpScript)
         {
+            // We can't run preprocessor directives since we'll have already run the enum imports
+            // Combine that with us not wanting to run the stub csx for intellisense,
+            // and it's easier to just ignore them
+            var scriptWithoutPreprocessorDirectives = CSharpPreprocessorRegex.Replace(cSharpScript, "");
+
             await CSharpScript
-                .RunAsync(string.Join(Environment.NewLine, CSharpScriptImports) + cSharpScript,                
+                .RunAsync(string.Join(Environment.NewLine, CSharpScriptImports) + scriptWithoutPreprocessorDirectives,                
                 ScriptOptions.Default
                     .WithReferences(typeof(SkyEditorScriptContext).Assembly)
                     .WithImports("SkyEditor.RomEditor.Rtdx"),

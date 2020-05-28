@@ -1,0 +1,31 @@
+﻿{
+  "Name": "Sample modpack",
+  "Description": "An example used to demonstrate how to make a modpack",
+  "Mods": [
+    {
+      "Name": "The first mod",
+      "Description": "The mod that will be applied first",
+      "Enabled": true,
+      "Scripts": [
+        "ZLastFile.lua",
+        "CSharpScript.csx"
+      ]
+    },
+    {
+      "Name": "Disabled mod",
+      "Description": "A mod that won't be run unless overridden by the user in a UI",
+      "Enabled": false,
+      "Scripts": [
+        "Error.lua"
+      ]
+    },
+    {
+      "Name": "The last mod",
+      "Description": "This mod will be applied last because the order of mods matters",
+      "Enabled": true,
+      "Scripts": [
+        "LastMod.lua"
+      ]
+    }
+  ]
+}

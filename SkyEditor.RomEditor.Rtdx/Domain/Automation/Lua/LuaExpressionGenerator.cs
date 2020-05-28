@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
 using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.waza.Index;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
+namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua
 {
-    public interface ILuaExpressionGenerator
+    public interface ILuaExpressionGenerator : IScriptExpressionGenerator
     {
-        string Generate(object? value);
     }
 
     public class CreatureIndexLuaExpressionGenerator : ILuaExpressionGenerator

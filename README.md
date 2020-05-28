@@ -96,9 +96,11 @@ dotnet SkyEditor.RomEditor.Rtdx.Console.dll ListLibrary
 
 See Scripts/Samples/ChangeStarters.lua in the console app project for a rough idea how to do it. Note that the models during the personality test _might not_ match your selected Pokémon, but the portrait and in-game models will match. This is unlikely to change in the forseable future due to how heavily hard-coded it is in the game.
 
-### Lua Generation
+### Change Script Generation
 
-Most of the control over ROMs is done with Lua scripts. These can be written in your favorite code editor, but Sky Editor can _generate_ scripts for certain kinds of edits, such as starter editing. The idea behind this is that a user will use a GUI to make edits, then will be able to generate a script that allows their friends to do the same.
+Most of the control over ROMs is done with scripts. These can be written in your favorite code editor, but Sky Editor can _generate_ scripts for certain kinds of edits, such as starter editing. The idea behind this is that a user will use a GUI to make edits, then will be able to generate a script that allows their friends to do the same.
+
+Supported languages are C# and Lua, but this is subject to change in the future.
 
 Right now, the change starters sample script can be used to generate itself, minus certain comments, as a proof-of-concept.
 

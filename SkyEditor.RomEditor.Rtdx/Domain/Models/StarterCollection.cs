@@ -1,4 +1,5 @@
-﻿using SkyEditor.RomEditor.Rtdx.Domain.Automation;
+﻿using SkyEditor.RomEditor.Rtdx.Domain.Automation.CSharp;
+using SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua;
 using SkyEditor.RomEditor.Rtdx.Reverse;
 using System;
 using System.Collections.Generic;
@@ -20,10 +21,11 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
 
     public class StarterCollection : IStarterCollection
     {
-        public StarterCollection(IRtdxRom rom, ILuaGenerator luaGenerator)
+        public StarterCollection(IRtdxRom rom, ILuaGenerator luaGenerator, ICSharpGenerator cSharpGenerator)
         {
             this.rom = rom ?? throw new ArgumentNullException(nameof(rom));
             this.luaGenerator = luaGenerator ?? throw new ArgumentNullException(nameof(luaGenerator));
+            this.cSharpGenerator = cSharpGenerator ?? throw new ArgumentNullException(nameof(cSharpGenerator));
 
             this.Starters = LoadStarters();
             this.OriginalStarters = Starters.Select(s => s.Clone()).ToArray();
@@ -31,6 +33,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
 
         protected readonly IRtdxRom rom;
         protected readonly ILuaGenerator luaGenerator;
+        protected readonly ICSharpGenerator cSharpGenerator;
 
         public IStarterModel[] Starters { get; }
         private IStarterModel[] OriginalStarters { get; set; }
@@ -73,7 +76,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
         public string GenerateLuaChangeScript(int indentLevel = 0)
         {
             var script = new StringBuilder();
-            script.AppendLine(@"local starters = rom:GetStarters()");
+            script.AppendLine(@"local starters = Rom:GetStarters()");
             script.AppendLine();
             for (int i = 0; i < Starters.Length; i++)
             {
@@ -82,12 +85,39 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
                 if (starter.PokemonId != oldPokemon.PokemonId) 
                 {
                     var variableName = $"starter{oldPokemon.PokemonId:d}";
-                    script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel)}local {variableName} = starters:GetStarterById({luaGenerator.GenerateLuaExpression(oldPokemon.PokemonId)})");
+                    script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel)}local {variableName} = starters:GetStarterById({luaGenerator.GenerateExpression(oldPokemon.PokemonId)})");
                     script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel)}if {variableName} ~= nil then");
                     script.Append(luaGenerator.GenerateSimpleObjectDiff(oldPokemon, starter, variableName, indentLevel + 1));
                     script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel)}else");
                     script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel + 1)}error(\"Could not find starter '{oldPokemon.PokemonName}' with ID {oldPokemon.PokemonId:d}. This ROM may have already been modified.\")");
                     script.AppendLine($"{LuaGenerator.GenerateIndentation(indentLevel)}end");
+                    script.AppendLine();
+                }
+            }
+            return script.ToString();
+        }
+
+        public string GenerateCSharpChangeScript(int indentLevel = 0)
+        {
+            var script = new StringBuilder();
+            script.AppendLine(@"var starters = Rom.GetStarters();");
+            script.AppendLine();
+            for (int i = 0; i < Starters.Length; i++)
+            {
+                var starter = Starters[i];
+                var oldPokemon = OriginalStarters[i];
+                if (starter.PokemonId != oldPokemon.PokemonId)
+                {
+                    var variableName = $"starter{oldPokemon.PokemonId:d}";
+                    script.AppendLine($"{CSharpGenerator.GenerateIndentation(indentLevel)}var {variableName} = starters.GetStarterById({cSharpGenerator.GenerateExpression(oldPokemon.PokemonId)});");
+                    script.AppendLine($"{CSharpGenerator.GenerateIndentation(indentLevel)}if ({variableName} != null)");
+                    script.AppendLine(CSharpGenerator.GenerateIndentation(indentLevel) + "{");
+                    script.Append(cSharpGenerator.GenerateSimpleObjectDiff(oldPokemon, starter, variableName, indentLevel + 1));
+                    script.AppendLine(CSharpGenerator.GenerateIndentation(indentLevel) + "}");
+                    script.AppendLine($"{CSharpGenerator.GenerateIndentation(indentLevel)}else");
+                    script.AppendLine(CSharpGenerator.GenerateIndentation(indentLevel) + "{");
+                    script.AppendLine($"{CSharpGenerator.GenerateIndentation(indentLevel + 1)}throw new System.Exception(\"Could not find starter '{oldPokemon.PokemonName}' with ID {oldPokemon.PokemonId:d}. This ROM may have already been modified.\");");
+                    script.AppendLine(CSharpGenerator.GenerateIndentation(indentLevel) + "}");
                     script.AppendLine();
                 }
             }

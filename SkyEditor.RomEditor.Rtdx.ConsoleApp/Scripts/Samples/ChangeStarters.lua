@@ -1,8 +1,8 @@
-﻿if rom == nil then
+﻿if Rom == nil then
     error("Script must be run in the context of Sky Editor")
 end
 
-local starters = rom:GetStarters()
+local starters = Rom:GetStarters()
 
 local starter5 = starters:GetStarterById(Const.creature.Index.HITOKAGE --[[Charmander]])
 if starter5 ~= nil then

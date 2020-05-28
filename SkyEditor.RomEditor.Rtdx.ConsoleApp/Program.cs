@@ -1,6 +1,7 @@
 ﻿using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Rtdx.Domain;
 using SkyEditor.RomEditor.Rtdx.Domain.Automation;
+using SkyEditor.RomEditor.Rtdx.Domain.Automation.Modpacks;
 using SkyEditor.RomEditor.Rtdx.Domain.Library;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             Console.WriteLine("Built-in commands: ");
             Console.WriteLine("Import <TargetName> - Adds the currently loaded ROM to the library for future ease of use");
             Console.WriteLine("ListLibrary - Lists items in the library");
-            Console.WriteLine("Automate [Output.lua] - Creates a Lua change script to automate supported unsaved edits");
+            Console.WriteLine("LuaGen [Output.lua] - Creates a Lua change script to automate supported unsaved edits");
 
         }
 
@@ -92,29 +93,26 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                     }
                     context.Rom = new RtdxRom(libraryItem.FullPath, fileSystem);
                     context.RomDirectory = libraryItem.FullPath;
-                    context.LuaContext = new SkyEditorScriptContext(context.Rom);
+                    context.ScriptContext = new SkyEditorScriptContext(context.Rom);
                     Console.WriteLine($"Loaded {arg}");
                 }
                 else if (Directory.Exists(arg))
                 {
-                    context.Rom = new RtdxRom(arg, fileSystem);
-                    context.RomDirectory = arg;
-                    context.LuaContext = new SkyEditorScriptContext(context.Rom);
-                    Console.WriteLine($"Loaded {arg}");
+                    if (File.Exists(Path.Combine(arg, "modpack.json")))
+                    {
+                        await ApplyMod(arg, context);
+                    }
+                    else
+                    {
+                        context.Rom = new RtdxRom(arg, fileSystem);
+                        context.RomDirectory = arg;
+                        context.ScriptContext = new SkyEditorScriptContext(context.Rom);
+                        Console.WriteLine($"Loaded {arg}");
+                    }
                 }
                 else if (File.Exists(arg))
                 {
-                    var extension = Path.GetExtension(arg);
-                    if (string.Equals(extension, ".lua", StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (context.LuaContext == null)
-                        {
-                            throw new InvalidOperationException("ROM directory argument must precede Lua script argument");
-                        }
-
-                        Console.WriteLine(arg + ": ");
-                        context.LuaContext.ExecuteLua(File.ReadAllText(arg));
-                    }
+                    await ApplyMod(arg, context);
                 }
                 else if (Commands.TryGetValue(arg, out var command))
                 {
@@ -128,13 +126,24 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             }
         }
 
+        private static async Task ApplyMod(string modPath, ConsoleContext context)
+        {
+            if (context.ScriptContext == null)
+            {
+                throw new InvalidOperationException("Modpack or script argument must follow a ROM argument");
+            }
+            var modpack = new Modpack(modPath, context.FileSystem);
+            await modpack.Apply(context.ScriptContext);
+        }
+
         private delegate Task ConsoleCommand(Queue<string> arguments, ConsoleContext context);
 
         private static readonly Dictionary<string, ConsoleCommand> Commands = new Dictionary<string, ConsoleCommand>(StringComparer.OrdinalIgnoreCase)
         {
             { "Import", Import },
             { "ListLibrary", ListLibrary },
-            { "Automate", GenerateLuaChangeScript },
+            { "LuaGen", GenerateLuaChangeScript },
+            { "CSGen", GenerateCSharpChangeScript },
             { "GenerateLuaChangeScript", GenerateLuaChangeScript },
             { "LoadAssets", LoadAssets },
             { "Test", Test }
@@ -186,6 +195,25 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             return Task.CompletedTask;
         }
 
+        private static Task GenerateCSharpChangeScript(Queue<string> arguments, ConsoleContext context)
+        {
+            if (context.Rom == null)
+            {
+                throw new InvalidOperationException("Import must follow a ROM argument");
+            }
+            var script = context.Rom.GenerateCSharpChangeScript();
+
+            Console.WriteLine("Change script:");
+            Console.WriteLine(script);
+
+            if (arguments.TryDequeue(out var targetFileName))
+            {
+                File.WriteAllText(targetFileName, script);
+            }
+
+            return Task.CompletedTask;
+        }
+
         /// <summary>
         /// Place C# code here for development/testing purposes, for when lua scripts either aren't enough or when more advanced debugging features are needed.
         /// </summary>
@@ -215,7 +243,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                 throw new InvalidOperationException("Test must follow a ROM argument");
             }
 
-            var graphicsDatabase = context.Rom.GetPokemonGraphicsDatabase();
+            context.Rom.GetPokemonGraphicsDatabase();
             context.Rom.Save("test-output", PhysicalFileSystem.Instance);
 
             return Task.CompletedTask;
@@ -246,7 +274,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
 
             public RtdxRom? Rom { get; set; }
             public string? RomDirectory { get; set; }
-            public SkyEditorScriptContext? LuaContext { get; set; }
+            public SkyEditorScriptContext? ScriptContext { get; set; }
         }
     }
 }

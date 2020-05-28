@@ -71,7 +71,7 @@ namespace SkyEditor.RomEditor.Rtdx.Infrastructure
             })).ConfigureAwait(false);
         }
 
-        private static string GetRelativePath(string relativeTo, string path)
+        public static string GetRelativePath(string relativeTo, string path)
         {
 #if NETSTANDARD2_0
             var relativeToUri = new Uri(relativeTo);
