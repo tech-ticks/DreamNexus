@@ -342,18 +342,17 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
                 }
                 fileSystem.WriteAllBytes(path, dungeonDataInfo.ToByteArray());
             }
-            // To-do: save dungeonBalance when implemented
-            /*if (dungeonBalance != null)
+            if (dungeonBalance != null)
             {
                 var path = GetDungeonBalancePath(directory);
                 if (!Directory.Exists(Path.GetDirectoryName(path)))
                 {
                     Directory.CreateDirectory(Path.GetDirectoryName(path));
                 }
-                var (binData, entData) = dungeonDataInfo.Build(); // The idea here is to write the .bin and .ent files in one go
+                var (binData, entData) = dungeonBalance.Build();
                 fileSystem.WriteAllBytes(path + ".bin", binData);
                 fileSystem.WriteAllBytes(path + ".ent", entData);
-            }*/
+            }
             if (dungeonExtra != null)
             {
                 var path = GetDungeonExtraPath(directory);
