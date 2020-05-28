@@ -119,7 +119,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 // If we get a result, write that to the output right away.
                 // Otherwise, try copying the least amount of data followed by one of the algorithms.
                 var nextOffset = dataOffset;
-                var shortest = TryCompress(input, output, dataOffset);
+                var shortest = TryCompress(input, dataOffset);
                 var length = 1;
                 var copy = new byte[0];
                 while (shortest == null && length < 0x20 && dataOffset + length <= input.Length)
@@ -127,7 +127,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                     copy = CompressCopy(input, dataOffset, length);
                     writeOut(copy, false);
                     nextOffset = dataOffset + length;
-                    shortest = TryCompress(input, output, nextOffset);
+                    shortest = TryCompress(input, nextOffset);
                     length++;
                 }
                 dataOffset = nextOffset;
@@ -179,14 +179,14 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             return new byte[] { (byte)(0x80 + count - 1) }.Concat(data.ReadArray(offset, count)).ToArray();
         }
 
-        private static CompressionResult TryCompress(IReadOnlyBinaryDataAccessor data, IReadOnlyBinaryDataAccessor output, long offset)
+        private static CompressionResult TryCompress(IReadOnlyBinaryDataAccessor data, long offset)
         {
             // Choose the option with the best compression ratio, or failure if none worked
             CompressionResult[] options = {
                 TryCompressSplitCopy(data, offset),
                 TryCompressFill(data, offset),
                 TryCompressSkip(data, offset),
-                TryCompressPrevious(data, output, offset)
+                TryCompressPrevious(data, offset)
             };
             return options.Where(x => x.Valid).OrderByDescending(x => x?.CompressionRatio).FirstOrDefault();
         }
@@ -253,12 +253,57 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             }
         }
 
-        private static CompressionResult TryCompressPrevious(IReadOnlyBinaryDataAccessor data, IReadOnlyBinaryDataAccessor output, long offset)
+        private static CompressionResult TryCompressPrevious(IReadOnlyBinaryDataAccessor data, long offset)
         {
+            // Don't waste time trying to look behind if there's nothing written yet
+            if (offset == 0) return new CompressionResult();
+
             try
             {
-                // TODO: search output up to 0x400 bytes behind for the longest sequence of bytes found in data starting at offset
-                return new CompressionResult();
+                // Search output up to 0x400 bytes behind for the longest subsequence of bytes found in data starting at offset.
+                // The common substring must be between 2 and 33 bytes long.
+                var maxLookbehindDistance = Math.Min(0x400, (int)offset);
+                if (maxLookbehindDistance < 2) return new CompressionResult();
+                var maxLength = Math.Min(33, (int)Math.Min(maxLookbehindDistance, data.Length - offset));
+
+                var lookbehindData = data.Slice(offset - maxLookbehindDistance, maxLookbehindDistance);
+                var lookaheadData = data.Slice(offset, maxLength);
+
+                int matchLength = 0;
+                int matchPos = -1;
+
+                int[,] longestCommonSuffixes = new int[lookbehindData.Length + 1, lookaheadData.Length + 1];
+                for (int i = 0; i <= lookbehindData.Length; i++)
+                {
+                    for (int j = 0; j <= lookaheadData.Length; j++)
+                    {
+                        if (i == 0 || j == 0)
+                        {
+                            longestCommonSuffixes[i, j] = 0;
+                        }
+                        else if (lookbehindData.ReadByte(i - 1) == lookaheadData.ReadByte(j - 1))
+                        {
+                            longestCommonSuffixes[i, j] = longestCommonSuffixes[i - 1, j - 1] + 1;
+                            if (longestCommonSuffixes[i, j] > matchLength && longestCommonSuffixes[i, j] == j)
+                            {
+                                matchLength = longestCommonSuffixes[i, j];
+                                matchPos = i - matchLength;
+                            }
+                        }
+                        else
+                        {
+                            longestCommonSuffixes[i, j] = 0;
+                        }
+                    }
+                }
+
+                if (matchLength < 2) return new CompressionResult();
+                var matchOffset = matchPos - offset;
+
+                return new CompressionResult(matchLength, new byte[] {
+                    (byte)((byte)((matchLength - 2) << 2) | (byte)((matchOffset >> 8) & 3)),
+                    (byte)(matchOffset & 0xFF)
+                });
             }
             catch (IndexOutOfRangeException)
             {
