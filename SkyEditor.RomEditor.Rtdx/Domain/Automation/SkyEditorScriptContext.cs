@@ -78,23 +78,23 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 }
 ");
 
-            RegisterEnum<AbilityIndex>("Const.ability.Index", "AbilityIndex");
-            RegisterEnum<CreatureIndex>("Const.creature.Index", "CreatureIndex");
-            RegisterEnum<FixedCreatureIndex>("Const.fixed_creature.Index", "FixedCreatureIndex");
-            RegisterEnum<ItemIndex>("Const.item.Index", "ItemIndex");
-            RegisterEnum<ItemKind>("Const.item.Kind", "ItemKind");
-            RegisterEnum<ItemPriceType>("Const.item.PriceType", "ItemPriceType");
-            RegisterEnum<OrderIndex>("Const.order.Index", "OrderIndex");
-            RegisterEnum<PokemonFixedWarehouseId>("Const.pokemon.FixedWarehouseId", "PokemonFixedWarehouseId");
-            RegisterEnum<PokemonFormType>("Const.pokemon.FormType", "PokemonFormType");
-            RegisterEnum<PokemonGenderType>("Const.pokemon.GenderType", "PokemonGenderType");
-            RegisterEnum<PokemonSallyType>("Const.pokemon.SallyType", "PokemonSallyType");
-            RegisterEnum<PokemonType>("Const.pokemon.Type", "PokemonType");
-            RegisterEnum<SugowazaIndex>("Const.sugowaza.Index", "SugowazaIndex");
-            RegisterEnum<WazaIndex>("Const.waza.Index", "WazaIndex");
-            RegisterEnum<EvolutionCameraType>("Const.EvolutionCameraType", "EvolutionCameraType");
-            RegisterEnum<GraphicsBodySizeType>("Const.GraphicsBodySizeType", "GraphicsBodySizeType");
-            RegisterEnum<TextIDHash>("Const.TextIDHash", "TextIDHash");
+            RegisterLuaEnum<AbilityIndex>("Const.ability.Index");
+            RegisterLuaEnum<CreatureIndex>("Const.creature.Index");
+            RegisterLuaEnum<FixedCreatureIndex>("Const.fixed_creature.Index");
+            RegisterLuaEnum<ItemIndex>("Const.item.Index");
+            RegisterLuaEnum<ItemKind>("Const.item.Kind");
+            RegisterLuaEnum<ItemPriceType>("Const.item.PriceType");
+            RegisterLuaEnum<OrderIndex>("Const.order.Index");
+            RegisterLuaEnum<PokemonFixedWarehouseId>("Const.pokemon.FixedWarehouseId");
+            RegisterLuaEnum<PokemonFormType>("Const.pokemon.FormType");
+            RegisterLuaEnum<PokemonGenderType>("Const.pokemon.GenderType");
+            RegisterLuaEnum<PokemonSallyType>("Const.pokemon.SallyType");
+            RegisterLuaEnum<PokemonType>("Const.pokemon.Type");
+            RegisterLuaEnum<SugowazaIndex>("Const.sugowaza.Index");
+            RegisterLuaEnum<WazaIndex>("Const.waza.Index");
+            RegisterLuaEnum<EvolutionCameraType>("Const.EvolutionCameraType");
+            RegisterLuaEnum<GraphicsBodySizeType>("Const.GraphicsBodySizeType");
+            RegisterLuaEnum<TextIDHash>("Const.TextIDHash");
 
             // Import globals, such as the ROM
             var globalsType = Globals.GetType();
@@ -127,12 +127,17 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 .RunAsync(string.Join(Environment.NewLine, CSharpScriptImports) + scriptWithoutPreprocessorDirectives,                
                 ScriptOptions.Default
                     .WithReferences(typeof(SkyEditorScriptContext).Assembly)
-                    .WithImports("SkyEditor.RomEditor.Rtdx", "System", "System.Linq"),
+                    .WithImports(
+                        "System",
+                        "System.Linq",
+                        "SkyEditor.RomEditor.Rtdx",
+                        "SkyEditor.RomEditor.Rtdx.Constants"
+                    ),
                 globals: Globals)
                 .ConfigureAwait(false);
         }
 
-        public void RegisterEnum<T>(string targetLuaEnumName, string cSharpImportAlias)
+        public void RegisterLuaEnum<T>(string targetLuaEnumName)
         {
             var type = typeof(T);
             if (!type.IsEnum)
@@ -150,8 +155,6 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 string path = targetLuaEnumName + "." + names[i];
                 this.LuaState.SetObjectToPath(path, values[i]);
             }
-
-            this.CSharpScriptImports.Add($"using {cSharpImportAlias} = {type.FullName};");
         }
 
         // This class must be public for CSharp scripts to use it
