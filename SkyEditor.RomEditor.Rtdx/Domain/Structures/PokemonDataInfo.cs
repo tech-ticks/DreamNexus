@@ -1,11 +1,7 @@
 ﻿using SkyEditor.IO.Binary;
+using SkyEditor.RomEditor.Rtdx.Constants;
 using System.Collections.Generic;
 using System.Text;
-
-using AbilityIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.ability.AbilityIndex;
-using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
-using PokemonType = SkyEditor.RomEditor.Rtdx.Reverse.Const.pokemon.PokemonType;
-using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.waza.WazaIndex;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 {

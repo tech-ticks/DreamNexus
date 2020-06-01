@@ -3,6 +3,7 @@ using FluentAssertions;
 using FluentAssertions.Common;
 using Moq;
 using NLua.Exceptions;
+using SkyEditor.RomEditor.Rtdx.Constants;
 using SkyEditor.RomEditor.Rtdx.Domain;
 using SkyEditor.RomEditor.Rtdx.Domain.Automation;
 using SkyEditor.RomEditor.Rtdx.Domain.Models;
@@ -48,11 +49,11 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Automation
                     {
                     new SimpleStarterModel
                     {
-                        PokemonId = Reverse.Const.creature.Index.RIORU,
+                        PokemonId = CreatureIndex.RIORU,
                         PokemonName = "Riolu"
                     },new SimpleStarterModel
                     {
-                        PokemonId = Reverse.Const.creature.Index.MYUU,
+                        PokemonId = CreatureIndex.MYUU,
                         PokemonName = "Mew"
                     },
                     }
@@ -83,12 +84,12 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Automation
                     {
                         new SimpleStarterModel
                         {
-                            PokemonId = Reverse.Const.creature.Index.RIORU,
+                            PokemonId = CreatureIndex.RIORU,
                             PokemonName = "Riolu"
                         },
                         new SimpleStarterModel
                         {
-                            PokemonId = Reverse.Const.creature.Index.MYUU,
+                            PokemonId = CreatureIndex.MYUU,
                             PokemonName = "Mew"
                         }
                     }

@@ -8,7 +8,6 @@ using SkyEditor.RomEditor.Rtdx.Reverse.Stubs.UnityEngine.CoreModule;
 using System;
 using System.Collections.Generic;
 
-#nullable disable
 namespace SkyEditor.RomEditor.Rtdx.Reverse
 {
     public class GraphicsSystem : Singleton<GraphicsSystem>
@@ -537,4 +536,3 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
     }
 
 }
-#nullable restore

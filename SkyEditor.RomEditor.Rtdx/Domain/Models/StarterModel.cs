@@ -1,11 +1,8 @@
-﻿using SkyEditor.RomEditor.Rtdx.Infrastructure;
+﻿using SkyEditor.RomEditor.Rtdx.Constants;
+using SkyEditor.RomEditor.Rtdx.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
-using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
-using NatureType = SkyEditor.RomEditor.Rtdx.Reverse.NDConverterSharedData.NatureType;
-using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.waza.WazaIndex;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain.Models
 {
@@ -24,8 +21,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
         WazaIndex Move4 { get; set; }
         string Move4Name { get; }
 
-        NatureType? MaleNature { get; set; }
-        NatureType? FemaleNature { get; set; }
+        NatureDiagnosisNatureType? MaleNature { get; set; }
+        NatureDiagnosisNatureType? FemaleNature { get; set; }
 
         IStarterModel Clone();        
     }
@@ -53,8 +50,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
         public WazaIndex Move4 { get; set; }
         public string Move4Name => commonStrings.Moves.GetValueOrDefault(Move4) ?? $"(Unknown: {Move4})";
 
-        public NatureType? MaleNature { get; set; }
-        public NatureType? FemaleNature { get; set; }
+        public NatureDiagnosisNatureType? MaleNature { get; set; }
+        public NatureDiagnosisNatureType? FemaleNature { get; set; }
 
         public IStarterModel Clone()
         {

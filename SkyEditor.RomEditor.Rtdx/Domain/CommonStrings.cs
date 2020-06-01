@@ -1,11 +1,9 @@
-﻿using SkyEditor.RomEditor.Rtdx.Domain.Structures;
+﻿using SkyEditor.RomEditor.Rtdx.Constants;
+using SkyEditor.RomEditor.Rtdx.Domain.Structures;
 using SkyEditor.RomEditor.Rtdx.Infrastructure;
-using SkyEditor.RomEditor.Rtdx.Reverse.Const;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
-using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.waza.WazaIndex;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain
 {

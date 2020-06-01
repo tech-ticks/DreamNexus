@@ -7,8 +7,8 @@ using SkyEditor.RomEditor.Rtdx.Domain.Automation.CSharp;
 using SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua;
 using SkyEditor.RomEditor.Rtdx.Domain.Models;
 using SkyEditor.RomEditor.Rtdx.Domain.Structures;
+using SkyEditor.RomEditor.Rtdx.Executable;
 using SkyEditor.RomEditor.Rtdx.Infrastructure.Internal;
-using SkyEditor.RomEditor.Rtdx.Reverse;
 using System;
 using System.IO;
 using System.Text;
@@ -28,7 +28,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         /// <summary>
         /// Gets the personality test settings, loading it if needed
         /// </summary>
-        NDConverterSharedData.DataStore GetNatureDiagnosis();
+        NatureDiagnosisConfiguration GetNatureDiagnosis();
         #endregion
 
         #region StreamingAssets/native_data/pokemon
@@ -111,15 +111,15 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         /// <summary>
         /// Gets the personality test settings, loading it if needed
         /// </summary>
-        public NDConverterSharedData.DataStore GetNatureDiagnosis()
+        public NatureDiagnosisConfiguration GetNatureDiagnosis()
         {
             if (natureDiagnosis == null)
             {
-                natureDiagnosis = JsonConvert.DeserializeObject<NDConverterSharedData.DataStore>(FileSystem.ReadAllText(GetNatureDiagnosisPath(this.RomDirectory)));
+                natureDiagnosis = JsonConvert.DeserializeObject<NatureDiagnosisConfiguration>(FileSystem.ReadAllText(GetNatureDiagnosisPath(this.RomDirectory)));
             }
             return natureDiagnosis;
         }
-        private NDConverterSharedData.DataStore? natureDiagnosis;
+        private NatureDiagnosisConfiguration? natureDiagnosis;
         protected static string GetNatureDiagnosisPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/data/nature_diagnosis/diagnosis.json");
         #endregion
 

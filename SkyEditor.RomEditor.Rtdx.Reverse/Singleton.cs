@@ -11,9 +11,7 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
 
     public class Singleton<T> : ISingleton where T : class, new()
     {
-#nullable disable
         protected static T instance_;
-#nullable restore
 
         public static T Instance
         {

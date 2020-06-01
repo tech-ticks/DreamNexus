@@ -1,13 +1,10 @@
-﻿using SkyEditor.RomEditor.Rtdx.Domain.Automation.CSharp;
+﻿using SkyEditor.RomEditor.Rtdx.Constants;
+using SkyEditor.RomEditor.Rtdx.Domain.Automation.CSharp;
 using SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua;
-using SkyEditor.RomEditor.Rtdx.Reverse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
-using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
-using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.waza.WazaIndex;
 
 namespace SkyEditor.RomEditor.Rtdx.Domain.Models
 {
@@ -138,27 +135,27 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
                 var oldPokemon = OriginalStarters[i];
 
                 var map = mainExecutable.StarterFixedPokemonMaps.First(m => m.PokemonId == oldPokemon.PokemonId);
-                map.PokemonId = (CreatureIndex)starter.PokemonId;
+                map.PokemonId = starter.PokemonId;
 
                 var fixedPokemonEntry = fixedPokemon.Entries[(int)map.FixedPokemonId];
-                fixedPokemonEntry.PokemonId = (CreatureIndex)starter.PokemonId;
-                fixedPokemonEntry.Move1 = (WazaIndex)starter.Move1;
-                fixedPokemonEntry.Move2 = (WazaIndex)starter.Move2;
-                fixedPokemonEntry.Move3 = (WazaIndex)starter.Move3;
-                fixedPokemonEntry.Move4 = (WazaIndex)starter.Move4;
+                fixedPokemonEntry.PokemonId = starter.PokemonId;
+                fixedPokemonEntry.Move1 = starter.Move1;
+                fixedPokemonEntry.Move2 = starter.Move2;
+                fixedPokemonEntry.Move3 = starter.Move3;
+                fixedPokemonEntry.Move4 = starter.Move4;
 
                 var ndEntry = natureDiagnosis.m_pokemonNatureAndTypeList.First(p => p.m_nameLabel == oldPokemon.PokemonId);
-                ndEntry.m_nameLabel = (CreatureIndex)starter.PokemonId;
+                ndEntry.m_nameLabel = starter.PokemonId;
 
                 var symbolCandiate = mainExecutable.ActorDatabase.ActorDataList
-                    .Where(a => a.raw_pokemonIndex == starter.PokemonId
-                        && a.bIsFemale == false) // bIsFemale is out of scope since this is just a proof-of-concept
-                    .OrderByDescending(a => (int)a.raw_formType)
+                    .Where(a => a.PokemonIndex == starter.PokemonId
+                        && a.IsFemale == false) // bIsFemale is out of scope since this is just a proof-of-concept
+                    .OrderByDescending(a => (int)a.FormType)
                     .FirstOrDefault();
 
                 if (symbolCandiate != null)
                 {
-                    ndEntry.m_symbolName = symbolCandiate.symbolName;
+                    ndEntry.m_symbolName = symbolCandiate.SymbolName;
                     ndEntry.m_symbolNameFemale = "";
                 }
             }

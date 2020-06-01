@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
 using NLua;
+using SkyEditor.RomEditor.Rtdx.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -77,23 +78,23 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 }
 ");
 
-            RegisterEnum<Reverse.Const.ability.AbilityIndex>("Const.ability.Index", "AbilityIndex");
-            RegisterEnum<Reverse.Const.creature.Index>("Const.creature.Index", "CreatureIndex");
-            RegisterEnum<Reverse.Const.fixed_creature.Index>("Const.fixed_creature.Index", "FixedCreatureIndex");
-            RegisterEnum<Reverse.Const.item.ItemIndex>("Const.item.Index", "ItemIndex");
-            RegisterEnum<Reverse.Const.item.ItemKind>("Const.item.Kind", "ItemKind");
-            RegisterEnum<Reverse.Const.item.ItemPriceType>("Const.item.PriceType", "ItemPriceType");
-            RegisterEnum<Reverse.Const.order.OrderIndex>("Const.order.Index", "OrderIndex");
-            RegisterEnum<Reverse.Const.pokemon.PokemonFixedWarehouseId>("Const.pokemon.FixedWarehouseId", "PokemonFixedWarehouseId");
-            RegisterEnum<Reverse.Const.pokemon.PokemonFormType>("Const.pokemon.FormType", "PokemonFormType");
-            RegisterEnum<Reverse.Const.pokemon.PokemonGenderType>("Const.pokemon.GenderType", "PokemonGenderType");
-            RegisterEnum<Reverse.Const.pokemon.PokemonSallyType>("Const.pokemon.SallyType", "PokemonSallyType");
-            RegisterEnum<Reverse.Const.pokemon.PokemonType>("Const.pokemon.Type", "PokemonType");
-            RegisterEnum<Reverse.Const.sugowaza.SugowazaIndex>("Const.sugowaza.Index", "SugowazaIndex");
-            RegisterEnum<Reverse.Const.waza.WazaIndex>("Const.waza.Index", "WazaIndex");
-            RegisterEnum<Reverse.Const.EvolutionCameraType>("Const.EvolutionCameraType", "EvolutionCameraType");
-            RegisterEnum<Reverse.Const.GraphicsBodySizeType>("Const.GraphicsBodySizeType", "GraphicsBodySizeType");
-            RegisterEnum<Reverse.Const.TextIDHash>("Const.TextIDHash", "TextIDHash");
+            RegisterEnum<AbilityIndex>("Const.ability.Index", "AbilityIndex");
+            RegisterEnum<CreatureIndex>("Const.creature.Index", "CreatureIndex");
+            RegisterEnum<FixedCreatureIndex>("Const.fixed_creature.Index", "FixedCreatureIndex");
+            RegisterEnum<ItemIndex>("Const.item.Index", "ItemIndex");
+            RegisterEnum<ItemKind>("Const.item.Kind", "ItemKind");
+            RegisterEnum<ItemPriceType>("Const.item.PriceType", "ItemPriceType");
+            RegisterEnum<OrderIndex>("Const.order.Index", "OrderIndex");
+            RegisterEnum<PokemonFixedWarehouseId>("Const.pokemon.FixedWarehouseId", "PokemonFixedWarehouseId");
+            RegisterEnum<PokemonFormType>("Const.pokemon.FormType", "PokemonFormType");
+            RegisterEnum<PokemonGenderType>("Const.pokemon.GenderType", "PokemonGenderType");
+            RegisterEnum<PokemonSallyType>("Const.pokemon.SallyType", "PokemonSallyType");
+            RegisterEnum<PokemonType>("Const.pokemon.Type", "PokemonType");
+            RegisterEnum<SugowazaIndex>("Const.sugowaza.Index", "SugowazaIndex");
+            RegisterEnum<WazaIndex>("Const.waza.Index", "WazaIndex");
+            RegisterEnum<EvolutionCameraType>("Const.EvolutionCameraType", "EvolutionCameraType");
+            RegisterEnum<GraphicsBodySizeType>("Const.GraphicsBodySizeType", "GraphicsBodySizeType");
+            RegisterEnum<TextIDHash>("Const.TextIDHash", "TextIDHash");
 
             // Import globals, such as the ROM
             var globalsType = Globals.GetType();

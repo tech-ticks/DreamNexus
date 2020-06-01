@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace SkyEditor.RomEditor.Rtdx.Reverse
@@ -27,49 +25,43 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
 
         public class DataStore
         {
-            public List<DiagnosisStrage> m_diagnosisStrageList { get; set; } = default!;
-            public List<PokemonStrage> m_pokemonNatureAndTypeList { get; set; } = default!;
+            public List<DiagnosisStrage> m_diagnosisStrageList { get; set; }
+            public List<PokemonStrage> m_pokemonNatureAndTypeList { get; set; }
         }
 
         [Serializable]
         public class DiagnosisStrage
         {
-            public List<AnswerStrage> m_answerStrageList { get; set; } = default!;
-            public string m_question { get; set; } = default!;
-            public string m_questionType { get; set; } = default!;
+            public List<AnswerStrage> m_answerStrageList { get; set; }
+            public string m_question { get; set; }
+            public string m_questionType { get; set; }
         }
 
         [Serializable]
         public class AnswerStrage
         {
-            public string m_answer { get; set; } = default!;
-            public List<NaturePoint> m_addNatureList { get; set; } = default!;
+            public string m_answer { get; set; }
+            public List<NaturePoint> m_addNatureList { get; set; }
         }
 
         [Serializable]
         public class NaturePoint
         {
-            public string m_nature { get; set; } = default!;
+            public string m_nature { get; set; }
             public int m_addPoint { get; set; }
         }
 
         [Serializable]
         public class PokemonStrage
         {
-            public string m_name { get; set; } = default!;
-
-            [JsonConverter(typeof(StringEnumConverter))]
+            public string m_name { get; set; }
             public Const.creature.Index m_nameLabel { get; set; }
-
-            [JsonConverter(typeof(StringEnumConverter))]
             public NatureType m_maleNature { get; set; }
-
-            [JsonConverter(typeof(StringEnumConverter))]
             public NatureType m_femaleNature { get; set; }
-            public string m_typeA { get; set; } = default!;
-            public string m_symbolName { get; set; } = default!;
-            public string m_symbolNameFemale { get; set; } = default!;
-            public int m_defaultPos { get; set; } = default!;
+            public string m_typeA { get; set; }
+            public string m_symbolName { get; set; }
+            public string m_symbolNameFemale { get; set; }
+            public int m_defaultPos { get; set; }
             public int m_pos1 { get; set; }
             public int m_pos2 { get; set; }
             public int m_pos3 { get; set; }

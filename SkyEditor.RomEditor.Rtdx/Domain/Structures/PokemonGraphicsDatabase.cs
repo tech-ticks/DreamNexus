@@ -1,5 +1,5 @@
 ﻿using SkyEditor.IO.Binary;
-using SkyEditor.RomEditor.Rtdx.Reverse.Const;
+using SkyEditor.RomEditor.Rtdx.Constants;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

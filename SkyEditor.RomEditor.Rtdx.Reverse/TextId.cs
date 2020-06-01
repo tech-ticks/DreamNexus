@@ -31,8 +31,8 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
     public class TextId
     {
         public int hashId;
-        public string? debugRawText;
-        private string? replacedRawText_;
+        public string debugRawText;
+        private string replacedRawText_;
 
         public bool IsValid => hashId != default;
 
@@ -65,7 +65,7 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
             replacedRawText_ = text;
         }
 
-        public string? GetReplacedRawText()
+        public string GetReplacedRawText()
         {
             return replacedRawText_;
         }
