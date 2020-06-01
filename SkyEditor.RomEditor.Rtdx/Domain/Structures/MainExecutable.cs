@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SkyEditor.RomEditor.Rtdx.Domain.Structures;
 using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
 using FixedCreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.fixed_creature.Index;
 
@@ -11,6 +12,7 @@ namespace SkyEditor.RomEditor.Rtdx
     public interface IMainExecutable
     {
         IReadOnlyList<StarterFixedPokemonMap> StarterFixedPokemonMaps { get; }
+        PegasusActDatabase ActorDatabase { get; }
         byte[] ToElf();
         byte[] ToNso(INsoElfConverter? nsoElfConverter = null);
     }
@@ -38,6 +40,8 @@ namespace SkyEditor.RomEditor.Rtdx
             this.Data = elfData ?? throw new ArgumentNullException(nameof(elfData));
 
             Init();
+            
+            ActDatabaseLazy = new Lazy<PegasusActDatabase>(() => new PegasusActDatabase(elfData));
         }
 
         const int starterFixedPokemonMapOffsetOriginal = 0x04BA3B0C;
@@ -76,6 +80,11 @@ namespace SkyEditor.RomEditor.Rtdx
 
         public byte[] ToElf()
         {
+            if (ActDatabaseLazy.IsValueCreated) // No need to write if we haven't even accessed it
+            {
+                ActorDatabase.Write();
+            }
+            
             int starterFixedPokemonMapOffset = isUpdatedVersion ? starterFixedPokemonMapOffsetUpdate : starterFixedPokemonMapOffsetOriginal;
             for (int i = 0; i < 16; i++)
             {
@@ -92,9 +101,12 @@ namespace SkyEditor.RomEditor.Rtdx
             nsoElfConverter ??= NsoElfConverter.Instance;
             return nsoElfConverter.ConvertElfToNso(ToElf());
         }
-
+        
         private byte[] Data { get; }
-        public IReadOnlyList<StarterFixedPokemonMap> StarterFixedPokemonMaps { get; private set; } = default!;        
+        public IReadOnlyList<StarterFixedPokemonMap> StarterFixedPokemonMaps { get; private set; } = default!;
+        
+        private Lazy<PegasusActDatabase> ActDatabaseLazy { get; }
+        public PegasusActDatabase ActorDatabase => ActDatabaseLazy.Value;
     }
 
     [DebuggerDisplay("StarterFixedPokemonMap: {PokemonId} -> {FixedPokemonId}")]

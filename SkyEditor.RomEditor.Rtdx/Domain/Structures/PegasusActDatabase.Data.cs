@@ -1,96 +1,15 @@
-﻿using SkyEditor.RomEditor.Rtdx.Reverse.Const.pokemon;
-using System;
 using System.Collections.Generic;
+using SkyEditor.RomEditor.Rtdx.Reverse;
+using SkyEditor.RomEditor.Rtdx.Reverse.Const.pokemon;
 using Creature = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
 
-namespace SkyEditor.RomEditor.Rtdx.Reverse
+namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 {
-    public static class PegasusActDatabase
+    public partial class PegasusActDatabase
     {
-        public class ActorData
+        public List<ActorData> ActorDataList = new List<ActorData>
         {
-            public enum PartyID
-            {
-                NONE,
-                PARTY1,
-                PARTY2,
-                PARTY3
-            }
-
-            public string symbolName = default!;
-            public Creature raw_pokemonIndex;
-            public FormType raw_formType;
-            public bool bIsFemale;
-            public PartyID opt_partyId;
-            public PokemonWarehouseId opt_warehouseId = default!;
-            public TextId opt_specialName = default!;
-            public string? debug_name;
-
-            internal string Name // Should be public when implemented
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            internal Creature PokemonIndex // Should be public when implemented
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            internal FormType FormType // Should be public when implemented
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            internal PokemonWarehouseId WarehouseId // Should be public when implemented
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
-        }
-
-        public class MapData
-        {
-            public string? symbolName;
-            public string? assetBundleName;
-            public string? prefabName;
-        }
-
-        public class GimmickData
-        {
-            public string? symbolName;
-            public string? assetBundleName;
-            public string? prefabName;
-        }
-
-        public class EffectData
-        {
-            public string? symbolName;
-            public string? effectSymbol;
-        }
-
-        public static List<ActorData> ActorDataList = new List<ActorData>
-        {
-            new ActorData
-            {
-                opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
-                opt_specialName = new TextId(0),
-                symbolName = "", // Originally null, but changed to "" to avoid NRE's
-                debug_name = "",
-                bIsFemale = false,
-            },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO",
                 debug_name = "チュンのすけ",
@@ -98,9 +17,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.HERO),
+                pokemonIndexOffset = 0x0,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "PARTNER",
                 debug_name = "ポケさぶろう",
@@ -108,9 +28,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.PARTNER),
+                pokemonIndexOffset = 0xCC,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "PARTY1",
                 debug_name = null,
@@ -119,9 +40,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 bIsFemale = false,
                 opt_partyId = ActorData.PartyID.PARTY1,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x190,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "PARTY3",
                 debug_name = null,
@@ -130,9 +52,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 bIsFemale = false,
                 opt_partyId = ActorData.PartyID.PARTY3,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x238,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "PARTY2",
                 debug_name = null,
@@ -141,9 +64,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 bIsFemale = false,
                 opt_partyId = ActorData.PartyID.PARTY2,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2DC,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "IRAI1",
                 debug_name = null,
@@ -151,9 +75,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.IRAI1),
+                pokemonIndexOffset = 0x380,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "IRAI2",
                 debug_name = null,
@@ -161,9 +86,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.IRAI2),
+                pokemonIndexOffset = 0x438,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SIZE1",
                 debug_name = null,
@@ -171,9 +97,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4F0,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SIZE2",
                 debug_name = null,
@@ -181,9 +108,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x58C,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SIZE3",
                 debug_name = null,
@@ -191,9 +119,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x628,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SIZE4",
                 debug_name = null,
@@ -201,6 +130,8 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6C4,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
             new ActorData
             {
@@ -211,6 +142,8 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x760,
+                pokemonIndexEditable = false
             },
             new ActorData
             {
@@ -221,9 +154,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7FC,
+                pokemonIndexEditable = false
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "BATAFURII",
                 debug_name = "バタフリー",
@@ -231,9 +165,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x8A8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KYATAPII",
                 debug_name = "キャタピー",
@@ -241,49 +176,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x958,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
-                opt_specialName = new TextId(0),
-                symbolName = "PERIPPAA2",
-                debug_name = "ペリッパー",
-                raw_pokemonIndex = Creature.PERIPPAA,
-                raw_formType = FormType.HIGH,
-                bIsFemale = false,
-                opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
-            },
-            new ActorData
-            {
-                opt_specialName = new TextId(0),
-                symbolName = "PERIPPAA3",
-                debug_name = "ペリッパー",
-                raw_pokemonIndex = Creature.PERIPPAA,
-                raw_formType = FormType.HIGH,
-                bIsFemale = false,
-                opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
-            },
-            new ActorData
-            {
-                opt_specialName = new TextId(0),
-                symbolName = "PERIPPAA4",
-                debug_name = "ペリッパー",
-                raw_pokemonIndex = Creature.PERIPPAA,
-                raw_formType = FormType.HIGH,
-                bIsFemale = false,
-                opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
-            },
-            new ActorData
-            {
-                opt_specialName = new TextId(0),
-                symbolName = "PERIPPAA5",
-                debug_name = "ペリッパー",
-                raw_pokemonIndex = Creature.PERIPPAA,
-                raw_formType = FormType.HIGH,
-                bIsFemale = false,
-                opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
-            },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "PERIPPAA",
                 debug_name = "ペリッパー",
@@ -291,9 +187,50 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0xA04,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
+                opt_specialName = new TextId(0),
+                symbolName = "PERIPPAA2",
+                debug_name = "ペリッパー",
+                raw_pokemonIndex = Creature.PERIPPAA,
+                raw_formType = FormType.HIGH,
+                bIsFemale = false,
+                opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
+            },
+            new ActorData {
+                opt_specialName = new TextId(0),
+                symbolName = "PERIPPAA3",
+                debug_name = "ペリッパー",
+                raw_pokemonIndex = Creature.PERIPPAA,
+                raw_formType = FormType.HIGH,
+                bIsFemale = false,
+                opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
+            },
+            new ActorData {
+                opt_specialName = new TextId(0),
+                symbolName = "PERIPPAA4",
+                debug_name = "ペリッパー",
+                raw_pokemonIndex = Creature.PERIPPAA,
+                raw_formType = FormType.HIGH,
+                bIsFemale = false,
+                opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
+            },
+            new ActorData {
+                opt_specialName = new TextId(0),
+                symbolName = "PERIPPAA5",
+                debug_name = "ペリッパー",
+                raw_pokemonIndex = Creature.PERIPPAA,
+                raw_formType = FormType.HIGH,
+                bIsFemale = false,
+                opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
+            },
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KOIRU",
                 debug_name = "コイル",
@@ -301,9 +238,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.KOIRU),
+                pokemonIndexOffset = 0xD4C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KOIRU2",
                 debug_name = "コイル",
@@ -311,9 +249,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KOIRU3",
                 debug_name = "コイル",
@@ -321,9 +259,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KOIRU4",
                 debug_name = "コイル",
@@ -331,9 +269,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "REAKOIRU",
                 debug_name = "レアコイル",
@@ -341,9 +279,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1010,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "DAGUTORIO",
                 debug_name = "ダグトリオ",
@@ -351,9 +290,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x10C0,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "DIGUDA",
                 debug_name = "ディグダ",
@@ -361,9 +301,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1170,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "EAAMUDO",
                 debug_name = "エアームド",
@@ -371,9 +312,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1220,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KAKUREON",
                 debug_name = "カクレオン",
@@ -381,9 +323,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x12D0,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KAKUREON2",
                 debug_name = "カクレオン",
@@ -391,9 +334,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1380,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "PERUSHIAN",
                 debug_name = "ペルシアン",
@@ -401,9 +345,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1438,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "PUKURIN",
                 debug_name = "プクリン",
@@ -411,9 +356,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x14E8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "GOKURIN",
                 debug_name = "ゴクリン",
@@ -421,9 +367,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1594,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "GARUURA",
                 debug_name = "ガルーラ",
@@ -431,9 +378,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1650,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "GOKURIN2",
                 debug_name = "ゴクリン",
@@ -441,9 +389,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HASUBURERO",
                 debug_name = "ハスブレロ",
@@ -451,9 +399,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x17AC,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "WATAKKO",
                 debug_name = "ワタッコ",
@@ -461,9 +410,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x185C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "MADATSUBOMI",
                 debug_name = "マダツボミ",
@@ -471,9 +421,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x190C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "BURUU",
                 debug_name = "ブルー",
@@ -481,9 +432,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x19BC,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "GURANBURU",
                 debug_name = "グランブル",
@@ -491,9 +443,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1A6C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SAANAITO",
                 debug_name = "サーナイト",
@@ -501,9 +454,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1B1C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "ABUSORU",
                 debug_name = "アブソル",
@@ -511,9 +465,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1BCC,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "MAKUNOSHITA",
                 debug_name = "マクノシタ",
@@ -521,9 +476,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1C98,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "DAATENGU",
                 debug_name = "ダーテング",
@@ -531,9 +487,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1D48,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KONOHANA",
                 debug_name = "コノハナ",
@@ -541,9 +498,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1DF4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KONOHANA2",
                 debug_name = "コノハナ",
@@ -551,9 +509,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "FUUDIN",
                 debug_name = "フーディン",
@@ -561,9 +519,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x1F54,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "RIZAADON",
                 debug_name = "リザードン",
@@ -571,9 +530,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2004,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "BANGIRASU",
                 debug_name = "バンギラス",
@@ -581,9 +541,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x20B4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "GENGAA",
                 debug_name = "ゲンガー",
@@ -591,9 +552,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2164,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "AABO",
                 debug_name = "アーボ",
@@ -601,9 +563,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2214,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "CHAAREMU",
                 debug_name = "チャーレム",
@@ -611,9 +574,21 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x22C4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
+                opt_specialName = new TextId(0),
+                symbolName = "TORANSERU",
+                debug_name = null,
+                raw_pokemonIndex = Creature.TORANSERU,
+                raw_formType = FormType.HIGH,
+                bIsFemale = false,
+                opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2374,
+                pokemonIndexEditable = true  
+            },
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "WATAKKO2",
                 debug_name = "ワタッコ",
@@ -621,9 +596,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2424,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SANDAA",
                 debug_name = "サンダー",
@@ -631,9 +607,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x24D4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "NEITYIO",
                 debug_name = "ネイティオ",
@@ -641,9 +618,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x25A0,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "NAMAZUN",
                 debug_name = "ナマズン",
@@ -651,9 +629,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2650,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KYUUKON",
                 debug_name = "キュウコン",
@@ -661,9 +640,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2700,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "FAIYAA",
                 debug_name = "ファイヤー",
@@ -671,9 +651,21 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x27B0,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
+                opt_specialName = new TextId(0),
+                symbolName = "FURIIZAA",
+                debug_name = "ファイヤー",
+                raw_pokemonIndex = Creature.FURIIZAA,
+                raw_formType = FormType.HIGH,
+                bIsFemale = false,
+                opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x287C,
+                pokemonIndexEditable = true  
+            },
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "GURAADON",
                 debug_name = "グラードン",
@@ -681,9 +673,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2948,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KAMEKKUSU",
                 debug_name = "カメックス",
@@ -691,9 +684,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x29F8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "OKUTAN",
                 debug_name = "オクタン",
@@ -701,9 +695,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2AA8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "GOROONYA",
                 debug_name = "ゴローニャ",
@@ -711,9 +706,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2B58,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "REKKUUZA",
                 debug_name = "レックウザ",
@@ -721,9 +717,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2C08,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SOONANO",
                 debug_name = "ソーナノ",
@@ -731,9 +728,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2CB8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SOONANSU",
                 debug_name = "ソーナンス",
@@ -741,9 +739,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2D68,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "MANKII",
                 debug_name = "マンキー",
@@ -751,9 +750,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x2E14,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "MANKII2",
                 debug_name = "マンキー",
@@ -761,9 +761,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "MANKII3",
                 debug_name = "マンキー",
@@ -771,9 +771,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "MANKII4",
                 debug_name = "マンキー",
@@ -781,9 +781,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "PATCHIIRU",
                 debug_name = "パッチール",
@@ -791,9 +791,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x30BC,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "ENTEI",
                 debug_name = "エンテイ",
@@ -801,9 +802,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x316C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "RAIKOU",
                 debug_name = "ライコウ",
@@ -811,9 +813,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x321C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SUIKUN",
                 debug_name = "スイクン",
@@ -821,9 +824,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x32CC,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HOUOU",
                 debug_name = "ホウオウ",
@@ -831,9 +835,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x337C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "MYUUTSUU",
                 debug_name = "ミュウツー",
@@ -841,9 +846,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x342C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "RATYIOSU",
                 debug_name = "ラティオス",
@@ -851,9 +857,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x34DC,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "RATYIASU",
                 debug_name = "ラティアス",
@@ -861,9 +868,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x358C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "JIRAACHI",
                 debug_name = "ジラーチ",
@@ -871,9 +879,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x363C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "DOOBURU",
                 debug_name = "ドーブル",
@@ -881,9 +890,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x3704,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "DOOBURU2",
                 debug_name = "ラティオス",
@@ -891,9 +901,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "DOOBURU3",
                 debug_name = "ラティオス",
@@ -901,9 +911,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "GONBE",
                 debug_name = "ゴンベ",
@@ -911,9 +921,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x3924,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "MYUU",
                 debug_name = "ミュウ",
@@ -921,9 +932,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x39D4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "REJIROKKU",
                 debug_name = "レジロック",
@@ -931,9 +943,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x3A84,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "REJIAISU",
                 debug_name = "レジアイス",
@@ -941,9 +954,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x3B34,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "REJISUCHIRU",
                 debug_name = "レジスチル",
@@ -951,9 +965,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x3BE4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KAIOOGA",
                 debug_name = "カイオーガ",
@@ -961,9 +976,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x3C94,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "RUGIA",
                 debug_name = "ルギア",
@@ -971,9 +987,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x3D44,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "DEOKISHISU_N",
                 debug_name = "デオキシス",
@@ -981,9 +998,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x3DF4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "RAICHUU",
                 debug_name = "ライチュウ",
@@ -991,9 +1009,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x3EA4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "GORUBATTO",
                 debug_name = "ゴルバット",
@@ -1001,9 +1020,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x3F54,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SAIDON",
                 debug_name = "サイドン",
@@ -1011,9 +1031,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4004,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "BARIYAADO",
                 debug_name = "バリヤード",
@@ -1021,9 +1042,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x40B4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SUTORAIKU",
                 debug_name = "ストライク",
@@ -1031,9 +1053,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4164,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "KAIROSU",
                 debug_name = "カイロス",
@@ -1041,9 +1064,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4214,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "MEGANIUMU",
                 debug_name = "メガニウム",
@@ -1051,9 +1075,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x42C4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "EIPAMU",
                 debug_name = "エイパム",
@@ -1061,9 +1086,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4374,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "GOMAZOU",
                 debug_name = "ゴマゾウ",
@@ -1071,9 +1097,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4424,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEREBII",
                 debug_name = "セレビィ",
@@ -1081,9 +1108,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x44D4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_HITOKAGE",
                 debug_name = null,
@@ -1091,9 +1119,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4570,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_FUSHIGIDANE",
                 debug_name = null,
@@ -1101,9 +1130,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4610,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_ZENIGAME",
                 debug_name = null,
@@ -1111,9 +1141,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x46AC,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_PIKACHUU",
                 debug_name = null,
@@ -1121,9 +1152,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x474C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_PIKACHUU_F",
                 debug_name = null,
@@ -1131,9 +1163,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH_FEMALE,
                 bIsFemale = true,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x47E8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_CHIKORIITA",
                 debug_name = null,
@@ -1141,9 +1174,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4884,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_WANINOKO",
                 debug_name = null,
@@ -1151,9 +1185,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4920,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_HINOARASHI",
                 debug_name = null,
@@ -1161,9 +1196,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x49BC,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_ACHAMO",
                 debug_name = null,
@@ -1171,9 +1207,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4A58,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_ACHAMO_F",
                 debug_name = null,
@@ -1181,9 +1218,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH_FEMALE,
                 bIsFemale = true,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4AF4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_KIMORI",
                 debug_name = null,
@@ -1191,9 +1229,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4B90,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_MIZUGOROU",
                 debug_name = null,
@@ -1201,9 +1240,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4C2C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_KODAKKU",
                 debug_name = null,
@@ -1211,9 +1251,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4CC8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_KARAKARA",
                 debug_name = null,
@@ -1221,9 +1262,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4D64,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_NYAASU",
                 debug_name = null,
@@ -1231,9 +1273,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4E00,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_WANRIKII",
                 debug_name = null,
@@ -1241,9 +1284,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4E9C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_IIBUI",
                 debug_name = null,
@@ -1251,9 +1295,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4F38,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_IIBUI_F",
                 debug_name = null,
@@ -1261,9 +1306,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH_FEMALE,
                 bIsFemale = true,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x4FD4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_ENEKO",
                 debug_name = null,
@@ -1271,9 +1317,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5070,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "SEIKAKU_RIZAADO",
                 debug_name = null,
@@ -1281,9 +1328,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x510C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_POPPO1",
                 debug_name = null,
@@ -1291,9 +1339,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x51A8,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_POPPO2",
                 debug_name = null,
@@ -1301,9 +1350,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5240,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_POPPO3",
                 debug_name = null,
@@ -1311,9 +1361,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x52D8,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_PIJON1",
                 debug_name = null,
@@ -1321,9 +1372,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5370,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_PIJON2",
                 debug_name = null,
@@ -1331,9 +1383,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5408,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_PIJON3",
                 debug_name = null,
@@ -1341,9 +1394,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x54A0,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_ONISUZUME1",
                 debug_name = null,
@@ -1351,9 +1405,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5538,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_ONISUZUME2",
                 debug_name = null,
@@ -1361,9 +1416,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x55D0,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_ONISUZUME3",
                 debug_name = null,
@@ -1371,9 +1427,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5668,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_SUBAME1",
                 debug_name = null,
@@ -1381,9 +1438,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5700,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_SUBAME2",
                 debug_name = null,
@@ -1391,9 +1449,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5798,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_SUBAME3",
                 debug_name = null,
@@ -1401,9 +1460,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5830,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_KYAMOME1",
                 debug_name = null,
@@ -1411,9 +1471,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x58C8,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_KYAMOME2",
                 debug_name = null,
@@ -1421,9 +1482,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5960,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "LO_KYAMOME3",
                 debug_name = null,
@@ -1431,9 +1493,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x59F8,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "DBG_PARTY_1",
                 debug_name = null,
@@ -1441,9 +1504,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5A9C,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "DBG_PARTY_2",
                 debug_name = null,
@@ -1451,9 +1515,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5B48,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "DBG_PARTY_3",
                 debug_name = null,
@@ -1461,9 +1526,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.NORMAL,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5BF4,
+                pokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_HITOKAGE",
                 debug_name = null,
@@ -1471,9 +1537,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5C98,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_FUSHIGIDANE",
                 debug_name = null,
@@ -1481,9 +1548,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5D38,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_ZENIGAME",
                 debug_name = null,
@@ -1491,9 +1559,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5DD8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_PIKACHUU",
                 debug_name = null,
@@ -1501,9 +1570,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5E78,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_CHIKORIITA",
                 debug_name = null,
@@ -1511,9 +1581,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5F18,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_WANINOKO",
                 debug_name = null,
@@ -1521,9 +1592,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x5FB8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_HINOARASHI",
                 debug_name = null,
@@ -1531,9 +1603,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6058,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_ACHAMO",
                 debug_name = null,
@@ -1541,9 +1614,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x60F8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_KIMORI",
                 debug_name = null,
@@ -1551,9 +1625,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6198,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_MIZUGOROU",
                 debug_name = null,
@@ -1561,9 +1636,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6238,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_KODAKKU",
                 debug_name = null,
@@ -1571,9 +1647,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x62D8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_KARAKARA",
                 debug_name = null,
@@ -1581,9 +1658,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6378,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_NYAASU",
                 debug_name = null,
@@ -1591,9 +1669,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6418,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_WANRIKII",
                 debug_name = null,
@@ -1601,9 +1680,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x64B8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_IIBUI",
                 debug_name = null,
@@ -1611,9 +1691,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6558,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_ENEKO",
                 debug_name = null,
@@ -1621,9 +1702,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x65F8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_RIZAADO",
                 debug_name = null,
@@ -1631,9 +1713,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexEditable = false // Can't edit due to copied value 
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_FUSHIGISOU",
                 debug_name = null,
@@ -1641,9 +1723,12 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6728,
+                
+                // TODO: this one doesn't work for some reason although it should
+                // pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_KAMEERU",
                 debug_name = null,
@@ -1651,9 +1736,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x67C0,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_RAICHUU",
                 debug_name = null,
@@ -1661,9 +1747,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6860,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_BEIRIIFU",
                 debug_name = null,
@@ -1671,9 +1758,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x68FC,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_ARIGEITSU",
                 debug_name = null,
@@ -1681,9 +1769,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6998,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_MAGUMARASHI",
                 debug_name = null,
@@ -1691,9 +1780,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6A34,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_WAKASHAMO",
                 debug_name = null,
@@ -1701,9 +1791,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6AD0,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_JUPUTORU",
                 debug_name = null,
@@ -1711,9 +1802,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6B6C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_NUMAKUROO",
                 debug_name = null,
@@ -1721,9 +1813,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6C08,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_GORUDAKKU",
                 debug_name = null,
@@ -1731,9 +1824,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6CA4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_GARAGARA",
                 debug_name = null,
@@ -1741,9 +1835,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6D40,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_PERUSHIAN",
                 debug_name = null,
@@ -1751,9 +1846,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6DE0,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_GOORIKII",
                 debug_name = null,
@@ -1761,9 +1857,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6E7C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_SHAWAAZU",
                 debug_name = null,
@@ -1771,9 +1868,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6F18,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_SANDAASU",
                 debug_name = null,
@@ -1781,9 +1879,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x6FB4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_BUUSUTAA",
                 debug_name = null,
@@ -1791,9 +1890,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7050,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_EEFI",
                 debug_name = null,
@@ -1801,9 +1901,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x70EC,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_BURAKKII",
                 debug_name = null,
@@ -1811,9 +1912,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7188,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_RIIFIA",
                 debug_name = null,
@@ -1821,9 +1923,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7224,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_GUREISHIA",
                 debug_name = null,
@@ -1831,9 +1934,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x72C0,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_NINFIA",
                 debug_name = null,
@@ -1841,9 +1945,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x735C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_ENEKORORO",
                 debug_name = null,
@@ -1851,9 +1956,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x73F8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_RIZAADON",
                 debug_name = null,
@@ -1861,9 +1967,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7498,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_FUSHIGIBANA",
                 debug_name = null,
@@ -1871,9 +1978,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7534,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_KAMEKKUSU",
                 debug_name = null,
@@ -1881,9 +1989,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x75D4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_MEGANIUMU",
                 debug_name = null,
@@ -1891,9 +2000,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7674,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_OODAIRU",
                 debug_name = null,
@@ -1901,9 +2011,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7710,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_BAKUFUUN",
                 debug_name = null,
@@ -1911,9 +2022,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x77AC,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_BASHAAMO",
                 debug_name = null,
@@ -1921,9 +2033,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7848,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_JUKAIN",
                 debug_name = null,
@@ -1931,9 +2044,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x78E4,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_RAGURAAJI",
                 debug_name = null,
@@ -1941,9 +2055,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7980,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_KAIRIKII",
                 debug_name = null,
@@ -1951,9 +2066,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7A1C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_FUSHIGIBANA_MEGA",
                 debug_name = null,
@@ -1961,9 +2077,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7AB8,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_RIZAADON_MEGA_X",
                 debug_name = null,
@@ -1971,9 +2088,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7B54,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_RIZAADON_MEGA_Y",
                 debug_name = null,
@@ -1981,9 +2099,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7BF0,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_KAMEKKUSU_MEGA",
                 debug_name = null,
@@ -1991,9 +2110,10 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7C8C,
+                pokemonIndexEditable = true  
             },
-            new ActorData
-            {
+            new ActorData {
                 opt_specialName = new TextId(0),
                 symbolName = "HERO_TEST_RAGURAAJI_MEGA",
                 debug_name = null,
@@ -2001,31 +2121,9 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
                 raw_formType = FormType.HIGH,
                 bIsFemale = false,
                 opt_warehouseId = new PokemonWarehouseId(FixedWarehouseId.NULL),
+                pokemonIndexOffset = 0x7D28,
+                pokemonIndexEditable = true  
             },
         };
-
-        public static ActorData? FindActorData(string symbol)
-        {
-            return ActorDataList.Find(d => d.symbolName == symbol);
-        }
-
-        public static void LoadCharaObject(Creature index, FormType formType, Action<CharacterModel> loadedCb)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static MapData FindMapData(string symbol)
-        {
-            throw new NotImplementedException();
-        }
-
-        public static GimmickData FindGimmick(string symbol)
-        {
-            throw new NotImplementedException();
-        }
-        public static EffectData FindEffect(string symbol)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
