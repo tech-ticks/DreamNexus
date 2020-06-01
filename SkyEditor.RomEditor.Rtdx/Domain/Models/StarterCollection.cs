@@ -150,7 +150,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
                 var ndEntry = natureDiagnosis.m_pokemonNatureAndTypeList.First(p => p.m_nameLabel == oldPokemon.PokemonId);
                 ndEntry.m_nameLabel = (CreatureIndex)starter.PokemonId;
 
-                var symbolCandiate = PegasusActDatabase.ActorDataList
+                var symbolCandiate = mainExecutable.ActorDatabase.ActorDataList
                     .Where(a => a.raw_pokemonIndex == starter.PokemonId
                         && a.bIsFemale == false) // bIsFemale is out of scope since this is just a proof-of-concept
                     .OrderByDescending(a => (int)a.raw_formType)

@@ -126,7 +126,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 .RunAsync(string.Join(Environment.NewLine, CSharpScriptImports) + scriptWithoutPreprocessorDirectives,                
                 ScriptOptions.Default
                     .WithReferences(typeof(SkyEditorScriptContext).Assembly)
-                    .WithImports("SkyEditor.RomEditor.Rtdx"),
+                    .WithImports("SkyEditor.RomEditor.Rtdx", "System", "System.Linq"),
                 globals: Globals)
                 .ConfigureAwait(false);
         }

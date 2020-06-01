@@ -1,6 +1,6 @@
 # SkyEditor.RomEditor.Rtdx
 
-A work-in-progress ROM editor for Pokémon Mystery Dungeon: Rescue Team DX.
+A work-in-progress ROM editor for PokÃ©mon Mystery Dungeon: Rescue Team DX.
 
 To use this, you need a decrypted and extracted copy of the game. If your console has the update installed, you'll need the updated executable.
 
@@ -94,7 +94,10 @@ dotnet SkyEditor.RomEditor.Rtdx.Console.dll ListLibrary
 
 ### Editing Starters
 
-See Scripts/Samples/ChangeStarters.lua in the console app project for a rough idea how to do it. Note that the models during the personality test _might not_ match your selected Pokémon, but the portrait and in-game models will match. This is unlikely to change in the forseable future due to how heavily hard-coded it is in the game.
+See Scripts/Samples/ChangeStarters.lua in the console app project for a rough idea how to do it.
+
+Note that the models during the personality test _might not_ match your selected PokÃ©mon, but the portrait and in-game models will match.
+You can currently fix this mismatch by manually modifying and executing `SkyEditor.RomEditor.Rtdx.ConsoleApp/Scripts/CSharp/ActDatabaseEditing.csx`.
 
 ### Change Script Generation
 
