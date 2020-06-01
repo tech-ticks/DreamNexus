@@ -8,7 +8,7 @@ using System.Linq;
 using static SkyEditor.RomEditor.Rtdx.Domain.Models.StarterCollection;
 using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
 using NatureType = SkyEditor.RomEditor.Rtdx.Reverse.NDConverterSharedData.NatureType;
-using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.waza.Index;
+using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.waza.WazaIndex;
 
 namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
 {

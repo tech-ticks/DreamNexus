@@ -1,13 +1,12 @@
 ﻿using NsoElfConverterDotNet;
+using SkyEditor.RomEditor.Rtdx.Constants;
+using SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using SkyEditor.RomEditor.Rtdx.Domain.Structures;
-using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
-using FixedCreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.fixed_creature.Index;
 
-namespace SkyEditor.RomEditor.Rtdx
+namespace SkyEditor.RomEditor.Rtdx.Executable
 {
     public interface IMainExecutable
     {

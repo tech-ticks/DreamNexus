@@ -77,20 +77,20 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                 }
 ");
 
-            RegisterEnum<Reverse.Const.ability.Index>("Const.ability.Index", "AbilityIndex");
+            RegisterEnum<Reverse.Const.ability.AbilityIndex>("Const.ability.Index", "AbilityIndex");
             RegisterEnum<Reverse.Const.creature.Index>("Const.creature.Index", "CreatureIndex");
             RegisterEnum<Reverse.Const.fixed_creature.Index>("Const.fixed_creature.Index", "FixedCreatureIndex");
-            RegisterEnum<Reverse.Const.item.Index>("Const.item.Index", "ItemIndex");
-            RegisterEnum<Reverse.Const.item.Kind>("Const.item.Kind", "ItemKind");
-            RegisterEnum<Reverse.Const.item.PriceType>("Const.item.PriceType", "ItemPriceType");
-            RegisterEnum<Reverse.Const.order.Index>("Const.order.Index", "OrderIndex");
-            RegisterEnum<Reverse.Const.pokemon.FixedWarehouseId>("Const.pokemon.FixedWarehouseId", "PokemonFixedWarehouseId");
-            RegisterEnum<Reverse.Const.pokemon.FormType>("Const.pokemon.FormType", "PokemonFormType");
-            RegisterEnum<Reverse.Const.pokemon.GenderType>("Const.pokemon.GenderType", "PokemonGenderType");
-            RegisterEnum<Reverse.Const.pokemon.SallyType>("Const.pokemon.SallyType", "PokemonSallyType");
-            RegisterEnum<Reverse.Const.pokemon.Type>("Const.pokemon.Type", "PokemonType");
-            RegisterEnum<Reverse.Const.sugowaza.Index>("Const.sugowaza.Index", "SugowazaIndex");
-            RegisterEnum<Reverse.Const.waza.Index>("Const.waza.Index", "WazaIndex");
+            RegisterEnum<Reverse.Const.item.ItemIndex>("Const.item.Index", "ItemIndex");
+            RegisterEnum<Reverse.Const.item.ItemKind>("Const.item.Kind", "ItemKind");
+            RegisterEnum<Reverse.Const.item.ItemPriceType>("Const.item.PriceType", "ItemPriceType");
+            RegisterEnum<Reverse.Const.order.OrderIndex>("Const.order.Index", "OrderIndex");
+            RegisterEnum<Reverse.Const.pokemon.PokemonFixedWarehouseId>("Const.pokemon.FixedWarehouseId", "PokemonFixedWarehouseId");
+            RegisterEnum<Reverse.Const.pokemon.PokemonFormType>("Const.pokemon.FormType", "PokemonFormType");
+            RegisterEnum<Reverse.Const.pokemon.PokemonGenderType>("Const.pokemon.GenderType", "PokemonGenderType");
+            RegisterEnum<Reverse.Const.pokemon.PokemonSallyType>("Const.pokemon.SallyType", "PokemonSallyType");
+            RegisterEnum<Reverse.Const.pokemon.PokemonType>("Const.pokemon.Type", "PokemonType");
+            RegisterEnum<Reverse.Const.sugowaza.SugowazaIndex>("Const.sugowaza.Index", "SugowazaIndex");
+            RegisterEnum<Reverse.Const.waza.WazaIndex>("Const.waza.Index", "WazaIndex");
             RegisterEnum<Reverse.Const.EvolutionCameraType>("Const.EvolutionCameraType", "EvolutionCameraType");
             RegisterEnum<Reverse.Const.GraphicsBodySizeType>("Const.GraphicsBodySizeType", "GraphicsBodySizeType");
             RegisterEnum<Reverse.Const.TextIDHash>("Const.TextIDHash", "TextIDHash");
