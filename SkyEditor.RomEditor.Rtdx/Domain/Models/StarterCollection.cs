@@ -147,17 +147,22 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
                 var ndEntry = natureDiagnosis.m_pokemonNatureAndTypeList.First(p => p.m_nameLabel == oldPokemon.PokemonId);
                 ndEntry.m_nameLabel = starter.PokemonId;
 
-                var symbolCandiate = mainExecutable.ActorDatabase.ActorDataList
-                    .Where(a => a.PokemonIndex == starter.PokemonId
-                        && a.IsFemale == false) // bIsFemale is out of scope since this is just a proof-of-concept
-                    .OrderByDescending(a => (int)a.FormType)
-                    .FirstOrDefault();
+                var natureDiagnosisActorMale = mainExecutable.ActorDatabase.ActorDataList
+                    .FirstOrDefault(a => a.SymbolName == ndEntry.m_symbolName);
 
-                if (symbolCandiate != null)
+                if (natureDiagnosisActorMale != null)
                 {
-                    ndEntry.m_symbolName = symbolCandiate.SymbolName;
-                    ndEntry.m_symbolNameFemale = "";
+                    natureDiagnosisActorMale.PokemonIndex = starter.PokemonId;
                 }
+
+                // This may work in some cases but not all of them
+                // I expect this will fail in-game for any Pokemon without a Female form
+                //var natureDiagnosisActorFemale = mainExecutable.ActorDatabase.ActorDataList
+                //    .FirstOrDefault(a => a.SymbolName == ndEntry.m_symbolNameFemale);
+                //if (natureDiagnosisActorFemale != null)
+                //{
+                //    natureDiagnosisActorFemale.PokemonIndex = starter.PokemonId;
+                //}
             }
             this.OriginalStarters = Starters.Select(s => s.Clone()).ToArray();
         }

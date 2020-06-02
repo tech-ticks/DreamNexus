@@ -5,7 +5,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
 {
     public partial class PegasusActDatabase
     {
-        public List<ActorData> ActorDataList = new List<ActorData>
+        public List<ActorData> ActorDataList { get; } = new List<ActorData>
         {
             new ActorData {
                 SymbolName = "HERO",
@@ -98,7 +98,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x58C,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "SIZE3",
@@ -108,7 +108,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x628,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "SIZE4",
@@ -118,7 +118,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x6C4,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData
             {
@@ -1216,7 +1216,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x51A8,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_POPPO2",
@@ -1226,7 +1226,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x5240,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_POPPO3",
@@ -1236,7 +1236,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x52D8,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_PIJON1",
@@ -1246,7 +1246,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x5370,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_PIJON2",
@@ -1256,7 +1256,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x5408,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_PIJON3",
@@ -1266,7 +1266,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x54A0,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_ONISUZUME1",
@@ -1276,7 +1276,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x5538,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_ONISUZUME2",
@@ -1286,7 +1286,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x55D0,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_ONISUZUME3",
@@ -1296,7 +1296,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x5668,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_SUBAME1",
@@ -1306,7 +1306,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x5700,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_SUBAME2",
@@ -1316,7 +1316,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x5798,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_SUBAME3",
@@ -1326,7 +1326,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x5830,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_KYAMOME1",
@@ -1336,7 +1336,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x58C8,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_KYAMOME2",
@@ -1346,7 +1346,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x5960,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "LO_KYAMOME3",
@@ -1356,7 +1356,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x59F8,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "DBG_PARTY_1",
@@ -1366,7 +1366,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x5A9C,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "DBG_PARTY_2",
@@ -1376,7 +1376,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x5B48,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "DBG_PARTY_3",
@@ -1386,7 +1386,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
                 IsFemale = false,
                 WarehouseId = PokemonFixedWarehouseId.NULL,
                 PokemonIndexOffset = 0x5BF4,
-                PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
+                PokemonIndexEditable = true
             },
             new ActorData {
                 SymbolName = "HERO_TEST_HITOKAGE",

@@ -16,8 +16,6 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
             public string? DebugName { get; set; }
             public int PokemonIndexOffset { get; set; }
             public bool PokemonIndexEditable { get; set; }
-
-            public int AbsolutePokemonIndexOffset => PokemonIndexOffset + TextOffset + FirstCreatureIdOffset;
         }
     }
 }

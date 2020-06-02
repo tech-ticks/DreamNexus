@@ -40,13 +40,13 @@ namespace SkyEditor.RomEditor.Rtdx.Executable
 
             Init();
             
-            ActDatabaseLazy = new Lazy<PegasusActDatabase>(() => new PegasusActDatabase(elfData));
+            ActDatabaseLazy = new Lazy<PegasusActDatabase>(() => new PegasusActDatabase(elfData, version));
         }
 
         const int starterFixedPokemonMapOffsetOriginal = 0x04BA3B0C;
         const int starterFixedPokemonMapOffsetUpdate = 0x04BA4DBC;
 
-        private bool isUpdatedVersion;
+        private ExecutableVersion version;
 
         private void Init()
         {
@@ -54,11 +54,11 @@ namespace SkyEditor.RomEditor.Rtdx.Executable
             if (StarterFixedPokemonMaps.All(m => m.PokemonId == CreatureIndex.NONE))
             {
                 Init(starterFixedPokemonMapOffsetUpdate);
-                isUpdatedVersion = true;
+                version = ExecutableVersion.Update1;
             }
             else
             {
-                isUpdatedVersion = false;
+                version = ExecutableVersion.Original;
             }
         }
 
@@ -83,8 +83,14 @@ namespace SkyEditor.RomEditor.Rtdx.Executable
             {
                 ActorDatabase.Write();
             }
-            
-            int starterFixedPokemonMapOffset = isUpdatedVersion ? starterFixedPokemonMapOffsetUpdate : starterFixedPokemonMapOffsetOriginal;
+
+            int starterFixedPokemonMapOffset = version switch
+            {
+                ExecutableVersion.Original => starterFixedPokemonMapOffsetOriginal,
+                ExecutableVersion.Update1 => starterFixedPokemonMapOffsetUpdate,
+                _ => throw new InvalidOperationException("Unsupported executable version")
+            };
+
             for (int i = 0; i < 16; i++)
             {
                 var map = StarterFixedPokemonMaps[i];
