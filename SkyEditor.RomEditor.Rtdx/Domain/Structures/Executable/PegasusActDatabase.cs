@@ -45,8 +45,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
             var firstOffsetInstruction = new ArmInstruction(BitConverter.ToUInt32(elfData, absoluteFirstOffset));
             if (!firstOffsetInstruction.IsSupported)
             {
-                throw new InvalidOperationException(
-                    "Cannot read Actor database - maybe an incompatible version was used?");
+                throw new InvalidOperationException("Cannot read Actor database - maybe an incompatible version was used?");
             }
 
             foreach (var actorData in ActorDataList.Where(actorData => actorData.PokemonIndexEditable))
