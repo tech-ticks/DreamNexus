@@ -10,7 +10,7 @@ if (Rom == null)
 var actDatabase = Rom.GetMainExecutable().ActorDatabase;
 
 // Personality quiz model actors start with "SEIKAKU_". This one is Bulbasaur.
-var seikakuFushigidane = actDatabase.ActorDataList.First(actor => actor.symbolName == "SEIKAKU_FUSHIGIDANE");
+var seikakuFushigidane = actDatabase.ActorDataList.First(actor => actor.SymbolName == "SEIKAKU_FUSHIGIDANE");
 Console.WriteLine("Old Pokémon index: " + seikakuFushigidane.PokemonIndex);
 
 // Change Bulbasaur's model to Pikachu's. Only the PokemonIndex can be edited, changing any other fields has no effect.
