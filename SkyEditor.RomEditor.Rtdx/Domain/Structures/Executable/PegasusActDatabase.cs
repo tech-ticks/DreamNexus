@@ -50,8 +50,15 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
 
             foreach (var actorData in ActorDataList.Where(actorData => actorData.PokemonIndexEditable))
             {
-                var instruction = new ArmInstruction(BitConverter.ToUInt32(elfData, AbsolutePokemonIndexOffset(actorData)));
-                actorData.PokemonIndex = (CreatureIndex)instruction.GetValue();
+                var instruction =
+                    new ArmInstruction(BitConverter.ToUInt32(elfData, AbsolutePokemonIndexOffset(actorData)));
+
+                if (instruction.IsSupported)
+                {
+                    // It doesn't matter if the instruction is unsupported here because we can rely
+                    // on the hardcoded values PegasusActDatabase.Data.cs and it will be readable after edits.
+                    actorData.PokemonIndex = (CreatureIndex) instruction.Value;
+                }
             }
         }
 
@@ -59,10 +66,19 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures.Executable
         {
             foreach (var actorData in ActorDataList.Where(actorData => actorData.PokemonIndexEditable))
             {
-                var absoluteOffset = AbsolutePokemonIndexOffset(actorData);
-                var instruction = new ArmInstruction(BitConverter.ToUInt32(elfData, absoluteOffset));
-                instruction.PatchValue((ushort)actorData.PokemonIndex);
-                BitConverter.GetBytes(instruction.RawInstruction).CopyTo(elfData, absoluteOffset);
+                var instruction = new ArmInstruction(BitConverter.ToUInt32(elfData, AbsolutePokemonIndexOffset(actorData)));
+                if (instruction.IsSupported)
+                {
+                    instruction.Value = (ushort) actorData.PokemonIndex;
+                }
+                else if (instruction.Code == ArmInstructionCode.MovBitmaskImmediateToWRegister)
+                {
+                    // Replace the unsupported instruction with an equivalent one
+                    instruction = new ArmInstruction(ArmInstructionCode.MovImmediateToWRegister, instruction.Register,
+                        (ushort) actorData.PokemonIndex);
+                }
+
+                BitConverter.GetBytes(instruction.RawInstruction).CopyTo(elfData, AbsolutePokemonIndexOffset(actorData));
             }
         }
 
