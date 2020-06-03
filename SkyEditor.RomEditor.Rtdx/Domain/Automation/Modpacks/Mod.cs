@@ -10,7 +10,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.Modpacks
 {
     public class Mod
     {
-        public Mod(ModMetadata metadata, string directory, IFileSystem fileSystem)
+        public Mod(ModMetadata metadata, string directory, IReadOnlyFileSystem fileSystem)
         {
             if (string.IsNullOrEmpty(directory))
             {

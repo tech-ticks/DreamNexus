@@ -44,6 +44,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
 
         #region StreamingAssets/native_data
         ICommonStrings GetCommonStrings();
+        PokemonGraphicsDatabase GetPokemonGraphicsDatabase();
+        PokemonFormDatabase GetPokemonFormDatabase();
         #endregion
 
         #region Models

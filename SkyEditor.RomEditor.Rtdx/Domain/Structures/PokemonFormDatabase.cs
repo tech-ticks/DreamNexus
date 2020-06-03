@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkyEditor.RomEditor.Rtdx.Constants;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -20,8 +21,16 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             }
             this.Entries = entries;
         }
-
+        
         public List<PokemonFormDatabaseEntry> Entries { get; }
+
+        /// <summary>
+        /// Gets the 1-based index of the entry in <see cref="PokemonGraphicsDatabase"/> corresponding to the given Pokémon and form.
+        /// </summary>
+        public int GetGraphicsDatabaseIndex(CreatureIndex creatureIndex, PokemonFormType formType)
+        {
+            return Entries[(int)creatureIndex - 1].PokemonGraphicsDatabaseEntryIds[(int)formType];
+        }
 
         public class PokemonFormDatabaseEntry
         {

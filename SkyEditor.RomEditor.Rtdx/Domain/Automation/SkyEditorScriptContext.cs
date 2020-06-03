@@ -17,11 +17,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
 
         public SkyEditorScriptContext(IRtdxRom rom)
         {
-            this.Globals = new CSharpGlobals
-            {
-                Rom = rom ?? throw new ArgumentNullException(nameof(rom))
-            };
-
+            this.Globals = new CSharpGlobals(rom);
             this.LuaState = new NLua.Lua();
             this.CSharpScriptImports = new List<string>();
 
@@ -160,7 +156,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
         // This class must be public for CSharp scripts to use it
         public class CSharpGlobals
         {
-            public IRtdxRom Rom { get; internal set; } = default!;
+            public CSharpGlobals(IRtdxRom rom)
+            {
+                this.Rom = rom ?? throw new ArgumentNullException(nameof(rom));
+            }
+
+            public IRtdxRom Rom { get; }
         }
     }
 }

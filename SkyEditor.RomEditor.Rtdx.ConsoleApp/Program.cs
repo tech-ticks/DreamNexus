@@ -132,7 +132,8 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             {
                 throw new InvalidOperationException("Modpack or script argument must follow a ROM argument");
             }
-            var modpack = new Modpack(modPath, context.FileSystem);
+
+            using var modpack = new Modpack(modPath, context.FileSystem);
             await modpack.Apply(context.ScriptContext);
         }
 
