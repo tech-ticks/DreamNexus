@@ -1,6 +1,6 @@
 // Load SkyEditor.csx to give Visual Studio hints about what globals and imports will be available
 // Note that preprocessor directives will not be run by Sky Editor
-#load "SkyEditor.csx"
+#load "../SkyEditor.csx"
 
 if (Rom == null) 
 {

@@ -43,7 +43,10 @@
     <None Update="Modpacks\Randomizer\SkyEditor.csx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Update="Scripts\CSharp\SkyEditor.csx">
+    <None Update="Scripts\Queries\ListPokemonDataInfo.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\SkyEditor.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Scripts\CSharp\Template.csx">

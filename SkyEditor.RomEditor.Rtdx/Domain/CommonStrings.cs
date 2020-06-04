@@ -19,10 +19,18 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         /// <returns>User-facing name such as "Bulbasaur", or null if the internal name could not be found</returns>
         string? GetPokemonNameByInternalName(string internalName);
 
+        string? GetPokemonTaxonomy(int speciesId);
+
         /// <summary>
         /// Gets the name of a move by the internal Japanese name.
         /// </summary>
         string? GetMoveNameByInternalName(string internalName);
+
+        string? GetMoveName(WazaIndex wazaIndex);
+
+        string? GetAbilityNameByInternalName(string internalName);
+
+        string? GetAbilityName(AbilityIndex abilityIndex);
     }
 
     public class CommonStrings : ICommonStrings
@@ -63,7 +71,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
 
         private readonly MessageBinEntry common;
 
-        public Dictionary<CreatureIndex, string> Pokemon { get;  }
+        public Dictionary<CreatureIndex, string> Pokemon { get; }
         public Dictionary<WazaIndex, string> Moves { get; }
 
         /// <summary>
@@ -77,6 +85,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
             return common.Strings.GetValueOrDefault(nameHash);
         }
 
+        public string? GetPokemonTaxonomy(int speciesId)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("POKEMON_TAXIS__SPECIES_" + speciesId.ToString().PadLeft(3, '0'));
+            return common.Strings.GetValueOrDefault(nameHash);
+        }
+
         /// <summary>
         /// Gets the name of a move by the internal Japanese name.
         /// </summary>
@@ -84,6 +98,22 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
         {
             var nameHash = TextIdValues.GetValueOrDefault("WAZA_NAME__WAZA_" + internalName.ToUpper());
             return common.Strings.GetValueOrDefault(nameHash);
+        }
+
+        public string? GetMoveName(WazaIndex wazaIndex)
+        {
+            return GetMoveNameByInternalName(wazaIndex.ToString("f"));
+        }
+
+        public string? GetAbilityNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("ABILITY_NAME__" + internalName.ToUpper());
+            return common.Strings.GetValueOrDefault(nameHash);
+        }
+
+        public string? GetAbilityName(AbilityIndex abilityIndex)
+        {
+            return GetAbilityNameByInternalName(abilityIndex.ToString("f"));
         }
     }
 }

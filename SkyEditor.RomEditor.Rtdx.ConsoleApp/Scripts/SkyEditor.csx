@@ -3,10 +3,10 @@
 #r "netstandard.dll"
 
 // If you're editing the template from the console app project
-#r "../../bin/Debug/netcoreapp3.1/SkyEditor.RomEditor.Rtdx.dll"
+#r "../bin/Debug/netcoreapp3.1/SkyEditor.RomEditor.Rtdx.dll"
 
 // If you're editing the template from the release
-#r "../../SkyEditor.RomEditor.Rtdx.dll"
+#r "../SkyEditor.RomEditor.Rtdx.dll"
 
 using System;
 using System.Linq;
