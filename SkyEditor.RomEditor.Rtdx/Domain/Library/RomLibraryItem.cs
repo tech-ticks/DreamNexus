@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Library
+namespace SkyEditor.RomEditor.Domain.Library
 {
     public class RomLibraryItem
     {

@@ -1,13 +1,13 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using SkyEditor.RomEditor.Rtdx.Avalonia.Infrastructure;
-using SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx;
+using SkyEditor.RomEditor.Avalonia.Infrastructure;
+using SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.MenuItems
+namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
 {
     public class SaveDirectoryAsMenuItem : MenuItem<RtdxRomViewModel>
     {

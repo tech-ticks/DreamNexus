@@ -1,7 +1,7 @@
-﻿using SkyEditor.RomEditor.Rtdx.Constants;
-using SkyEditor.RomEditor.Rtdx.Domain.Models;
+﻿using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Domain.Rtdx.Models;
 
-namespace SkyEditor.RomEditor.Rtdx.Tests.TestData.Implementations
+namespace SkyEditor.RomEditor.Tests.TestData.Implementations
 {
     public class SimpleStarterModel : IStarterModel
     {

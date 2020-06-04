@@ -1,9 +1,9 @@
-﻿using SkyEditor.RomEditor.Rtdx.Constants;
-using SkyEditor.RomEditor.Rtdx.Domain.Models;
+﻿using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using System;
 using System.Linq;
 
-namespace SkyEditor.RomEditor.Rtdx.Tests.TestData.Implementations
+namespace SkyEditor.RomEditor.Tests.TestData.Implementations
 {
     public class SimpleStarterCollection : IStarterCollection
     {

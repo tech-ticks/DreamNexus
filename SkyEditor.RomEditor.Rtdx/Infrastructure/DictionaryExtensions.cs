@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace SkyEditor.RomEditor.Rtdx.Infrastructure
+namespace SkyEditor.RomEditor.Infrastructure
 {
     public static class DictionaryExtensions
     {

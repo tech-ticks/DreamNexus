@@ -4,7 +4,7 @@ using System.Text;
 using System.Reflection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.CSharp
+namespace SkyEditor.RomEditor.Domain.Automation.CSharp
 {
     public interface ICSharpGenerator : IScriptGenerator
     {

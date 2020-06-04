@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SkyEditor.RomEditor.Rtdx.Infrastructure
+namespace SkyEditor.RomEditor.Infrastructure
 {
     public static class ServiceProviderExtensions
     {

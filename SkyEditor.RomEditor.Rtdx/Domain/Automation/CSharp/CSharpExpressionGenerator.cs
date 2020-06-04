@@ -1,9 +1,10 @@
-﻿using SkyEditor.RomEditor.Rtdx.Constants;
-using SkyEditor.RomEditor.Rtdx.Infrastructure;
+﻿using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Infrastructure;
 using System;
 using System.Collections.Generic;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.CSharp
+namespace SkyEditor.RomEditor.Domain.Automation.CSharp
 {
     public interface ICSharpExpressionGenerator : IScriptExpressionGenerator
     {

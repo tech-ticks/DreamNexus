@@ -2,7 +2,7 @@
 
 using System;
 using System.Collections.Generic;
-using SkyEditor.RomEditor.Rtdx.Constants;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 
 if (Rom == null)
 {

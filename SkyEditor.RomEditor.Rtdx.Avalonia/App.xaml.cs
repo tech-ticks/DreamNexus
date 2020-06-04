@@ -1,10 +1,10 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels;
-using SkyEditor.RomEditor.Rtdx.Avalonia.Views;
+using SkyEditor.RomEditor.Avalonia.ViewModels;
+using SkyEditor.RomEditor.Avalonia.Views;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia
+namespace SkyEditor.RomEditor.Avalonia
 {
     public class App : Application
     {

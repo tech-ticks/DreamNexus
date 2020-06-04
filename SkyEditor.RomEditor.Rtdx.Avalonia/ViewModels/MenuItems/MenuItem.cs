@@ -9,7 +9,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.MenuItems
+namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
 {
     /// <summary>
     /// Base class for a logical menu item

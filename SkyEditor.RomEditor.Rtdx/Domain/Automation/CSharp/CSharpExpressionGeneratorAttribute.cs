@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.CSharp
+namespace SkyEditor.RomEditor.Domain.Automation.CSharp
 {
     /// <summary>
     /// Specifies a custom implementation to convert a value into a C# expression

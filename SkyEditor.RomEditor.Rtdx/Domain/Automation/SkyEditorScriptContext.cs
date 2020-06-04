@@ -1,15 +1,13 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using NLua;
-using SkyEditor.RomEditor.Rtdx.Constants;
+using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
+namespace SkyEditor.RomEditor.Domain.Automation
 {
     public class SkyEditorScriptContext
     {
@@ -126,8 +124,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
                     .WithImports(
                         "System",
                         "System.Linq",
-                        "SkyEditor.RomEditor.Rtdx",
-                        "SkyEditor.RomEditor.Rtdx.Constants"
+                        "SkyEditor.RomEditor",
+                        "SkyEditor.RomEditor.Domain.Rtdx.Constants"
                     ),
                 globals: Globals)
                 .ConfigureAwait(false);

@@ -1,13 +1,12 @@
 ﻿using SkyEditor.IO.FileSystem;
-using SkyEditor.RomEditor.Rtdx.Infrastructure;
+using SkyEditor.RomEditor.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Library
+namespace SkyEditor.RomEditor.Domain.Library
 {
     public interface IRomLibrary
     {

@@ -1,13 +1,10 @@
 ﻿using FluentAssertions;
-using SkyEditor.IO;
 using SkyEditor.IO.Binary;
-using SkyEditor.RomEditor.Rtdx.Domain.Structures;
-using System;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
-namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
+namespace SkyEditor.RomEditor.Tests.Domain.Structures
 {
     public class Sir0BuilderTests
     {

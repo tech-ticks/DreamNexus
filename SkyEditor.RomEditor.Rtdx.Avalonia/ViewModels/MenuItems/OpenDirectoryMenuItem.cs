@@ -1,16 +1,14 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using SkyEditor.IO.FileSystem;
-using SkyEditor.RomEditor.Rtdx.Avalonia.Infrastructure;
-using SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx;
-using SkyEditor.RomEditor.Rtdx.Domain;
+using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Avalonia.Infrastructure;
+using SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.MenuItems
+namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
 {
     public class OpenDirectoryMenuItem : MenuItem
     {

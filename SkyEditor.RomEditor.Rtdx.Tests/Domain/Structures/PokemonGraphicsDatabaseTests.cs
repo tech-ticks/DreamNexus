@@ -1,9 +1,9 @@
 ﻿using FluentAssertions;
-using SkyEditor.RomEditor.Rtdx.Constants;
-using SkyEditor.RomEditor.Rtdx.Domain.Structures;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using Xunit;
 
-namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
+namespace SkyEditor.RomEditor.Tests.Domain.Structures
 {
     public class PokemonGraphicsDatabaseTests
     {

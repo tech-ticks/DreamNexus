@@ -1,4 +1,4 @@
-﻿namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.CSharp
+﻿namespace SkyEditor.RomEditor.Domain.Automation.CSharp
 {
     public static class CSharpSnippets
     {

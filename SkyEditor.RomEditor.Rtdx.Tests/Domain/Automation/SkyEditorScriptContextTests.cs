@@ -1,21 +1,15 @@
-﻿using AssetStudio;
-using FluentAssertions;
-using FluentAssertions.Common;
+﻿using FluentAssertions;
 using Moq;
 using NLua.Exceptions;
-using SkyEditor.RomEditor.Rtdx.Constants;
-using SkyEditor.RomEditor.Rtdx.Domain;
-using SkyEditor.RomEditor.Rtdx.Domain.Automation;
-using SkyEditor.RomEditor.Rtdx.Domain.Models;
-using SkyEditor.RomEditor.Rtdx.Tests.TestData.Implementations;
-using System;
-using System.Collections.Generic;
+using SkyEditor.RomEditor.Domain.Automation;
+using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Tests.TestData.Implementations;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Automation
+namespace SkyEditor.RomEditor.Tests.Domain.Automation
 {
     public class SkyEditorScriptContextTests
     {

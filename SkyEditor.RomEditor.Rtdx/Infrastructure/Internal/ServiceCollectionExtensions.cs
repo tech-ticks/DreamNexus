@@ -1,10 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SkyEditor.RomEditor.Rtdx.Domain.Automation;
-using SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua;
+using SkyEditor.RomEditor.Domain.Automation;
 using System;
 using System.Linq;
 
-namespace SkyEditor.RomEditor.Rtdx.Infrastructure.Internal
+namespace SkyEditor.RomEditor.Infrastructure.Internal
 {
     internal static class ServiceCollectionExtensions
     {

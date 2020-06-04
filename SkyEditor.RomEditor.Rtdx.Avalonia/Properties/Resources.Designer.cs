@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.Properties {
+namespace SkyEditor.RomEditor.Avalonia.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SkyEditor.RomEditor.Rtdx.Avalonia.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("SkyEditor.RomEditor.Avalonia.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

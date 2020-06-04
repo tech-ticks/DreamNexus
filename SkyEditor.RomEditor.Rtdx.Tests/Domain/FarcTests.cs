@@ -1,11 +1,10 @@
 ﻿using FluentAssertions;
-using SkyEditor.RomEditor.Rtdx.Domain.Structures;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Xunit;
 
-namespace SkyEditor.RomEditor.Rtdx.Tests.Domain
+namespace SkyEditor.RomEditor.Tests.Domain
 {
     public class FarcTests
     {

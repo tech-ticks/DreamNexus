@@ -1,21 +1,9 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using ReactiveUI;
-using SkyEditor.IO.FileSystem;
-using SkyEditor.RomEditor.Rtdx.Avalonia.Infrastructure;
-using SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.MenuItems;
-using SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx;
-using SkyEditor.RomEditor.Rtdx.Domain;
-using System;
-using System.Collections.Generic;
+﻿using ReactiveUI;
+using SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels
+namespace SkyEditor.RomEditor.Avalonia.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
     {

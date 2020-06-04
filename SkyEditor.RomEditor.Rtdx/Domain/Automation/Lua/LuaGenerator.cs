@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Text;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua
+namespace SkyEditor.RomEditor.Domain.Automation.Lua
 {
     public interface ILuaGenerator : IScriptGenerator
     {

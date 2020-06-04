@@ -1,12 +1,11 @@
-﻿using Autofac.Features.Metadata;
-using SkyEditor.IO.FileSystem;
+﻿using SkyEditor.IO.FileSystem;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Automation.Modpacks
+namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
 {
     public class Mod
     {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SkyEditor.RomEditor.Rtdx.Domain.Automation
+﻿namespace SkyEditor.RomEditor.Domain.Automation
 {
     public interface IScriptExpressionGenerator
     {

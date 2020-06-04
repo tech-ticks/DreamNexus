@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SkyEditor.RomEditor.Rtdx.Domain;
-using SkyEditor.RomEditor.Rtdx.Domain.Automation.CSharp;
-using SkyEditor.RomEditor.Rtdx.Domain.Automation.Lua;
+using SkyEditor.RomEditor.Domain.Automation.CSharp;
+using SkyEditor.RomEditor.Domain.Automation.Lua;
+using SkyEditor.RomEditor.Domain.Rtdx;
 using System;
 
-namespace SkyEditor.RomEditor.Rtdx.Infrastructure.Internal
+namespace SkyEditor.RomEditor.Infrastructure.Internal
 {
     internal static class ServiceProviderBuilder
     {

@@ -2,7 +2,7 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.Views
+namespace SkyEditor.RomEditor.Avalonia.Views
 {
     public class MainWindow : Window
     {

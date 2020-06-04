@@ -1,15 +1,15 @@
 ﻿using SkyEditor.IO.FileSystem;
-using SkyEditor.RomEditor.Rtdx.Domain;
-using SkyEditor.RomEditor.Rtdx.Domain.Automation;
-using SkyEditor.RomEditor.Rtdx.Domain.Automation.Modpacks;
-using SkyEditor.RomEditor.Rtdx.Domain.Library;
+using SkyEditor.RomEditor.Domain.Automation;
+using SkyEditor.RomEditor.Domain.Automation.Modpacks;
+using SkyEditor.RomEditor.Domain.Library;
+using SkyEditor.RomEditor.Domain.Rtdx;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
+namespace SkyEditor.RomEditor.ConsoleApp
 {
     class Program
     {
