@@ -10,7 +10,7 @@ foreach (var pokemon in pokemonInfo.Entries)
     {
         continue;
     }
-    Console.WriteLine($"{strings.Pokemon[pokemon.Id]} ({pokemon.Id:d} {pokemon.Id:f})");
+    Console.WriteLine($"{pokemon.PokedexNumber} {strings.Pokemon[pokemon.Id]} ({pokemon.Id:d} {pokemon.Id:f})");
     Console.WriteLine(strings.GetPokemonTaxonomy(pokemon.Taxon));
     Console.WriteLine($"Types: {pokemon.Type1} {pokemon.Type2}");
     Console.WriteLine($"Abilities: {strings.GetAbilityName(pokemon.Ability1)} {strings.GetAbilityName(pokemon.Ability2)} (HA: {strings.GetAbilityName(pokemon.HiddenAbility)})");

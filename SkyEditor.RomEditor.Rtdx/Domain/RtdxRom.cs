@@ -282,8 +282,16 @@ namespace SkyEditor.RomEditor.Rtdx.Domain
                 }
                 fileSystem.WriteAllBytes(path, fixedPokemon.Build().Data.ReadArray());
             }
+            if (pokemonDataInfo != null)
+            {
+                var path = GetPokemonDataInfoPath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllBytes(path, pokemonDataInfo.ToByteArray());
+            }
 
-            // To-do: save pokemonDataInfo when implemented
             // To-do: save commonStrings when implemented
             // To-do: save messageBin when implemented
             // To-do: save pokemonFormDatabase when implemented
