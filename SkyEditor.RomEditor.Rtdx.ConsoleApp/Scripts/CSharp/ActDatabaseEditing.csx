@@ -1,6 +1,12 @@
 // Load SkyEditor.csx to give Visual Studio hints about what globals and imports will be available
 // Note that preprocessor directives will not be run by Sky Editor
-#load "../SkyEditor.csx"
+#load "../../Stubs/SkyEditor.csx"
+
+// These usings will be automatically applied and are optional in the script
+// Including them anyway helps Visual Studio not show as many false errors
+using System;
+using System.Linq;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 
 if (Rom == null) 
 {

@@ -5,23 +5,32 @@ using SkyEditor.IO.Binary;
 using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Domain.Automation.CSharp;
 using SkyEditor.RomEditor.Domain.Automation.Lua;
+using SkyEditor.RomEditor.Domain.Automation.Modpacks;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable;
 using SkyEditor.RomEditor.Infrastructure.Internal;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx
 {
-    public interface IRtdxRom
+    public interface IRtdxRom : IModTarget
     {
         #region Exefs
         /// <summary>
         /// Gets the main executable, loading it if needed
         /// </summary>
         IMainExecutable GetMainExecutable();
+        #endregion
+
+        #region StreamingAssets/data/ab
+
+        AssetsManager GetAssetBundles();
+
         #endregion
 
         #region StreamingAssets/data
@@ -52,6 +61,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IStarterCollection GetStarters();
         #endregion
 
+        #region Helpers
+        PokemonGraphicsDatabase.PokemonGraphicsDatabaseEntry? FindGraphicsDatabaseEntryByCreature(CreatureIndex creatureIndex, PokemonFormType formIndex);
+        #endregion
+
+        #region Automation
+        string GenerateLuaChangeScript(int indentLevel = 0);
+        string GenerateCSharpChangeScript(int indentLevel = 0);
+        #endregion
+
+        void WriteFile(string relativePath, byte[] data);
+
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
@@ -77,7 +97,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 throw new DirectoryNotFoundException("Directory must exist in the given file system");
             }
             this.RomDirectory = directory;
+            filesToWrite = new List<(string relativePath, byte[] data)>();
         }
+
+        private readonly List<(string relativePath, byte[] data)> filesToWrite;
 
         public string RomDirectory { get; }
         protected IFileSystem FileSystem { get; }
@@ -243,6 +266,33 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private StarterCollection? starterCollection;
         #endregion
 
+        #region Helpers
+        public PokemonGraphicsDatabase.PokemonGraphicsDatabaseEntry? FindGraphicsDatabaseEntryByCreature(CreatureIndex creatureIndex, PokemonFormType formIndex)
+        {
+            var formDatabase = GetPokemonFormDatabase();
+            var graphics = GetPokemonGraphicsDatabase();
+
+            var graphics1Index = formDatabase.GetGraphicsDatabaseIndex(creatureIndex, formIndex);
+            var graphics0Index = graphics1Index - 1;
+            if (graphics0Index < 0 || graphics0Index > graphics.Entries.Count)
+            {
+                return null;
+            }
+
+            return graphics.Entries[graphics0Index];
+        }
+        #endregion
+
+        /// <summary>
+        /// Registers a file to be written to the ROM on save
+        /// </summary>
+        /// <param name="relativePath">Relative path of the destination file in the ROM</param>
+        /// <param name="data">Data to write</param>
+        public void WriteFile(string relativePath, byte[] data)
+        {
+            filesToWrite.Add((relativePath, data));
+        }
+
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
@@ -304,6 +354,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     Directory.CreateDirectory(Path.GetDirectoryName(path));
                 }
                 fileSystem.WriteAllBytes(path, pokemonGraphicsDatabase.ToByteArray());
+            }
+
+            foreach (var (relativePath, data) in filesToWrite)
+            {
+                var path = Path.Combine(directory, relativePath);
+                var pathDirectory = Path.GetDirectoryName(path);
+                if (!string.IsNullOrEmpty(pathDirectory) && !fileSystem.DirectoryExists(pathDirectory))
+                {
+                    fileSystem.CreateDirectory(pathDirectory);
+                }
+                fileSystem.WriteAllBytes(path, data);
             }
         }
 

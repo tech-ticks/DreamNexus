@@ -8,7 +8,5 @@
 // If you're editing the template from the release
 #r "../SkyEditor.RomEditor.dll"
 
-using System;
-using System.Linq;
-
 SkyEditor.RomEditor.Domain.Rtdx.IRtdxRom Rom;
+SkyEditor.RomEditor.Domain.Automation.Modpacks.IScriptModAccessor Mod;

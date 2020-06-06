@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using SkyEditor.RomEditor.Domain.Rtdx;
 
 namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
 {
@@ -31,7 +32,7 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
             if (!string.IsNullOrEmpty(firstPath))
             {
                 var script = File.ReadAllText(firstPath);
-                var context = new SkyEditorScriptContext(viewModel.Model);
+                var context = new ScriptHost<IRtdxRom>(viewModel.Model);
                 context.ExecuteLua(script);
                 viewModel.ReloadFromModel();
             }

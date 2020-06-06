@@ -40,10 +40,22 @@
     <None Update="Modpacks\Randomizer\SkyEditor.csx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Update="Scripts\Queries\ListPokemonDataInfo.csx">
+    <None Update="Mods\TheFennekinMod\Fennekin.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Scripts\SkyEditor.csx">
+    <None Update="Mods\TheFennekinMod\Resources\fokko_00.ab">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\TheFennekinMod\mod.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\TheFennekinMod\Riolu.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Stubs\SkyEditor.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\ListPokemonDataInfo.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Scripts\CSharp\Template.csx">

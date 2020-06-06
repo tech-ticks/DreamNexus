@@ -7,18 +7,12 @@ using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
 {
-    public class Mod
+    public class Mod : IScriptModAccessor
     {
         public Mod(ModMetadata metadata, string directory, IReadOnlyFileSystem fileSystem)
         {
-            if (string.IsNullOrEmpty(directory))
-            {
-                throw new ArgumentNullException(nameof(directory));
-            }
-            if (fileSystem == null)
-            {
-                throw new ArgumentNullException(nameof(fileSystem));
-            }
+            this.directory = directory ?? throw new ArgumentNullException(nameof(directory)); ;
+            this.fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
 
             this.Metadata = metadata ?? throw new ArgumentNullException(nameof(metadata));
             this.Enabled = metadata.Enabled;
@@ -26,14 +20,8 @@ namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
             var scripts = new List<Script>();
             foreach (var scriptRelativePath in metadata.Scripts ?? Enumerable.Empty<string>())
             {
-                var scriptAbsolutePath = Path.Combine(directory, scriptRelativePath);
-                if (!fileSystem.FileExists(scriptAbsolutePath))
-                {
-                    throw new FileNotFoundException("Could not find a script at the path specified by the mod metadata", scriptAbsolutePath);
-                }
-
                 ScriptType scriptType;
-                var extension = Path.GetExtension(scriptAbsolutePath);
+                var extension = Path.GetExtension(scriptRelativePath);
                 if (string.Equals(extension, ".csx", StringComparison.OrdinalIgnoreCase))
                 {
                     scriptType = ScriptType.CSharp;
@@ -47,18 +35,21 @@ namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
                     throw new UnsupportedScriptTypeException(extension);
                 }
 
-                scripts.Add(new Script(scriptType, fileSystem.ReadAllText(scriptAbsolutePath)));
+                scripts.Add(new Script(scriptType, ReadResourceText(scriptRelativePath)));
             }
 
             this.Scripts = scripts;
         }
+
+        private readonly string directory;
+        private readonly IReadOnlyFileSystem fileSystem;
 
         public ModMetadata Metadata { get; }
         public IReadOnlyList<Script> Scripts { get; }
 
         public bool Enabled { get; set; }
 
-        public async Task Apply(SkyEditorScriptContext context)
+        public async Task Apply(IScriptHost context)
         {
             foreach (var script in Scripts)
             {
@@ -74,6 +65,51 @@ namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
                         throw new InvalidOperationException("Unsupported script type: " + script.Type.ToString("f"));
                 }
             }
+        }
+
+        private string GetResourcesDirectory()
+        {
+            if (!string.IsNullOrEmpty(Metadata.BaseDirectory))
+            {
+                return Path.Combine(directory, Metadata.BaseDirectory);
+            }
+            else
+            {
+                return directory;
+            }
+        }
+
+        /// <summary>
+        /// Reads a file from the mod
+        /// </summary>
+        /// <param name="resourcePath">Path of the resource file, relative to the directory in which the mod.json or the modpack.json is located.</param>
+        /// <returns>A stream allowing access to the resource data</returns>
+        public Stream ReadResourceStream(string resourcePath)
+        {
+            var absolutePath = Path.Combine(GetResourcesDirectory(), resourcePath);
+            return fileSystem.OpenFileReadOnly(absolutePath);
+        }
+
+        /// <summary>
+        /// Reads a file from the mod
+        /// </summary>
+        /// <param name="resourcePath">Path of the resource file, relative to the directory in which the mod.json or the modpack.json is located.</param>
+        /// <returns>An array of byte containing the resource data</returns>
+        public byte[] ReadResourceArray(string resourcePath)
+        {
+            var absolutePath = Path.Combine(GetResourcesDirectory(), resourcePath);
+            return fileSystem.ReadAllBytes(absolutePath);
+        }
+
+        /// <summary>
+        /// Reads a file from the mod
+        /// </summary>
+        /// <param name="resourcePath">Path of the resource file, relative to the directory in which the mod.json or the modpack.json is located.</param>
+        /// <returns>A string containing the resource data</returns>
+        public string ReadResourceText(string resourcePath)
+        {
+            var absolutePath = Path.Combine(GetResourcesDirectory(), resourcePath);
+            return fileSystem.ReadAllText(absolutePath);
         }
     }
 }

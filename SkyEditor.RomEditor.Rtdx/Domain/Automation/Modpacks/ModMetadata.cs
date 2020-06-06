@@ -22,8 +22,14 @@ namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
         public bool Enabled { get; set; }
 
         /// <summary>
+        /// Path relative to the modpack.json or mod.json containing scripts and resources
+        /// </summary>
+        public string? BaseDirectory { get; set; }
+
+        /// <summary>
         /// Ordered list of paths of scripts to run, relative to the modpack.json file
         /// </summary>
         public List<string>? Scripts { get; set; }
+
     }
 }

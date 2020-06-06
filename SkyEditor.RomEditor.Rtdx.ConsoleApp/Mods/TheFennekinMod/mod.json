@@ -1,0 +1,8 @@
+﻿{
+  "Name": "The Fennekin Mod",
+  "Description": "This mod replaces Psyduck with Fennekin and Machop with Riolu, adding missing Fennekin data to make this possible.",
+  "Scripts": [
+    "Fennekin.csx",
+    "Riolu.csx"
+  ]
+}

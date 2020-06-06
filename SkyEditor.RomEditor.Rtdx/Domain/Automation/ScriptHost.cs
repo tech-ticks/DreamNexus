@@ -1,6 +1,6 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Domain.Automation.Modpacks;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System;
 using System.Collections.Generic;
@@ -9,20 +9,29 @@ using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Domain.Automation
 {
-    public class SkyEditorScriptContext
+    public interface IScriptHost
+    {
+        IModTarget Target { get; }
+
+        void ExecuteLua(string luaScript);
+        Task ExecuteCSharp(string cSharpScript);
+    }
+
+    public class ScriptHost<TTarget> : IScriptHost where TTarget : IModTarget
     {
         private readonly static Regex CSharpPreprocessorRegex = new Regex(@"^\s*\#.*?$", RegexOptions.Compiled | RegexOptions.Multiline);
 
-        public SkyEditorScriptContext(IRtdxRom rom)
+        public ScriptHost(TTarget rom, Mod? mod = null)
         {
-            this.Globals = new CSharpGlobals(rom);
+            this.Globals = new ScriptContext<TTarget>(rom, mod);
             this.LuaState = new NLua.Lua();
             this.CSharpScriptImports = new List<string>();
 
             InitLuaState();
         }
 
-        private CSharpGlobals Globals { get; }
+        private ScriptContext<TTarget> Globals { get; }
+        IModTarget IScriptHost.Target => Globals.Rom;
 
         public NLua.Lua LuaState { get; }
 
@@ -112,16 +121,14 @@ namespace SkyEditor.RomEditor.Domain.Automation
 
         public async Task ExecuteCSharp(string cSharpScript)
         {
-            // We can't run preprocessor directives since we'll have already run the enum imports
-            // Combine that with us not wanting to run the stub csx for intellisense,
-            // and it's easier to just ignore them
+            // Don't allow preprocessor directives
             var scriptWithoutPreprocessorDirectives = CSharpPreprocessorRegex.Replace(cSharpScript, "");
 
             await CSharpScript
                 .RunAsync(string.Join(Environment.NewLine, CSharpScriptImports) + scriptWithoutPreprocessorDirectives,                
                 ScriptOptions.Default
-                    .WithReferences(typeof(SkyEditorScriptContext).Assembly)
-                    .WithImports(
+                .WithReferences(typeof(ScriptHost<>).Assembly)
+                .WithImports(
                         "System",
                         "System.Linq",
                         "SkyEditor.RomEditor",
@@ -149,17 +156,6 @@ namespace SkyEditor.RomEditor.Domain.Automation
                 string path = targetLuaEnumName + "." + names[i];
                 this.LuaState.SetObjectToPath(path, values[i]);
             }
-        }
-
-        // This class must be public for CSharp scripts to use it
-        public class CSharpGlobals
-        {
-            public CSharpGlobals(IRtdxRom rom)
-            {
-                this.Rom = rom ?? throw new ArgumentNullException(nameof(rom));
-            }
-
-            public IRtdxRom Rom { get; }
         }
     }
 }

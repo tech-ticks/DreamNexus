@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using SkyEditor.IO.FileSystem;
+using SkyEditor.RomEditor.Domain.Rtdx;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
 {
-    public class Modpack : IDisposable
+    public class Modpack<TTarget> : IDisposable where TTarget : IModTarget
     {
         public Modpack(string path, IFileSystem fileSystem)
         {
@@ -73,13 +74,30 @@ namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
 
         private void LoadFromFileSystem(IReadOnlyFileSystem fileSystem, string directory)
         {
-            var metadataFilename = Path.Combine(directory, "modpack.json");
-            if (!fileSystem.FileExists(metadataFilename))
+            var modpackFilename = Path.Combine(directory, "modpack.json");
+            var modFilename = Path.Combine(directory, "mod.json");
+            if (fileSystem.FileExists(modpackFilename))
             {
-                throw new FileNotFoundException("Could not find a modpack.json file in the given directory", metadataFilename);
+                metadata = JsonConvert.DeserializeObject<ModpackMetadata>(fileSystem.ReadAllText(modpackFilename));
             }
-
-            metadata = JsonConvert.DeserializeObject<ModpackMetadata>(fileSystem.ReadAllText(metadataFilename));
+            else if (fileSystem.FileExists(modFilename))
+            {
+                var modMetadata = JsonConvert.DeserializeObject<ModMetadata>(fileSystem.ReadAllText(modFilename));
+                modMetadata.Enabled = true;
+                metadata = new ModpackMetadata
+                {
+                    Name = modMetadata.Name,
+                    Description = modMetadata.Description,
+                    Mods = new List<ModMetadata>
+                    {
+                        modMetadata
+                    }
+                };
+            }
+            else
+            {
+                throw new FileNotFoundException("Could not find a modpack.json or a mod.json file in the given directory");
+            }
             mods = metadata.Mods.Select(m => new Mod(m, directory, fileSystem)).ToList();
         }
 
@@ -89,7 +107,7 @@ namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
         private ModpackMetadata? metadata;
         private List<Mod>? mods;
 
-        public async Task Apply(SkyEditorScriptContext context)
+        public async Task Apply(TTarget target)
         {
             if (mods == null)
             {
@@ -100,7 +118,8 @@ namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
             {
                 if (mod.Enabled)
                 {
-                    await mod.Apply(context).ConfigureAwait(false);
+                    var host = new ScriptHost<TTarget>(target, mod);
+                    await mod.Apply(host).ConfigureAwait(false);
                 }
             }
         }

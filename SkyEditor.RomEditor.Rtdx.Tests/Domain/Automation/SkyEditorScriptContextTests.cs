@@ -20,7 +20,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Automation
             {
                 // Arrange
                 var rom = Mock.Of<IRtdxRom>();
-                var context = new SkyEditorScriptContext(rom);
+                var context = new ScriptHost<IRtdxRom>(rom);
                 var script = File.ReadAllText("TestData/Scripts/Lua/ErrorTest.lua");
 
                 // Act & Assert
@@ -53,7 +53,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Automation
                     }
                 });
 
-                var context = new SkyEditorScriptContext(romMock.Object);
+                var context = new ScriptHost<IRtdxRom>(romMock.Object);
                 var script = File.ReadAllText("TestData/Scripts/Lua/RomInteractionTest.lua");
 
                 // Act
@@ -89,7 +89,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Automation
                     }
                 });
 
-                var context = new SkyEditorScriptContext(romMock.Object);
+                var context = new ScriptHost<IRtdxRom>(romMock.Object);
                 var script = File.ReadAllText("TestData/Scripts/CSharp/RomInteractionTest.csx");
 
                 // Act

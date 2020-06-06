@@ -93,12 +93,11 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     }
                     context.Rom = new RtdxRom(libraryItem.FullPath, fileSystem);
                     context.RomDirectory = libraryItem.FullPath;
-                    context.ScriptContext = new SkyEditorScriptContext(context.Rom);
                     Console.WriteLine($"Loaded {arg}");
                 }
                 else if (Directory.Exists(arg))
                 {
-                    if (File.Exists(Path.Combine(arg, "modpack.json")))
+                    if (File.Exists(Path.Combine(arg, "modpack.json")) || File.Exists(Path.Combine(arg, "mod.json")))
                     {
                         await ApplyMod(arg, context);
                     }
@@ -106,7 +105,6 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     {
                         context.Rom = new RtdxRom(arg, fileSystem);
                         context.RomDirectory = arg;
-                        context.ScriptContext = new SkyEditorScriptContext(context.Rom);
                         Console.WriteLine($"Loaded {arg}");
                     }
                 }
@@ -128,13 +126,13 @@ namespace SkyEditor.RomEditor.ConsoleApp
 
         private static async Task ApplyMod(string modPath, ConsoleContext context)
         {
-            if (context.ScriptContext == null)
+            if (context.Rom == null)
             {
-                throw new InvalidOperationException("Modpack or script argument must follow a ROM argument");
+                throw new InvalidOperationException("Mod argument must follow a ROM argument");
             }
 
-            using var modpack = new Modpack(modPath, context.FileSystem);
-            await modpack.Apply(context.ScriptContext);
+            using var modpack = new Modpack<IRtdxRom>(modPath, context.FileSystem);
+            await modpack.Apply(context.Rom);
         }
 
         private delegate Task ConsoleCommand(Queue<string> arguments, ConsoleContext context);
@@ -273,9 +271,8 @@ namespace SkyEditor.RomEditor.ConsoleApp
             public IFileSystem FileSystem { get; set; } = default!;
             public IRomLibrary RomLibrary { get; set; } = default!;
 
-            public RtdxRom? Rom { get; set; }
+            public IRtdxRom? Rom { get; set; }
             public string? RomDirectory { get; set; }
-            public SkyEditorScriptContext? ScriptContext { get; set; }
         }
     }
 }

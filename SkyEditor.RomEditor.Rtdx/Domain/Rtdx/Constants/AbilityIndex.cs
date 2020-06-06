@@ -196,5 +196,4 @@
         ABILITY_DELTASTREAM,
         ABILITY_END
     }
-
 }
