@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SkyEditor.RomEditor.Domain.Automation.CSharp;
-using SkyEditor.RomEditor.Domain.Automation.Lua;
+using SkyEditor.RomEditor.Infrastructure.Automation.CSharp;
+using SkyEditor.RomEditor.Infrastructure.Automation.Lua;
 using SkyEditor.RomEditor.Domain.Rtdx;
 using System;
 

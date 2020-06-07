@@ -1,6 +1,6 @@
 ﻿using SkyEditor.IO.FileSystem;
-using SkyEditor.RomEditor.Domain.Automation;
-using SkyEditor.RomEditor.Domain.Automation.Modpacks;
+using SkyEditor.RomEditor.Infrastructure.Automation;
+using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
 using SkyEditor.RomEditor.Domain.Library;
 using SkyEditor.RomEditor.Domain.Rtdx;
 using System;
@@ -131,7 +131,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
                 throw new InvalidOperationException("Mod argument must follow a ROM argument");
             }
 
-            using var modpack = new Modpack<IRtdxRom>(modPath, context.FileSystem);
+            using var modpack = new Modpack(modPath, context.FileSystem);
             await modpack.Apply(context.Rom);
         }
 
@@ -141,11 +141,9 @@ namespace SkyEditor.RomEditor.ConsoleApp
         {
             { "Import", Import },
             { "ListLibrary", ListLibrary },
-            { "LuaGen", GenerateLuaChangeScript },
+            { "LuaGen", GenerateLuaChangeScript }, { "GenerateLuaChangeScript", GenerateLuaChangeScript },
             { "CSGen", GenerateCSharpChangeScript },
-            { "GenerateLuaChangeScript", GenerateLuaChangeScript },
-            { "LoadAssets", LoadAssets },
-            { "Test", Test }
+            { "Pack", BuildModpack }, { "BuildModpack", BuildModpack },
         };
 
         private static async Task Import(Queue<string> arguments, ConsoleContext context)
@@ -211,41 +209,64 @@ namespace SkyEditor.RomEditor.ConsoleApp
             }
 
             return Task.CompletedTask;
-        }
+        }        
 
         /// <summary>
-        /// Place C# code here for development/testing purposes, for when lua scripts either aren't enough or when more advanced debugging features are needed.
+        /// Creates a modpack from one or more modpacks, mods, or scripts
         /// </summary>
-        private static Task LoadAssets(Queue<string> arguments, ConsoleContext context)
+        /// <remarks>
+        /// Sample usage: BuildModpack Mods/Mod1 Mods/Mod2 --disabled Mods/Mod3 --id "SkyEditor.Modpack" --name="My Modpack" --save-to modpack.zip
+        /// This will create a modpack called "My Modpack" with 3 mods. Mod2 will be disabled by default.
+        /// </remarks>
+        private static async Task BuildModpack(Queue<string> arguments, ConsoleContext context)
         {
-            if (context.Rom == null)
+            var builder = new ModpackBuilder();
+            while (arguments.TryDequeue(out var arg))
             {
-                throw new InvalidOperationException("LoadAssets must follow a ROM argument");
+                var modpackMetadataType = builder.Metadata.GetType();
+                if (arg == "--save-to")
+                {
+                    var filename = arguments.Dequeue();
+                    await builder.Build(filename);
+                    Console.WriteLine("Saved modpack to " + filename);
+                    return;
+                }
+                else if (arg.StartsWith("--"))
+                {
+                    var parts = arg.TrimStart('-').Split('=', 2);
+                    var propertyName = parts[0];
+                    var propertyValue = parts[1];
+                    var property = modpackMetadataType.GetProperties().FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+                    if (property == null)
+                    {
+                        Console.Error.Write($"Warning: Unable to find property '{propertyName}' in modpack metadata. Skipping argument '{arg}'");
+                        continue;
+                    }
+                    property.SetValue(builder.Metadata, Convert.ChangeType(propertyValue, property.PropertyType));
+                }
+                else if (File.Exists(arg) || Directory.Exists(arg))
+                {
+                    var enabled = true;
+                    if (arguments.TryPeek(out var nextArg) && nextArg == "--disabled")
+                    {
+                        arguments.Dequeue();
+                        enabled = false;
+                    }
+
+                    var modpack = new Modpack(arg, context.FileSystem);
+                    foreach (var mod in modpack.Mods ?? Enumerable.Empty<Mod>())
+                    {
+                        builder.AddMod(mod, enabled);
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Unrecognized argument in modpack builder: '{arg}'");
+                }
             }
 
-#pragma warning disable IDE0059 // Unnecessary assignment of a value (Need it in a variable to browse it with the debugger)
-            var assets = context.Rom.GetAssetBundles();
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// For those times you need to throw together some temporary test code, but don't want to bother with Lua scripts
-        /// </summary>
-        /// <param name="arguments"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        private static Task Test(Queue<string> arguments, ConsoleContext context)
-        {
-            if (context.Rom == null)
-            {
-                throw new InvalidOperationException("Test must follow a ROM argument");
-            }
-
-            context.Rom.GetPokemonGraphicsDatabase();
-            context.Rom.Save("test-output", PhysicalFileSystem.Instance);
-
-            return Task.CompletedTask;
+            
+            Console.Error.Write("Reached end of arguments without saving modpack.");
         }
 
         private static string GetRomDirectory(string directoryOrLibrary, ConsoleContext context)

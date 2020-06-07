@@ -9,9 +9,9 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
+namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 {
-    public class Modpack<TTarget> : IDisposable where TTarget : IModTarget
+    public class Modpack : IDisposable
     {
         public Modpack(string path, IFileSystem fileSystem)
         {
@@ -107,7 +107,9 @@ namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
         private ModpackMetadata? metadata;
         private List<Mod>? mods;
 
-        public async Task Apply(TTarget target)
+        public IReadOnlyList<Mod>? Mods => this.mods;
+
+        public async Task Apply<TTarget>(TTarget target) where TTarget : IModTarget
         {
             if (mods == null)
             {

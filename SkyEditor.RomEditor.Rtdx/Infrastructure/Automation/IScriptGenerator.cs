@@ -1,4 +1,4 @@
-﻿namespace SkyEditor.RomEditor.Domain.Automation
+﻿namespace SkyEditor.RomEditor.Infrastructure.Automation
 {
     public interface IScriptGenerator
     {

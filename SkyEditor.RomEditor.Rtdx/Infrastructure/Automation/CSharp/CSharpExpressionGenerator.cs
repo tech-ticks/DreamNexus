@@ -4,7 +4,7 @@ using SkyEditor.RomEditor.Infrastructure;
 using System;
 using System.Collections.Generic;
 
-namespace SkyEditor.RomEditor.Domain.Automation.CSharp
+namespace SkyEditor.RomEditor.Infrastructure.Automation.CSharp
 {
     public interface ICSharpExpressionGenerator : IScriptExpressionGenerator
     {

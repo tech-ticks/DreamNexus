@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SkyEditor.RomEditor.Domain.Automation.Lua
+namespace SkyEditor.RomEditor.Infrastructure.Automation.Lua
 {
     /// <summary>
     /// Specifies a custom implementation to convert a value into a Lua expression

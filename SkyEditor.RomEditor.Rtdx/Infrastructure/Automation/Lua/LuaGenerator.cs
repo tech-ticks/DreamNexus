@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Autofac.Core;
+using System;
 using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
+using System.Text;
 
-namespace SkyEditor.RomEditor.Domain.Automation.CSharp
+namespace SkyEditor.RomEditor.Infrastructure.Automation.Lua
 {
-    public interface ICSharpGenerator : IScriptGenerator
+    public interface ILuaGenerator : IScriptGenerator
     {
     }
 
-    public class CSharpGenerator : ICSharpGenerator
+    public class LuaGenerator : ILuaGenerator
     {
-        public CSharpGenerator(IServiceProvider serviceProvider)
+        public LuaGenerator(IServiceProvider serviceProvider)
         {
             this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
         }
@@ -25,9 +24,9 @@ namespace SkyEditor.RomEditor.Domain.Automation.CSharp
         /// <typeparam name="T">Type of the object</typeparam>
         /// <param name="source">The unmodified object to be used as a baseline</param>
         /// <param name="modified">The modified object</param>
-        /// <param name="variableName">Name of the C# variable</param>
+        /// <param name="variableName">Name of the Lua variable</param>
         /// <param name="indentLevel">Level of indentation to apply to each line</param>
-        /// <returns>A C# script segment</returns>
+        /// <returns>A lua script segment</returns>
         public string GenerateSimpleObjectDiff<T>(T source, T modified, string variableName, int indentLevel)
         {
             var script = new StringBuilder();
@@ -55,20 +54,19 @@ namespace SkyEditor.RomEditor.Domain.Automation.CSharp
                 script.Append(property.Name);
                 script.Append(" = ");
                 script.Append(GenerateExpression(targetValue));
-                script.Append(";");
                 script.AppendLine();
             }
             return script.ToString();
         }
 
         /// <summary>
-        /// Represent the given value as a C# expression
+        /// Represent the given value as a Lua expression
         /// </summary>
         public string GenerateExpression(object? value)
         {
             if (value is null)
             {
-                return "null";
+                return "nil";
             }
             else if (value is bool valueBool)
             {
@@ -78,46 +76,17 @@ namespace SkyEditor.RomEditor.Domain.Automation.CSharp
             {
                 return $"\"{value}\"";
             }
-            else if (value is byte)
+            else if (value is byte 
+                || value is short 
+                || value is ushort 
+                || value is int 
+                || value is uint 
+                || value is long 
+                || value is ulong
+                || value is float
+                || value is double)
             {
-                return $"{value}";
-            }
-            else if (value is short)
-            {
-                return $"{value}";
-            }
-            else if (value is ushort)
-            {
-                return $"{value}u";
-            }
-            else if (value is int)
-            {
-                return $"{value}";
-            }
-            else if (value is uint)
-            {
-                return $"{value}u";
-            }
-            else if (value is long)
-            {
-                return $"{value}l";
-            }
-            else if (value is ulong)
-            {
-                return $"{value}ul";
-            }
-            else if (value is float)
-            {
-                // This is not the best way to do it, but it's the safest.
-                // 1.1 is a float
-                // 1 is not
-                // 1.1f is legal
-                // 1f is not
-                return $"(float){value}";
-            }
-            else if (value is double)
-            {
-                return $"(double){value}";
+                return value.ToString();
             }
             else
             {
@@ -134,11 +103,11 @@ namespace SkyEditor.RomEditor.Domain.Automation.CSharp
                         return GenerateExpression(null);
                     }
                 }
-                var converterAttribute = type.GetCustomAttribute<CSharpExpressionGeneratorAttribute>();
+                var converterAttribute = type.GetCustomAttribute<LuaExpressionGeneratorAttribute>();
                 if (converterAttribute != null)
                 {
                     var generatorType = converterAttribute.Generator;
-                    var converter = (ICSharpExpressionGenerator)serviceProvider.GetRequiredService(generatorType);
+                    var converter = (ILuaExpressionGenerator)serviceProvider.GetService(generatorType);
                     return converter.Generate(value);
                 }
             }

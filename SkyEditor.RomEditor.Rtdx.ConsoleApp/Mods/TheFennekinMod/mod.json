@@ -1,8 +1,10 @@
 ﻿{
+  "Id": "SkyEditor.TheFennekinMod",
+  "Version": "1.0.0",
+  "Target": "RTDX",
   "Name": "The Fennekin Mod",
-  "Description": "This mod replaces Psyduck with Fennekin and Machop with Riolu, adding missing Fennekin data to make this possible.",
+  "Description": "This mod replaces Psyduck with Fennekin in the starter selection screen, adding missing Fennekin data to make this possible.",
   "Scripts": [
-    "Fennekin.csx",
-    "Riolu.csx"
+    "Fennekin.csx"
   ]
 }

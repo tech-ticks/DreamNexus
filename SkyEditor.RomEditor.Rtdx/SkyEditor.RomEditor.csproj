@@ -20,7 +20,7 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="NLua" Version="1.4.32" />
     <PackageReference Include="NsoElfConverterDotNet" Version="1.0.0" />
-    <PackageReference Include="SkyEditor.IO" Version="5.1.14" />
+    <PackageReference Include="SkyEditor.IO" Version="5.1.15" />
   </ItemGroup>
 
   <ItemGroup>

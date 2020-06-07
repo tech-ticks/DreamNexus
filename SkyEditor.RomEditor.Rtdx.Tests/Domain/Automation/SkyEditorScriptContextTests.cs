@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using NLua.Exceptions;
-using SkyEditor.RomEditor.Domain.Automation;
+using SkyEditor.RomEditor.Infrastructure.Automation;
 using SkyEditor.RomEditor.Domain.Rtdx;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Tests.TestData.Implementations;
@@ -9,7 +9,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace SkyEditor.RomEditor.Tests.Domain.Automation
+namespace SkyEditor.RomEditor.Tests.Infrastructure.Automation
 {
     public class SkyEditorScriptContextTests
     {

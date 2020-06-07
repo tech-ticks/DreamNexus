@@ -5,13 +5,13 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
+namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 {
     public class Mod : IScriptModAccessor
     {
         public Mod(ModMetadata metadata, string directory, IReadOnlyFileSystem fileSystem)
         {
-            this.directory = directory ?? throw new ArgumentNullException(nameof(directory)); ;
+            this.directory = directory ?? throw new ArgumentNullException(nameof(directory));
             this.fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
 
             this.Metadata = metadata ?? throw new ArgumentNullException(nameof(metadata));
@@ -67,7 +67,29 @@ namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
             }
         }
 
-        private string GetResourcesDirectory()
+        /// <summary>
+        /// Copies the contents of the mod to the given directory on the target fileSystem
+        /// </summary>
+        /// <param name="targetDirectory">Directory into which the contents of the mod should be copied</param>
+        /// <param name="fileSystem">File system into which the contents of the mod should be copied</param>
+        public async Task CopyToDirectory(string targetDirectory, IFileSystem targetFileSystem)
+        {
+            foreach (var filename in this.fileSystem.GetFiles(this.directory, "*", false))
+            {
+                var destFilename = Path.Combine(targetDirectory, FileSystemExtensions.GetRelativePath(GetBaseDirectory(), filename));
+                var destDirectory = Path.GetDirectoryName(destFilename);
+                if (!string.IsNullOrEmpty(destDirectory) && !targetFileSystem.DirectoryExists(destDirectory))
+                {
+                    targetFileSystem.CreateDirectory(destDirectory);
+                }
+
+                using var sourceFile = this.fileSystem.OpenFileReadOnly(filename);
+                using var destFile = targetFileSystem.OpenFileWriteOnly(destFilename);
+                await sourceFile.CopyToAsync(destFile).ConfigureAwait(false);
+            }
+        }
+
+        private string GetBaseDirectory()
         {
             if (!string.IsNullOrEmpty(Metadata.BaseDirectory))
             {
@@ -86,7 +108,7 @@ namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
         /// <returns>A stream allowing access to the resource data</returns>
         public Stream ReadResourceStream(string resourcePath)
         {
-            var absolutePath = Path.Combine(GetResourcesDirectory(), resourcePath);
+            var absolutePath = Path.Combine(GetBaseDirectory(), resourcePath);
             return fileSystem.OpenFileReadOnly(absolutePath);
         }
 
@@ -97,7 +119,7 @@ namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
         /// <returns>An array of byte containing the resource data</returns>
         public byte[] ReadResourceArray(string resourcePath)
         {
-            var absolutePath = Path.Combine(GetResourcesDirectory(), resourcePath);
+            var absolutePath = Path.Combine(GetBaseDirectory(), resourcePath);
             return fileSystem.ReadAllBytes(absolutePath);
         }
 
@@ -108,7 +130,7 @@ namespace SkyEditor.RomEditor.Domain.Automation.Modpacks
         /// <returns>A string containing the resource data</returns>
         public string ReadResourceText(string resourcePath)
         {
-            var absolutePath = Path.Combine(GetResourcesDirectory(), resourcePath);
+            var absolutePath = Path.Combine(GetBaseDirectory(), resourcePath);
             return fileSystem.ReadAllText(absolutePath);
         }
     }

@@ -1,4 +1,4 @@
-﻿#load "../SkyEditor.csx"
+﻿#load "../../Stubs/SkyEditor.csx"
 
 using System;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;

@@ -1,6 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using SkyEditor.RomEditor.Domain.Automation;
+using SkyEditor.RomEditor.Infrastructure.Automation;
 using SkyEditor.RomEditor.Avalonia.Infrastructure;
 using SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx;
 using System.Collections.Generic;

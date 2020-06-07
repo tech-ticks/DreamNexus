@@ -49,7 +49,10 @@
     <None Update="Mods\TheFennekinMod\mod.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Mods\TheFennekinMod\Riolu.csx">
+    <None Update="Mods\TheRioluMod\Riolu.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\TheRioluMod\mod.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Stubs\SkyEditor.csx">

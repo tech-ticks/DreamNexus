@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace SkyEditor.RomEditor.Domain.Automation.Lua
+namespace SkyEditor.RomEditor.Infrastructure.Automation.Lua
 {
     public class LuaSnippets
     {

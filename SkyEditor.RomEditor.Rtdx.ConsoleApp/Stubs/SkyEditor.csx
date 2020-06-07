@@ -9,4 +9,4 @@
 #r "../SkyEditor.RomEditor.dll"
 
 SkyEditor.RomEditor.Domain.Rtdx.IRtdxRom Rom;
-SkyEditor.RomEditor.Domain.Automation.Modpacks.IScriptModAccessor Mod;
+SkyEditor.RomEditor.Infrastructure.Automation.Modpacks.IScriptModAccessor Mod;

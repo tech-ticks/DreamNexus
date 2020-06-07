@@ -1,5 +1,5 @@
-﻿using SkyEditor.RomEditor.Domain.Automation.CSharp;
-using SkyEditor.RomEditor.Domain.Automation.Lua;
+﻿using SkyEditor.RomEditor.Infrastructure.Automation.CSharp;
+using SkyEditor.RomEditor.Infrastructure.Automation.Lua;
 using SkyEditor.RomEditor.Infrastructure;
 using System;
 using System.Collections.Generic;

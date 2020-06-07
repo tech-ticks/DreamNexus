@@ -1,13 +1,13 @@
 ﻿using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.Scripting;
-using SkyEditor.RomEditor.Domain.Automation.Modpacks;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Domain.Automation
+namespace SkyEditor.RomEditor.Infrastructure.Automation
 {
     public interface IScriptHost
     {

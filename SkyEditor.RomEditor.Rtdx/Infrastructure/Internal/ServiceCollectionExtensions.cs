@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using SkyEditor.RomEditor.Domain.Automation;
+using SkyEditor.RomEditor.Infrastructure.Automation;
 using System;
 using System.Linq;
 
