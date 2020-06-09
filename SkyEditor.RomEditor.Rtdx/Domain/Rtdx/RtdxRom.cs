@@ -15,10 +15,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using SkyEditor.RomEditor.Infrastructure.Interfaces;
+using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx
 {
-    public interface IRtdxRom : IModTarget
+    public interface IRtdxRom : IModTarget, ISaveable, ISaveableToDirectory, ICSharpChangeScriptGenerator, ILuaChangeScriptGenerator
     {
         #region Exefs
         /// <summary>
@@ -65,22 +67,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         PokemonGraphicsDatabase.PokemonGraphicsDatabaseEntry? FindGraphicsDatabaseEntryByCreature(CreatureIndex creatureIndex, PokemonFormType formIndex);
         #endregion
 
-        #region Automation
-        string GenerateLuaChangeScript(int indentLevel = 0);
-        string GenerateCSharpChangeScript(int indentLevel = 0);
-        #endregion
-
         void WriteFile(string relativePath, byte[] data);
-
-        /// <summary>
-        /// Saves all loaded files to disk
-        /// </summary>
-        void Save(string directory, IFileSystem fileSystem);
-
-        /// <summary>
-        /// Saves all loaded files to disk
-        /// </summary>
-        void Save();
     }
 
     public class RtdxRom : IRtdxRom
@@ -296,7 +283,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
-        public void Save(string directory, IFileSystem fileSystem)
+        public Task Save(string directory, IFileSystem fileSystem)
         {
             // Save wrappers around files
             if (starterCollection != null)
@@ -366,14 +353,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 }
                 fileSystem.WriteAllBytes(path, data);
             }
+
+            return Task.CompletedTask;
         }
 
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
-        public void Save()
+        public Task Save()
         {
             this.Save(this.RomDirectory, this.FileSystem);
+            return Task.CompletedTask;
         }
 
         public string GenerateLuaChangeScript(int indentLevel = 0)

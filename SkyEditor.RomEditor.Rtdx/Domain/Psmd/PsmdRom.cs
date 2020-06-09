@@ -1,6 +1,7 @@
 ﻿using DotNet3dsToolkit;
 using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Domain.Psmd.Structures;
+using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +9,12 @@ using System.Text;
 
 namespace SkyEditor.RomEditor.Domain.Psmd
 {
-    public class PsmdRom
+    public interface IPsmdRom : IModTarget
+    {
+        PokemonDataInfo GetPokemonDataInfo();
+    }
+
+    public class PsmdRom : IPsmdRom
     {
         public PsmdRom(string directory, IFileSystem fileSystem)
         {

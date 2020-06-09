@@ -1,4 +1,4 @@
-﻿#load "SkyEditor.csx"
+﻿#load "../../Stubs/RTDX.csx"
 
 using System;
 using System.Collections.Generic;

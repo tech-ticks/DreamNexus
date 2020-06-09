@@ -5,9 +5,9 @@ using System.Text;
 
 namespace SkyEditor.RomEditor.Domain.Library
 {
-    public class RomLibraryItem
+    public class LibraryItem
     {
-        public RomLibraryItem(string fullPath)
+        public LibraryItem(string fullPath)
         {
             this.FullPath = fullPath ?? throw new ArgumentNullException();
             this.Name = Path.GetFileName(fullPath);

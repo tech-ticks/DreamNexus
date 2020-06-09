@@ -207,7 +207,7 @@ If the modpack is ready to distribute, you can put the contents of this director
 If you have one or more mods already available, and you would like to make a modpack out of them, use the Sky Editor console app:
 
 ```
-dotnet SkyEditor.RomEditor.dll pack Mods/TheFennekinMod Mods/TheRioluMod --id=evandixonFavoriteStarters --name="evandixon's Favorite Starters" --description="Allows playing as some of evandixon's favorite starter Pokémon" --version=0.1.0 --target=RTDX --save-to "Modpacks/evandixon's Favorites.zip"
+dotnet SkyEditor.RomEditor.dll pack Mods/TheFennekinMod Mods/TheRioluMod --id=evandixonFavoriteStarters --version=0.1.0 --name="evandixon's Favorite Starters" --description="Allows playing as some of evandixon's favorite starter Pokémon" --author="evandixon" --target=RTDX --save-to "Modpacks/evandixon's Favorites.zip"
 ```
 
 A UI is planned for the future.

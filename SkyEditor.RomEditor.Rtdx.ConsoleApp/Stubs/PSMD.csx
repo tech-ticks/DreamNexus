@@ -3,12 +3,10 @@
 #r "netstandard.dll"
 
 // If you're editing the template from the console app project
-#r "../../bin/Debug/netcoreapp3.1/SkyEditor.RomEditor.dll"
+#r "../bin/Debug/netcoreapp3.1/SkyEditor.RomEditor.dll"
 
 // If you're editing the template from the release
-#r "../../SkyEditor.RomEditor.dll"
+#r "../SkyEditor.RomEditor.dll"
 
-using System;
-using System.Linq;
-
-SkyEditor.RomEditor.Domain.Rtdx.IRtdxRom Rom;
+SkyEditor.RomEditor.Domain.Psmd.IPsmdRom Rom;
+SkyEditor.RomEditor.Infrastructure.Automation.Modpacks.IScriptModAccessor Mod;

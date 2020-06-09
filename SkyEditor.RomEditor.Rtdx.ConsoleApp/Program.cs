@@ -1,8 +1,12 @@
 ﻿using SkyEditor.IO.FileSystem;
-using SkyEditor.RomEditor.Infrastructure.Automation;
-using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
+using SkyEditor.RomEditor.Domain;
 using SkyEditor.RomEditor.Domain.Library;
+using SkyEditor.RomEditor.Domain.Psmd;
 using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Infrastructure.Automation.CSharp;
+using SkyEditor.RomEditor.Infrastructure.Automation.Lua;
+using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
+using SkyEditor.RomEditor.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -52,7 +56,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
             var context = new ConsoleContext
             {
                 FileSystem = fileSystem,
-                RomLibrary = new RomLibrary("Library", fileSystem)
+                RomLibrary = new Library("Library", fileSystem)
             };
 
             while (arguments.TryDequeue(out var arg))
@@ -63,7 +67,12 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     {
                         throw new InvalidOperationException("Argument '--save' must follow a ROM directory argument");
                     }
-                    context.Rom.Save();
+                    if (!(context.Rom is ISaveable saveableRom))
+                    {
+                        throw new NotSupportedException($"ROM of type {context.Rom.GetType().Name} does not implement ISaveable");
+                    }
+
+                    await saveableRom.Save();
                     Console.WriteLine("Saved");
                 }
                 else if (string.Equals(arg, "--save-to", StringComparison.OrdinalIgnoreCase))
@@ -78,9 +87,14 @@ namespace SkyEditor.RomEditor.ConsoleApp
                         throw new ArgumentException("Argument '--save-to' must be followed by a ROM directory argument");
                     }
 
+                    if (!(context.Rom is ISaveableToDirectory saveableRom))
+                    {
+                        throw new NotSupportedException($"ROM of type {context.Rom.GetType().Name} does not implement ISaveableToDirectory");
+                    }
+
                     var targetDirectory = GetRomDirectory(target, context);
 
-                    context.Rom.Save(targetDirectory, fileSystem);
+                    await saveableRom.Save(targetDirectory, fileSystem);
                     Console.WriteLine("Saved to " + targetDirectory);
                 }
                 else if (arg.StartsWith("library:"))
@@ -91,8 +105,10 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     {
                         throw new DirectoryNotFoundException($"Could not find a library item with the name '{libraryItemName}'");
                     }
-                    context.Rom = new RtdxRom(libraryItem.FullPath, fileSystem);
-                    context.RomDirectory = libraryItem.FullPath;
+
+                    var rom = await RomLoader.LoadRom(libraryItem.FullPath, fileSystem) ?? throw new ArgumentException($"Unable to determine the type of ROM located at {arg}");
+                    context.Rom = rom;
+                    context.RomPath = libraryItem.FullPath;
                     Console.WriteLine($"Loaded {arg}");
                 }
                 else if (Directory.Exists(arg))
@@ -103,14 +119,26 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     }
                     else
                     {
-                        context.Rom = new RtdxRom(arg, fileSystem);
-                        context.RomDirectory = arg;
+                        var rom = await RomLoader.LoadRom(arg, fileSystem);
+                        context.Rom = rom ?? throw new ArgumentException($"Unable to determine the type of ROM located at {arg}");
+                        context.RomPath = arg;
                         Console.WriteLine($"Loaded {arg}");
                     }
                 }
                 else if (File.Exists(arg))
                 {
-                    await ApplyMod(arg, context);
+                    var rom = await RomLoader.LoadRom(arg, fileSystem);
+                    if (rom != null)
+                    {
+                        context.Rom = rom;
+                        context.RomPath = arg;
+                        Console.WriteLine($"Loaded {arg}");
+                    }
+                    else
+                    {
+                        // Assume it's a mod
+                        await ApplyMod(arg, context);
+                    }
                 }
                 else if (Commands.TryGetValue(arg, out var command))
                 {
@@ -132,7 +160,18 @@ namespace SkyEditor.RomEditor.ConsoleApp
             }
 
             using var modpack = new Modpack(modPath, context.FileSystem);
-            await modpack.Apply(context.Rom);
+            if (context.Rom is IRtdxRom rtdx)
+            {
+                await modpack.Apply<IRtdxRom>(rtdx);
+            }
+            else if (context.Rom is IPsmdRom psmd)
+            {
+                await modpack.Apply<IPsmdRom>(psmd);
+            }
+            else
+            {
+                throw new ArgumentException("Unsupported ROM type: " + context.Rom.GetType().Name);
+            }
         }
 
         private delegate Task ConsoleCommand(Queue<string> arguments, ConsoleContext context);
@@ -148,7 +187,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
 
         private static async Task Import(Queue<string> arguments, ConsoleContext context)
         {
-            if (context.RomDirectory == null)
+            if (context.RomPath == null)
             {
                 throw new InvalidOperationException("Import must follow a ROM argument");
             }
@@ -158,8 +197,19 @@ namespace SkyEditor.RomEditor.ConsoleApp
                 throw new ArgumentException("Argument 'Import' must be followed by a target library item name");
             }
 
-            Console.WriteLine($"Importing '{context.RomDirectory}' to library:{targetName}");
-            await context.RomLibrary.AddDirectoryAsync(context.RomDirectory, context.FileSystem, targetName);
+            Console.WriteLine($"Importing '{context.RomPath}' to library:{targetName}");
+            if (Directory.Exists(context.RomPath))
+            {
+                await context.RomLibrary.AddDirectoryAsync(context.RomPath, context.FileSystem, targetName);
+            }
+            else if (File.Exists(context.RomPath))
+            {
+                await context.RomLibrary.AddFileAsync(context.RomPath, context.FileSystem, targetName);
+            }
+            else
+            {
+                throw new ArgumentException($"Unable to find a file or directory at '{context.RomPath}'");
+            }
             Console.WriteLine("Import complete");
         }
 
@@ -179,7 +229,13 @@ namespace SkyEditor.RomEditor.ConsoleApp
             {
                 throw new InvalidOperationException("Import must follow a ROM argument");
             }
-            var script = context.Rom.GenerateLuaChangeScript();
+
+            if (!(context.Rom is ILuaChangeScriptGenerator changeScriptGenerator))
+            {
+                throw new NotSupportedException($"ROM of type {context.Rom.GetType().Name} does not implement ILuaChangeScriptGenerator");
+            }
+
+            var script = changeScriptGenerator.GenerateLuaChangeScript();
 
             Console.WriteLine("Change script:");
             Console.WriteLine(script);
@@ -198,7 +254,13 @@ namespace SkyEditor.RomEditor.ConsoleApp
             {
                 throw new InvalidOperationException("Import must follow a ROM argument");
             }
-            var script = context.Rom.GenerateCSharpChangeScript();
+
+            if (!(context.Rom is ICSharpChangeScriptGenerator changeScriptGenerator))
+            {
+                throw new NotSupportedException($"ROM of type {context.Rom.GetType().Name} does not implement ICSharpChangeScriptGenerator");
+            }
+
+            var script = changeScriptGenerator.GenerateCSharpChangeScript();
 
             Console.WriteLine("Change script:");
             Console.WriteLine(script);
@@ -290,10 +352,10 @@ namespace SkyEditor.RomEditor.ConsoleApp
         private class ConsoleContext
         {
             public IFileSystem FileSystem { get; set; } = default!;
-            public IRomLibrary RomLibrary { get; set; } = default!;
+            public ILibrary RomLibrary { get; set; } = default!;
 
-            public IRtdxRom? Rom { get; set; }
-            public string? RomDirectory { get; set; }
+            public IModTarget? Rom { get; set; }
+            public string? RomPath { get; set; }
         }
     }
 }

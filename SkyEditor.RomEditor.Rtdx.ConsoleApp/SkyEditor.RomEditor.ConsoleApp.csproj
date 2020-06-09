@@ -37,9 +37,6 @@
     <None Update="Modpacks\Randomizer\RandomizeStarters.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Modpacks\Randomizer\SkyEditor.csx">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </None>
     <None Update="Mods\TheFennekinMod\Fennekin.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -55,8 +52,11 @@
     <None Update="Mods\TheRioluMod\mod.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Stubs\SkyEditor.csx">
+    <None Update="Scripts\Queries\ListPokemonDataInfo-psmd.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Stubs\RTDX.csx">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
     <None Update="Scripts\Queries\ListPokemonDataInfo.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

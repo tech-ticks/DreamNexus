@@ -1,4 +1,4 @@
-﻿#load "../../Stubs/SkyEditor.csx"
+﻿#load "../../Stubs/RTDX.csx"
 
 using System;
 using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
