@@ -1,6 +1,6 @@
 ﻿using FluentAssertions;
 using SkyEditor.IO.Binary;
-using SkyEditor.RomEditor.Domain.Rtdx.Structures;
+using SkyEditor.RomEditor.Domain.Common.Structures;
 using System.Collections.Generic;
 using Xunit;
 
@@ -12,7 +12,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
         public void CanBuildSir0()
         {
             // Arrange
-            var builder = new Sir0Builder();
+            var builder = new Sir0Builder(8);
             var testData = new int[] { 1, 2, 3, 7, 11, 13 };
 
             // Act

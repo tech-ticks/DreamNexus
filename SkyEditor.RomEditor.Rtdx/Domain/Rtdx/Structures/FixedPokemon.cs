@@ -1,4 +1,5 @@
 ﻿using SkyEditor.IO.Binary;
+using SkyEditor.RomEditor.Domain.Common.Structures;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System;
 using System.Collections.Generic;

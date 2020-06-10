@@ -1,19 +1,19 @@
-﻿#load "../../Stubs/PSMD.csx"
+﻿#load "../../../Stubs/RTDX.csx"
 
 using System;
 
 var pokemonInfo = Rom.GetPokemonDataInfo();
-//var strings = Rom.GetCommonStrings(); // Not yet implemented in PsmdRom
+var strings = Rom.GetCommonStrings();
 foreach (var pokemon in pokemonInfo.Entries)
 {
     if (pokemon.Id == default)
     {
         continue;
     }
-    Console.WriteLine($"{pokemon.PokedexNumber} {pokemon.Id}");  // Console.WriteLine($"{pokemon.PokedexNumber} {strings.Pokemon[pokemon.Id]} ({pokemon.Id:d} {pokemon.Id:f})");
-    //Console.WriteLine(strings.GetPokemonTaxonomy(pokemon.Taxon));
+    Console.WriteLine($"{pokemon.PokedexNumber} {strings.Pokemon[pokemon.Id]} ({pokemon.Id:d} {pokemon.Id:f})");
+    Console.WriteLine(strings.GetPokemonTaxonomy(pokemon.Taxon));
     Console.WriteLine($"Types: {pokemon.Type1} {pokemon.Type2}");
-    //Console.WriteLine($"Abilities: {strings.GetAbilityName(pokemon.Ability1)} {strings.GetAbilityName(pokemon.Ability2)} (HA: {strings.GetAbilityName(pokemon.HiddenAbility)})");
+    Console.WriteLine($"Abilities: {strings.GetAbilityName(pokemon.Ability1)} ({pokemon.Ability1:d} {pokemon.Ability1:f}) {strings.GetAbilityName(pokemon.Ability2)} ({pokemon.Ability2:d} {pokemon.Ability2:f}) (HA: {strings.GetAbilityName(pokemon.HiddenAbility)} ({pokemon.HiddenAbility:d} {pokemon.HiddenAbility:f}))");
     Console.WriteLine($"HP: {pokemon.BaseHitPoints}");
     Console.WriteLine($"ATK: {pokemon.BaseAttack}");
     Console.WriteLine($"DEF: {pokemon.BaseDefense}");
@@ -21,6 +21,10 @@ foreach (var pokemon in pokemonInfo.Entries)
     Console.WriteLine($"SPD: {pokemon.BaseSpecialDefense}");
     Console.WriteLine($"SPE: {pokemon.BaseSpeed}");
     Console.WriteLine($"Experience Table ID: {pokemon.ExperienceEntry}");
+    if (!string.IsNullOrWhiteSpace(pokemon.RecruitPrereq))
+    {
+        Console.WriteLine($"Recruitment Prereq: {pokemon.RecruitPrereq}");
+    }
     Console.WriteLine($"Moves:");
     foreach (var move in pokemon.LevelupLearnset)
     {
@@ -29,7 +33,7 @@ foreach (var pokemon in pokemonInfo.Entries)
             continue;
         }
 
-        Console.WriteLine($" - {move.Level}: {move.Move}"); // Console.WriteLine($" - {move.Level}: {strings.GetMoveName(move.Move)}");
+        Console.WriteLine($" - {move.Level}: {strings.GetMoveName(move.Move)}");
     }
     Console.WriteLine();
 }

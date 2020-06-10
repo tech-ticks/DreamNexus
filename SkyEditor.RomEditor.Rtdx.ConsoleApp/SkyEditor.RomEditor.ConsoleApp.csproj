@@ -37,6 +37,15 @@
     <None Update="Modpacks\Randomizer\RandomizeStarters.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Mods\ImportMissingPokemonStats\ImportPokemonDataInfo.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\ImportMissingPokemonStats\mod.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\ImportMissingPokemonStats\Resources\PsmdPokemonDataInfo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Mods\TheFennekinMod\Fennekin.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -52,19 +61,22 @@
     <None Update="Mods\TheRioluMod\mod.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Scripts\Queries\ListPokemonDataInfo-psmd.csx">
+    <None Update="Scripts\Queries\Psmd\ListPokemonDataInfo.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Psmd\SerializePokemonDataInfo.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Stubs\RTDX.csx">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
-    <None Update="Scripts\Queries\ListPokemonDataInfo.csx">
+    <None Update="Scripts\Queries\Rtdx\ListPokemonDataInfo.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Scripts\CSharp\Template.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Scripts\Queries\ListStarters.lua">
+    <None Update="Scripts\Queries\Rtdx\ListStarters.lua">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Scripts\Samples\ChangeStarters.lua">

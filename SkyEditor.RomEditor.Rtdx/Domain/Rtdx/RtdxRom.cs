@@ -190,7 +190,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
             if (pokemonFormDatabase == null)
             {
-                pokemonFormDatabase = new PokemonFormDatabase(File.ReadAllBytes(GetPokemonFormDatabasePath(this.RomDirectory)));
+                pokemonFormDatabase = new PokemonFormDatabase(FileSystem.ReadAllBytes(GetPokemonFormDatabasePath(this.RomDirectory)));
             }
             return pokemonFormDatabase;
         }
@@ -201,7 +201,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
             if (pokemonGraphicsDatabase == null)
             {
-                pokemonGraphicsDatabase = new PokemonGraphicsDatabase(File.ReadAllBytes(GetPokemonGraphicsDatabasePath(this.RomDirectory)));
+                pokemonGraphicsDatabase = new PokemonGraphicsDatabase(FileSystem.ReadAllBytes(GetPokemonGraphicsDatabasePath(this.RomDirectory)));
             }
             return pokemonGraphicsDatabase;
         }
@@ -212,13 +212,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
             if (messageBin == null)
             {
-                var messageBinPath = MessageBinUSPath;
-                messageBin = new Farc(File.ReadAllBytes(messageBinPath));
+                var messageBinPath = GetMessageBinUSPath(RomDirectory);
+                messageBin = new Farc(FileSystem.ReadAllBytes(messageBinPath));
             }
             return messageBin;
         }
         private Farc? messageBin;
-        protected string MessageBinUSPath => Path.Combine(RomDirectory, "romfs/Data/StreamingAssets/native_data/message_us.bin");
+        protected string GetMessageBinUSPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/message_us.bin");
 
         public ICommonStrings GetCommonStrings()
         {
@@ -227,7 +227,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 var commonData = GetUSMessageBin().GetFile("common.bin");
                 if (commonData == null)
                 {
-                    throw new Exception("Unable to load common.bin from " + MessageBinUSPath);
+                    throw new Exception("Unable to load common.bin from US message bin");
                 }
 
                 var common = new MessageBinEntry(commonData);

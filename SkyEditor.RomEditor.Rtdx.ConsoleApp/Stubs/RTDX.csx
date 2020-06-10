@@ -10,3 +10,4 @@
 
 SkyEditor.RomEditor.Domain.Rtdx.IRtdxRom Rom;
 SkyEditor.RomEditor.Infrastructure.Automation.Modpacks.IScriptModAccessor Mod;
+SkyEditor.RomEditor.Infrastructure.Automation.ScriptUtilities Utilities;

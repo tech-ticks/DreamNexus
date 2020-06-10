@@ -3,14 +3,15 @@ using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Domain.Psmd.Structures;
 using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace SkyEditor.RomEditor.Domain.Psmd
 {
     public interface IPsmdRom : IModTarget
     {
+        public Farc GetUSMessageBin();
+        ICommonStrings GetCommonStrings();
+
         PokemonDataInfo GetPokemonDataInfo();
     }
 
@@ -40,6 +41,37 @@ namespace SkyEditor.RomEditor.Domain.Psmd
         public string RomDirectory { get; }
         protected IFileSystem FileSystem { get; }
         protected ThreeDsRom? Rom { get; }
+
+        #region RomFS
+        public Farc GetUSMessageBin()
+        {
+            if (messageBin == null)
+            {
+                var messageBinPath = GetMessageBinUSPath(RomDirectory);
+                messageBin = new Farc(FileSystem.ReadAllBytes(messageBinPath));
+            }
+            return messageBin;
+        }
+        private Farc? messageBin;
+        protected string GetMessageBinUSPath(string directory) => Path.Combine(directory, "RomFS/message_us.bin");
+
+        public ICommonStrings GetCommonStrings()
+        {
+            if (commonStrings == null)
+            {
+                var commonData = GetUSMessageBin().GetFile("common.bin");
+                if (commonData == null)
+                {
+                    throw new Exception("Unable to load common.bin from US message bin");
+                }
+
+                var common = new MessageBinEntry(commonData);
+                commonStrings = new CommonStrings(common);
+            }
+            return commonStrings;
+        }
+        private ICommonStrings? commonStrings;
+        #endregion
 
         #region RomFS/pokemon
         public PokemonDataInfo GetPokemonDataInfo()

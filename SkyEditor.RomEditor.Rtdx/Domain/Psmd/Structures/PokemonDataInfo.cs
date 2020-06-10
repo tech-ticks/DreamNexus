@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkyEditor.RomEditor.Domain.Psmd.Constants;
+using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;
 
@@ -12,14 +13,14 @@ namespace SkyEditor.RomEditor.Domain.Psmd.Structures
         {
             var entryCount = checked((int)data.Length / EntrySize);
 
-            Entries = new List<PokemonInfoEntry>();
+            Entries = new List<PokemonDataInfoEntry>();
             for (var i = 0; i < entryCount; i++)
             {
-                Entries.Add(new PokemonInfoEntry(i, data.Slice(i * EntrySize, EntrySize)));
+                Entries.Add(new PokemonDataInfoEntry((CreatureIndex)i, data.Slice(i * EntrySize, EntrySize)));
             }
         }
 
-        public List<PokemonInfoEntry> Entries { get; set; }
+        public List<PokemonDataInfoEntry> Entries { get; set; }
 
         //public byte[] ToByteArray()
         //{
@@ -31,9 +32,9 @@ namespace SkyEditor.RomEditor.Domain.Psmd.Structures
         //    return buffer;
         //}
 
-        public class PokemonInfoEntry
+        public class PokemonDataInfoEntry
         {
-            public int Id { get; }
+            public CreatureIndex Id { get; }
 
             public byte[] Unk1toF { get; set; } // 16 bytes
             public IReadOnlyList<LevelUpMove> LevelupLearnset { get; }
@@ -41,7 +42,7 @@ namespace SkyEditor.RomEditor.Domain.Psmd.Structures
             public int Unk60 { get; set; }
             public short PokedexNumber { get; set; }
             public short Unk66 { get; set; }
-            public short Category { get; set; }
+            public short Taxon { get; set; }
             public short ListNumber1 { get; set; }
             public short ListNumber2 { get; set; }
             public short Unk6E { get; set; }
@@ -55,17 +56,17 @@ namespace SkyEditor.RomEditor.Domain.Psmd.Structures
             public short EvolvesFromEntry { get; set; }
             public short ExperienceEntry { get; set; }
             public byte[] Unk82 { get; set; } // Length: 10
-            public byte Ability1 { get; set; }
-            public byte Ability2 { get; set; }
-            public byte AbilityHidden { get; set; }
-            public byte Type1 { get; set; }
-            public byte Type2 { get; set; }
+            public AbilityIndex Ability1 { get; set; }
+            public AbilityIndex Ability2 { get; set; }
+            public AbilityIndex HiddenAbility { get; set; }
+            public PokemonType Type1 { get; set; }
+            public PokemonType Type2 { get; set; }
             public byte[] Unk91 { get; set; } // Length: 3
             public byte IsMegaEvolution { get; set; } // Maybe
             public byte MinEvolveLevel { get; set; }
             public short Unk96 { get; set; }
 
-            public PokemonInfoEntry(int id, ReadOnlySpan<byte> data)
+            public PokemonDataInfoEntry(CreatureIndex id, ReadOnlySpan<byte> data)
             {
                 this.Id = id;
 
@@ -82,7 +83,7 @@ namespace SkyEditor.RomEditor.Domain.Psmd.Structures
                 {
                     int move = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x10 + i * sizeof(short)));
                     byte level = data[0x44 + i];
-                    levelupLearnset.Add(new LevelUpMove(level, move));
+                    levelupLearnset.Add(new LevelUpMove(level, (WazaIndex)move));
                 }
                 this.LevelupLearnset = levelupLearnset;
 
@@ -90,14 +91,14 @@ namespace SkyEditor.RomEditor.Domain.Psmd.Structures
                 Unk60 = BinaryPrimitives.ReadInt32LittleEndian(data.Slice(0x60));
                 PokedexNumber = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x64));
                 Unk66 = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x66));
-                Category = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x68));
+                Taxon = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x68));
                 ListNumber1 = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x6A));
                 ListNumber2 = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x6));
                 Unk6E = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x6E));
                 BaseHitPoints = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x70));
                 BaseAttack = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x72));
-                BaseSpecialAttack = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x74));
-                BaseDefense = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x76));
+                BaseDefense = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x74));
+                BaseSpecialAttack = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x76));
                 BaseSpecialDefense = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x78));
                 BaseSpeed = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x7A));
                 EntryNumber = BinaryPrimitives.ReadInt16LittleEndian(data.Slice(0x7C));
@@ -112,11 +113,11 @@ namespace SkyEditor.RomEditor.Domain.Psmd.Structures
                 }
                 this.Unk82 = Unk82;
 
-                Ability1 = data[0x8];
-                Ability2 = data[0x8D];
-                AbilityHidden = data[0x8E];
-                Type1 = data[0x8F];
-                Type2 = data[0x90];
+                Ability1 = (AbilityIndex)data[0x8C];
+                Ability2 = (AbilityIndex)data[0x8D];
+                HiddenAbility = (AbilityIndex)data[0x8E];
+                Type1 = (PokemonType)data[0x8F];
+                Type2 = (PokemonType)data[0x90];
 
                 byte[] unk91 = new byte[3];
                 unk91[0] = data[0x91];
@@ -154,14 +155,14 @@ namespace SkyEditor.RomEditor.Domain.Psmd.Structures
             //    @out.AddRange(BitConverter.GetBytes(Unk60));
             //    @out.AddRange(BitConverter.GetBytes(PokedexNumber));
             //    @out.AddRange(BitConverter.GetBytes(Unk66));
-            //    @out.AddRange(BitConverter.GetBytes(Category));
+            //    @out.AddRange(BitConverter.GetBytes(Taxon));
             //    @out.AddRange(BitConverter.GetBytes(ListNumber1));
             //    @out.AddRange(BitConverter.GetBytes(ListNumber2));
             //    @out.AddRange(BitConverter.GetBytes(Unk6E));
             //    @out.AddRange(BitConverter.GetBytes(BaseHitPoints));
             //    @out.AddRange(BitConverter.GetBytes(BaseAttack));
-            //    @out.AddRange(BitConverter.GetBytes(BaseSpecialAttack));
             //    @out.AddRange(BitConverter.GetBytes(BaseDefense));
+            //    @out.AddRange(BitConverter.GetBytes(BaseSpecialAttack));
             //    @out.AddRange(BitConverter.GetBytes(BaseSpecialDefense));
             //    @out.AddRange(BitConverter.GetBytes(BaseSpeed));
             //    @out.AddRange(BitConverter.GetBytes(EntryNumber));
@@ -175,7 +176,7 @@ namespace SkyEditor.RomEditor.Domain.Psmd.Structures
             //    // More properties
             //    @out.Add(Ability1);
             //    @out.Add(Ability2);
-            //    @out.Add(AbilityHidden);
+            //    @out.Add(HiddenAbility);
             //    @out.Add(Type1);
             //    @out.Add(Type2);
 
@@ -193,14 +194,14 @@ namespace SkyEditor.RomEditor.Domain.Psmd.Structures
 
         public class LevelUpMove
         {
-            public LevelUpMove(byte level, int move)
+            public LevelUpMove(byte level, WazaIndex move)
             {
                 this.Level = level;
                 this.Move = move;
             }
 
             public byte Level { get; set; }
-            public int Move { get; set; }
+            public WazaIndex Move { get; set; }
         }
     }
 }

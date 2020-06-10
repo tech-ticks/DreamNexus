@@ -1,12 +1,8 @@
-﻿using SkyEditor.IO;
-using SkyEditor.IO.Binary;
+﻿using SkyEditor.IO.Binary;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
+namespace SkyEditor.RomEditor.Domain.Common.Structures
 {
     public sealed class Sir0 : IDisposable
     {
@@ -33,8 +29,23 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         private void Init()
         {
             Magic = Data.ReadInt32(0);
-            SubHeaderOffset = Data.ReadInt32(8);
-            FooterOffset = Data.ReadInt32(16);
+
+            // Detect pointer size
+            // For a 32bit SIR0, 0x04 should contain the sub header pointer
+            // For a 64bit SIR0, 0x04 instead contains 4 null chars at the end of Magic, the sub header being at 0x8 instead
+            var int04 = Data.ReadInt32(4);
+            if (int04 == 0)
+            {
+                pointerSize = 8;
+            }
+            else
+            {
+                pointerSize = 4;
+            }
+
+            var offset = pointerSize;
+            SubHeaderOffset = Data.ReadInt32(offset); offset += pointerSize;
+            FooterOffset = Data.ReadInt32(offset); offset += pointerSize;
             SubHeader = Data.Slice(SubHeaderOffset, FooterOffset - SubHeaderOffset);
 
             PointerOffsets = new List<long>();
@@ -63,6 +74,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
             }
         }
+
+        private int pointerSize;
 
         private BinaryFile? BinaryFile { get; }
         public int Magic { get; private set; }

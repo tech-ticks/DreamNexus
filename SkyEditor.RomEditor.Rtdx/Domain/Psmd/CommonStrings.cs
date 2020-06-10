@@ -1,11 +1,11 @@
-﻿using SkyEditor.RomEditor.Domain.Rtdx.Constants;
-using SkyEditor.RomEditor.Domain.Rtdx.Structures;
+﻿using SkyEditor.RomEditor.Domain.Psmd.Constants;
+using SkyEditor.RomEditor.Domain.Psmd.Structures;
 using SkyEditor.RomEditor.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SkyEditor.RomEditor.Domain.Rtdx
+namespace SkyEditor.RomEditor.Domain.Psmd
 {
     public interface ICommonStrings
     {

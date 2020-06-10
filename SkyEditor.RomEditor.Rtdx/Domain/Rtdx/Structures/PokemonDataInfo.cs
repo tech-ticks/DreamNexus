@@ -1,4 +1,5 @@
 ﻿using SkyEditor.IO.Binary;
+using SkyEditor.RomEditor.Domain.Common.Structures;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System;
 using System.Buffers.Binary;
@@ -48,7 +49,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public long Unknown00 { get; set; }
             public long Unknown08 { get; set; }
 
-            public IReadOnlyList<LevelUpMove> LevelupLearnset { get; }
+            public List<LevelUpMove> LevelupLearnset { get; set; }
 
             public short Unknown5E { get; }
             public int Unknown60 { get; }
@@ -144,7 +145,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Unknown99 = data.ReadByte(0x99);
                 Unknown9A = data.ReadByte(0x9A);
 
-                RecruitPrereq = data.ReadString(0x9B, 69, Encoding.ASCII);
+                RecruitPrereq = data.ReadString(0x9B, 69, Encoding.ASCII).TrimEnd('\0');
             }
 
             public void Write(Span<byte> buffer)
@@ -200,18 +201,18 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Encoding.ASCII.GetBytes(RecruitPrereq, buffer.Slice(0x9B, 69));
 #endif
             }
+        }
 
-            public class LevelUpMove
+        public class LevelUpMove
+        {
+            public LevelUpMove(byte level, WazaIndex move)
             {
-                public LevelUpMove(byte level, WazaIndex move)
-                {
-                    this.Level = level;
-                    this.Move = move;
-                }
-
-                public byte Level { get; set; }
-                public WazaIndex Move { get; set; }
+                this.Level = level;
+                this.Move = move;
             }
+
+            public byte Level { get; set; }
+            public WazaIndex Move { get; set; }
         }
     }
 }

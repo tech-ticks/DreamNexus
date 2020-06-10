@@ -7,10 +7,10 @@ using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.Text;
 
-namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
+namespace SkyEditor.RomEditor.Domain.Psmd.Structures
 {
     public class Farc
-    {        
+    {
         public Farc(byte[] data)
         {
             using var binaryFile = new BinaryFile(data);
@@ -56,8 +56,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 var sir0 = new Sir0(data, offset, length);
                 var dataOffset = sir0.SubHeader.ReadInt32(0);
-                var entryCount = sir0.SubHeader.ReadInt32(8);
-                var useHashesInsteadOfFilenames = sir0.SubHeader.ReadInt32(0xC);
+                var entryCount = sir0.SubHeader.ReadInt32(4);
+                var useHashesInsteadOfFilenames = sir0.SubHeader.ReadInt32(8);
                 if (useHashesInsteadOfFilenames != 1)
                 {
                     throw new NotSupportedException("Only FARC files with hashes instead of filenames are supported");
@@ -75,17 +75,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public class FarcFatEntry
             {
-                public const int Length = 16;
+                public const int Length = 12;
+
                 public FarcFatEntry(byte[] data)
                 {
                     Hash = BitConverter.ToUInt32(data, 0);
-                    Unknown = BitConverter.ToInt32(data, 4);
-                    DataOffset = BitConverter.ToInt32(data, 8);
-                    DataLength = BitConverter.ToInt32(data, 0xC);
+                    DataOffset = BitConverter.ToInt32(data, 4);
+                    DataLength = BitConverter.ToInt32(data, 8);
                 }
 
                 public uint Hash { get; }
-                public int Unknown { get; }
                 public int DataOffset { get; }
                 public int DataLength { get; }
             }

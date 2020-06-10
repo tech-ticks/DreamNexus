@@ -1,26 +1,41 @@
-﻿using SkyEditor.IO;
-using SkyEditor.IO.Binary;
+﻿using SkyEditor.IO.Binary;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
+namespace SkyEditor.RomEditor.Domain.Common.Structures
 {
     public class Sir0Builder : IWriteOnlyBinaryDataAccessor
     {
         private const string Magic = "SIR0\0\0\0\0";
 
-        public Sir0Builder(int bufferedLength = 1000)
+        public Sir0Builder(int pointerSize, int bufferedLength = 1000)
         {
+            this.pointerSize = pointerSize;
+
             DataFile = new BinaryFile(new byte[bufferedLength]);
-            this.Write(new byte[0x20]); // Placeholder for magic and header pointers
+            if (pointerSize == 4)
+            {
+                this.Write(new byte[0x10]); // Placeholder for magic and header pointers
+            }
+            else if (pointerSize == 8)
+            {
+                this.Write(new byte[0x20]); // Placeholder for magic and header pointers
+            }
+            else
+            {
+                throw new ArgumentException("Pointer size must be 4 or 8");
+            }
+
             PointerOffsets = new List<long>();
         }
 
-        public Sir0Builder() : this(1000)
+        public Sir0Builder(int pointerSize) : this(pointerSize, 1000)
         {
         }
+
+        private readonly int pointerSize;
 
         private BinaryFile DataFile { get; }
         private IBinaryDataAccessor Data => DataFile;
@@ -61,8 +76,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         /// <param name="pointer">The pointer to write</param>
         public void WritePointer(long index, long pointer)
         {
-            EnsureLengthIsLargeEnough((int)index + 8);
-            Data.WriteInt64(index, pointer);
+            EnsureLengthIsLargeEnough((int)index + pointerSize);
+            if (pointerSize == 8)
+            {
+                Data.WriteInt64(index, pointer);
+            }
+            else if (pointerSize == 4)
+            {
+                Data.WriteInt32(index, (int)pointer);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unsupported pointer size: {pointerSize}");
+            }
             MarkPointer(index);
         }
 
@@ -73,8 +99,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         /// <param name="pointer">The pointer to write</param>
         public async Task WritePointerAsync(long index, long pointer)
         {
-            EnsureLengthIsLargeEnough((int)index + 8);
-            await Data.WriteInt64Async(index, pointer).ConfigureAwait(false);
+            EnsureLengthIsLargeEnough((int)index + pointerSize);
+            if (pointerSize == 8)
+            {
+                await Data.WriteInt64Async(index, pointer).ConfigureAwait(false);
+            }
+            else if (pointerSize == 4)
+            {
+                await Data.WriteInt32Async(index, (int)pointer).ConfigureAwait(false);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Unsupported pointer size: {pointerSize}");
+            }
             MarkPointer(index);
         }
 

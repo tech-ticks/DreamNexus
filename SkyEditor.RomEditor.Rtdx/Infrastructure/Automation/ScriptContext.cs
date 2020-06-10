@@ -16,5 +16,6 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation
 
         public TTarget Rom { get; }
         public IScriptModAccessor? Mod { get; }
+        public ScriptUtilities Utilities { get; } = new ScriptUtilities();
     }
 }

@@ -73,7 +73,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     }
 
                     await saveableRom.Save();
-                    Console.WriteLine("Saved");
+                    if (context.VerboseLogging) Console.WriteLine("Saved");
                 }
                 else if (string.Equals(arg, "--save-to", StringComparison.OrdinalIgnoreCase))
                 {
@@ -95,7 +95,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     var targetDirectory = GetRomDirectory(target, context);
 
                     await saveableRom.Save(targetDirectory, fileSystem);
-                    Console.WriteLine("Saved to " + targetDirectory);
+                    if (context.VerboseLogging) Console.WriteLine("Saved to " + targetDirectory);
                 }
                 else if (arg.StartsWith("library:"))
                 {
@@ -109,7 +109,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     var rom = await RomLoader.LoadRom(libraryItem.FullPath, fileSystem) ?? throw new ArgumentException($"Unable to determine the type of ROM located at {arg}");
                     context.Rom = rom;
                     context.RomPath = libraryItem.FullPath;
-                    Console.WriteLine($"Loaded {arg}");
+                    if (context.VerboseLogging) Console.WriteLine($"Loaded {arg}");
                 }
                 else if (Directory.Exists(arg))
                 {
@@ -122,7 +122,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
                         var rom = await RomLoader.LoadRom(arg, fileSystem);
                         context.Rom = rom ?? throw new ArgumentException($"Unable to determine the type of ROM located at {arg}");
                         context.RomPath = arg;
-                        Console.WriteLine($"Loaded {arg}");
+                        if (context.VerboseLogging) Console.WriteLine($"Loaded {arg}");
                     }
                 }
                 else if (File.Exists(arg))
@@ -132,7 +132,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     {
                         context.Rom = rom;
                         context.RomPath = arg;
-                        Console.WriteLine($"Loaded {arg}");
+                        if (context.VerboseLogging) Console.WriteLine($"Loaded {arg}");
                     }
                     else
                     {
@@ -146,7 +146,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
                 }
                 else
                 {
-                    Console.WriteLine($"Unrecognized argument '{arg}'");
+                    if (context.VerboseLogging) Console.WriteLine($"Unrecognized argument '{arg}'");
                     return;
                 }
             }
@@ -197,7 +197,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
                 throw new ArgumentException("Argument 'Import' must be followed by a target library item name");
             }
 
-            Console.WriteLine($"Importing '{context.RomPath}' to library:{targetName}");
+            if (context.VerboseLogging) Console.WriteLine($"Importing '{context.RomPath}' to library:{targetName}");
             if (Directory.Exists(context.RomPath))
             {
                 await context.RomLibrary.AddDirectoryAsync(context.RomPath, context.FileSystem, targetName);
@@ -210,7 +210,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
             {
                 throw new ArgumentException($"Unable to find a file or directory at '{context.RomPath}'");
             }
-            Console.WriteLine("Import complete");
+            if (context.VerboseLogging) Console.WriteLine("Import complete");
         }
 
         private static Task ListLibrary(Queue<string> arguments, ConsoleContext context)
@@ -237,7 +237,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
 
             var script = changeScriptGenerator.GenerateLuaChangeScript();
 
-            Console.WriteLine("Change script:");
+            if (context.VerboseLogging) Console.WriteLine("Change script:");
             Console.WriteLine(script);
 
             if (arguments.TryDequeue(out var targetFileName))
@@ -262,7 +262,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
 
             var script = changeScriptGenerator.GenerateCSharpChangeScript();
 
-            Console.WriteLine("Change script:");
+            if (context.VerboseLogging) Console.WriteLine("Change script:");
             Console.WriteLine(script);
 
             if (arguments.TryDequeue(out var targetFileName))
@@ -290,7 +290,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
                 {
                     var filename = arguments.Dequeue();
                     await builder.Build(filename);
-                    Console.WriteLine("Saved modpack to " + filename);
+                    if (context.VerboseLogging) Console.WriteLine("Saved modpack to " + filename);
                     return;
                 }
                 else if (arg.StartsWith("--"))
@@ -326,7 +326,6 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     throw new InvalidOperationException($"Unrecognized argument in modpack builder: '{arg}'");
                 }
             }
-
             
             Console.Error.Write("Reached end of arguments without saving modpack.");
         }
@@ -351,6 +350,8 @@ namespace SkyEditor.RomEditor.ConsoleApp
 
         private class ConsoleContext
         {
+            public bool VerboseLogging { get; set; }
+
             public IFileSystem FileSystem { get; set; } = default!;
             public ILibrary RomLibrary { get; set; } = default!;
 

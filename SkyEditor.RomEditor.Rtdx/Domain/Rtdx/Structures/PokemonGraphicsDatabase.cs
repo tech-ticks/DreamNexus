@@ -1,4 +1,5 @@
 ﻿using SkyEditor.IO.Binary;
+using SkyEditor.RomEditor.Domain.Common.Structures;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System;
 using System.Collections.Generic;
@@ -33,7 +34,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
         public Sir0 ToSir0()
         {
-            var sir0 = new Sir0Builder();
+            var sir0 = new Sir0Builder(8);
 
             void align(int length) 
             {
