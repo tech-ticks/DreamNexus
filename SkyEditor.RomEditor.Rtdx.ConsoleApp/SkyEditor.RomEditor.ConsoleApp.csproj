@@ -64,7 +64,19 @@
     <None Update="Scripts\Queries\Psmd\ListPokemonDataInfo.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Scripts\Queries\Psmd\ListPokemonGraphicsDatabase.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Scripts\Queries\Psmd\SerializePokemonDataInfo.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Psmd\SerializePokemonGraphicsDatabase.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Rtdx\ListPokemonGraphicsDatabase.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Utilities\Rtdx\GeneratePsmdImportManifest.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Stubs\RTDX.csx">

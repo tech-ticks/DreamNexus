@@ -1,5 +1,6 @@
 ﻿using DotNet3dsToolkit;
 using SkyEditor.IO.FileSystem;
+using SkyEditor.RomEditor.Domain.Psmd.Constants;
 using SkyEditor.RomEditor.Domain.Psmd.Structures;
 using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
 using System;
@@ -9,10 +10,15 @@ namespace SkyEditor.RomEditor.Domain.Psmd
 {
     public interface IPsmdRom : IModTarget
     {
+        PokemonFormDatabase GetPokemonFormDatabase();
+        PokemonGraphicsDatabase GetPokemonGraphicsDatabase();
+        Farc GetPokemonGraphics();
         public Farc GetUSMessageBin();
         ICommonStrings GetCommonStrings();
 
         PokemonDataInfo GetPokemonDataInfo();
+
+        PokemonGraphicsDatabase.PokemonGraphicsDatabaseEntry? FindGraphicsDatabaseEntryByCreature(CreatureIndex creatureIndex, PokemonFormType formIndex);
     }
 
     public class PsmdRom : IPsmdRom
@@ -43,6 +49,39 @@ namespace SkyEditor.RomEditor.Domain.Psmd
         protected ThreeDsRom? Rom { get; }
 
         #region RomFS
+        public PokemonFormDatabase GetPokemonFormDatabase()
+        {
+            if (pokemonFormDatabase == null)
+            {
+                pokemonFormDatabase = new PokemonFormDatabase(FileSystem.ReadAllBytes(GetPokemonFormDatabasePath(this.RomDirectory)));
+            }
+            return pokemonFormDatabase;
+        }
+        private PokemonFormDatabase? pokemonFormDatabase;
+        protected static string GetPokemonFormDatabasePath(string directory) => Path.Combine(directory, "RomFS/pokemon_form_database.bin");
+
+        public PokemonGraphicsDatabase GetPokemonGraphicsDatabase()
+        {
+            if (pokemonGraphicsDatabase == null)
+            {
+                pokemonGraphicsDatabase = new PokemonGraphicsDatabase(FileSystem.ReadAllBytes(GetPokemonGraphicsDatabasePath(this.RomDirectory)));
+            }
+            return pokemonGraphicsDatabase;
+        }
+        private PokemonGraphicsDatabase? pokemonGraphicsDatabase;
+        protected static string GetPokemonGraphicsDatabasePath(string directory) => Path.Combine(directory, "RomFS/pokemon_graphics_database.bin");
+
+        public Farc GetPokemonGraphics()
+        {
+            if (pokemonGraphics == null)
+            {
+                pokemonGraphics = new Farc(FileSystem.ReadAllBytes(GetPokemonGraphicsPath(this.RomDirectory)));
+            }
+            return pokemonGraphics;
+        }
+        private Farc? pokemonGraphics;
+        protected static string GetPokemonGraphicsPath(string directory) => Path.Combine(directory, "RomFS/pokemon_graphic.bin");
+
         public Farc GetUSMessageBin()
         {
             if (messageBin == null)
@@ -86,6 +125,23 @@ namespace SkyEditor.RomEditor.Domain.Psmd
         private PokemonDataInfo? pokemonDataInfo;
         protected static string GetPokemonDataInfoPath(string directory) => Path.Combine(directory, "RomFS/pokemon/pokemon_data_info.bin");
 
+        #endregion
+
+        #region Helpers
+        public PokemonGraphicsDatabase.PokemonGraphicsDatabaseEntry? FindGraphicsDatabaseEntryByCreature(CreatureIndex creatureIndex, PokemonFormType formIndex)
+        {
+            var formDatabase = GetPokemonFormDatabase();
+            var graphics = GetPokemonGraphicsDatabase();
+
+            var graphics1Index = formDatabase.GetGraphicsDatabaseIndex(creatureIndex, formIndex);
+            var graphics0Index = graphics1Index - 1;
+            if (graphics0Index < 0 || graphics0Index > graphics.Entries.Count)
+            {
+                return null;
+            }
+
+            return graphics.Entries[graphics0Index];
+        }
         #endregion
     }
 }

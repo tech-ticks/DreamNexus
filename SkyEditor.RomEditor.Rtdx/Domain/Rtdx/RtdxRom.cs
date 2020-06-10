@@ -32,6 +32,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         #region StreamingAssets/data/ab
 
         AssetsManager GetAssetBundles();
+        string[] ListAssetBundles();
 
         #endregion
 
@@ -136,6 +137,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         #endregion
 
         #region StreamingAssets/data/ab
+        protected static string GetAssetBundlesPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/ab");
+
         /// <summary>
         /// Loads asset bundles
         /// Note: If the ROM is not a physical file system, exceptions may occur.
@@ -150,7 +153,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             return _assetBundles;
         }
         private AssetsManager? _assetBundles;
-        protected static string GetAssetBundlesPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/ab");
+
+        public string[] ListAssetBundles()
+        {
+            return this.FileSystem.GetFiles(GetAssetBundlesPath(this.RomDirectory), "*.ab", true);
+        }
 
         #endregion
 
