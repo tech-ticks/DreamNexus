@@ -19,20 +19,24 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
 
         private readonly MainWindowViewModel mainWindowViewModel;
 
-        protected override async Task Execute()
+        public async Task<RtdxRomViewModel?> OpenFile()
         {
             var dialog = new OpenFolderDialog();
             var path = await dialog.ShowAsync(Application.Current.GetMainWindowOrThrow());
             if (!string.IsNullOrEmpty(path))
             {
-                if (mainWindowViewModel.OpenFiles.Any())
-                {
-                    // Let's keep the UI simple for now
-                    mainWindowViewModel.CloseAllFiles();
-                }
+                return new RtdxRomViewModel(new RtdxRom(path, PhysicalFileSystem.Instance));
+            }
 
-                var rom = new RtdxRom(path, PhysicalFileSystem.Instance);
-                mainWindowViewModel.OpenFile(new RtdxRomViewModel(rom));
+            return null;
+        }
+
+        protected override async Task Execute()
+        {
+            var rom = await OpenFile();
+            if (rom != null)
+            {
+                mainWindowViewModel.OpenFile(rom, false);
             }
         }
     }

@@ -61,6 +61,24 @@ namespace SkyEditor.RomEditor.Avalonia.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tutorial.
+        /// </summary>
+        public static string ViewModels_Rtdx_Tutorial_IntroViewModel_Name {
+            get {
+                return ResourceManager.GetString("ViewModels_Rtdx_Tutorial_IntroViewModel_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tutorial.
+        /// </summary>
+        public static string ViewModels_Rtdx_Tutorial_ModpackViewModel_Name {
+            get {
+                return ResourceManager.GetString("ViewModels_Rtdx_Tutorial_ModpackViewModel_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Apply Mod.
         /// </summary>
         public static string Views_MainWindowView_ApplyModMenuItem {
@@ -174,6 +192,26 @@ namespace SkyEditor.RomEditor.Avalonia.Properties {
         public static string Views_Rtdx_RtdxStarterView_Pokemon {
             get {
                 return ResourceManager.GetString("Views_Rtdx_RtdxStarterView_Pokemon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is a ROM editor for Pokémon Mystery Dungeon: Rescue Team DX. To begin, press &quot;Open ROM Directory&quot;, and browse to the directory into which you have extracted your ROM.
+        ///
+        ///Note: This tutorial is still under development and you will have better luck using File -&gt; Open to skip this tutorial..
+        /// </summary>
+        public static string Views_Rtdx_Tutorial_IntroView_IntroText {
+            get {
+                return ResourceManager.GetString("Views_Rtdx_Tutorial_IntroView_IntroText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open ROM Directory.
+        /// </summary>
+        public static string Views_Rtdx_Tutorial_IntroView_OpenRomDirectory {
+            get {
+                return ResourceManager.GetString("Views_Rtdx_Tutorial_IntroView_OpenRomDirectory", resourceCulture);
             }
         }
     }
