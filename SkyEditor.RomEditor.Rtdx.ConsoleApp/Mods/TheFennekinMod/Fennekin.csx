@@ -11,16 +11,7 @@ if (Mod == null)
 
 // Recommended prerequisite mods:
 // - ImportMissingPokemonStats
-
-// Add the model
-// This should be extracted into another mod in the future once graphics can be bulk-imported
-var fennekinModel = Mod.ReadResourceArray("Resources/fokko_00.ab");
-Rom.WriteFile("romfs/Data/StreamingAssets/ab/fokko_00.ab", fennekinModel);
-// - Update pokemon_graphics_database to reference the model
-var graphics = Rom.GetPokemonGraphicsDatabase();
-var graphicsEntry = Rom.FindGraphicsDatabaseEntryByCreature(CreatureIndex.FOKKO, PokemonFormType.NORMAL);
-graphicsEntry.ModelName = "fokko_00";
-graphicsEntry.AnimationName = "4leg_fokko_00";
+// - AddMissingPokemonModels
 
 // Add the starter
 var starterModel = Rom.GetStarters();
