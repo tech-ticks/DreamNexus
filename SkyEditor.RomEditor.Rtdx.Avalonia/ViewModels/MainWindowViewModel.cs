@@ -15,14 +15,14 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels
             SaveDirectoryAsMenuItem = new SaveDirectoryAsMenuItem(this);
             SaveMenuItem = new SaveMenuItem(this);
             CreateAutomationScriptMenuItem = new CreateAutomationScriptMenuItem(this);
-            RunAutomationScriptMenuItem = new RunAutomationScriptMenuItem(this);
+            RunAutomationScriptMenuItem = new ApplyModMenuItem(this);
         }
 
         public OpenDirectoryMenuItem OpenDirectoryMenuItem { get; }
         public SaveDirectoryAsMenuItem SaveDirectoryAsMenuItem { get; }
         public SaveMenuItem SaveMenuItem { get; }
         public CreateAutomationScriptMenuItem CreateAutomationScriptMenuItem { get; }
-        public RunAutomationScriptMenuItem RunAutomationScriptMenuItem { get; }
+        public ApplyModMenuItem RunAutomationScriptMenuItem { get; }
 
         public ObservableCollection<OpenFileViewModel> OpenFiles { get; set; }
 

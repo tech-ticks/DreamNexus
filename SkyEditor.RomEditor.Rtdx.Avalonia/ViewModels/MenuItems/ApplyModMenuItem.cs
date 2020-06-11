@@ -8,12 +8,14 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
+using SkyEditor.IO.FileSystem;
 
 namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
 {
-    public class RunAutomationScriptMenuItem : MenuItem<RtdxRomViewModel>
+    public class ApplyModMenuItem : MenuItem<RtdxRomViewModel>
     {
-        public RunAutomationScriptMenuItem(MainWindowViewModel mainWindowViewModel) : base(mainWindowViewModel)
+        public ApplyModMenuItem(MainWindowViewModel mainWindowViewModel) : base(mainWindowViewModel)
         {
         }
 
@@ -23,7 +25,9 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
             {
                 Filters = new List<FileDialogFilter>
                 {
-                    new FileDialogFilter { Name = "Lua Files", Extensions = new List<string> { "lua" }}
+                    new FileDialogFilter { Name = "Mod Files", Extensions = new List<string> { "zip" }},
+                    new FileDialogFilter { Name = "C# Files", Extensions = new List<string> { "csx" }},
+                    new FileDialogFilter { Name = "Lua Files", Extensions = new List<string> { "lua" }},
                 }
             };
 
@@ -31,9 +35,8 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
             var firstPath = paths.FirstOrDefault();
             if (!string.IsNullOrEmpty(firstPath))
             {
-                var script = File.ReadAllText(firstPath);
-                var context = new ScriptHost<IRtdxRom>(viewModel.Model);
-                context.ExecuteLua(script);
+                var modpack = new Modpack(firstPath, PhysicalFileSystem.Instance);
+                await modpack.Apply<IRtdxRom>(viewModel.Model);
                 viewModel.ReloadFromModel();
             }
         }

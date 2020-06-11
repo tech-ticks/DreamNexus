@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Views_MainWindowView_ApplyModMenuItem" xml:space="preserve">
+    <value>_Apply Mod</value>
+  </data>
   <data name="Views_MainWindowView_AutomationMenuItem" xml:space="preserve">
     <value>_Automation</value>
   </data>
@@ -128,9 +131,6 @@
   </data>
   <data name="Views_MainWindowView_OpenDirectoryMenuItem" xml:space="preserve">
     <value>_Open</value>
-  </data>
-  <data name="Views_MainWindowView_RunAutomationScriptMenuItem" xml:space="preserve">
-    <value>_Run Change Script</value>
   </data>
   <data name="Views_MainWindowView_SaveDirectoryAsMenuItem" xml:space="preserve">
     <value>_Save As...</value>
