@@ -1,0 +1,10 @@
+﻿{
+  "Id": "SkyEditor.TheZoruaMod",
+  "Version": "1.0.0",
+  "Target": "RTDX",
+  "Name": "The Zorua Mod",
+  "Description": "This mod replaces Skitty with Zorua in the starter selection screen.",
+  "Scripts": [
+    "Zorua.csx"
+  ]
+}

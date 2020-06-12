@@ -1141,6 +1141,15 @@
     <None Update="Mods\AddMissingPokemonModels\Resources\zuruzukin_00.ab">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Mods\AddMissingPokemonStats\AddPokemonDataInfo.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonStats\mod.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonStats\Resources\PsmdPokemonDataInfo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Mods\ImportMissingPokemonStats\ImportPokemonDataInfo.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -1148,6 +1157,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Mods\ImportMissingPokemonStats\Resources\PsmdPokemonDataInfo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\TheZoruaMod\Zorua.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\TheZoruaMod\mod.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Mods\TheFennekinMod\Fennekin.csx">

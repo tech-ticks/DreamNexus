@@ -32,7 +32,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
         public Sir0 Build()
         {
-            var builder = new Sir0Builder(0x20 + Entries.Count * EntrySize + (Entries.Count + 1) * 8 + Entries.Count + 0x20);
+            var builder = new Sir0Builder(8, 0x20 + Entries.Count * EntrySize + (Entries.Count + 1) * 8 + Entries.Count + 0x20);
             var pointers = new List<long>();
             foreach (var entry in Entries)
             {
