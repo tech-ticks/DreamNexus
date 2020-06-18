@@ -52,6 +52,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// Gets static Pokemon data, loading it if needed
         /// </summary>
         IFixedPokemon GetFixedPokemon();
+        
+        IDungeonDataInfo GetDungeonDataInfo();
+
+        IDungeonExtra GetDungeonExtra();
+        
+        IDungeonBalance GetDungeonBalance();
         #endregion
 
         #region StreamingAssets/native_data
@@ -62,6 +68,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         #region Models
         IStarterCollection GetStarters();
+        
+        IDungeonCollection GetDungeons();
         #endregion
 
         #region Helpers
@@ -190,6 +198,39 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private IFixedPokemon? fixedPokemon;
 
         protected static string GetFixedPokemonPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_pokemon.bin");
+        
+        public IDungeonDataInfo GetDungeonDataInfo()
+        {
+            if (dungeonDataInfo == null)
+            {
+                dungeonDataInfo = new DungeonDataInfo(FileSystem.ReadAllBytes(GetDungeonDataInfoPath(this.RomDirectory)));
+            }
+            return dungeonDataInfo;
+        }
+        private IDungeonDataInfo? dungeonDataInfo;
+        protected static string GetDungeonDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_data_info.bin");
+        
+        public IDungeonExtra GetDungeonExtra()
+        {
+            if (dungeonExtra == null)
+            {
+                dungeonExtra = new DungeonExtra(FileSystem.ReadAllBytes(GetDungeonExtraPath(this.RomDirectory)));
+            }
+            return dungeonExtra;
+        }
+        private IDungeonExtra? dungeonExtra;
+		protected static string GetDungeonExtraPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_extra.bin");
+        
+        public IDungeonBalance GetDungeonBalance()
+        {
+            if (dungeonBalance == null)
+            {
+                dungeonBalance = new DungeonBalance(FileSystem.ReadAllBytes(GetDungeonBalancePath(this.RomDirectory) + ".bin"), FileSystem.ReadAllBytes(GetDungeonBalancePath(this.RomDirectory) + ".ent"));
+            }
+            return dungeonBalance;
+        }
+        private IDungeonBalance? dungeonBalance;
+        protected static string GetDungeonBalancePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_balance");
         #endregion
 
         #region StreamingAssets/native_data
@@ -258,6 +299,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             return starterCollection;
         }
         private StarterCollection? starterCollection;
+
+        public IDungeonCollection GetDungeons()
+        {
+            if (dungeonCollection == null)
+            {
+                dungeonCollection = new DungeonCollection(this);
+            }
+            return dungeonCollection;
+        }
+        private DungeonCollection? dungeonCollection;
         #endregion
 
         #region Helpers
@@ -340,6 +391,35 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             // To-do: save messageBin when implemented
             // To-do: save pokemonFormDatabase when implemented
 
+            if (dungeonDataInfo != null)
+            {
+                var path = GetDungeonDataInfoPath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllBytes(path, dungeonDataInfo.ToByteArray());
+            }
+            if (dungeonBalance != null)
+            {
+                var path = GetDungeonBalancePath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                var (binData, entData) = dungeonBalance.Build();
+                fileSystem.WriteAllBytes(path + ".bin", binData);
+                fileSystem.WriteAllBytes(path + ".ent", entData);
+            }
+            if (dungeonExtra != null)
+            {
+                var path = GetDungeonExtraPath(directory);
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+                fileSystem.WriteAllBytes(path, dungeonExtra.ToByteArray());
+            }
             if (pokemonGraphicsDatabase != null)
             {
                 var path = GetPokemonGraphicsDatabasePath(directory);

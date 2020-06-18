@@ -1189,6 +1189,9 @@
     <None Update="Scripts\Queries\Psmd\SerializePokemonGraphicsDatabase.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Scripts\Queries\Rtdx\ListDungeonDataInfo.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Scripts\Queries\Rtdx\ListPokemonGraphicsDatabase.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

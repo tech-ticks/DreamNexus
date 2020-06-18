@@ -47,7 +47,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
         {
             if (length > Data.Length)
             {
-                DataFile.SetLength(Data.Length * 2);
+                DataFile.SetLength((length + Data.Length) * 2);
             }
             this.Length = length;
         }
