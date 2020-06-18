@@ -18,11 +18,17 @@
     <AvaloniaResource Remove="Views\Rtdx\RtdxRomView.xaml" />
     <AvaloniaResource Remove="Views\Rtdx\RtdxStarterCollectionView.xaml" />
     <AvaloniaResource Remove="Views\Rtdx\RtdxStarterView.xaml" />
+    <AvaloniaResource Remove="Views\Rtdx\Tutorial\CustomizeRomView.xaml" />
+    <AvaloniaResource Remove="Views\Rtdx\Tutorial\FinishedView.xaml" />
     <AvaloniaResource Remove="Views\Rtdx\Tutorial\IntroView.xaml" />
+    <AvaloniaResource Remove="Views\Rtdx\Tutorial\ModpackView.xaml" />
     <None Remove="Views\Rtdx\RtdxRomView.xaml" />
     <None Remove="Views\Rtdx\RtdxStarterCollectionView.xaml" />
     <None Remove="Views\Rtdx\RtdxStarterView.xaml" />
+    <None Remove="Views\Rtdx\Tutorial\CustomizeRomView.xaml" />
+    <None Remove="Views\Rtdx\Tutorial\FinishedView.xaml" />
     <None Remove="Views\Rtdx\Tutorial\IntroView.xaml" />
+    <None Remove="Views\Rtdx\Tutorial\ModpackView.xaml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.10" />
@@ -53,6 +59,21 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Views\Rtdx\Tutorial\IntroView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Rtdx\Tutorial\ModpackView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Rtdx\Tutorial\CustomizeRomView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Views\Rtdx\Tutorial\FinishedView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

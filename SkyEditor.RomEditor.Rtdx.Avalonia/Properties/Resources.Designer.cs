@@ -61,6 +61,33 @@ namespace SkyEditor.RomEditor.Avalonia.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select your Switch Micro SD.
+        /// </summary>
+        public static string ViewModels_Rtdx_Tutorial_CustomizeRomViewModel_LayeredFsOpenFolderDialogTitle {
+            get {
+                return ResourceManager.GetString("ViewModels_Rtdx_Tutorial_CustomizeRomViewModel_LayeredFsOpenFolderDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tutorial.
+        /// </summary>
+        public static string ViewModels_Rtdx_Tutorial_CustomizeRomViewModel_Name {
+            get {
+                return ResourceManager.GetString("ViewModels_Rtdx_Tutorial_CustomizeRomViewModel_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tutorial.
+        /// </summary>
+        public static string ViewModels_Rtdx_Tutorial_FinishedViewModel_Name {
+            get {
+                return ResourceManager.GetString("ViewModels_Rtdx_Tutorial_FinishedViewModel_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tutorial.
         /// </summary>
         public static string ViewModels_Rtdx_Tutorial_IntroViewModel_Name {
@@ -196,9 +223,45 @@ namespace SkyEditor.RomEditor.Avalonia.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to This is a ROM editor for Pokémon Mystery Dungeon: Rescue Team DX. To begin, press &quot;Open ROM Directory&quot;, and browse to the directory into which you have extracted your ROM.
+        ///   Looks up a localized string similar to You may now customize the game to your liking. When you&apos;re done, click Save, and browse to the root of your Nintendo Switch Micro SD card. This will save files for Layered FS into your Atmosphere directory..
+        /// </summary>
+        public static string Views_Rtdx_Tutorial_CustomizeRomView_IntroText {
+            get {
+                return ResourceManager.GetString("Views_Rtdx_Tutorial_CustomizeRomView_IntroText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public static string Views_Rtdx_Tutorial_CustomizeRomView_SaveLayeredFs {
+            get {
+                return ResourceManager.GetString("Views_Rtdx_Tutorial_CustomizeRomView_SaveLayeredFs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your changes have been saved to your Micro SD card. Once you safely eject it, you can launch Atmosphere and begin the game.
         ///
-        ///Note: This tutorial is still under development and you will have better luck using File -&gt; Open to skip this tutorial..
+        ///Click Restart if you would like to start again from the beginning..
+        /// </summary>
+        public static string Views_Rtdx_Tutorial_FinishedView_IntroText {
+            get {
+                return ResourceManager.GetString("Views_Rtdx_Tutorial_FinishedView_IntroText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restart.
+        /// </summary>
+        public static string Views_Rtdx_Tutorial_FinishedView_Restart {
+            get {
+                return ResourceManager.GetString("Views_Rtdx_Tutorial_FinishedView_Restart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This is a ROM editor for Pokémon Mystery Dungeon: Rescue Team DX. To begin, press &quot;Open ROM Directory&quot;, and browse to the directory into which you have extracted your ROM..
         /// </summary>
         public static string Views_Rtdx_Tutorial_IntroView_IntroText {
             get {
@@ -212,6 +275,33 @@ namespace SkyEditor.RomEditor.Avalonia.Properties {
         public static string Views_Rtdx_Tutorial_IntroView_OpenRomDirectory {
             get {
                 return ResourceManager.GetString("Views_Rtdx_Tutorial_IntroView_OpenRomDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply Modpack.
+        /// </summary>
+        public static string Views_Rtdx_Tutorial_ModpackView_ApplyModpack {
+            get {
+                return ResourceManager.GetString("Views_Rtdx_Tutorial_ModpackView_ApplyModpack", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to If you have a modpack that you wish to use, please click &quot;Apply Modpack&quot;. Otherwise, click Next..
+        /// </summary>
+        public static string Views_Rtdx_Tutorial_ModpackView_IntroText {
+            get {
+                return ResourceManager.GetString("Views_Rtdx_Tutorial_ModpackView_IntroText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Next.
+        /// </summary>
+        public static string Views_Rtdx_Tutorial_ModpackView_Next {
+            get {
+                return ResourceManager.GetString("Views_Rtdx_Tutorial_ModpackView_Next", resourceCulture);
             }
         }
     }

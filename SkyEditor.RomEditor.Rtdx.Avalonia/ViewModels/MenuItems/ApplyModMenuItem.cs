@@ -1,15 +1,13 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
-using SkyEditor.RomEditor.Infrastructure.Automation;
+using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Avalonia.Infrastructure;
 using SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using SkyEditor.RomEditor.Domain.Rtdx;
 using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
-using SkyEditor.IO.FileSystem;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
 {
