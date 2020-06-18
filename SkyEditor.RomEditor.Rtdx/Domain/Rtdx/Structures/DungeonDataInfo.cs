@@ -1,38 +1,43 @@
 ﻿using SkyEditor.IO.Binary;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Text;
 
-using DungeonIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.dungeon.Index;
-
-namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
+namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
-    public class DungeonDataInfo
+    public interface IDungeonDataInfo
+    {
+        IDictionary<DungeonIndex, DungeonDataInfo.Entry> Entries { get; }
+        byte[] ToByteArray();
+    }
+
+    public class DungeonDataInfo : IDungeonDataInfo
     {
         public const int EntrySize = 0x1C;
 
-        public IDictionary<DungeonIndex, DungeonDataInfoEntry> Entries { get; }
+        public IDictionary<DungeonIndex, Entry> Entries { get; }
 
         public DungeonDataInfo(byte[] data)
         {
             IReadOnlyBinaryDataAccessor accessor = new BinaryFile(data);
             var entryCount = checked((int)data.Length / EntrySize);
-            var entries = new Dictionary<DungeonIndex, DungeonDataInfoEntry>(entryCount);
+            var entries = new Dictionary<DungeonIndex, Entry>(entryCount);
             for (int i = 0; i < entryCount; i++)
             {
-                entries.Add((DungeonIndex)i, new DungeonDataInfoEntry(accessor.Slice(i * EntrySize, EntrySize)));
+                entries.Add((DungeonIndex)i, new Entry(accessor.Slice(i * EntrySize, EntrySize)));
             }
             this.Entries = entries;
         }
 
         public DungeonDataInfo()
         {
-            Entries = new Dictionary<DungeonIndex, DungeonDataInfoEntry>();
+            Entries = new Dictionary<DungeonIndex, Entry>();
             for (int i = 0; i < (int)DungeonIndex.END; i++)
             {
-                Entries.Add((DungeonIndex)i, new DungeonDataInfoEntry());
+                Entries.Add((DungeonIndex)i, new Entry());
             }
         }
 
@@ -49,12 +54,12 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
         }
 
         [DebuggerDisplay("DungeonDataInfoEntry: {Index}|{Features}|{Short08}|{Short0A}|{SortKey}|{DungeonBalanceIndex}|{Byte13}|{MaxItems}|{MaxTeammates}|{Byte17}|{Byte18}|{Byte19}")]
-        public class DungeonDataInfoEntry
+        public class Entry
         {
-            public DungeonDataInfoEntry()
+            public Entry()
             { }
 
-            public DungeonDataInfoEntry(IReadOnlyBinaryDataAccessor data)
+            public Entry(IReadOnlyBinaryDataAccessor data)
             {
                 Features = (Feature)data.ReadInt32(0x00);
                 Index = data.ReadInt32(0x04);

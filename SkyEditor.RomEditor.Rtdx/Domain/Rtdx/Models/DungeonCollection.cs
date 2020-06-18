@@ -1,10 +1,10 @@
-﻿using SkyEditor.RomEditor.Rtdx.Infrastructure;
+﻿using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using DungeonIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.dungeon.Index;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Models
+namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 {
     public interface IDungeonCollection
     {
@@ -27,7 +27,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
 
         public IDungeonModel? GetDungeonById(DungeonIndex id)
         {
-            return Dungeons.FirstOrDefault(s => s.DungeonId == id);
+            return Dungeons.FirstOrDefault(s => s.Id == id);
         }
 
         private IDungeonModel[] LoadDungeons()
@@ -42,7 +42,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Models
             {
                 dungeons.Add(new DungeonModel(commonStrings, dungeon.Value)
                 {
-                    DungeonId = dungeon.Key,
+                    Id = dungeon.Key,
                     Extra = dungeonExtra.Entries.GetValueOrDefault(dungeon.Key),
                     Balance = dungeonBalance.Entries[dungeon.Value.DungeonBalanceIndex]
                 });

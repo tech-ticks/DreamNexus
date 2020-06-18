@@ -11,7 +11,6 @@ namespace SkyEditor.RomEditor.Domain.Psmd
     {
         Dictionary<CreatureIndex, string> Pokemon { get; }
         Dictionary<WazaIndex, string> Moves { get; }
-        Dictionary<DungeonIndex, string> Dungeons { get; }
 
         /// <summary>
         /// Gets the name of a Pokemon by the internal Japanese name.
@@ -68,26 +67,12 @@ namespace SkyEditor.RomEditor.Domain.Psmd
                 var name = common.Strings.GetValueOrDefault(nameHash);
                 Moves.Add(waza, name ?? "");
             }
-
-            Dungeons = new Dictionary<DungeonIndex, string>();
-            var dungeons = Enum.GetValues(typeof(DungeonIndex)).Cast<DungeonIndex>().ToArray();
-            foreach (DungeonIndex dungeon in dungeons)
-            {
-                /*if (dungeon == default)
-                {
-                    continue;
-                }*/
-
-                var name = GetDungeonNameByInternalName(dungeon.ToString("f"));
-                Dungeons.Add(dungeon, name ?? "");
-            }
         }
 
         private readonly MessageBinEntry common;
 
         public Dictionary<CreatureIndex, string> Pokemon { get; }
         public Dictionary<WazaIndex, string> Moves { get; }
-        public Dictionary<DungeonIndex, string> Dungeons { get; }
 
         /// <summary>
         /// Gets the name of a Pokemon by the internal Japanese name.
@@ -99,7 +84,7 @@ namespace SkyEditor.RomEditor.Domain.Psmd
             var nameHash = TextIdValues.GetValueOrDefault("POKEMON_NAME__POKEMON_" + internalName.ToUpper());
             return common.Strings.GetValueOrDefault(nameHash);
         }
-		
+
         public string? GetPokemonTaxonomy(int taxonId)
         {
             taxonId -= 1; // It's stored in pokemon_data_info 1 higher than the internal id
@@ -130,15 +115,6 @@ namespace SkyEditor.RomEditor.Domain.Psmd
         public string? GetAbilityName(AbilityIndex abilityIndex)
         {
             return GetAbilityNameByInternalName(abilityIndex.ToString("f"));
-        }
-		
-		/// <summary>
-        /// Gets the name of a dungeon by the internal Japanese name.
-        /// </summary>
-        public string? GetDungeonNameByInternalName(string internalName)
-        {
-            var nameHash = TextIdValues.GetValueOrDefault("DUNGEON_NAME__DUNGEON_" + internalName.ToUpper());
-            return common.Strings.GetValueOrDefault(nameHash);
         }
     }
 }

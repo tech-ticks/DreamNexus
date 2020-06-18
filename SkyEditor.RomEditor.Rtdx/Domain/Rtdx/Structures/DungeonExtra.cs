@@ -1,16 +1,23 @@
 ﻿using SkyEditor.IO;
 using SkyEditor.IO.Binary;
+using SkyEditor.RomEditor.Domain.Common.Structures;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using DungeonIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.dungeon.Index;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
+namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
-    public class DungeonExtra
+    public interface IDungeonExtra
+    {
+        Dictionary<DungeonIndex, DungeonExtra.Entry> Entries { get; }
+        byte[] ToByteArray();
+    }
+
+    public class DungeonExtra : IDungeonExtra
     {
         public DungeonExtra(byte[] data)
         {
@@ -18,10 +25,10 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             var sir0 = new Sir0(data);
             var offset = sir0.SubHeader.ReadInt32(0);
             var count = sir0.SubHeader.ReadInt32(8);
-            var entries = new Dictionary<DungeonIndex, DungeonExtraEntry>();
+            var entries = new Dictionary<DungeonIndex, Entry>();
             for (int i = 0; i < count; i++)
             {
-                var entry = new DungeonExtraEntry(file, file.Slice(offset + i * DungeonExtraEntry.EntrySize, DungeonExtraEntry.EntrySize));
+                var entry = new Entry(file, file.Slice(offset + i * Entry.EntrySize, Entry.EntrySize));
                 entries[entry.Index] = entry;
             }
             this.Entries = entries;
@@ -29,18 +36,18 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
         public DungeonExtra()
         {
-            Entries = new Dictionary<DungeonIndex, DungeonExtraEntry>();
+            Entries = new Dictionary<DungeonIndex, Entry>();
             for (var index = DungeonIndex.D001; index <= DungeonIndex.D100; index++)
             {
-                Entries[index] = new DungeonExtraEntry(index);
+                Entries[index] = new Entry(index);
             }
         }
 
-        public Dictionary<DungeonIndex, DungeonExtraEntry> Entries { get; }
+        public Dictionary<DungeonIndex, Entry> Entries { get; }
 
         public Sir0 ToSir0()
         {
-            var sir0 = new Sir0Builder();
+            var sir0 = new Sir0Builder(8);
 
             void align(int length)
             {
@@ -98,17 +105,17 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
         public byte[] ToByteArray() => ToSir0().Data.ReadArray();
 
         [DebuggerDisplay("{Index} : {Floors}")]
-        public class DungeonExtraEntry
+        public class Entry
         {
             public const int EntrySize = 0x18;
 
-            public DungeonExtraEntry(DungeonIndex index)
+            public Entry(DungeonIndex index)
             {
                 Index = index;
                 DungeonEvents = new DungeonEvent[0];
             }
 
-            public DungeonExtraEntry(IReadOnlyBinaryDataAccessor fileAccessor, IReadOnlyBinaryDataAccessor entryAccessor)
+            public Entry(IReadOnlyBinaryDataAccessor fileAccessor, IReadOnlyBinaryDataAccessor entryAccessor)
             {
                 Index = (DungeonIndex)entryAccessor.ReadInt32(0x00);
                 Floors = entryAccessor.ReadInt32(0x04);

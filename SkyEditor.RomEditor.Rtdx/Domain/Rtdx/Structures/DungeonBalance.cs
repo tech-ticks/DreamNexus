@@ -1,17 +1,21 @@
-﻿using SkyEditor.IO;
-using SkyEditor.IO.Binary;
+﻿using SkyEditor.IO.Binary;
+using SkyEditor.RomEditor.Domain.Common.Structures;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
-using System.Linq;
-using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
-using DungeonIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.dungeon.Index;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
+namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
-    public class DungeonBalance
+    public interface IDungeonBalance
+    {
+        DungeonBalance.Entry[] Entries { get; }
+        (byte[] bin, byte[] ent) Build();
+    }
+
+    public class DungeonBalance : IDungeonBalance
     {
         public DungeonBalance(byte[] binData, byte[] entData)
         {
@@ -19,21 +23,21 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             IReadOnlyBinaryDataAccessor entFile = new BinaryFile(entData);
 
             var entCount = entFile.Length / sizeof(uint) - 1;
-            Entries = new DungeonBalanceEntry[entCount];
+            Entries = new Entry[entCount];
             for (var i = 0; i < entCount; i++)
             {
                 var curr = entFile.ReadInt32(i * sizeof(int));
                 var next = entFile.ReadInt32((i + 1) * sizeof(int));
-                Entries[i] = new DungeonBalanceEntry(binFile.Slice(curr, next - curr));
+                Entries[i] = new Entry(binFile.Slice(curr, next - curr));
             }
         }
 
         public DungeonBalance()
         {
-            Entries = new DungeonBalanceEntry[(int)DungeonIndex.END];
+            Entries = new Entry[(int)DungeonIndex.END];
             for (int i = 0; i < (int)DungeonIndex.END; i++)
             {
-                Entries[i] = new DungeonBalanceEntry(0);
+                Entries[i] = new Entry(0);
             }
         }
 
@@ -73,11 +77,11 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             return (bin.ToArray(), ent);
         }
 
-        public DungeonBalanceEntry[] Entries { get; set; }
+        public Entry[] Entries { get; set; }
 
-        public class DungeonBalanceEntry
+        public class Entry
         {
-            public DungeonBalanceEntry(short floorCount)
+            public Entry(short floorCount)
             {
                 FloorInfos = new FloorInfoEntry[floorCount];
                 for (short i = 0; i < floorCount; i++)
@@ -86,7 +90,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
                 }
             }
 
-            public DungeonBalanceEntry(IReadOnlyBinaryDataAccessor accessor)
+            public Entry(IReadOnlyBinaryDataAccessor accessor)
             {
                 var buffer = Gyu0.Decompress(accessor);
 
@@ -115,7 +119,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
             public Sir0 ToSir0()
             {
-                var sir0 = new Sir0Builder();
+                var sir0 = new Sir0Builder(8);
 
                 void align(int length)
                 {
@@ -252,8 +256,6 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
             public byte InvitationIndex { get; set; }
             public byte[] Bytes37to53 { get; set; }
             public byte[] Bytes55to61 { get; set; }
-            public string Bytes37to53AsString => string.Join(",", Bytes37to53);
-            public string Bytes55to61AsString => string.Join(",", Bytes55to61);
         }
 
         public class WildPokemonInfo
@@ -301,8 +303,8 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
             public Sir0 ToSir0()
             {
-                var sir0 = new Sir0Builder();
-
+                var sir0 = new Sir0Builder(8);
+                
                 void align(int length)
                 {
                     var paddingLength = length - (sir0.Length % length);
@@ -489,7 +491,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
             public Sir0 ToSir0()
             {
-                var sir0 = new Sir0Builder();
+                var sir0 = new Sir0Builder(8);
 
                 void align(int length)
                 {
@@ -602,7 +604,7 @@ namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
 
             public Sir0 ToSir0()
             {
-                var sir0 = new Sir0Builder();
+                var sir0 = new Sir0Builder(8);
 
                 void align(int length)
                 {

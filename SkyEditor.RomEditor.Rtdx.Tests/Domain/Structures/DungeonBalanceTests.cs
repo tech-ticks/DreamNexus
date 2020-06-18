@@ -1,15 +1,9 @@
 ﻿using FluentAssertions;
-using SkyEditor.RomEditor.Rtdx.Domain.Structures;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using Xunit;
 
-using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
-using DungeonIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.dungeon.Index;
-
-namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
+namespace SkyEditor.RomEditor.Tests.Domain.Structures
 {
     public class DungeonBalanceTests
     {
@@ -19,7 +13,7 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
             // Arrange
             var db = new DungeonBalance();
 
-            var d001 = db.Entries[(int)DungeonIndex.D001] = new DungeonBalance.DungeonBalanceEntry(2);
+            var d001 = db.Entries[(int)DungeonIndex.D001] = new DungeonBalance.Entry(2);
             d001.FloorInfos[0].Short02 = 0x02;
             d001.FloorInfos[0].Event = "@BOSS#0";
             d001.FloorInfos[0].Short24 = 0x24;
@@ -106,7 +100,7 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
             d001Data4.Records[1].Entries[1].Short02 = 0x102;
             d001Data4.Records[1].Entries[1].Int04 = 0x104;
 
-            var d002 = db.Entries[(int)DungeonIndex.D002] = new DungeonBalance.DungeonBalanceEntry(1);
+            var d002 = db.Entries[(int)DungeonIndex.D002] = new DungeonBalance.Entry(1);
             d002.FloorInfos[0].Short02 = 0x302;
             d002.FloorInfos[0].Event = "@END";
             d002.FloorInfos[0].Short24 = 0x324;

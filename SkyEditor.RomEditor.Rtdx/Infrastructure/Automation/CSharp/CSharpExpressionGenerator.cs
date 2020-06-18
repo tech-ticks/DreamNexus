@@ -65,4 +65,32 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.CSharp
             }
         }
     }
+
+    public class DungeonIndexCSharpExpressionGenerator : ICSharpExpressionGenerator
+    {
+        public DungeonIndexCSharpExpressionGenerator(ICommonStrings? commonStrings = null)
+        {
+            this.commonStrings = commonStrings;
+        }
+
+        private readonly ICommonStrings? commonStrings;
+
+        public string Generate(object? obj)
+        {
+            if (!(obj is DungeonIndex index))
+            {
+                throw new ArgumentException("Unsupported value type");
+            }
+
+            string? friendlyName = commonStrings?.Dungeons?.GetValueOrDefault(index);
+            if (!string.IsNullOrEmpty(friendlyName))
+            {
+                return $"DungeonIndex.{obj:f} /* {friendlyName} */";
+            }
+            else
+            {
+                return $"DungeonIndex.{obj:f}";
+            }
+        }
+    }
 }

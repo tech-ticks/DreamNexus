@@ -53,11 +53,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// </summary>
         IFixedPokemon GetFixedPokemon();
         
-        DungeonDataInfo GetDungeonDataInfo();
+        IDungeonDataInfo GetDungeonDataInfo();
 
-        DungeonExtra GetDungeonExtra();
+        IDungeonExtra GetDungeonExtra();
         
-        DungeonBalance GetDungeonBalance();
+        IDungeonBalance GetDungeonBalance();
         #endregion
 
         #region StreamingAssets/native_data
@@ -199,7 +199,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         protected static string GetFixedPokemonPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_pokemon.bin");
         
-        public DungeonDataInfo GetDungeonDataInfo()
+        public IDungeonDataInfo GetDungeonDataInfo()
         {
             if (dungeonDataInfo == null)
             {
@@ -207,10 +207,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
             return dungeonDataInfo;
         }
-        private DungeonDataInfo? dungeonDataInfo;
+        private IDungeonDataInfo? dungeonDataInfo;
         protected static string GetDungeonDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_data_info.bin");
         
-        public DungeonExtra GetDungeonExtra()
+        public IDungeonExtra GetDungeonExtra()
         {
             if (dungeonExtra == null)
             {
@@ -218,10 +218,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
             return dungeonExtra;
         }
-        private DungeonExtra? dungeonExtra;
+        private IDungeonExtra? dungeonExtra;
 		protected static string GetDungeonExtraPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_extra.bin");
         
-        public DungeonBalance GetDungeonBalance()
+        public IDungeonBalance GetDungeonBalance()
         {
             if (dungeonBalance == null)
             {
@@ -229,7 +229,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
             return dungeonBalance;
         }
-        private DungeonBalance? dungeonBalance;
+        private IDungeonBalance? dungeonBalance;
         protected static string GetDungeonBalancePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_balance");
         #endregion
 

@@ -1,13 +1,9 @@
 ﻿using FluentAssertions;
-using SkyEditor.RomEditor.Rtdx.Domain.Structures;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using Xunit;
 
-using DungeonIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.dungeon.Index;
-
-namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
+namespace SkyEditor.RomEditor.Tests.Domain.Structures
 {
     public class DungeonExtraTests
     {
@@ -18,27 +14,27 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
             var db = new DungeonExtra();
           
             // Add elements in random order intentionally, as they should be built in ascending order in the file
-            db.Entries[DungeonIndex.D010] = new DungeonExtra.DungeonExtraEntry(DungeonIndex.D010)
+            db.Entries[DungeonIndex.D010] = new DungeonExtra.Entry(DungeonIndex.D010)
             {
                 Floors = 10,
-                DungeonEvents = new DungeonExtra.DungeonExtraEntry.DungeonEvent[] {
-                    new DungeonExtra.DungeonExtraEntry.DungeonEvent
+                DungeonEvents = new DungeonExtra.Entry.DungeonEvent[] {
+                    new DungeonExtra.Entry.DungeonEvent
                     {
                         Floor = 10,
                         Name = "@BOSS#0"
                     },
-                    new DungeonExtra.DungeonExtraEntry.DungeonEvent
+                    new DungeonExtra.Entry.DungeonEvent
                     {
                         Floor = 11,
                         Name = "@END"
                     },
                 }
             };
-            db.Entries[DungeonIndex.D003] = new DungeonExtra.DungeonExtraEntry(DungeonIndex.D003)
+            db.Entries[DungeonIndex.D003] = new DungeonExtra.Entry(DungeonIndex.D003)
             {
                 Floors = 5,
-                DungeonEvents = new DungeonExtra.DungeonExtraEntry.DungeonEvent[] {
-                    new DungeonExtra.DungeonExtraEntry.DungeonEvent
+                DungeonEvents = new DungeonExtra.Entry.DungeonEvent[] {
+                    new DungeonExtra.Entry.DungeonEvent
                     {
                         Floor = 6,
                         Name = "@END"

@@ -1,14 +1,9 @@
-﻿using AssetStudio;
-using Newtonsoft.Json.Schema;
-using SkyEditor.IO.Binary;
+﻿using SkyEditor.IO.Binary;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace SkyEditor.RomEditor.Rtdx.Domain.Structures
+namespace SkyEditor.RomEditor.Domain.Common.Structures
 {
     public static class Gyu0
     {

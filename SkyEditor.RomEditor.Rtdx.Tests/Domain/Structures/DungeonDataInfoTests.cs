@@ -1,13 +1,9 @@
 ﻿using FluentAssertions;
-using SkyEditor.RomEditor.Rtdx.Domain.Structures;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using Xunit;
 
-using DungeonIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.dungeon.Index;
-
-namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
+namespace SkyEditor.RomEditor.Tests.Domain.Structures
 {
     public class DungeonDataInfoTests
     {
@@ -18,7 +14,7 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
             var db = new DungeonDataInfo();
             
             // Add elements in random order intentionally, as they should be built in ascending order in the file
-            db.Entries[DungeonIndex.D022] = new DungeonDataInfo.DungeonDataInfoEntry
+            db.Entries[DungeonIndex.D022] = new DungeonDataInfo.Entry
             {
                 Features = 0,
                 Index = 2,
@@ -33,9 +29,9 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
                 Byte18 = 0x28,
                 Byte19 = 0x29
             };
-            db.Entries[DungeonIndex.D001] = new DungeonDataInfo.DungeonDataInfoEntry
+            db.Entries[DungeonIndex.D001] = new DungeonDataInfo.Entry
             {
-                Features = DungeonDataInfo.DungeonDataInfoEntry.Feature.Radar | DungeonDataInfo.DungeonDataInfoEntry.Feature.Scanning,
+                Features = DungeonDataInfo.Entry.Feature.Radar | DungeonDataInfo.Entry.Feature.Scanning,
                 Index = 1,
                 Short08 = 0x08,
                 Short0A = 0x0A,
@@ -58,7 +54,7 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
             var rebuiltDb = new DungeonDataInfo(data);
             
             // Check modified entries
-            rebuiltDb.Entries[DungeonIndex.D001].Features.Should().Be(DungeonDataInfo.DungeonDataInfoEntry.Feature.Radar | DungeonDataInfo.DungeonDataInfoEntry.Feature.Scanning);
+            rebuiltDb.Entries[DungeonIndex.D001].Features.Should().Be(DungeonDataInfo.Entry.Feature.Radar | DungeonDataInfo.Entry.Feature.Scanning);
             rebuiltDb.Entries[DungeonIndex.D001].Index.Should().Be(1);
             rebuiltDb.Entries[DungeonIndex.D001].Short08.Should().Be(0x08);
             rebuiltDb.Entries[DungeonIndex.D001].Short0A.Should().Be(0x0A);

@@ -1,13 +1,9 @@
 ﻿using FluentAssertions;
-using SkyEditor.IO;
 using SkyEditor.IO.Binary;
-using SkyEditor.RomEditor.Rtdx.Domain.Structures;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SkyEditor.RomEditor.Domain.Common.Structures;
 using Xunit;
 
-namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
+namespace SkyEditor.RomEditor.Tests.Domain.Structures
 {
     public class Gyu0Tests
     {
