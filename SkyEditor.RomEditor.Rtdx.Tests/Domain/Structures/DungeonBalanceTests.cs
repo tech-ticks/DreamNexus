@@ -144,58 +144,67 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             rebuiltD001.FloorInfos[0].InvitationIndex.Should().Be(0x54);
 
             rebuiltD001.WildPokemon.Should().NotBeNull();
-            var rebuiltD001Bulbasaur = rebuiltD001.WildPokemon.Stats[(int)CreatureIndex.FUSHIGIDANE];
-            rebuiltD001Bulbasaur.Index.Should().Be((int)CreatureIndex.FUSHIGIDANE);
-            rebuiltD001Bulbasaur.XPYield.Should().Be(10);
-            rebuiltD001Bulbasaur.HitPoints.Should().Be(33);
-            rebuiltD001Bulbasaur.Attack.Should().Be(15);
-            rebuiltD001Bulbasaur.Defense.Should().Be(10);
-            rebuiltD001Bulbasaur.SpecialAttack.Should().Be(17);
-            rebuiltD001Bulbasaur.SpecialDefense.Should().Be(15);
-            rebuiltD001Bulbasaur.Speed.Should().Be(12);
-            rebuiltD001Bulbasaur.StrongFoe.Should().Be(0);
-            rebuiltD001Bulbasaur.Level.Should().Be(5);
+            if (rebuiltD001.WildPokemon != null)
+            {
+                var rebuiltD001Bulbasaur = rebuiltD001.WildPokemon.Stats[(int)CreatureIndex.FUSHIGIDANE];
+                rebuiltD001Bulbasaur.Index.Should().Be((int)CreatureIndex.FUSHIGIDANE);
+                rebuiltD001Bulbasaur.XPYield.Should().Be(10);
+                rebuiltD001Bulbasaur.HitPoints.Should().Be(33);
+                rebuiltD001Bulbasaur.Attack.Should().Be(15);
+                rebuiltD001Bulbasaur.Defense.Should().Be(10);
+                rebuiltD001Bulbasaur.SpecialAttack.Should().Be(17);
+                rebuiltD001Bulbasaur.SpecialDefense.Should().Be(15);
+                rebuiltD001Bulbasaur.Speed.Should().Be(12);
+                rebuiltD001Bulbasaur.StrongFoe.Should().Be(0);
+                rebuiltD001Bulbasaur.Level.Should().Be(5);
 
-            var rebuiltD001Charmander = rebuiltD001.WildPokemon.Stats[(int)CreatureIndex.HITOKAGE];
-            rebuiltD001Charmander.Index.Should().Be((int)CreatureIndex.HITOKAGE);
-            rebuiltD001Charmander.XPYield.Should().Be(11);
-            rebuiltD001Charmander.HitPoints.Should().Be(28);
-            rebuiltD001Charmander.Attack.Should().Be(13);
-            rebuiltD001Charmander.Defense.Should().Be(12);
-            rebuiltD001Charmander.SpecialAttack.Should().Be(18);
-            rebuiltD001Charmander.SpecialDefense.Should().Be(14);
-            rebuiltD001Charmander.Speed.Should().Be(12);
-            rebuiltD001Charmander.StrongFoe.Should().Be(0);
-            rebuiltD001Charmander.Level.Should().Be(5);
+                var rebuiltD001Charmander = rebuiltD001.WildPokemon.Stats[(int)CreatureIndex.HITOKAGE];
+                rebuiltD001Charmander.Index.Should().Be((int)CreatureIndex.HITOKAGE);
+                rebuiltD001Charmander.XPYield.Should().Be(11);
+                rebuiltD001Charmander.HitPoints.Should().Be(28);
+                rebuiltD001Charmander.Attack.Should().Be(13);
+                rebuiltD001Charmander.Defense.Should().Be(12);
+                rebuiltD001Charmander.SpecialAttack.Should().Be(18);
+                rebuiltD001Charmander.SpecialDefense.Should().Be(14);
+                rebuiltD001Charmander.Speed.Should().Be(12);
+                rebuiltD001Charmander.StrongFoe.Should().Be(0);
+                rebuiltD001Charmander.Level.Should().Be(5);
 
-            var rebuiltD001Floor1 = rebuiltD001.WildPokemon.Floors[0];
-            rebuiltD001Floor1.Entries[(int)CreatureIndex.FUSHIGIDANE].PokemonIndex.Should().Be((int)CreatureIndex.FUSHIGIDANE);
-            rebuiltD001Floor1.Entries[(int)CreatureIndex.FUSHIGIDANE].SpawnRate.Should().Be(100);
-            rebuiltD001Floor1.Entries[(int)CreatureIndex.FUSHIGIDANE].RecruitmentLevel.Should().Be(5);
-            rebuiltD001Floor1.Entries[(int)CreatureIndex.FUSHIGIDANE].Byte0B.Should().Be(0);
+                var rebuiltD001Floor1 = rebuiltD001.WildPokemon.Floors[0];
+                rebuiltD001Floor1.Entries[(int)CreatureIndex.FUSHIGIDANE].PokemonIndex.Should().Be((int)CreatureIndex.FUSHIGIDANE);
+                rebuiltD001Floor1.Entries[(int)CreatureIndex.FUSHIGIDANE].SpawnRate.Should().Be(100);
+                rebuiltD001Floor1.Entries[(int)CreatureIndex.FUSHIGIDANE].RecruitmentLevel.Should().Be(5);
+                rebuiltD001Floor1.Entries[(int)CreatureIndex.FUSHIGIDANE].Byte0B.Should().Be(0);
 
-            rebuiltD001Floor1.Entries[(int)CreatureIndex.HITOKAGE].PokemonIndex.Should().Be((int)CreatureIndex.HITOKAGE);
-            rebuiltD001Floor1.Entries[(int)CreatureIndex.HITOKAGE].SpawnRate.Should().Be(100);
-            rebuiltD001Floor1.Entries[(int)CreatureIndex.HITOKAGE].RecruitmentLevel.Should().Be(5);
-            rebuiltD001Floor1.Entries[(int)CreatureIndex.HITOKAGE].Byte0B.Should().Be(0);
+                rebuiltD001Floor1.Entries[(int)CreatureIndex.HITOKAGE].PokemonIndex.Should().Be((int)CreatureIndex.HITOKAGE);
+                rebuiltD001Floor1.Entries[(int)CreatureIndex.HITOKAGE].SpawnRate.Should().Be(100);
+                rebuiltD001Floor1.Entries[(int)CreatureIndex.HITOKAGE].RecruitmentLevel.Should().Be(5);
+                rebuiltD001Floor1.Entries[(int)CreatureIndex.HITOKAGE].Byte0B.Should().Be(0);
+            }
 
             var rebuiltD001Data3 = rebuiltD001.Data3;
             rebuiltD001Data3.Should().NotBeNull();
-            rebuiltD001Data3.Records[0].Entries[0].Index.Should().Be(0);
-            rebuiltD001Data3.Records[0].Entries[0].Short02.Should().Be(0x02);
-            rebuiltD001Data3.Records[0].Entries[0].Int04.Should().Be(0x04);
-            rebuiltD001Data3.Records[1].Entries[1].Index.Should().Be(1);
-            rebuiltD001Data3.Records[1].Entries[1].Short02.Should().Be(0x102);
-            rebuiltD001Data3.Records[1].Entries[1].Int04.Should().Be(0x104);
+            if (rebuiltD001Data3 != null)
+            {
+                rebuiltD001Data3.Records[0].Entries[0].Index.Should().Be(0);
+                rebuiltD001Data3.Records[0].Entries[0].Short02.Should().Be(0x02);
+                rebuiltD001Data3.Records[0].Entries[0].Int04.Should().Be(0x04);
+                rebuiltD001Data3.Records[1].Entries[1].Index.Should().Be(1);
+                rebuiltD001Data3.Records[1].Entries[1].Short02.Should().Be(0x102);
+                rebuiltD001Data3.Records[1].Entries[1].Int04.Should().Be(0x104);
+            }
 
             var rebuiltD001Data4 = rebuiltD001.Data4;
-            rebuiltD001Data3.Should().NotBeNull();
-            rebuiltD001Data4.Records[0].Entries[0].Short00.Should().Be(0x00);
-            rebuiltD001Data4.Records[0].Entries[0].Short02.Should().Be(0x02);
-            rebuiltD001Data4.Records[0].Entries[0].Int04.Should().Be(0x04);
-            rebuiltD001Data4.Records[1].Entries[1].Short00.Should().Be(0x100);
-            rebuiltD001Data4.Records[1].Entries[1].Short02.Should().Be(0x102);
-            rebuiltD001Data4.Records[1].Entries[1].Int04.Should().Be(0x104);
+            rebuiltD001Data4.Should().NotBeNull();
+            if (rebuiltD001Data4 != null)
+            {
+                rebuiltD001Data4.Records[0].Entries[0].Short00.Should().Be(0x00);
+                rebuiltD001Data4.Records[0].Entries[0].Short02.Should().Be(0x02);
+                rebuiltD001Data4.Records[0].Entries[0].Int04.Should().Be(0x04);
+                rebuiltD001Data4.Records[1].Entries[1].Short00.Should().Be(0x100);
+                rebuiltD001Data4.Records[1].Entries[1].Short02.Should().Be(0x102);
+                rebuiltD001Data4.Records[1].Entries[1].Int04.Should().Be(0x104);
+            }
 
             var rebuiltD002 = rebuiltDb.Entries[(int)DungeonIndex.D002];
             rebuiltD002.FloorInfos.Should().HaveCount(1);
