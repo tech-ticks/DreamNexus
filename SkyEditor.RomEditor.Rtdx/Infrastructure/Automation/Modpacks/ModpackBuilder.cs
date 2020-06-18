@@ -20,7 +20,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 
         private readonly List<Mod> mods;
 
-        public ModpackMetadata Metadata { get; }
+        public ModpackMetadata Metadata { get; set; }
 
         /// <summary>
         /// Adds a mod to the modpack
@@ -29,16 +29,30 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         /// <param name="enabled">Whether the mod should be enabled</param>
         public ModpackBuilder AddMod(Mod mod, bool enabled)
         {
+            if (mod == null)
+            {
+                throw new ArgumentNullException(nameof(mod));
+            }
+
+            mod.Enabled = enabled;
+            return AddMod(mod);
+        }
+
+        public ModpackBuilder AddMod(Mod mod)
+        {
+            if (mod == null)
+            {
+                throw new ArgumentNullException(nameof(mod));
+            }
             if (string.IsNullOrWhiteSpace(mod.Metadata.Id))
             {
                 throw new ArgumentException("Mod must have an ID in the metadata", nameof(mod));
             }
-            if (mods.Any(m => string.Equals(m.Metadata.Id, mod.Metadata.Id, StringComparison.OrdinalIgnoreCase))) 
+            if (mods.Any(m => string.Equals(m.Metadata.Id, mod.Metadata.Id, StringComparison.OrdinalIgnoreCase)))
             {
                 throw new ArgumentException($"Mod with the ID '{Metadata.Id}' is already present in the modpack", nameof(mod));
             }
 
-            mod.Enabled = enabled;
             mods.Add(mod);
             return this;
         }

@@ -117,6 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="FileDialogFilter_CsFiles" xml:space="preserve">
+    <value>C# Files</value>
+  </data>
+  <data name="FileDialogFilter_LuaFiles" xml:space="preserve">
+    <value>Lua Files</value>
+  </data>
+  <data name="FileDialogFilter_ModFiles" xml:space="preserve">
+    <value>Mod Files</value>
+  </data>
+  <data name="FileDialogFilter_ModpackFiles" xml:space="preserve">
+    <value>Modpack Files</value>
+  </data>
+  <data name="ViewModels_Rtdx_Automation_ModpackCreatorViewModel_Name" xml:space="preserve">
+    <value>Modpack Creator</value>
+  </data>
   <data name="ViewModels_Rtdx_Tutorial_CustomizeRomViewModel_LayeredFsOpenFolderDialogTitle" xml:space="preserve">
     <value>Select your Switch Micro SD</value>
   </data>
@@ -132,6 +147,57 @@
   <data name="ViewModels_Rtdx_Tutorial_ModpackViewModel_Name" xml:space="preserve">
     <value>Tutorial</value>
   </data>
+  <data name="Views_Automation_ModpackCreatorView_AddModDirectory" xml:space="preserve">
+    <value>Open Directory</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_AddModFile" xml:space="preserve">
+    <value>Open File</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_Build" xml:space="preserve">
+    <value>Build</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModAuthor" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModEnabled" xml:space="preserve">
+    <value>Enabled by Default</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModId" xml:space="preserve">
+    <value>ID (Must be unique across all mods)</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModpackAuthor" xml:space="preserve">
+    <value>Author</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModpackDescription" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModpackId" xml:space="preserve">
+    <value>ID (Must be unique across all modpacks)</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModpackName" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModpackTarget" xml:space="preserve">
+    <value>Target</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModpackVersion" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_Mods" xml:space="preserve">
+    <value>Mods</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModTarget" xml:space="preserve">
+    <value>Target</value>
+  </data>
+  <data name="Views_Automation_ModpackCreatorView_ModVersion" xml:space="preserve">
+    <value>Version</value>
+  </data>
   <data name="Views_MainWindowView_ApplyModMenuItem" xml:space="preserve">
     <value>_Apply Mod</value>
   </data>
@@ -143,6 +209,9 @@
   </data>
   <data name="Views_MainWindowView_FileMenuItem" xml:space="preserve">
     <value>_File</value>
+  </data>
+  <data name="Views_MainWindowView_ModpackCreatorMenuItem" xml:space="preserve">
+    <value>Modpack Creator</value>
   </data>
   <data name="Views_MainWindowView_OpenDirectoryMenuItem" xml:space="preserve">
     <value>_Open</value>

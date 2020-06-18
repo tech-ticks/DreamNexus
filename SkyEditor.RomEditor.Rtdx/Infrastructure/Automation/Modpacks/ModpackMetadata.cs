@@ -7,7 +7,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
     public class ModpackMetadata
     {
         /// <summary>
-        /// ID of the mod. This should remain unchanged across versions, and is required to be unique across all mods.
+        /// ID of the modpack. This should remain unchanged across versions, and is required to be unique across all modpacks.
         /// </summary>
         public string? Id { get; set; }
 

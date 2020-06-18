@@ -204,13 +204,11 @@ If the modpack is ready to distribute, you can put the contents of this director
 
 #### Creating a modpack from mods
 
-If you have one or more mods already available, and you would like to make a modpack out of them, use the Sky Editor console app:
+If you have one or more mods already available, and you would like to make a modpack out of them, you can use either the UI or the console. The UI is easiest and is accessible from the Automation -> Create Modpack menu item. Altnernatively the console can be used with a command such as the following:
 
 ```
 dotnet SkyEditor.RomEditor.dll pack Mods/TheFennekinMod Mods/TheRioluMod --id=evandixonFavoriteStarters --version=0.1.0 --name="evandixon's Favorite Starters" --description="Allows playing as some of evandixon's favorite starter Pokémon" --author="evandixon" --target=RTDX --save-to "Modpacks/evandixon's Favorites.zip"
 ```
-
-A UI is planned for the future.
 
 ### When to use Scripts, Mods, or Modpacks
 

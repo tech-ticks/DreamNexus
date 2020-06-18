@@ -61,6 +61,51 @@ namespace SkyEditor.RomEditor.Avalonia.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to C# Files.
+        /// </summary>
+        public static string FileDialogFilter_CsFiles {
+            get {
+                return ResourceManager.GetString("FileDialogFilter_CsFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lua Files.
+        /// </summary>
+        public static string FileDialogFilter_LuaFiles {
+            get {
+                return ResourceManager.GetString("FileDialogFilter_LuaFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mod Files.
+        /// </summary>
+        public static string FileDialogFilter_ModFiles {
+            get {
+                return ResourceManager.GetString("FileDialogFilter_ModFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modpack Files.
+        /// </summary>
+        public static string FileDialogFilter_ModpackFiles {
+            get {
+                return ResourceManager.GetString("FileDialogFilter_ModpackFiles", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modpack Creator.
+        /// </summary>
+        public static string ViewModels_Rtdx_Automation_ModpackCreatorViewModel_Name {
+            get {
+                return ResourceManager.GetString("ViewModels_Rtdx_Automation_ModpackCreatorViewModel_Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select your Switch Micro SD.
         /// </summary>
         public static string ViewModels_Rtdx_Tutorial_CustomizeRomViewModel_LayeredFsOpenFolderDialogTitle {
@@ -106,6 +151,159 @@ namespace SkyEditor.RomEditor.Avalonia.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Open Directory.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_AddModDirectory {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_AddModDirectory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open File.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_AddModFile {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_AddModFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Build.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_Build {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_Build", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModAuthor {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModDescription {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enabled by Default.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModEnabled {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID (Must be unique across all mods).
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModId {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModName {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Author.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModpackAuthor {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModpackAuthor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModpackDescription {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModpackDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ID (Must be unique across all modpacks).
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModpackId {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModpackId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModpackName {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModpackName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModpackTarget {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModpackTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModpackVersion {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModpackVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mods.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_Mods {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_Mods", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Target.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModTarget {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Version.
+        /// </summary>
+        public static string Views_Automation_ModpackCreatorView_ModVersion {
+            get {
+                return ResourceManager.GetString("Views_Automation_ModpackCreatorView_ModVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to _Apply Mod.
         /// </summary>
         public static string Views_MainWindowView_ApplyModMenuItem {
@@ -138,6 +336,15 @@ namespace SkyEditor.RomEditor.Avalonia.Properties {
         public static string Views_MainWindowView_FileMenuItem {
             get {
                 return ResourceManager.GetString("Views_MainWindowView_FileMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Modpack Creator.
+        /// </summary>
+        public static string Views_MainWindowView_ModpackCreatorMenuItem {
+            get {
+                return ResourceManager.GetString("Views_MainWindowView_ModpackCreatorMenuItem", resourceCulture);
             }
         }
         

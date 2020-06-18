@@ -27,6 +27,7 @@
       <MenuItem Header="{x:Static Properties:Resources.Views_MainWindowView_AutomationMenuItem}">
         <MenuItem Header="{x:Static Properties:Resources.Views_MainWindowView_ApplyModMenuItem}" Command="{Binding RunAutomationScriptMenuItem.Command}" />
         <MenuItem Header="{x:Static Properties:Resources.Views_MainWindowView_CreateAutomationScriptMenuItem}" Command="{Binding CreateAutomationScriptMenuItem.Command}" />
+        <MenuItem Header="{x:Static Properties:Resources.Views_MainWindowView_ModpackCreatorMenuItem}" Command="{Binding CreateModpackMenuItem.Command}" />
       </MenuItem>
     </Menu>
     <ContentControl Grid.Row="1" Content="{Binding CurrentFile}" />

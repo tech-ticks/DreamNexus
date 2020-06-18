@@ -16,8 +16,9 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels
             OpenDirectoryMenuItem = new OpenDirectoryMenuItem(this);
             SaveDirectoryAsMenuItem = new SaveDirectoryAsMenuItem(this);
             SaveMenuItem = new SaveMenuItem(this);
-            CreateAutomationScriptMenuItem = new CreateAutomationScriptMenuItem(this);
             RunAutomationScriptMenuItem = new ApplyModMenuItem(this);
+            CreateAutomationScriptMenuItem = new CreateAutomationScriptMenuItem(this);
+            CreateModpackMenuItem = new CreateModpackMenuItem(this);
 
             // Start out with a tutorial for the most common functions
             var intro = new IntroViewModel(this);
@@ -28,8 +29,9 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels
         public OpenDirectoryMenuItem OpenDirectoryMenuItem { get; }
         public SaveDirectoryAsMenuItem SaveDirectoryAsMenuItem { get; }
         public SaveMenuItem SaveMenuItem { get; }
-        public CreateAutomationScriptMenuItem CreateAutomationScriptMenuItem { get; }
         public ApplyModMenuItem RunAutomationScriptMenuItem { get; }
+        public CreateAutomationScriptMenuItem CreateAutomationScriptMenuItem { get; }
+        public CreateModpackMenuItem CreateModpackMenuItem { get; }
 
         public ObservableCollection<OpenFileViewModel> OpenFiles { get; set; }
 
@@ -46,10 +48,10 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels
 
         public void OpenFile(OpenFileViewModel viewModel, bool closeOtherFiles)
         {
-            if (OpenFiles.Any())
-            {
-                // Let's keep the UI simple for now
-                // In the future we should only close the other files if closeOtherFiles is true
+            if (closeOtherFiles || 
+                OpenFiles.Any() // Let's keep the UI simple for now. In the future we should only close the other files if closeOtherFiles is true
+                )
+            {                
                 CloseAllFiles();
             }
 

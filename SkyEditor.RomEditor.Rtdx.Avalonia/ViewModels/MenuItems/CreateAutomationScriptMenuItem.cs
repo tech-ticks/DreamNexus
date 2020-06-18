@@ -20,8 +20,8 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
             {
                 Filters = new List<FileDialogFilter>
                 {
-                    new FileDialogFilter { Name = "C# Files", Extensions = new List<string> { "csx" }},
-                    new FileDialogFilter { Name = "Lua Files", Extensions = new List<string> { "lua" }},
+                    new FileDialogFilter { Name = Properties.Resources.FileDialogFilter_CsFiles, Extensions = new List<string> { "csx" }},
+                    new FileDialogFilter { Name = Properties.Resources.FileDialogFilter_LuaFiles, Extensions = new List<string> { "lua" }},
                 }
             };
 
