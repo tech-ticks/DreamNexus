@@ -4,7 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Logging.Serilog;
 using Avalonia.ReactiveUI;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia
+namespace SkyEditor.RomEditor.Avalonia
 {
     class Program
     {

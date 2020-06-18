@@ -1,10 +1,9 @@
-﻿using SkyEditor.RomEditor.Rtdx.Domain.Models;
+﻿using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace SkyEditor.RomEditor.Rtdx.Tests.TestData.Implementations
+namespace SkyEditor.RomEditor.Tests.TestData.Implementations
 {
     public class SimpleStarterCollection : IStarterCollection
     {
@@ -19,7 +18,7 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.TestData.Implementations
             throw new NotImplementedException();
         }
 
-        public IStarterModel? GetStarterById(Reverse.Const.creature.Index id)
+        public IStarterModel? GetStarterById(CreatureIndex id)
         {
             return Starters.FirstOrDefault(s => s.PokemonId == id);
         }

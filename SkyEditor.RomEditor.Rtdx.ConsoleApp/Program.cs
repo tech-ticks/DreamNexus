@@ -1,15 +1,19 @@
 ﻿using SkyEditor.IO.FileSystem;
-using SkyEditor.RomEditor.Rtdx.Domain;
-using SkyEditor.RomEditor.Rtdx.Domain.Automation;
-using SkyEditor.RomEditor.Rtdx.Domain.Automation.Modpacks;
-using SkyEditor.RomEditor.Rtdx.Domain.Library;
+using SkyEditor.RomEditor.Domain;
+using SkyEditor.RomEditor.Domain.Library;
+using SkyEditor.RomEditor.Domain.Psmd;
+using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Infrastructure.Automation.CSharp;
+using SkyEditor.RomEditor.Infrastructure.Automation.Lua;
+using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
+using SkyEditor.RomEditor.Infrastructure.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
+namespace SkyEditor.RomEditor.ConsoleApp
 {
     class Program
     {
@@ -52,7 +56,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             var context = new ConsoleContext
             {
                 FileSystem = fileSystem,
-                RomLibrary = new RomLibrary("Library", fileSystem)
+                RomLibrary = new Library("Library", fileSystem)
             };
 
             while (arguments.TryDequeue(out var arg))
@@ -63,8 +67,13 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                     {
                         throw new InvalidOperationException("Argument '--save' must follow a ROM directory argument");
                     }
-                    context.Rom.Save();
-                    Console.WriteLine("Saved");
+                    if (!(context.Rom is ISaveable saveableRom))
+                    {
+                        throw new NotSupportedException($"ROM of type {context.Rom.GetType().Name} does not implement ISaveable");
+                    }
+
+                    await saveableRom.Save();
+                    if (context.VerboseLogging) Console.WriteLine("Saved");
                 }
                 else if (string.Equals(arg, "--save-to", StringComparison.OrdinalIgnoreCase))
                 {
@@ -78,10 +87,15 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                         throw new ArgumentException("Argument '--save-to' must be followed by a ROM directory argument");
                     }
 
+                    if (!(context.Rom is ISaveableToDirectory saveableRom))
+                    {
+                        throw new NotSupportedException($"ROM of type {context.Rom.GetType().Name} does not implement ISaveableToDirectory");
+                    }
+
                     var targetDirectory = GetRomDirectory(target, context);
 
-                    context.Rom.Save(targetDirectory, fileSystem);
-                    Console.WriteLine("Saved to " + targetDirectory);
+                    await saveableRom.Save(targetDirectory, fileSystem);
+                    if (context.VerboseLogging) Console.WriteLine("Saved to " + targetDirectory);
                 }
                 else if (arg.StartsWith("library:"))
                 {
@@ -91,28 +105,40 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                     {
                         throw new DirectoryNotFoundException($"Could not find a library item with the name '{libraryItemName}'");
                     }
-                    context.Rom = new RtdxRom(libraryItem.FullPath, fileSystem);
-                    context.RomDirectory = libraryItem.FullPath;
-                    context.ScriptContext = new SkyEditorScriptContext(context.Rom);
-                    Console.WriteLine($"Loaded {arg}");
+
+                    var rom = await RomLoader.LoadRom(libraryItem.FullPath, fileSystem) ?? throw new ArgumentException($"Unable to determine the type of ROM located at {arg}");
+                    context.Rom = rom;
+                    context.RomPath = libraryItem.FullPath;
+                    if (context.VerboseLogging) Console.WriteLine($"Loaded {arg}");
                 }
                 else if (Directory.Exists(arg))
                 {
-                    if (File.Exists(Path.Combine(arg, "modpack.json")))
+                    if (File.Exists(Path.Combine(arg, "modpack.json")) || File.Exists(Path.Combine(arg, "mod.json")))
                     {
                         await ApplyMod(arg, context);
                     }
                     else
                     {
-                        context.Rom = new RtdxRom(arg, fileSystem);
-                        context.RomDirectory = arg;
-                        context.ScriptContext = new SkyEditorScriptContext(context.Rom);
-                        Console.WriteLine($"Loaded {arg}");
+                        var rom = await RomLoader.LoadRom(arg, fileSystem);
+                        context.Rom = rom ?? throw new ArgumentException($"Unable to determine the type of ROM located at {arg}");
+                        context.RomPath = arg;
+                        if (context.VerboseLogging) Console.WriteLine($"Loaded {arg}");
                     }
                 }
                 else if (File.Exists(arg))
                 {
-                    await ApplyMod(arg, context);
+                    var rom = await RomLoader.LoadRom(arg, fileSystem);
+                    if (rom != null)
+                    {
+                        context.Rom = rom;
+                        context.RomPath = arg;
+                        if (context.VerboseLogging) Console.WriteLine($"Loaded {arg}");
+                    }
+                    else
+                    {
+                        // Assume it's a mod
+                        await ApplyMod(arg, context);
+                    }
                 }
                 else if (Commands.TryGetValue(arg, out var command))
                 {
@@ -120,7 +146,7 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                 }
                 else
                 {
-                    Console.WriteLine($"Unrecognized argument '{arg}'");
+                    if (context.VerboseLogging) Console.WriteLine($"Unrecognized argument '{arg}'");
                     return;
                 }
             }
@@ -128,12 +154,24 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
 
         private static async Task ApplyMod(string modPath, ConsoleContext context)
         {
-            if (context.ScriptContext == null)
+            if (context.Rom == null)
             {
-                throw new InvalidOperationException("Modpack or script argument must follow a ROM argument");
+                throw new InvalidOperationException("Mod argument must follow a ROM argument");
             }
-            var modpack = new Modpack(modPath, context.FileSystem);
-            await modpack.Apply(context.ScriptContext);
+
+            using var modpack = new Modpack(modPath, context.FileSystem);
+            if (context.Rom is IRtdxRom rtdx)
+            {
+                await modpack.Apply<IRtdxRom>(rtdx);
+            }
+            else if (context.Rom is IPsmdRom psmd)
+            {
+                await modpack.Apply<IPsmdRom>(psmd);
+            }
+            else
+            {
+                throw new ArgumentException("Unsupported ROM type: " + context.Rom.GetType().Name);
+            }
         }
 
         private delegate Task ConsoleCommand(Queue<string> arguments, ConsoleContext context);
@@ -142,16 +180,14 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
         {
             { "Import", Import },
             { "ListLibrary", ListLibrary },
-            { "LuaGen", GenerateLuaChangeScript },
+            { "LuaGen", GenerateLuaChangeScript }, { "GenerateLuaChangeScript", GenerateLuaChangeScript },
             { "CSGen", GenerateCSharpChangeScript },
-            { "GenerateLuaChangeScript", GenerateLuaChangeScript },
-            { "LoadAssets", LoadAssets },
-            { "Test", Test }
+            { "Pack", BuildModpack }, { "BuildModpack", BuildModpack },
         };
 
         private static async Task Import(Queue<string> arguments, ConsoleContext context)
         {
-            if (context.RomDirectory == null)
+            if (context.RomPath == null)
             {
                 throw new InvalidOperationException("Import must follow a ROM argument");
             }
@@ -161,9 +197,20 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
                 throw new ArgumentException("Argument 'Import' must be followed by a target library item name");
             }
 
-            Console.WriteLine($"Importing '{context.RomDirectory}' to library:{targetName}");
-            await context.RomLibrary.AddDirectoryAsync(context.RomDirectory, context.FileSystem, targetName);
-            Console.WriteLine("Import complete");
+            if (context.VerboseLogging) Console.WriteLine($"Importing '{context.RomPath}' to library:{targetName}");
+            if (Directory.Exists(context.RomPath))
+            {
+                await context.RomLibrary.AddDirectoryAsync(context.RomPath, context.FileSystem, targetName);
+            }
+            else if (File.Exists(context.RomPath))
+            {
+                await context.RomLibrary.AddFileAsync(context.RomPath, context.FileSystem, targetName);
+            }
+            else
+            {
+                throw new ArgumentException($"Unable to find a file or directory at '{context.RomPath}'");
+            }
+            if (context.VerboseLogging) Console.WriteLine("Import complete");
         }
 
         private static Task ListLibrary(Queue<string> arguments, ConsoleContext context)
@@ -182,9 +229,15 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             {
                 throw new InvalidOperationException("Import must follow a ROM argument");
             }
-            var script = context.Rom.GenerateLuaChangeScript();
 
-            Console.WriteLine("Change script:");
+            if (!(context.Rom is ILuaChangeScriptGenerator changeScriptGenerator))
+            {
+                throw new NotSupportedException($"ROM of type {context.Rom.GetType().Name} does not implement ILuaChangeScriptGenerator");
+            }
+
+            var script = changeScriptGenerator.GenerateLuaChangeScript();
+
+            if (context.VerboseLogging) Console.WriteLine("Change script:");
             Console.WriteLine(script);
 
             if (arguments.TryDequeue(out var targetFileName))
@@ -201,9 +254,15 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             {
                 throw new InvalidOperationException("Import must follow a ROM argument");
             }
-            var script = context.Rom.GenerateCSharpChangeScript();
 
-            Console.WriteLine("Change script:");
+            if (!(context.Rom is ICSharpChangeScriptGenerator changeScriptGenerator))
+            {
+                throw new NotSupportedException($"ROM of type {context.Rom.GetType().Name} does not implement ICSharpChangeScriptGenerator");
+            }
+
+            var script = changeScriptGenerator.GenerateCSharpChangeScript();
+
+            if (context.VerboseLogging) Console.WriteLine("Change script:");
             Console.WriteLine(script);
 
             if (arguments.TryDequeue(out var targetFileName))
@@ -212,41 +271,63 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
             }
 
             return Task.CompletedTask;
-        }
+        }        
 
         /// <summary>
-        /// Place C# code here for development/testing purposes, for when lua scripts either aren't enough or when more advanced debugging features are needed.
+        /// Creates a modpack from one or more modpacks, mods, or scripts
         /// </summary>
-        private static Task LoadAssets(Queue<string> arguments, ConsoleContext context)
+        /// <remarks>
+        /// Sample usage: BuildModpack Mods/Mod1 Mods/Mod2 --disabled Mods/Mod3 --id "SkyEditor.Modpack" --name="My Modpack" --save-to modpack.zip
+        /// This will create a modpack called "My Modpack" with 3 mods. Mod2 will be disabled by default.
+        /// </remarks>
+        private static async Task BuildModpack(Queue<string> arguments, ConsoleContext context)
         {
-            if (context.Rom == null)
+            var builder = new ModpackBuilder();
+            while (arguments.TryDequeue(out var arg))
             {
-                throw new InvalidOperationException("LoadAssets must follow a ROM argument");
+                var modpackMetadataType = builder.Metadata.GetType();
+                if (arg == "--save-to")
+                {
+                    var filename = arguments.Dequeue();
+                    await builder.Build(filename);
+                    if (context.VerboseLogging) Console.WriteLine("Saved modpack to " + filename);
+                    return;
+                }
+                else if (arg.StartsWith("--"))
+                {
+                    var parts = arg.TrimStart('-').Split('=', 2);
+                    var propertyName = parts[0];
+                    var propertyValue = parts[1];
+                    var property = modpackMetadataType.GetProperties().FirstOrDefault(p => string.Equals(p.Name, propertyName, StringComparison.OrdinalIgnoreCase));
+                    if (property == null)
+                    {
+                        Console.Error.Write($"Warning: Unable to find property '{propertyName}' in modpack metadata. Skipping argument '{arg}'");
+                        continue;
+                    }
+                    property.SetValue(builder.Metadata, Convert.ChangeType(propertyValue, property.PropertyType));
+                }
+                else if (File.Exists(arg) || Directory.Exists(arg))
+                {
+                    var enabled = true;
+                    if (arguments.TryPeek(out var nextArg) && nextArg == "--disabled")
+                    {
+                        arguments.Dequeue();
+                        enabled = false;
+                    }
+
+                    var modpack = new Modpack(arg, context.FileSystem);
+                    foreach (var mod in modpack.Mods ?? Enumerable.Empty<Mod>())
+                    {
+                        builder.AddMod(mod, enabled);
+                    }
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Unrecognized argument in modpack builder: '{arg}'");
+                }
             }
-
-#pragma warning disable IDE0059 // Unnecessary assignment of a value (Need it in a variable to browse it with the debugger)
-            var assets = context.Rom.GetAssetBundles();
-#pragma warning restore IDE0059 // Unnecessary assignment of a value
-            return Task.CompletedTask;
-        }
-
-        /// <summary>
-        /// For those times you need to throw together some temporary test code, but don't want to bother with Lua scripts
-        /// </summary>
-        /// <param name="arguments"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        private static Task Test(Queue<string> arguments, ConsoleContext context)
-        {
-            if (context.Rom == null)
-            {
-                throw new InvalidOperationException("Test must follow a ROM argument");
-            }
-
-            context.Rom.GetPokemonGraphicsDatabase();
-            context.Rom.Save("test-output", PhysicalFileSystem.Instance);
-
-            return Task.CompletedTask;
+            
+            Console.Error.Write("Reached end of arguments without saving modpack.");
         }
 
         private static string GetRomDirectory(string directoryOrLibrary, ConsoleContext context)
@@ -269,12 +350,13 @@ namespace SkyEditor.RomEditor.Rtdx.ConsoleApp
 
         private class ConsoleContext
         {
-            public IFileSystem FileSystem { get; set; } = default!;
-            public IRomLibrary RomLibrary { get; set; } = default!;
+            public bool VerboseLogging { get; set; }
 
-            public RtdxRom? Rom { get; set; }
-            public string? RomDirectory { get; set; }
-            public SkyEditorScriptContext? ScriptContext { get; set; }
+            public IFileSystem FileSystem { get; set; } = default!;
+            public ILibrary RomLibrary { get; set; } = default!;
+
+            public IModTarget? Rom { get; set; }
+            public string? RomPath { get; set; }
         }
     }
 }

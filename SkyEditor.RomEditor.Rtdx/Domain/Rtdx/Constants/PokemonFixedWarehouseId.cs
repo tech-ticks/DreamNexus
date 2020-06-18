@@ -1,0 +1,42 @@
+﻿namespace SkyEditor.RomEditor.Domain.Rtdx.Constants
+{
+    public enum PokemonFixedWarehouseId
+    {
+        HERO = 0,
+        PARTNER = 1,
+        ABUSORU = 2,
+        GENGAA = 3,
+        IRAI1 = 4,
+        IRAI2 = 5,
+        KYARAGEKI_DEBUG_MEMBER_1 = 6,
+        KYARAGEKI_DEBUG_MEMBER_2 = 7,
+        KYARAGEKI_DEBUG_MEMBER_3 = 8,
+        KOIRU = 9,
+        SANDAA = 10,
+        FAIYAA = 11,
+        FURIIZAA = 12,
+        GURAADON = 13,
+        REKKUUZA = 14,
+        KAIOOGA = 0xF,
+        REJIROKKU = 0x10,
+        REJIAISU = 17,
+        REJISUCHIRU = 18,
+        MYUU = 19,
+        RUGIA = 20,
+        ENTEI = 21,
+        RAIKOU = 22,
+        SUIKUN = 23,
+        HOUOU = 24,
+        MYUUTSUU = 25,
+        RATYIOSU = 26,
+        RATYIASU = 27,
+        JIRAACHI = 28,
+        DEOKISHISU = 29,
+        DOOBURU = 30,
+        SAANAITO = 0x1F,
+        SEREBII = 0x20,
+        MAX = 33,
+        START = 0,
+        NULL = 0xFFFF
+    }
+}

@@ -1,16 +1,14 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using SkyEditor.IO.FileSystem;
-using SkyEditor.RomEditor.Rtdx.Avalonia.Infrastructure;
-using SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx;
-using SkyEditor.RomEditor.Rtdx.Domain;
+using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Avalonia.Infrastructure;
+using SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.MenuItems
+namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
 {
     public class OpenDirectoryMenuItem : MenuItem
     {
@@ -21,20 +19,24 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.MenuItems
 
         private readonly MainWindowViewModel mainWindowViewModel;
 
-        protected override async Task Execute()
+        public async Task<RtdxRomViewModel?> OpenFile()
         {
             var dialog = new OpenFolderDialog();
             var path = await dialog.ShowAsync(Application.Current.GetMainWindowOrThrow());
             if (!string.IsNullOrEmpty(path))
             {
-                if (mainWindowViewModel.OpenFiles.Any())
-                {
-                    // Let's keep the UI simple for now
-                    mainWindowViewModel.CloseAllFiles();
-                }
+                return new RtdxRomViewModel(new RtdxRom(path, PhysicalFileSystem.Instance));
+            }
 
-                var rom = new RtdxRom(path, PhysicalFileSystem.Instance);
-                mainWindowViewModel.OpenFile(new RtdxRomViewModel(rom));
+            return null;
+        }
+
+        protected override async Task Execute()
+        {
+            var rom = await OpenFile();
+            if (rom != null)
+            {
+                mainWindowViewModel.OpenFile(rom, false);
             }
         }
     }

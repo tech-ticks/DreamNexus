@@ -1,10 +1,10 @@
-﻿using SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx;
+﻿using SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.MenuItems
+namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
 {
     public class SaveMenuItem : MenuItem<RtdxRomViewModel>
     {

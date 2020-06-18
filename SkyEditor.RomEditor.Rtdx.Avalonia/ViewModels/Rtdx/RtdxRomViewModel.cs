@@ -1,11 +1,9 @@
 ﻿using SkyEditor.IO.FileSystem;
-using SkyEditor.RomEditor.Rtdx.Domain;
+using SkyEditor.RomEditor.Domain.Rtdx;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
+namespace SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx
 {
     public class RtdxRomViewModel : OpenFileViewModel
     {

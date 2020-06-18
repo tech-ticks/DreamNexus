@@ -1,6 +1,6 @@
 # SkyEditor.RomEditor.Rtdx
 
-A work-in-progress ROM editor for Pok�mon Mystery Dungeon: Rescue Team DX.
+A work-in-progress ROM editor for Pokémon Mystery Dungeon: Rescue Team DX.
 
 To use this, you need a decrypted and extracted copy of the game. If your console has the update installed, you'll need the updated executable.
 
@@ -78,23 +78,28 @@ dotnet SkyEditor.RomEditor.Rtdx.Console.dll ListLibrary
 
 ## Organization
 
-- SkyEditor.RomEditor.Rtdx - Code editing library containg the fun bits
-    - Domain - Custom code dedicated to RTDX stuff
-        - Automation - Code dedicated to giving Lua scripts access to RTDX classes
+- SkyEditor.RomEditor - Code editing library containg the fun bits
+    - Domain - Code in the domain of ROM editing
         - Library - A simple library of ROMs for users' convenience. For the console project, this powers all "library:" operations.
-        - Models - Aggregations of data into logical units
-        - Structures - Lower level data access to interact with specific file formats
+        - RTDX - Code specific to Pokémon Mystery Dungeon: Rescue Team DX
+            - Models - Aggregations of data into logical units
+            - Structures - Lower level data access to interact with specific file formats
+        - PSMD - Code specific to Pokémon Super Mystery Dungeon
     - Infrastructure - Helper code not specific to the RTDX domain
+        - Automation - Code to host 3rd party scripts to modify ROMs
     - Reverse - Stubs and custom implementation of portions of the RTDX executable, such as enumerations and data strutures.
-- SkyEditor.RomEditor.Rtdx.ConsoleApp - Console app made primarily to make the library usable
+- SkyEditor.RomEditor.ConsoleApp - Console app made primarily to make the library usable
     - Scripts - Premade Lua scripts containing queries and other samples
-- SkyEditor.RomEditor.Rtdx.Tests - Exactly what it says on the tin
+- SkyEditor.RomEditor.Tests - Exactly what it says on the tin
 
 ## Notable Features
 
 ### Editing Starters
 
-See Scripts/Samples/ChangeStarters.lua in the console app project for a rough idea how to do it. Note that the models during the personality test _might not_ match your selected Pok�mon, but the portrait and in-game models will match. This is unlikely to change in the forseable future due to how heavily hard-coded it is in the game.
+See Scripts/Samples/ChangeStarters.lua in the console app project for a rough idea how to do it.
+
+Note that the models during the personality test _might not_ match your selected Pokémon, but the portrait and in-game models will match.
+You can currently fix this mismatch by manually modifying and executing `SkyEditor.RomEditor.Rtdx.ConsoleApp/Scripts/CSharp/ActDatabaseEditing.csx`.
 
 ### Change Script Generation
 
@@ -105,3 +110,116 @@ Supported languages are C# and Lua, but this is subject to change in the future.
 Right now, the change starters sample script can be used to generate itself, minus certain comments, as a proof-of-concept.
 
 More than just starters will be supported in the future.
+
+## Mods
+Sky Editor features a mod system allowing people to create and distribute custom modifications that aren't supported by the UI.
+
+Note that all mods will be applied to Pokémon Mystery Dungeon: Rescue Team DX, but more ROMs will be supported in the future.
+
+### Scripts
+The most basic layer of modification is the script. These are C# (.csx files) or Lua (.lua files) that have access to a ROM and can modify its contents in any way the Sky Editor library supports.
+
+See SkyEditor.RomEditor.Infrastructure.Automation.ScriptContext for which globals are available.
+
+### Mods
+A mod is a collection of one or more scripts that serve the same end goal. To make a mod, create a directory and make a mod.json file with contents that look like the following:
+
+```
+{
+  "Id": "SkyEditor.Rtdx.MyMod",
+  "Version": "1.0.0",
+  "Target": "RTDX",
+  "Name": "My Mod",
+  "Description": "Some text that will someday be shown in a UI somewhere some day",
+  "Scripts": [
+    "MyFirstScript.csx",
+    "MySecondScript.lua"
+  ]
+}
+```
+
+This JSON refers to two scripts which must be located in the same directory as the mod.json file.
+
+When this mod is applied, first MyFirstScript.csx will run against the ROM, then MySecondScript.lua.
+
+If any other files are present in this directory, they can be read from a script using a method such as `Mod.ReadResourceText("myFile.txt")`. Reading resources in this manor is not supported when scripts are run standalone.
+
+If the mod is ready to distribute, you can put the contents of this directory into a .zip file, which will work fine so long as the mod.json is in the root of the zip file.
+
+### Modpacks
+
+Modpacks are collections of mods that will be distributed together. Eventually, the end user will have the option of choosing which mods to apply and which ones not to, which can be useful if some changes should be optional or are otherwise not for everyone.
+
+Modpacks can be created in two ways: From scratch or from existing mods.
+
+#### Creating a modpack from scratch
+
+This method is very similar to the creating a mod. To make a modpack from scratch, create a directory and make a modpack.json file with contents that look like the following:
+
+```
+{
+  "Id": "SkyEditor.Rtdx.Randomizer.Starters",
+  "Version": "1.0.0",
+  "Target": "RTDX",
+  "Name": "Randomizer",
+  "Description": "Are you bored of Pokémon Mystery Dungeon always being too predicatable, despite dungeons being randomly generated? Wouldn't it be great if even MORE things were random? This modpack is for you!",
+  "Mods": [
+    {
+      "Id": "SkyEditor.Rtdx.Randomizer.Starters",
+      "Version": "1.0.0",
+      "Name": "Randomize Starters",
+      "Description": "Randomizes the Pokémon you and your partner can be at the start of the game.",
+      "Enabled": true,
+      "Scripts": [
+        "RandomizeStarters.csx"
+      ]
+    },    
+    {
+      "Id": "SkyEditor.Rtdx.Randomizer.LevelUpModes",
+      "Version": "1.0.0",
+      "Name": "Randomize Level Up Moves",
+      "Description": "Randomizes the moves Pokémon gain when gaining levels, and the levels at which they're earned.",
+      "Enabled": true,
+      "Scripts": [
+        "RandomizeLevelUpMoves.csx"
+      ]
+    },    
+    {
+      "Id": "SkyEditor.Rtdx.Randomizer.LevelUpModes",
+      "Version": "1.0.0",
+      "Name": "Randomize Level Up Levels",
+      "Description": "Randomizes the levels at which moves are learned. This mod is disabled, because this could wreck game balance if you're unlucky enough to start as a Pokémon who only learns moves at levels 80-100.",
+      "Enabled": false,
+      "Scripts": [
+        "RandomizeLevelUpLevels.csx"
+      ]
+    }
+  ]
+}
+```
+
+These mods will be applied in the order specified in the JSON file. Mods whose "Enabled" value is false will be skipped unless the user changes it (using a UI that does not yet exist).
+
+If the modpack is ready to distribute, you can put the contents of this directory into a .zip file, which will work fine so long as the modpack.json is in the root of the zip file.
+
+#### Creating a modpack from mods
+
+If you have one or more mods already available, and you would like to make a modpack out of them, use the Sky Editor console app:
+
+```
+dotnet SkyEditor.RomEditor.dll pack Mods/TheFennekinMod Mods/TheRioluMod --id=evandixonFavoriteStarters --version=0.1.0 --name="evandixon's Favorite Starters" --description="Allows playing as some of evandixon's favorite starter Pokémon" --author="evandixon" --target=RTDX --save-to "Modpacks/evandixon's Favorites.zip"
+```
+
+A UI is planned for the future.
+
+### When to use Scripts, Mods, or Modpacks
+
+Which option to use depends on your specific circumstances, but in general:
+
+- If you plan to give your modification to others, create a Mod or a Modpack.
+- If your script needs access to a static resource (such as a Pokémon model), create a Mod or a Modpack.
+- If you don't need users' input (e.g. you don't want them to disable something), create a Mod.
+- If you want to make your own Mod, but you also want to use someone else's Mod(s), create a Mod, then combine it with the other(s) with the Sky Editor console to make a Modpack.
+- If you want users to be able to enable or disable specific features, create a Modpack, with each feature that can be enabled or disabled as a separate Mod.
+- If you don't intend to make any changes (e.g. if you're extracting Pokémon data), create a Script.
+- If you plan to keep your modification for yourself, a Script is easiest unless one of the above points applies.

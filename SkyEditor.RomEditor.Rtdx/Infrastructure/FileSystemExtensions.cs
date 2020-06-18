@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.Infrastructure
+namespace SkyEditor.RomEditor.Infrastructure
 {
     public static class FileSystemExtensions
     {

@@ -1,21 +1,11 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using ReactiveUI;
-using SkyEditor.IO.FileSystem;
-using SkyEditor.RomEditor.Rtdx.Avalonia.Infrastructure;
-using SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.MenuItems;
-using SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx;
-using SkyEditor.RomEditor.Rtdx.Domain;
-using System;
-using System.Collections.Generic;
+﻿using ReactiveUI;
+using SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems;
+using SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx.Tutorial;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Reactive;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels
+namespace SkyEditor.RomEditor.Avalonia.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase, INotifyPropertyChanged
     {
@@ -27,14 +17,19 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels
             SaveDirectoryAsMenuItem = new SaveDirectoryAsMenuItem(this);
             SaveMenuItem = new SaveMenuItem(this);
             CreateAutomationScriptMenuItem = new CreateAutomationScriptMenuItem(this);
-            RunAutomationScriptMenuItem = new RunAutomationScriptMenuItem(this);
+            RunAutomationScriptMenuItem = new ApplyModMenuItem(this);
+
+            // Start out with a tutorial for the most common functions
+            var intro = new IntroViewModel(this);
+            OpenFiles.Add(intro);
+            CurrentFile = intro;
         }
 
         public OpenDirectoryMenuItem OpenDirectoryMenuItem { get; }
         public SaveDirectoryAsMenuItem SaveDirectoryAsMenuItem { get; }
         public SaveMenuItem SaveMenuItem { get; }
         public CreateAutomationScriptMenuItem CreateAutomationScriptMenuItem { get; }
-        public RunAutomationScriptMenuItem RunAutomationScriptMenuItem { get; }
+        public ApplyModMenuItem RunAutomationScriptMenuItem { get; }
 
         public ObservableCollection<OpenFileViewModel> OpenFiles { get; set; }
 
@@ -49,8 +44,15 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels
         private OpenFileViewModel? _openFile;
 
 
-        public void OpenFile(OpenFileViewModel viewModel)
+        public void OpenFile(OpenFileViewModel viewModel, bool closeOtherFiles)
         {
+            if (OpenFiles.Any())
+            {
+                // Let's keep the UI simple for now
+                // In the future we should only close the other files if closeOtherFiles is true
+                CloseAllFiles();
+            }
+
             OpenFiles.Add(viewModel);
             CurrentFile = viewModel;
         }

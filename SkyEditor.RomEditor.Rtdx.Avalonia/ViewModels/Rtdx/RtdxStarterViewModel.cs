@@ -1,16 +1,12 @@
 ﻿using ReactiveUI;
-using SkyEditor.RomEditor.Rtdx.Domain;
-using SkyEditor.RomEditor.Rtdx.Domain.Models;
+using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using static SkyEditor.RomEditor.Rtdx.Domain.Models.StarterCollection;
-using CreatureIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.creature.Index;
-using NatureType = SkyEditor.RomEditor.Rtdx.Reverse.NDConverterSharedData.NatureType;
-using WazaIndex = SkyEditor.RomEditor.Rtdx.Reverse.Const.waza.Index;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
+namespace SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx
 {
     public class RtdxStarterViewModel : ViewModelBase
     {
@@ -122,7 +118,7 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
             }
         }
 
-        public NatureType? MaleNature
+        public NatureDiagnosisNatureType? MaleNature
         {
             get => model.MaleNature;
             set
@@ -134,7 +130,7 @@ namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
                 }
             }
         }
-        public NatureType? FemaleNature
+        public NatureDiagnosisNatureType? FemaleNature
         {
             get => model.FemaleNature;
             set

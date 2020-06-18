@@ -1,7 +1,7 @@
 ﻿<Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:SkyEditor.RomEditor.Rtdx.Avalonia"
-             x:Class="SkyEditor.RomEditor.Rtdx.Avalonia.App">
+             xmlns:local="clr-namespace:SkyEditor.RomEditor.Avalonia"
+             x:Class="SkyEditor.RomEditor.Avalonia.App">
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>

@@ -73,7 +73,7 @@ local starter330 = starters:GetStarterById(Const.creature.Index.ACHAMO --[[Torch
 if starter330 ~= nil then
     starter330.PokemonId = Const.creature.Index.RIORU --[[Riolu]]
     starter330.Move2 = Const.waza.Index.SHINKUUHA --[[Vacuum Wave]]
-    starter330.Move3 = Const.waza.Index.MUSHIKUI --[[Bug Bite]]
+    starter330.Move3 = Const.waza.Index.KAMITSUKU --[[Bite]]
     starter330.Move4 = Const.waza.Index.KORAERU --[[Endure]]
 else
     error("Could not find starter 'Torchic' with ID 330. This ROM may have already been modified.")

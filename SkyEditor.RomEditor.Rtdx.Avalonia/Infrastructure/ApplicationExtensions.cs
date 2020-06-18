@@ -2,10 +2,8 @@
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.Infrastructure
+namespace SkyEditor.RomEditor.Avalonia.Infrastructure
 {
     public static class ApplicationExtensions
     {

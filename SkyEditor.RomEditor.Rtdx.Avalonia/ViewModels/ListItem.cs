@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels
+namespace SkyEditor.RomEditor.Avalonia.ViewModels
 {
     public class ListItem<T> : INotifyPropertyChanged where T : struct
     {

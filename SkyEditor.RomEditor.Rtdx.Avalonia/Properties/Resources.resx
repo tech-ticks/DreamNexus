@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ViewModels_Rtdx_Tutorial_CustomizeRomViewModel_LayeredFsOpenFolderDialogTitle" xml:space="preserve">
+    <value>Select your Switch Micro SD</value>
+  </data>
+  <data name="ViewModels_Rtdx_Tutorial_CustomizeRomViewModel_Name" xml:space="preserve">
+    <value>Tutorial</value>
+  </data>
+  <data name="ViewModels_Rtdx_Tutorial_FinishedViewModel_Name" xml:space="preserve">
+    <value>Tutorial</value>
+  </data>
+  <data name="ViewModels_Rtdx_Tutorial_IntroViewModel_Name" xml:space="preserve">
+    <value>Tutorial</value>
+  </data>
+  <data name="ViewModels_Rtdx_Tutorial_ModpackViewModel_Name" xml:space="preserve">
+    <value>Tutorial</value>
+  </data>
+  <data name="Views_MainWindowView_ApplyModMenuItem" xml:space="preserve">
+    <value>_Apply Mod</value>
+  </data>
   <data name="Views_MainWindowView_AutomationMenuItem" xml:space="preserve">
     <value>_Automation</value>
   </data>
@@ -128,9 +146,6 @@
   </data>
   <data name="Views_MainWindowView_OpenDirectoryMenuItem" xml:space="preserve">
     <value>_Open</value>
-  </data>
-  <data name="Views_MainWindowView_RunAutomationScriptMenuItem" xml:space="preserve">
-    <value>_Run Change Script</value>
   </data>
   <data name="Views_MainWindowView_SaveDirectoryAsMenuItem" xml:space="preserve">
     <value>_Save As...</value>
@@ -155,5 +170,34 @@
   </data>
   <data name="Views_Rtdx_RtdxStarterView_Pokemon" xml:space="preserve">
     <value>Pokémon</value>
+  </data>
+  <data name="Views_Rtdx_Tutorial_CustomizeRomView_IntroText" xml:space="preserve">
+    <value>You may now customize the game to your liking. When you're done, click Save, and browse to the root of your Nintendo Switch Micro SD card. This will save files for Layered FS into your Atmosphere directory.</value>
+  </data>
+  <data name="Views_Rtdx_Tutorial_CustomizeRomView_SaveLayeredFs" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Views_Rtdx_Tutorial_FinishedView_IntroText" xml:space="preserve">
+    <value>Your changes have been saved to your Micro SD card. Once you safely eject it, you can launch Atmosphere and begin the game.
+
+Click Restart if you would like to start again from the beginning.</value>
+  </data>
+  <data name="Views_Rtdx_Tutorial_FinishedView_Restart" xml:space="preserve">
+    <value>Restart</value>
+  </data>
+  <data name="Views_Rtdx_Tutorial_IntroView_IntroText" xml:space="preserve">
+    <value>This is a ROM editor for Pokémon Mystery Dungeon: Rescue Team DX. To begin, press "Open ROM Directory", and browse to the directory into which you have extracted your ROM.</value>
+  </data>
+  <data name="Views_Rtdx_Tutorial_IntroView_OpenRomDirectory" xml:space="preserve">
+    <value>Open ROM Directory</value>
+  </data>
+  <data name="Views_Rtdx_Tutorial_ModpackView_ApplyModpack" xml:space="preserve">
+    <value>Apply Modpack</value>
+  </data>
+  <data name="Views_Rtdx_Tutorial_ModpackView_IntroText" xml:space="preserve">
+    <value>If you have a modpack that you wish to use, please click "Apply Modpack". Otherwise, click Next.</value>
+  </data>
+  <data name="Views_Rtdx_Tutorial_ModpackView_Next" xml:space="preserve">
+    <value>Next</value>
   </data>
 </root>

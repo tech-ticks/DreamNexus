@@ -1,9 +1,9 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels;
+using SkyEditor.RomEditor.Avalonia.ViewModels;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia
+namespace SkyEditor.RomEditor.Avalonia
 {
     public class ViewLocator : IDataTemplate
     {

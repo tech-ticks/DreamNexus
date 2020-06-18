@@ -1,12 +1,11 @@
 ﻿using ReactiveUI;
-using SkyEditor.RomEditor.Rtdx.Domain;
-using SkyEditor.RomEditor.Rtdx.Domain.Models;
+using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 
-namespace SkyEditor.RomEditor.Rtdx.Avalonia.ViewModels.Rtdx
+namespace SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx
 {
     public class RtdxStarterCollectionViewModel : ViewModelBase
     {

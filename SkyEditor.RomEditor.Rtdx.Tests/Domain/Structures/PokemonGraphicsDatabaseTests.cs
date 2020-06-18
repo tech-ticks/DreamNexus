@@ -1,11 +1,9 @@
 ﻿using FluentAssertions;
-using SkyEditor.RomEditor.Rtdx.Domain.Structures;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using Xunit;
 
-namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
+namespace SkyEditor.RomEditor.Tests.Domain.Structures
 {
     public class PokemonGraphicsDatabaseTests
     {
@@ -24,8 +22,8 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
                 RescueCampSheetReverseName = "rescueCampSheetNameReverse",
                 WalkSpeedDistance = 0.5f,
                 RunSpeedRatioGround = 0.5f,
-                UnknownBodyType1 = Reverse.Const.GraphicsBodySizeType.G_BODY_SIZE_L,
-                UnknownBodyType2 = Reverse.Const.GraphicsBodySizeType.G_BODY_SIZE_M
+                UnknownBodyType1 = GraphicsBodySizeType.G_BODY_SIZE_L,
+                UnknownBodyType2 = GraphicsBodySizeType.G_BODY_SIZE_M
             });
             db.Entries.Add(new PokemonGraphicsDatabase.PokemonGraphicsDatabaseEntry
             {
@@ -37,8 +35,8 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
                 RescueCampSheetReverseName = "rescueCampSheetNameReverse2",
                 WalkSpeedDistance = 1.5f,
                 RunSpeedRatioGround = 1.5f,
-                UnknownBodyType1 = Reverse.Const.GraphicsBodySizeType.G_BODY_SIZE_SS,
-                UnknownBodyType2 = Reverse.Const.GraphicsBodySizeType.G_BODY_SIZE_XL
+                UnknownBodyType1 = GraphicsBodySizeType.G_BODY_SIZE_SS,
+                UnknownBodyType2 = GraphicsBodySizeType.G_BODY_SIZE_XL
             });
 
             // Act
@@ -54,8 +52,8 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
             rebuiltDb.Entries[0].RescueCampSheetReverseName.Should().Be("rescueCampSheetNameReverse");
             rebuiltDb.Entries[0].WalkSpeedDistance.Should().Be(0.5f);
             rebuiltDb.Entries[0].RunSpeedRatioGround.Should().Be(0.5f);
-            rebuiltDb.Entries[0].UnknownBodyType1.Should().Be(Reverse.Const.GraphicsBodySizeType.G_BODY_SIZE_L);
-            rebuiltDb.Entries[0].UnknownBodyType2.Should().Be(Reverse.Const.GraphicsBodySizeType.G_BODY_SIZE_M);
+            rebuiltDb.Entries[0].UnknownBodyType1.Should().Be(GraphicsBodySizeType.G_BODY_SIZE_L);
+            rebuiltDb.Entries[0].UnknownBodyType2.Should().Be(GraphicsBodySizeType.G_BODY_SIZE_M);
 
             rebuiltDb.Entries[1].ModelName.Should().Be("modelName2");
             rebuiltDb.Entries[1].AnimationName.Should().Be("animationName2");
@@ -65,8 +63,8 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Structures
             rebuiltDb.Entries[1].RescueCampSheetReverseName.Should().Be("rescueCampSheetNameReverse2");
             rebuiltDb.Entries[1].WalkSpeedDistance.Should().Be(1.5f);
             rebuiltDb.Entries[1].RunSpeedRatioGround.Should().Be(1.5f);
-            rebuiltDb.Entries[1].UnknownBodyType1.Should().Be(Reverse.Const.GraphicsBodySizeType.G_BODY_SIZE_SS);
-            rebuiltDb.Entries[1].UnknownBodyType2.Should().Be(Reverse.Const.GraphicsBodySizeType.G_BODY_SIZE_XL);
+            rebuiltDb.Entries[1].UnknownBodyType1.Should().Be(GraphicsBodySizeType.G_BODY_SIZE_SS);
+            rebuiltDb.Entries[1].UnknownBodyType2.Should().Be(GraphicsBodySizeType.G_BODY_SIZE_XL);
         }
     }
 }

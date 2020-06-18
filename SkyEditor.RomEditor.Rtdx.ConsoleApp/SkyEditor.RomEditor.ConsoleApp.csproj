@@ -1,0 +1,1215 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <LangVersion>8</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SkyEditor.RomEditor.Rtdx\SkyEditor.RomEditor.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Modpacks\ProofOfConcept\CSharpScript.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Modpacks\ProofOfConcept\Error.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Modpacks\ProofOfConcept\LastMod.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Modpacks\ProofOfConcept\modpack.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Modpacks\ProofOfConcept\ZLastFile.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Modpacks\Randomizer\modpack.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Modpacks\Randomizer\RandomizeStarters.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\AddModels.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\GenerateAddModelsScript.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\mod.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aaken_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aakeosu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\abagoora_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\agirudaa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\agunomu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aianto_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\amaruruga_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\amarusu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_bug_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_dark_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_dragon_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_electric_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_fairy_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_fighting_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_fire_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_flying_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_ghost_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_grass_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_ground_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_ice_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_normal_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_poison_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_psychic_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_rock_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_steel_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\aruseusu_water_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\bachuru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\baffuron_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\baibanira_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\baketcha_m_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\baniputchi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\baniritchi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\baokkii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\baoppu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\baruchai_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\barujiina_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\basurao_b_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\basurao_r_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\bibiyon_hanazono_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\bibiyon_miyabi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\biidaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\biikuin_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\bikutyini_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\bippa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\birijion_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\bokuree_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\borutorosu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\borutorosu_r_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\buizeru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\buizeru_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\bunyatto_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\burigaron_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\burosutaa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\burungeru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\burungeru_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\chaobuu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\cherimu_n_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\cherimu_p_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\cherinbo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\chigorasu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\chiraamii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\chirachiino_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\chobomaki_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\choroneko_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\churine_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\daakurai_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\daburan_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\dageki_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\daikenki_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\dangoro_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\darumakka_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\dasutodasu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\dedenne_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\denchura_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\desukaan_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\desumasu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\dianshii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\dianshii_mega_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\diaruga_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\dodaitosu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\dokkoraa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\dokuroggu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\doomiraa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\dootakun_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\doramidoro_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\dorapion_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\doredyia_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\doryuuzu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\dotekkotsu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\emonga_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\emuritto_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\enbuoo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\enperuto_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\erezaado_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\erikiteru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\erufuun_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\faiaroo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\fione_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\fokko_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\fukamaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\furaajesu_red_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\furabebe_red_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\furaette_red_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\furefuwan_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\furiijio_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\furoozeru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\furoozeru_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\fushide_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\futachimaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\fuupa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\fuupa_mega_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\fuwante_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\fuwaraido_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gaameiru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gabaito_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gaburiasu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gaburiasu_mega_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gachigorasu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gamagaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gamageroge_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gamenodesu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gantoru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gekkouga_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gekogashira_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\genosekuto_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\genosekuto_a_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\genosekuto_b_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\genosekuto_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\genosekuto_i_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\giaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gigaiasu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gigiaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gigigiaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\giratyina_a_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\giratyina_o_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\girugarudo_b_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\girugarudo_s_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gobitto_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gochimiru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gochimu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\gochiruzeru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\googooto_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\goronda_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\goruugu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\goukazaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\guregguru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\haaderia_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hahakomori_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hariboogu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\harimaron_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hatoobooo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hayashigame_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hihidaruma_d_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hihidaruma_n_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hiidoran_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hikozaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hinoyakoma_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hipopotasu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hipopotasu_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hitomoshi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hitotsuki_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hiyakkii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hiyappu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\hoiiga_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\horubii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\horuudo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\iberutaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\ishizumai_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\iwaparesu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\janobii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\jarooda_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\jigarude_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\jiheddo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kabarudon_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kabarudon_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kaburumo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kachikooru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kaenjishi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kaenjishi_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kametete_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\karamanero_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\karanakushi_e_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\karanakushi_w_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\keikouo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kenhorou_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kenhorou_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\keromatsu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kerudyio_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kerudyio_k_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kibago_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kirikizan_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\koaruhii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kobaruon_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kofukimushi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kofuurai_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kojofuu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kojondo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kokoromori_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\komatana_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\korinku_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\korobooshi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\koromori_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\korotokku_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kuitaran_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kumashun_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kurebeesu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kureffi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kureseria_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kurimugan_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kurumayu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kurumiru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kuzumoo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kyuremu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kyuremu_20.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\kyuremu_40.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\maaiika_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mafokushii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\maggyo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mamanbou_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mamepato_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\manafi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\marakatchi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\masukippa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mebukijika_spring_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\meekuru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\meguroko_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\meraruba_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mereshii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\meroetta_s_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\meroetta_v_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\migawari_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mijumaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mikaruge_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mimiroppu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mimiroru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\minezumi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\minomadamu_d_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\minomadamu_g_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\minomadamu_s_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\minomutchi_d_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\minomutchi_g_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\minomutchi_s_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\miruhoggu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mitsuhanii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mitsuhanii_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\moguryuu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\monmen_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\monozu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\morobareru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\moukazaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mukkuru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mukubaado_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mukuhooku_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\munna_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\mushaana_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\muurando_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\naetoru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\nageki_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\nattorei_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\neoranto_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\nidangiru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\numeiru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\numera_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\numerugon_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\nyaonikusu_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\nyaonikusu_m_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\nyarumaa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\nyasupaa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\onbaan_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\onbatto_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\onondo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\ononokusu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\oobemu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\oorotto_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\otamaro_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\pachirisu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\panpujin_m_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\parukia_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\pendoraa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\perappu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\peroppafu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\peroriimu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\pokabu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\potchama_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\pottaishi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\purotooga_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\pururiru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\pururiru_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\ramuparudo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\randorosu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\randorosu_r_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\rankurusu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\ranpuraa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\rejigigasu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\rentoraa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\reparudasu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\reshiramu_10.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\riguree_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\roobushin_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\rotomu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\rotomu_c_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\rotomu_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\rotomu_h_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\rotomu_s_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\rotomu_w_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\ruchaburu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\rukushio_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\sazandora_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\shandera_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\sheimi_l_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\sheimi_s_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\shibibiiru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\shibirudon_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\shibishirasu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\shikijika_spring_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\shimama_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\shinboraa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\shishiko_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\shubarugo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\shushupu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\sukanpuu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\sukatanku_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\sukorupi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\suwanna_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\tabunne_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\tamagetake_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\tatetopusu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\teerunaa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\terakion_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\tesshiido_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\toridepusu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\torimian_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\toritodon_e_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\toritodon_w_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\torunerosu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\torunerosu_r_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\tsunbeaa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\tsutaaja_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\udeppou_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\urugamosu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\warubiaru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\warubiru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\washibon_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\wooguru_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\yabukuron_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\yanakkii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\yanappu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\yanchamu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\yayakoma_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\yooterii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\yukikaburi_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\yukikaburi_f_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\yukinooo_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\yukinooo_mega_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\yukushii_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\yuniran_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\zeburaika_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\zekuromu_10.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\zeruneasu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\zeruneasu_r_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\zoroaaku_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\zoroa_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\zugaidosu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\zuruggu_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonModels\Resources\zuruzukin_00.ab">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonStats\AddPokemonDataInfo.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonStats\mod.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\AddMissingPokemonStats\Resources\PsmdPokemonDataInfo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\ImportMissingPokemonStats\ImportPokemonDataInfo.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\ImportMissingPokemonStats\mod.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\ImportMissingPokemonStats\Resources\PsmdPokemonDataInfo.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\TheZoruaMod\Zorua.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\TheZoruaMod\mod.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\TheFennekinMod\Fennekin.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\TheFennekinMod\mod.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\TheRioluMod\Riolu.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Mods\TheRioluMod\mod.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Psmd\ListPokemonDataInfo.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Psmd\ListPokemonGraphicsDatabase.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Psmd\SerializePokemonDataInfo.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Psmd\SerializePokemonGraphicsDatabase.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Rtdx\ListPokemonGraphicsDatabase.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Utilities\Rtdx\GeneratePsmdImportManifest.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Stubs\RTDX.csx">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Rtdx\ListPokemonDataInfo.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\CSharp\Template.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Rtdx\ListStarters.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Samples\ChangeStarters.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

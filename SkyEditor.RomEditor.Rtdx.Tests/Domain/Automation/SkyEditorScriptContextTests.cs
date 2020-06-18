@@ -1,20 +1,15 @@
-﻿using AssetStudio;
-using FluentAssertions;
-using FluentAssertions.Common;
+﻿using FluentAssertions;
 using Moq;
 using NLua.Exceptions;
-using SkyEditor.RomEditor.Rtdx.Domain;
-using SkyEditor.RomEditor.Rtdx.Domain.Automation;
-using SkyEditor.RomEditor.Rtdx.Domain.Models;
-using SkyEditor.RomEditor.Rtdx.Tests.TestData.Implementations;
-using System;
-using System.Collections.Generic;
+using SkyEditor.RomEditor.Infrastructure.Automation;
+using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Tests.TestData.Implementations;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Automation
+namespace SkyEditor.RomEditor.Tests.Infrastructure.Automation
 {
     public class SkyEditorScriptContextTests
     {
@@ -25,7 +20,7 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Automation
             {
                 // Arrange
                 var rom = Mock.Of<IRtdxRom>();
-                var context = new SkyEditorScriptContext(rom);
+                var context = new ScriptHost<IRtdxRom>(rom);
                 var script = File.ReadAllText("TestData/Scripts/Lua/ErrorTest.lua");
 
                 // Act & Assert
@@ -48,17 +43,17 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Automation
                     {
                     new SimpleStarterModel
                     {
-                        PokemonId = Reverse.Const.creature.Index.RIORU,
+                        PokemonId = CreatureIndex.RIORU,
                         PokemonName = "Riolu"
                     },new SimpleStarterModel
                     {
-                        PokemonId = Reverse.Const.creature.Index.MYUU,
+                        PokemonId = CreatureIndex.MYUU,
                         PokemonName = "Mew"
                     },
                     }
                 });
 
-                var context = new SkyEditorScriptContext(romMock.Object);
+                var context = new ScriptHost<IRtdxRom>(romMock.Object);
                 var script = File.ReadAllText("TestData/Scripts/Lua/RomInteractionTest.lua");
 
                 // Act
@@ -83,18 +78,18 @@ namespace SkyEditor.RomEditor.Rtdx.Tests.Domain.Automation
                     {
                         new SimpleStarterModel
                         {
-                            PokemonId = Reverse.Const.creature.Index.RIORU,
+                            PokemonId = CreatureIndex.RIORU,
                             PokemonName = "Riolu"
                         },
                         new SimpleStarterModel
                         {
-                            PokemonId = Reverse.Const.creature.Index.MYUU,
+                            PokemonId = CreatureIndex.MYUU,
                             PokemonName = "Mew"
                         }
                     }
                 });
 
-                var context = new SkyEditorScriptContext(romMock.Object);
+                var context = new ScriptHost<IRtdxRom>(romMock.Object);
                 var script = File.ReadAllText("TestData/Scripts/CSharp/RomInteractionTest.csx");
 
                 // Act
