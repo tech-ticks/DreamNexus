@@ -2,6 +2,8 @@
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System;
 using System.Collections.Generic;
+using System.Text;
+using SkyEditor.IO.Binary;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
@@ -21,6 +23,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
             this.Entries = entries;
         }
+
+        public PokemonFormDatabase()
+        {
+            this.Entries = new List<PokemonFormDatabaseEntry>();
+        }
         
         public List<PokemonFormDatabaseEntry> Entries { get; }
 
@@ -31,22 +38,86 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         {
             return Entries[(int)creatureIndex - 1].PokemonGraphicsDatabaseEntryIds[(int)formType];
         }
+        
+        public Sir0 ToSir0()
+        {
+            var sir0 = new Sir0Builder(8);
+            
+            void align(int length)
+            {
+                var paddingLength = length - (sir0.Length % length);
+                if (paddingLength != length)
+                {
+                    sir0.WritePadding(sir0.Length, paddingLength);
+                }
+            }
+            
+            var entriesSectionStart = sir0.Length;
+            
+            // Write the entries
+            foreach (var entry in Entries)
+            {
+                align(8);
+                sir0.Write(sir0.Length, entry.ToByteArray());
+            }
+
+            // Write the content header
+            sir0.SubHeaderOffset = sir0.Length;
+            sir0.WriteString(sir0.Length, Encoding.ASCII, "PFDB");
+            align(8);
+            sir0.WritePointer(sir0.Length, entriesSectionStart);
+            sir0.WriteInt64(sir0.Length, Entries.Count);
+            return sir0.Build();
+        }
+        
+        public byte[] ToByteArray() => ToSir0().Data.ReadArray();
 
         public class PokemonFormDatabaseEntry
         {
+            public const int ExpectedIdCount = 20;
+            
+            private short[] pokemonGraphicsDatabaseEntryIds = new short[ExpectedIdCount];
+
             public PokemonFormDatabaseEntry(byte[] data, int index)
             {
-                PokemonGraphicsDatabaseEntryIds = new short[20];
-                for (int i = 0; i < PokemonGraphicsDatabaseEntryIds.Length; i++)
+                for (int i = 0; i < ExpectedIdCount; i++)
                 {
-                    PokemonGraphicsDatabaseEntryIds[i] = BitConverter.ToInt16(data, index + (2 * i));
+                    PokemonGraphicsDatabaseEntryIds[i] = BitConverter.ToInt16(data, index + (sizeof(short) * i));
                 }
+            }
+
+            public PokemonFormDatabaseEntry()
+            {
             }
 
             /// <summary>
             /// 1-based indexes of entries in pokemon_graphics_database.bin
             /// </summary>
-            public short[] PokemonGraphicsDatabaseEntryIds { get; set; }
+            public short[] PokemonGraphicsDatabaseEntryIds
+            {
+                get => pokemonGraphicsDatabaseEntryIds;
+                set
+                {
+                    if (value.Length != ExpectedIdCount)
+                    {
+                        throw new Exception($"{nameof(PokemonGraphicsDatabaseEntryIds)} must have exactly {ExpectedIdCount} elements.");
+                    }
+                    pokemonGraphicsDatabaseEntryIds = value;
+                }
+            }
+
+            public byte[] ToByteArray()
+            {
+                var data = new byte[ExpectedIdCount * sizeof(short)];
+
+                using var accessor = new BinaryFile(data);
+                for (int i = 0; i < ExpectedIdCount; i++)
+                {
+                    accessor.WriteInt16(sizeof(short) * i, PokemonGraphicsDatabaseEntryIds[i]);
+                }
+
+                return data;
+            }
         }
     }
 }
