@@ -20,8 +20,8 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx.Tutorial
         {
             this.mainWindow = mainWindow ?? throw new ArgumentNullException(nameof(mainWindow));
             this.viewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
-            OpenModpackCommand = ReactiveCommand.Create(OpenModpack);
-            CustomizeRomCommand = ReactiveCommand.Create(CustomizeRom);
+            OpenModpackCommand = ReactiveCommand.CreateFromTask(() => OpenModpack());
+            CustomizeRomCommand = ReactiveCommand.CreateFromTask(() => CustomizeRom());
         }
 
         private readonly MainWindowViewModel mainWindow;
@@ -29,8 +29,8 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx.Tutorial
 
         public override string Name => Properties.Resources.ViewModels_Rtdx_Tutorial_ModpackViewModel_Name;
 
-        public ReactiveCommand<Unit, Task> OpenModpackCommand { get; }
-        public ReactiveCommand<Unit, Task> CustomizeRomCommand { get; }
+        public ReactiveCommand<Unit, Unit> OpenModpackCommand { get; }
+        public ReactiveCommand<Unit, Unit> CustomizeRomCommand { get; }
 
         private async Task OpenModpack()
         {

@@ -17,14 +17,14 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx.Tutorial
         {
             this.mainWindow = mainWindow ?? throw new ArgumentNullException(nameof(mainWindow));
             this.RomViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
-            SaveAtmosphereLayeredFsCommand = ReactiveCommand.Create(SaveAtmosphereLayeredFs);
+            SaveAtmosphereLayeredFsCommand = ReactiveCommand.CreateFromTask(() => SaveAtmosphereLayeredFs());
         }
 
         private readonly MainWindowViewModel mainWindow;
 
         public RtdxRomViewModel RomViewModel { get; }
 
-        public ReactiveCommand<Unit, Task> SaveAtmosphereLayeredFsCommand { get; }
+        public ReactiveCommand<Unit, Unit> SaveAtmosphereLayeredFsCommand { get; }
 
         public override string Name => Properties.Resources.ViewModels_Rtdx_Tutorial_CustomizeRomViewModel_Name;
 

@@ -1,8 +1,14 @@
 ﻿using System;
+using System.IO;
+using System.Reactive;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Logging;
 using Avalonia.Logging.Serilog;
 using Avalonia.ReactiveUI;
+using ReactiveUI;
+using Serilog;
+using Serilog.Filters;
 
 namespace SkyEditor.RomEditor.Avalonia
 {
@@ -16,9 +22,19 @@ namespace SkyEditor.RomEditor.Avalonia
 
         // Avalonia configuration, don't remove; also used by visual designer.
         public static AppBuilder BuildAvaloniaApp()
-            => AppBuilder.Configure<App>()
-                .UsePlatformDetect()
-                .LogToDebug()
-                .UseReactiveUI();
+        {
+            RxApp.DefaultExceptionHandler = Observer.Create<Exception>(HandleReactiveUiException);
+
+            return AppBuilder.Configure<App>()
+                  .UsePlatformDetect()
+                  .LogToDebug()
+                  .UseReactiveUI();
+        }
+
+        private static void HandleReactiveUiException(Exception e)
+        {
+            File.AppendAllLines("error.log", new[] { $"{DateTime.Now} [ReactiveUI] {e}" });
+            // To-do: Show an error window
+        }
     }
 }

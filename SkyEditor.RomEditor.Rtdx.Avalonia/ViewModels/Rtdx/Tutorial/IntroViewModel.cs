@@ -12,14 +12,14 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx.Tutorial
         public IntroViewModel(MainWindowViewModel mainWindow)
         {
             this.mainWindow = mainWindow ?? throw new ArgumentNullException(nameof(mainWindow));
-            OpenRomCommand = ReactiveCommand.Create(OpenRom);
+            OpenRomCommand = ReactiveCommand.CreateFromTask(() => OpenRom());
         }
 
         private readonly MainWindowViewModel mainWindow;
 
         public override string Name => Properties.Resources.ViewModels_Rtdx_Tutorial_IntroViewModel_Name;
 
-        public ReactiveCommand<Unit, Task> OpenRomCommand { get; }
+        public ReactiveCommand<Unit, Unit> OpenRomCommand { get; }
 
         private async Task OpenRom()
         {

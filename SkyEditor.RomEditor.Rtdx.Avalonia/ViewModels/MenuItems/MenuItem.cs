@@ -19,11 +19,11 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.MenuItems
         public MenuItem()
         {
             CanExecuteSubject = new Subject<bool>();
-            Command = ReactiveCommand.Create(Execute, CanExecuteSubject);
+            Command = ReactiveCommand.CreateFromTask(() => Execute(), CanExecuteSubject);
             CanExecute = true;
         }
 
-        public ReactiveCommand<Unit, Task> Command { get; }
+        public ReactiveCommand<Unit, Unit> Command { get; }
 
         private Subject<bool> CanExecuteSubject { get; set; }
 

@@ -1,5 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Logging;
+using Avalonia.Logging.Serilog;
 using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Avalonia.Infrastructure;
 using SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx;

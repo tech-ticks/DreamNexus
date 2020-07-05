@@ -10,14 +10,14 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.Rtdx.Tutorial
         public FinishedViewModel(MainWindowViewModel mainWindow)
         {
             this.mainWindow = mainWindow ?? throw new ArgumentNullException(nameof(mainWindow));
-            RestartCommand = ReactiveCommand.Create(Restart);
+            RestartCommand = ReactiveCommand.CreateFromTask(() => Restart());
         }
 
         private readonly MainWindowViewModel mainWindow;
 
         public override string Name => Properties.Resources.ViewModels_Rtdx_Tutorial_FinishedViewModel_Name;
 
-        public ReactiveCommand<Unit, Task> RestartCommand { get; }
+        public ReactiveCommand<Unit, Unit> RestartCommand { get; }
 
         private Task Restart()
         {            

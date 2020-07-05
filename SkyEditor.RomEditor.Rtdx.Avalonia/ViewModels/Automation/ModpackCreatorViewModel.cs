@@ -28,9 +28,9 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.Automation
             };
 
             Mods = new ObservableCollection<ModViewModel>();
-            AddModFromDirectoryCommand = ReactiveCommand.Create(AddModFromDirectory);
-            AddModFromFileCommand = ReactiveCommand.Create(AddModFromFile);
-            SaveCommand = ReactiveCommand.Create(Save);
+            AddModFromDirectoryCommand = ReactiveCommand.CreateFromTask(() => AddModFromDirectory());
+            AddModFromFileCommand = ReactiveCommand.CreateFromTask(() => AddModFromFile());
+            SaveCommand = ReactiveCommand.CreateFromTask(() => Save());
         }
 
         private readonly ModpackMetadata metadata;
@@ -106,9 +106,9 @@ namespace SkyEditor.RomEditor.Avalonia.ViewModels.Automation
 
         public bool IsModSelected => SelectedMod != null;
 
-        public ReactiveCommand<Unit, Task> AddModFromDirectoryCommand { get; }
-        public ReactiveCommand<Unit, Task> AddModFromFileCommand { get; }
-        public ReactiveCommand<Unit, Task> SaveCommand { get; }
+        public ReactiveCommand<Unit, Unit> AddModFromDirectoryCommand { get; }
+        public ReactiveCommand<Unit, Unit> AddModFromFileCommand { get; }
+        public ReactiveCommand<Unit, Unit> SaveCommand { get; }
 
         private async Task AddModFromDirectory()
         {
