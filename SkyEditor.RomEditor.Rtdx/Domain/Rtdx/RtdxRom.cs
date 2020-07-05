@@ -22,6 +22,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 {
     public interface IRtdxRom : IModTarget, ISaveable, ISaveableToDirectory, ICSharpChangeScriptGenerator, ILuaChangeScriptGenerator
     {
+        string RomDirectory { get; }
+
         #region Exefs
         /// <summary>
         /// Gets the main executable, loading it if needed
@@ -63,7 +65,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         #region StreamingAssets/native_data
         ICommonStrings GetCommonStrings();
         PokemonGraphicsDatabase GetPokemonGraphicsDatabase();
+        Farc GetUSMessageBin();
         PokemonFormDatabase GetPokemonFormDatabase();
+        Sir0StringList GetDungeonMapSymbol();
+        Sir0StringList GetDungeonBgmSymbol();
         #endregion
 
         #region Models
@@ -284,6 +289,28 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             return commonStrings;
         }
         private ICommonStrings? commonStrings;
+        
+        public Sir0StringList GetDungeonMapSymbol()
+        {
+            if (dungeonMapSymbol == null)
+            {
+                dungeonMapSymbol = new Sir0StringList(FileSystem.ReadAllBytes(GetDungeonMapSymbolPath(this.RomDirectory)));
+            }
+            return dungeonMapSymbol;
+        }
+        private Sir0StringList? dungeonMapSymbol;
+        protected static string GetDungeonMapSymbolPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon_map_symbol.bin");
+        
+        public Sir0StringList GetDungeonBgmSymbol()
+        {
+            if (dungeonBgmSymbol == null)
+            {
+                dungeonBgmSymbol = new Sir0StringList(FileSystem.ReadAllBytes(GetDungeonBgmSymbolPath(this.RomDirectory)));
+            }
+            return dungeonBgmSymbol;
+        }
+        private Sir0StringList? dungeonBgmSymbol;
+        protected static string GetDungeonBgmSymbolPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon_bgm_symbol.bin");
         #endregion
 
         #region Models
@@ -343,6 +370,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// </summary>
         public Task Save(string directory, IFileSystem fileSystem)
         {
+            void EnsureDirectoryExists(string path)
+            {
+                if (!Directory.Exists(Path.GetDirectoryName(path)))
+                {
+                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                }
+            }
+            
             // Save wrappers around files
             if (starterCollection != null)
             {
@@ -353,60 +388,41 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             if (mainExecutable != null)
             {
                 var path = GetNsoPath(directory);
-                if (!Directory.Exists(Path.GetDirectoryName(path)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
-                }
+                EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, mainExecutable.ToNso());
             }
             if (natureDiagnosis != null)
             {
                 var path = GetNatureDiagnosisPath(directory);
-                if (!Directory.Exists(Path.GetDirectoryName(path)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
-                }
+                EnsureDirectoryExists(path);
                 fileSystem.WriteAllText(path, JsonConvert.SerializeObject(natureDiagnosis));
             }
             if (fixedPokemon != null)
             {
                 var path = GetFixedPokemonPath(directory);
-                if (!Directory.Exists(Path.GetDirectoryName(path)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
-                }
+                EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, fixedPokemon.Build().Data.ReadArray());
             }
             if (pokemonDataInfo != null)
             {
                 var path = GetPokemonDataInfoPath(directory);
-                if (!Directory.Exists(Path.GetDirectoryName(path)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
-                }
+                EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, pokemonDataInfo.ToByteArray());
             }
 
             // To-do: save commonStrings when implemented
             // To-do: save messageBin when implemented
-            // To-do: save pokemonFormDatabase when implemented
 
             if (dungeonDataInfo != null)
             {
                 var path = GetDungeonDataInfoPath(directory);
-                if (!Directory.Exists(Path.GetDirectoryName(path)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
-                }
+                EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, dungeonDataInfo.ToByteArray());
             }
             if (dungeonBalance != null)
             {
                 var path = GetDungeonBalancePath(directory);
-                if (!Directory.Exists(Path.GetDirectoryName(path)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
-                }
+                EnsureDirectoryExists(path);
                 var (binData, entData) = dungeonBalance.Build();
                 fileSystem.WriteAllBytes(path + ".bin", binData);
                 fileSystem.WriteAllBytes(path + ".ent", entData);
@@ -414,20 +430,32 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             if (dungeonExtra != null)
             {
                 var path = GetDungeonExtraPath(directory);
-                if (!Directory.Exists(Path.GetDirectoryName(path)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
-                }
+                EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, dungeonExtra.ToByteArray());
+            }
+            if (pokemonFormDatabase != null)
+            {
+                var path = GetPokemonFormDatabasePath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, pokemonFormDatabase.ToByteArray());
             }
             if (pokemonGraphicsDatabase != null)
             {
                 var path = GetPokemonGraphicsDatabasePath(directory);
-                if (!Directory.Exists(Path.GetDirectoryName(path)))
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
-                }
+                EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, pokemonGraphicsDatabase.ToByteArray());
+            }
+            if (dungeonMapSymbol != null)
+            {
+                var path = GetDungeonMapSymbolPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, dungeonMapSymbol.ToByteArray());
+            }
+            if (dungeonBgmSymbol != null)
+            {
+                var path = GetDungeonBgmSymbolPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, dungeonBgmSymbol.ToByteArray());
             }
 
             foreach (var (relativePath, data) in filesToWrite)

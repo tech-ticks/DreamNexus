@@ -24,8 +24,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 var stringOffset = sir0.Data.ReadInt64(entryOffset);
                 var hash = sir0.Data.ReadInt32(entryOffset + 8);
                 var unknown = sir0.Data.ReadInt32(entryOffset + 0xC);
-                strings.Add(hash, sir0.Data.ReadNullTerminatedUnicodeString(stringOffset));
-                hashes.Add(stringOffset, hash);
+                if (!strings.ContainsKey(hash)) // script.bin contains duplicate hashes
+                {
+                    strings.Add(hash, sir0.Data.ReadNullTerminatedUnicodeString(stringOffset));
+                    hashes.Add(stringOffset, hash);
+                }
             }
             Strings = strings;
             OrderedHashes = hashes.OrderBy(h => h.Key).Select(h => h.Value).ToArray();
