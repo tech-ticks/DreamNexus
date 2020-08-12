@@ -17,6 +17,8 @@ namespace SkyEditor.RomEditor.Avalonia.Views
         private void InitializeComponent()
         {
             AvaloniaXamlLoader.Load(this);
+
+            this.Title = $"{this.Title} {this.GetType().Assembly.GetName().Version}";
         }
     }
 }

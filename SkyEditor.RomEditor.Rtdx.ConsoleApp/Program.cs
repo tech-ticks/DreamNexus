@@ -3,6 +3,7 @@ using SkyEditor.RomEditor.Domain;
 using SkyEditor.RomEditor.Domain.Library;
 using SkyEditor.RomEditor.Domain.Psmd;
 using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using SkyEditor.RomEditor.Infrastructure.Automation.CSharp;
 using SkyEditor.RomEditor.Infrastructure.Automation.Lua;
 using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
@@ -35,6 +36,8 @@ namespace SkyEditor.RomEditor.ConsoleApp
             Console.WriteLine("Import <TargetName> - Adds the currently loaded ROM to the library for future ease of use");
             Console.WriteLine("ListLibrary - Lists items in the library");
             Console.WriteLine("LuaGen [Output.lua] - Creates a Lua change script to automate supported unsaved edits");
+            Console.WriteLine("UnFARC <File.bin> <OutputDirectory> - Extracts a FARC archive file to the given directory");
+            Console.WriteLine("ReFARC <InputDirectory> <File.bin> - Creates a new FARC archive file from files in the given directory");
 
         }
 
@@ -174,6 +177,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
             }
         }
 
+        #region Commands
         private delegate Task ConsoleCommand(Queue<string> arguments, ConsoleContext context);
 
         private static readonly Dictionary<string, ConsoleCommand> Commands = new Dictionary<string, ConsoleCommand>(StringComparer.OrdinalIgnoreCase)
@@ -183,6 +187,8 @@ namespace SkyEditor.RomEditor.ConsoleApp
             { "LuaGen", GenerateLuaChangeScript }, { "GenerateLuaChangeScript", GenerateLuaChangeScript },
             { "CSGen", GenerateCSharpChangeScript },
             { "Pack", BuildModpack }, { "BuildModpack", BuildModpack },
+            { "Unfarc", Unfarc },
+            { "Refarc", Refarc }
         };
 
         private static async Task Import(Queue<string> arguments, ConsoleContext context)
@@ -329,6 +335,45 @@ namespace SkyEditor.RomEditor.ConsoleApp
             
             Console.Error.Write("Reached end of arguments without saving modpack.");
         }
+
+        /// <summary>
+        /// Extracts an RTDX FARC archive
+        /// </summary>
+        /// <returns>
+        /// Usage: unfarc File.bin OutputDirectory/
+        /// </returns>
+        private static async Task Unfarc(Queue<string> arguments, ConsoleContext context)
+        {
+            var filename = arguments.Dequeue();
+            var outputDirectory = arguments.Dequeue();
+
+            if (!File.Exists(filename))
+            {
+                throw new FileNotFoundException("Unable to find FARC at the given path", filename);
+            }
+
+            var farc = new Farc(File.ReadAllBytes(filename));
+            await farc.Extract(outputDirectory, PhysicalFileSystem.Instance);
+        }
+
+        /// <summary>
+        /// Creates a new RTDX FARC archive
+        /// </summary>
+        /// <returns>
+        /// Usage: refarc InputDirectory/ File.bin
+        /// </returns>
+        private static Task Refarc(Queue<string> arguments, ConsoleContext context)
+        {
+            var inputDiretcory = arguments.Dequeue();
+            var outputFile = arguments.Dequeue();
+
+            var farc = Farc.FromDirectory(inputDiretcory, PhysicalFileSystem.Instance);
+            File.WriteAllBytes(outputFile, farc.ToByteArray());
+
+            return Task.CompletedTask;
+        }
+
+        #endregion
 
         private static string GetRomDirectory(string directoryOrLibrary, ConsoleContext context)
         {

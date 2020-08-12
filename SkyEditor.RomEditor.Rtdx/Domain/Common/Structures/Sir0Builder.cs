@@ -163,7 +163,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             await this.WriteAsync(index, paddingLength, padding);
         }
 
-        public Sir0 Build()
+        public byte[] ToByteArray()
         {
             this.WriteString(0, Encoding.ASCII, Magic);
             this.WritePointer(8, SubHeaderOffset);
@@ -173,7 +173,12 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 
             var newData = new byte[this.Length];
             Array.Copy(Data.ReadArray(), newData, this.Length);
-            return new Sir0(newData);
+            return newData;
+        }
+
+        public Sir0 Build()
+        {            
+            return new Sir0(ToByteArray());
         }
 
         private void WriteFooter(int footerOffset)
