@@ -411,8 +411,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
 
             // To-do: save commonStrings when implemented
-            // To-do: save messageBin when implemented
-
+            
+            if (messageBin != null)
+            {
+                var path = GetMessageBinUSPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, messageBin.ToByteArray());
+            }
             if (dungeonDataInfo != null)
             {
                 var path = GetDungeonDataInfoPath(directory);

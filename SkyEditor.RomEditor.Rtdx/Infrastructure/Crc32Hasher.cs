@@ -1,7 +1,6 @@
 ﻿using Force.Crc32;
 using System;
 using System.Buffers.Binary;
-using System.Collections.Generic;
 using System.Text;
 
 namespace SkyEditor.RomEditor.Infrastructure

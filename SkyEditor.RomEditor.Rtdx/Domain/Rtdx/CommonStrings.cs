@@ -69,7 +69,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 }
 
                 var nameHash = TextIdValues.GetValueOrDefault("WAZA_NAME__WAZA_" + waza.ToString("f"));
-                var name = common.Strings.GetValueOrDefault(nameHash);
+                var name = common.GetStringByHash(nameHash);
                 Moves.Add(waza, name ?? "");
             }
 
@@ -101,14 +101,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public string? GetPokemonNameByInternalName(string internalName)
         {
             var nameHash = TextIdValues.GetValueOrDefault("POKEMON_NAME__POKEMON_" + internalName.ToUpper());
-            return common.Strings.GetValueOrDefault(nameHash);
+            return common.GetStringByHash(nameHash);
         }
 
         public string? GetPokemonTaxonomy(int taxonId)
         {
             taxonId -= 1; // It's stored in pokemon_data_info 1 higher than the internal id
             var nameHash = TextIdValues.GetValueOrDefault("POKEMON_TAXIS__SPECIES_" + taxonId.ToString().PadLeft(3, '0'));
-            return common.Strings.GetValueOrDefault(nameHash);
+            return common.GetStringByHash(nameHash);
         }
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public string? GetMoveNameByInternalName(string internalName)
         {
             var nameHash = TextIdValues.GetValueOrDefault("WAZA_NAME__WAZA_" + internalName.ToUpper());
-            return common.Strings.GetValueOrDefault(nameHash);
+            return common.GetStringByHash(nameHash);
         }
 
         public string? GetMoveName(WazaIndex wazaIndex)
@@ -128,7 +128,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public string? GetAbilityNameByInternalName(string internalName)
         {
             var nameHash = TextIdValues.GetValueOrDefault("ABILITY_NAME__" + internalName.ToUpper());
-            return common.Strings.GetValueOrDefault(nameHash);
+            return common.GetStringByHash(nameHash);
         }
 
         public string? GetAbilityName(AbilityIndex abilityIndex)
@@ -139,7 +139,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public string? GetDungeonNameByInternalName(string internalName)
         {
             var nameHash = TextIdValues.GetValueOrDefault("DUNGEON_NAME__DUNGEON_" + internalName.ToUpper());
-            return common.Strings.GetValueOrDefault(nameHash);
+            return common.GetStringByHash(nameHash);
         }
 
         public string? GetDungeonName(DungeonIndex dungeonIndex)
