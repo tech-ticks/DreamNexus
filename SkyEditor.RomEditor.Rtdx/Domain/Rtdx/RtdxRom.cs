@@ -69,6 +69,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         PokemonFormDatabase GetPokemonFormDatabase();
         Sir0StringList GetDungeonMapSymbol();
         Sir0StringList GetDungeonBgmSymbol();
+        CodeTable GetCodeTable();
         #endregion
 
         #region Models
@@ -311,6 +312,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private Sir0StringList? dungeonBgmSymbol;
         protected static string GetDungeonBgmSymbolPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon_bgm_symbol.bin");
+
+        public CodeTable GetCodeTable()
+        {
+            if (codeTable == null)
+            {
+                codeTable = new CodeTable(FileSystem.ReadAllBytes(GetCodeTablePath(this.RomDirectory)));
+            }
+            return codeTable;
+        }
+        private CodeTable? codeTable;
+        protected static string GetCodeTablePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/code_table.bin");
         #endregion
 
         #region Models
