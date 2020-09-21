@@ -3,6 +3,7 @@
 using System;
 
 var pokemonInfo = Rom.GetPokemonDataInfo();
+var experience = Rom.GetExperience();
 var strings = Rom.GetCommonStrings();
 foreach (var pokemon in pokemonInfo.Entries)
 {
@@ -21,6 +22,24 @@ foreach (var pokemon in pokemonInfo.Entries)
     Console.WriteLine($"SPD: {pokemon.BaseSpecialDefense}");
     Console.WriteLine($"SPE: {pokemon.BaseSpeed}");
     Console.WriteLine($"Experience Table ID: {pokemon.ExperienceEntry}");
+    var expTable = experience.Entries[pokemon.ExperienceEntry];
+    var currHP = pokemon.BaseHitPoints;
+    var currAtk = pokemon.BaseAttack;
+    var currDef = pokemon.BaseDefense;
+    var currSpA = pokemon.BaseSpecialAttack;
+    var currSpD = pokemon.BaseSpecialDefense;
+    var currSpe = pokemon.BaseSpeed;
+    for (int i = 1; i < 100; i++)
+    {
+        var level = expTable.Levels[i];
+        currHP += level.HitPointsGained;
+        currAtk += level.AttackGained;
+        currDef += level.DefenseGained;
+        currSpA += level.SpecialAttackGained;
+        currSpD += level.SpecialDefenseGained;
+        currSpe += level.SpeedGained;
+        Console.WriteLine($" - to {i + 1,3}:  XP: {level.MinimumExperience,7}   +{level.HitPointsGained} HP  +{level.AttackGained} Atk  +{level.DefenseGained} Def  +{level.SpecialAttackGained} SpA  +{level.SpecialDefenseGained} SpD  +{level.SpeedGained} Spe  =>  {currHP,3} HP  {currAtk,3} Atk  {currDef,3} Def  {currSpA,3} SpA  {currSpD,3} SpD  {currSpe,3} Spe");
+    }
     if (!string.IsNullOrWhiteSpace(pokemon.RecruitPrereq))
     {
         Console.WriteLine($"Recruitment Prereq: {pokemon.RecruitPrereq}");

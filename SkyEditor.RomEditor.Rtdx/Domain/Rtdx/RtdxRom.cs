@@ -47,6 +47,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         #region StreamingAssets/native_data/pokemon
         PokemonDataInfo GetPokemonDataInfo();
+
+        IExperience GetExperience();
         #endregion
 
         #region StreamingAssets/native_data/dungeon
@@ -186,6 +188,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private PokemonDataInfo? pokemonDataInfo;
         protected static string GetPokemonDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon/pokemon_data_info.bin");
+
+        public IExperience GetExperience()
+        {
+            if (experience == null)
+            {
+                experience = new Experience(new BinaryFile(GetExperiencePath(this.RomDirectory) + ".bin"), new BinaryFile(GetExperiencePath(this.RomDirectory) + ".ent"));
+            }
+            return experience;
+        }
+        private IExperience? experience;
+        protected static string GetExperiencePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon/experience");
 
         #endregion
 
@@ -420,6 +433,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 var path = GetPokemonDataInfoPath(directory);
                 EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, pokemonDataInfo.ToByteArray());
+            }
+            if (experience != null)
+            {
+                var path = GetExperiencePath(directory);
+                EnsureDirectoryExists(path);
+                var (binData, entData) = experience.Build();
+                fileSystem.WriteAllBytes(path + ".bin", binData);
+                fileSystem.WriteAllBytes(path + ".ent", entData);
             }
 
             // To-do: save commonStrings when implemented
