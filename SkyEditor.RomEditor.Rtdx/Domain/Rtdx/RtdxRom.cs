@@ -434,6 +434,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, pokemonDataInfo.ToByteArray());
             }
+            if (experience != null)
+            {
+                var path = GetExperiencePath(directory);
+                EnsureDirectoryExists(path);
+                var (binData, entData) = experience.Build();
+                fileSystem.WriteAllBytes(path + ".bin", binData);
+                fileSystem.WriteAllBytes(path + ".ent", entData);
+            }
 
             // To-do: save commonStrings when implemented
             
