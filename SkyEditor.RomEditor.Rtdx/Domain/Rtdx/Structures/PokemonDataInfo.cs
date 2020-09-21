@@ -66,8 +66,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public short BaseHitPoints { get; set; }
             public short BaseAttack { get; set; }
-            public short BaseDefense { get; set; }
             public short BaseSpecialAttack { get; set; }
+            public short BaseDefense { get; set; }
             public short BaseSpecialDefense { get; set; }
             public short BaseSpeed { get; set; }
 
@@ -121,8 +121,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
                 BaseHitPoints = data.ReadInt16(0x74);
                 BaseAttack = data.ReadInt16(0x76);
-                BaseDefense = data.ReadInt16(0x78);
-                BaseSpecialAttack = data.ReadInt16(0x7A);
+                BaseSpecialAttack = data.ReadInt16(0x78);
+                BaseDefense = data.ReadInt16(0x7A);
                 BaseSpecialDefense = data.ReadInt16(0x7C);
                 BaseSpeed = data.ReadInt16(0x7E);
 
@@ -171,8 +171,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x74), BaseHitPoints);
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x76), BaseAttack);
-                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x78), BaseDefense);
-                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x7A), BaseSpecialAttack);
+                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x78), BaseSpecialAttack);
+                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x7A), BaseDefense);
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x7C), BaseSpecialDefense);
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x7E), BaseSpeed);
 
