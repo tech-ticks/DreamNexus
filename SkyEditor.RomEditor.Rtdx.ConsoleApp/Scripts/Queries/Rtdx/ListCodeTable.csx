@@ -3,7 +3,8 @@
 using System;
 
 var table = Rom.GetCodeTable();
-foreach (var entry in table.Entries)
+foreach (var entry in table.EntriesByCodeString.Values)
 {
-    Console.WriteLine($"[{entry.CodeString}] = {entry.UnicodeValue.ToString("X")} (ukn = {entry.Unknown.ToString("X")})");
+    Console.WriteLine($"[{entry.CodeString}] = {entry.UnicodeValue.ToString("X")} (ukn = {entry.Unknown.ToString("X")}, "
+        + $"flags = {entry.Flags.ToString("X")}), replaceByte0 = {entry.DigitFlag}");
 }
