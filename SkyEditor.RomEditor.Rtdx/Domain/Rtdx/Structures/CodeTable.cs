@@ -7,6 +7,23 @@ using SkyEditor.RomEditor.Domain.Common.Structures;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
+    public interface ICodeTable
+    {
+        void AddEntry(CodeTable.Entry entry);
+
+        /// <summary>
+        /// Replaces special text tokens with Unicode symbols for message.bin
+        /// </summary>
+        /// <param name="text">User-friendly text</param>
+        string UnicodeEncode(string text);
+
+        /// <summary>
+        /// Replaces Unicode symbols from message.bin with human readable text tokens
+        /// </summary>
+        /// <param name="text">Encoded text</param>
+        string UnicodeDecode(string text);
+    }
+
     /// <summary>
     /// This class allows encoding and decoding strings between human-readable text directives like [hero]
     /// and an internal representation with special Unicode characters.
@@ -18,11 +35,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
     /// completely. However, this should work for assembling custom text with the most common directives
     /// like [hero], [partner] etc.
     /// </remarks>
-    public class CodeTable
+    public class CodeTable : ICodeTable
     {
-        public Dictionary<ushort, Entry> EntriesByUnicode { get; } = new Dictionary<ushort, Entry>();
-        public Dictionary<string, Entry> EntriesByCodeString { get; } = new Dictionary<string, Entry>();
-
         private static readonly Regex StringTokenRegex = new Regex("\\[(.+?:?)(\\d+)*\\]", RegexOptions.Compiled);
 
         public CodeTable()
@@ -52,6 +66,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
         }
 
+        protected Dictionary<ushort, Entry> EntriesByUnicode { get; } = new Dictionary<ushort, Entry>();
+        protected Dictionary<string, Entry> EntriesByCodeString { get; } = new Dictionary<string, Entry>();
+
         public void AddEntry(Entry entry)
         {
             if (!EntriesByUnicode.ContainsKey(entry.UnicodeValue))
@@ -63,7 +80,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             EntriesByCodeString.Add(entry.CodeString, entry);
         }
 
-        // Replaces special text tokens with Unicode symbols for message.bin
+        /// <summary>
+        /// Replaces special text tokens with Unicode symbols for message.bin
+        /// </summary>
+        /// <param name="text">User-friendly text</param>
         public string UnicodeEncode(string text)
         {
             var sb = new StringBuilder();
@@ -104,7 +124,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             return sb.ToString();
         }
 
-        // Replaces Unicode symbols from message.bin with human readable text tokens
+        /// <summary>
+        /// Replaces Unicode symbols from message.bin with human readable text tokens
+        /// </summary>
+        /// <param name="text">Encoded text</param>
         public string UnicodeDecode(string text)
         {
             var sb = new StringBuilder();

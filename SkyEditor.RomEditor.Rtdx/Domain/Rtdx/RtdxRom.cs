@@ -297,7 +297,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     throw new Exception("Unable to load common.bin from US message bin");
                 }
 
-                var common = new MessageBinEntry(commonData);
+                var common = new MessageBinEntry(commonData, GetCodeTable());
                 commonStrings = new CommonStrings(common);
             }
             return commonStrings;

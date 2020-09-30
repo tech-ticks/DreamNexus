@@ -19,7 +19,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             OrderedHashes = new List<int>();
         }
 
-        public MessageBinEntry(IReadOnlyBinaryDataAccessor data): this()
+        public MessageBinEntry(IReadOnlyBinaryDataAccessor data, ICodeTable codeTable): this()
         {
             var sir0 = new Sir0(data);
             var entryCount1 = sir0.SubHeader.ReadInt32(0);
@@ -37,7 +37,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
                 AddString(new MessageBinString
                 {
-                    Value = sir0.Data.ReadNullTerminatedUnicodeString(stringOffset),
+                    Value = codeTable.UnicodeDecode(sir0.Data.ReadNullTerminatedUnicodeString(stringOffset)),
                     Hash = hash,
                     Unknown = unknown,
                     StringOffset = stringOffset
@@ -47,7 +47,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             OrderedHashes = hashes.OrderBy(h => h.Key).Select(h => h.Value).ToArray();
         }
 
-        public MessageBinEntry(byte[] data) : this(new BinaryFile(data))
+        public MessageBinEntry(byte[] data, ICodeTable codeTable) : this(new BinaryFile(data), codeTable)
         {
         }
 
