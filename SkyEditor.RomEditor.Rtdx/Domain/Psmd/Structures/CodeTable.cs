@@ -5,24 +5,22 @@ using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
-    public class RtdxCodeTable : CodeTable
+    public class PsmdCodeTable : CodeTable
     {
         private static readonly Dictionary<string, Type> StaticConstantReplacementTable = new Dictionary<string, Type>()
         {
-            { "kind_p:", typeof(CreatureIndex) },
-            { "item:", typeof(ItemIndex) },
-            { "dungeon:", typeof(DungeonIndex) },
+            { "kind:", typeof(CreatureIndex) },
             { "ability:", typeof(AbilityIndex) },
             { "waza:", typeof(WazaIndex) },
         };
 
         protected override Dictionary<string, Type> ConstantReplacementTable => StaticConstantReplacementTable;
 
-        public RtdxCodeTable()
+        public PsmdCodeTable()
         {
         }
 
-        public RtdxCodeTable(byte[] data) : base(data)
+        public PsmdCodeTable(byte[] data) : base(data)
         {
         }
     }

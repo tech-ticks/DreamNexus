@@ -1,6 +1,5 @@
-using System;
 using FluentAssertions;
-using SkyEditor.RomEditor.Domain.Rtdx.Structures;
+using SkyEditor.RomEditor.Domain.Common.Structures;
 using Xunit;
 
 namespace SkyEditor.RomEditor.Tests.Domain.Structures
