@@ -6,6 +6,7 @@ using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Infrastructure.Automation.CSharp;
 using SkyEditor.RomEditor.Infrastructure.Automation.Lua;
 using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
+using SkyEditor.RomEditor.Domain.Common.Structures;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
@@ -71,7 +72,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         PokemonFormDatabase GetPokemonFormDatabase();
         Sir0StringList GetDungeonMapSymbol();
         Sir0StringList GetDungeonBgmSymbol();
-        CodeTable GetCodeTable();
+        ICodeTable GetCodeTable();
         #endregion
 
         #region Models
@@ -326,15 +327,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private Sir0StringList? dungeonBgmSymbol;
         protected static string GetDungeonBgmSymbolPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon_bgm_symbol.bin");
 
-        public CodeTable GetCodeTable()
+        public ICodeTable GetCodeTable()
         {
             if (codeTable == null)
             {
-                codeTable = new CodeTable(FileSystem.ReadAllBytes(GetCodeTablePath(this.RomDirectory)));
+                codeTable = new RtdxCodeTable(FileSystem.ReadAllBytes(GetCodeTablePath(this.RomDirectory)));
             }
             return codeTable;
         }
-        private CodeTable? codeTable;
+        private ICodeTable? codeTable;
         protected static string GetCodeTablePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/code_table.bin");
         #endregion
 
