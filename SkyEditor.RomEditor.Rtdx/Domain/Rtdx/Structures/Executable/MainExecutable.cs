@@ -11,6 +11,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
     {
         IReadOnlyList<StarterFixedPokemonMap> StarterFixedPokemonMaps { get; }
         PegasusActDatabase ActorDatabase { get; }
+        public ExecutableVersion Version { get; }
+        public byte[] Data { get; set; }
+
         byte[] ToElf();
         byte[] ToNso(INsoElfConverter? nsoElfConverter = null);
     }
@@ -39,13 +42,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 
             Init();
             
-            ActDatabaseLazy = new Lazy<PegasusActDatabase>(() => new PegasusActDatabase(elfData, version));
+            ActDatabaseLazy = new Lazy<PegasusActDatabase>(() => new PegasusActDatabase(elfData, Version));
         }
 
         const int starterFixedPokemonMapOffsetOriginal = 0x04BA3B0C;
         const int starterFixedPokemonMapOffsetUpdate = 0x04BA4DBC;
-
-        private ExecutableVersion version;
 
         private void Init()
         {
@@ -53,11 +54,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
             if (StarterFixedPokemonMaps.All(m => m.PokemonId == CreatureIndex.NONE))
             {
                 Init(starterFixedPokemonMapOffsetUpdate);
-                version = ExecutableVersion.Update1;
+                Version = ExecutableVersion.Update1;
             }
             else
             {
-                version = ExecutableVersion.Original;
+                Version = ExecutableVersion.Original;
             }
         }
 
@@ -83,7 +84,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 ActorDatabase.Write();
             }
 
-            int starterFixedPokemonMapOffset = version switch
+            int starterFixedPokemonMapOffset = Version switch
             {
                 ExecutableVersion.Original => starterFixedPokemonMapOffsetOriginal,
                 ExecutableVersion.Update1 => starterFixedPokemonMapOffsetUpdate,
@@ -106,7 +107,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
             return nsoElfConverter.ConvertElfToNso(ToElf());
         }
         
-        private byte[] Data { get; }
+        public byte[] Data { get; set; }
+        public ExecutableVersion Version { get; private set; }
+
         public IReadOnlyList<StarterFixedPokemonMap> StarterFixedPokemonMaps { get; private set; } = default!;
         
         private Lazy<PegasusActDatabase> ActDatabaseLazy { get; }
