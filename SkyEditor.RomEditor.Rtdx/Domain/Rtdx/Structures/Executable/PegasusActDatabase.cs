@@ -1,5 +1,4 @@
 ﻿using SkyEditor.RomEditor.Domain.Rtdx.Constants;
-using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using System;
 using System.Linq;
 
@@ -8,41 +7,35 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
     public partial class PegasusActDatabase
     {
         /// <summary>
-        /// Offset of .text, must be added to the other values. This value works in Versions 1.0 and 1.1
+        /// Offset of the first creature ID ("HERO") relative to the start of the PegasusActDatabase constructor.
         /// </summary>
-        private const int TextOffset = 0x788;
+        private const ulong RelativeFirstCreatureIdOffset = 0x1b0;
 
-        /// <summary>
-        /// Offset of the first creature ID ("HERO") relative to the .text offset. This value works in Version 1.0
-        /// </summary>
-        private const int FirstCreatureIdOffsetOriginal = 0xB61290;
-
-        /// <summary>
-        /// Offset of the first creature ID ("HERO") relative to the .text offset. This value works in Version 1.1
-        /// </summary>
-        private const int FirstCreatureIdOffsetUpdate = 0x6172B0;
-
-        public PegasusActDatabase(byte[] elfData, ExecutableVersion version)
+        public PegasusActDatabase(IMainExecutable executable)
         {
-            this.elfData = elfData;
+            this.executable = executable;
 
-            firstCreatureIdOffset = version switch
-            {
-                ExecutableVersion.Original => FirstCreatureIdOffsetOriginal,
-                ExecutableVersion.Update1 => FirstCreatureIdOffsetUpdate,
-                _ => throw new ArgumentOutOfRangeException(nameof(version)),
-            };
+#if !NETSTANDARD2_0
+            firstCreatureIdOffset = executable.SectionOffsets[".text"]
+                + executable.GetIlConstructorOffset("PegasusActDatabase", new string[] {})
+                + RelativeFirstCreatureIdOffset;
 
             Read();
+#endif
         }
 
-        private readonly byte[] elfData;
-        private readonly int firstCreatureIdOffset;
+        private IMainExecutable executable;
+
+#if !NETSTANDARD2_0
+        private readonly ulong firstCreatureIdOffset = 0;
 
         private void Read()
         {
-            int absoluteFirstOffset = AbsolutePokemonIndexOffset(ActorDataList.First());
-            var firstOffsetInstruction = new ArmInstruction(BitConverter.ToUInt32(elfData, absoluteFirstOffset));
+            ulong absoluteFirstOffset = AbsolutePokemonIndexOffset(ActorDataList.First());
+
+            // TODO: get rid of the ArmInstruction class and add encoding and decoding functions for
+            // the instructions used here to CodeGenerationHelper instead.
+            var firstOffsetInstruction = new ArmInstruction(BitConverter.ToUInt32(executable.Data, (int) absoluteFirstOffset));
             if (!firstOffsetInstruction.IsSupported)
             {
                 throw new InvalidOperationException("Cannot read Actor database - maybe an incompatible version was used?");
@@ -51,7 +44,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
             foreach (var actorData in ActorDataList.Where(actorData => actorData.PokemonIndexEditable))
             {
                 var instruction =
-                    new ArmInstruction(BitConverter.ToUInt32(elfData, AbsolutePokemonIndexOffset(actorData)));
+                    new ArmInstruction(BitConverter.ToUInt32(executable.Data, (int) AbsolutePokemonIndexOffset(actorData)));
 
                 if (instruction.IsSupported)
                 {
@@ -64,9 +57,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 
         public void Write()
         {
+            // TODO: get rid of the ArmInstruction class and add encoding and decoding functions for
+            // the instructions used here to CodeGenerationHelper instead.
             foreach (var actorData in ActorDataList.Where(actorData => actorData.PokemonIndexEditable))
             {
-                var instruction = new ArmInstruction(BitConverter.ToUInt32(elfData, AbsolutePokemonIndexOffset(actorData)));
+                var instruction = new ArmInstruction(BitConverter.ToUInt32(executable.Data,
+                    (int) AbsolutePokemonIndexOffset(actorData)));
                 if (instruction.IsSupported)
                 {
                     instruction.Value = (ushort) actorData.PokemonIndex;
@@ -78,11 +74,22 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                         (ushort) actorData.PokemonIndex);
                 }
 
-                BitConverter.GetBytes(instruction.RawInstruction).CopyTo(elfData, AbsolutePokemonIndexOffset(actorData));
+                BitConverter.GetBytes(instruction.RawInstruction).CopyTo(executable.Data,
+                    (int) AbsolutePokemonIndexOffset(actorData));
             }
         }
 
+        private ulong AbsolutePokemonIndexOffset(ActorData actorData)
+        {
+            return firstCreatureIdOffset + actorData.PokemonIndexOffset;
+        }
 
-        public int AbsolutePokemonIndexOffset(ActorData actorData) => actorData.PokemonIndexOffset + TextOffset + firstCreatureIdOffset;
+#else
+        public void Write()
+        {
+            throw new Exception("Not supported on .NET Standard 2.0");
+        }
+#endif
+
     }
 }

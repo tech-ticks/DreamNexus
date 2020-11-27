@@ -14,7 +14,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
             public PokemonFixedWarehouseId WarehouseId { get; set; } = default!;
             public TextIDHash SpecialName { get; set; } = default!;
             public string? DebugName { get; set; }
-            public int PokemonIndexOffset { get; set; }
+            public ulong PokemonIndexOffset { get; set; }
             public bool PokemonIndexEditable { get; set; }
         }
     }
