@@ -256,6 +256,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private IDungeonBalance? dungeonBalance;
         protected static string GetDungeonBalancePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_balance");
+
+        public DungeonMapDataInfo GetDungeonMapDataInfo()
+        {
+            if (dungeonMapDataInfo == null)
+            {
+                dungeonMapDataInfo = new DungeonMapDataInfo(FileSystem.ReadAllBytes(GetDungeonMapDataInfoPath(this.RomDirectory)));
+            }
+            return dungeonMapDataInfo;
+        }
+        private DungeonMapDataInfo? dungeonMapDataInfo;
+        protected static string GetDungeonMapDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_map_data_info.bin");
         #endregion
 
         #region StreamingAssets/native_data
@@ -470,6 +481,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 var (binData, entData) = dungeonBalance.Build();
                 fileSystem.WriteAllBytes(path + ".bin", binData);
                 fileSystem.WriteAllBytes(path + ".ent", entData);
+            }
+            if (dungeonMapDataInfo != null)
+            {
+                var path = GetDungeonMapDataInfoPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, dungeonMapDataInfo.ToByteArray());
             }
             if (dungeonExtra != null)
             {
