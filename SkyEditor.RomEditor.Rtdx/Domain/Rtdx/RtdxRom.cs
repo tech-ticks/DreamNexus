@@ -128,13 +128,18 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
             if (mainExecutable == null)
             {
-                mainExecutable = MainExecutable.LoadFromNso(FileSystem.ReadAllBytes(GetNsoPath(this.RomDirectory)));
+                byte[] nso = FileSystem.ReadAllBytes(GetNsoPath(this.RomDirectory));
+                byte[] metadata = FileSystem.ReadAllBytes(GetIl2CppMetadataPath(this.RomDirectory));
+                mainExecutable = MainExecutable.LoadFromNso(nso, metadata);
             }
             return mainExecutable;
         }
         private IMainExecutable? mainExecutable;
 
         protected static string GetNsoPath(string directory) => Path.Combine(directory, "exefs", "main");
+
+        protected static string GetIl2CppMetadataPath(string directory) => Path.Combine(directory,
+            "romfs/Data/Managed/Metadata/global-metadata.dat");
         #endregion
 
         #region StreamingAssets/data

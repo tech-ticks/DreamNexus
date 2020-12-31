@@ -1,22 +1,18 @@
-#load "../../../Stubs/Rtdx.csx"
+#load "../../Stubs/Rtdx.csx"
 
-using NsoElfConverterDotNet;
 using System;
 using System.Collections.Generic;
+using SkyEditor.RomEditor.Domain.Rtdx;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using SkyEditor.RomEditor.Infrastructure;
 
+// TODO: test this with the updated version
 var executable = Rom.GetMainExecutable();
-if (executable.Version != ExecutableVersion.Original)
-{
-  throw new Exception("This mod doesn't work with an updated version yet.");
-}
-var bytes = executable.Data;
+var codeHelper = new CodeGenerationHelper(executable);
 
 // ---
 // Code changes
@@ -40,8 +36,10 @@ var bytes = executable.Data;
   Encoded as 205680D2E1031FAA99C7F797
  */
 
-byte[] bytesToWrite = {0x20, 0x56, 0x80, 0xD2, 0xE1, 0x03, 0x1F, 0xAA, 0x99, 0xC7, 0xF7, 0x97};
-Array.Copy(bytesToWrite, 0, bytes, 0xDCDA8C, bytesToWrite.Length);
+codeHelper.SetOffsetToMethod("UIWazaButtonSet", "_doItemThrow", new string[] {});
+codeHelper.Offset += 0x184;
+codeHelper.WriteCode("205680D2E1031FAA");
+codeHelper.WriteMethodCall("DungeonPlayerCommand", "UseWaza", new string[] {"Const.waza.Index", "IItem"});
 
 /*
   Bypass the check whether we've registered an item by jumping to the part that displays the item
@@ -55,8 +53,9 @@ Array.Copy(bytesToWrite, 0, bytes, 0xDCDA8C, bytesToWrite.Length);
   Encoded as 49000094
  */
 
-bytesToWrite = new byte[] {0x49, 0x00, 0x00, 0x94};
-Array.Copy(bytesToWrite, 0, bytes, 0xDCD964, bytesToWrite.Length);
+codeHelper.SetOffsetToMethod("UIWazaButtonSet", "_doItemThrow", new string[] {});
+codeHelper.Offset += 0x5c;
+codeHelper.WriteRelativeBranchWithLink(0x124);
 
 /*
   Don't show the registered item when holding ZL to avoid confusing players.
@@ -71,10 +70,11 @@ Array.Copy(bytesToWrite, 0, bytes, 0xDCD964, bytesToWrite.Length);
   Encoded as 9F0A00B4
  */
 
-bytesToWrite = new byte[] {0x9F, 0x0A, 0x00, 0xB4};
-Array.Copy(bytesToWrite, 0, bytes, 0xDC89C0, bytesToWrite.Length);
+codeHelper.SetOffsetToMethod("UIWazaButtonSet", "SetRegistItem", new string[] {});
+codeHelper.Offset += 0x178;
+codeHelper.WriteCode("9F0A00B4");
 
-executable.Data = bytes;
+executable.Data = codeHelper.Data;
 
 // ---
 // Text changes

@@ -59,7 +59,8 @@ namespace SkyEditor.RomEditor.ConsoleApp
             var context = new ConsoleContext
             {
                 FileSystem = fileSystem,
-                RomLibrary = new Library("Library", fileSystem)
+                RomLibrary = new Library("Library", fileSystem),
+                VerboseLogging = args.Any(arg => arg == "--verbose")
             };
 
             while (arguments.TryDequeue(out var arg))
@@ -146,6 +147,10 @@ namespace SkyEditor.RomEditor.ConsoleApp
                 else if (Commands.TryGetValue(arg, out var command))
                 {
                     await command(arguments, context);
+                }
+                else if (arg == "--verbose")
+                {
+                    // Do nothing, verbose logging has already been enabled
                 }
                 else
                 {
