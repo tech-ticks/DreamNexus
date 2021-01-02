@@ -12,6 +12,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         Dictionary<CreatureIndex, string> Pokemon { get; }
         Dictionary<WazaIndex, string> Moves { get; }
         Dictionary<DungeonIndex, string> Dungeons { get; }
+        Dictionary<ItemIndex, string> Items { get; }
 
         /// <summary>
         /// Gets the name of a Pokemon by the internal Japanese name.
@@ -36,6 +37,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         string? GetDungeonNameByInternalName(string internalName);
 
         string? GetDungeonName(DungeonIndex dungeonIndex);
+
+        string? GetItemNameByInternalName(string internalName);
+
+        string? GetItemName(ItemIndex itemIndex);
     }
 
     public class CommonStrings : ICommonStrings
@@ -85,6 +90,24 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 var name = GetDungeonNameByInternalName(dungeon.ToString("f"));
                 Dungeons.Add(dungeon, name ?? "");
             }
+
+            // We need to handle items in a convoluted way since there are multiple entries with the same value
+            // e.g. ARROW_MIN and ARROW_WOOD are the same
+            Items = new Dictionary<ItemIndex, string>();
+            var itemNames = Enum.GetNames(typeof(ItemIndex));
+            var items = Enum.GetValues(typeof(ItemIndex)).Cast<ItemIndex>().ToArray();
+            for (int i = 0; i < items.Length; i++)
+            {
+                string itemName = itemNames[i];
+                var item = items[i];
+                if (item == default || itemName.EndsWith("_MIN") || itemName.EndsWith("_MAX"))
+                {
+                    continue;
+                }
+
+                var name = GetItemNameByInternalName(itemName);
+                Items.Add(item, name ?? "");
+            }
         }
 
         private readonly MessageBinEntry common;
@@ -92,6 +115,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public Dictionary<CreatureIndex, string> Pokemon { get; }
         public Dictionary<WazaIndex, string> Moves { get; }
         public Dictionary<DungeonIndex, string> Dungeons { get; }
+        public Dictionary<ItemIndex, string> Items { get; }
 
         /// <summary>
         /// Gets the name of a Pokemon by the internal Japanese name.
@@ -145,6 +169,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public string? GetDungeonName(DungeonIndex dungeonIndex)
         {
             return GetDungeonNameByInternalName(dungeonIndex.ToString("f"));
+        }
+
+        public string? GetItemNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("ITEM_NAME__ITEM_" + internalName.ToUpper());
+            return common.GetStringByHash(nameHash);
+        }
+
+        public string? GetItemName(ItemIndex itemIndex)
+        {
+            return GetItemNameByInternalName(itemIndex.ToString("f"));
         }
     }
 }

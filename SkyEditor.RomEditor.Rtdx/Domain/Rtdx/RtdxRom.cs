@@ -63,6 +63,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IDungeonExtra GetDungeonExtra();
         
         IDungeonBalance GetDungeonBalance();
+        ItemArrange GetItemArrange();
+        DungeonMapDataInfo GetDungeonMapDataInfo();
+        FixedMap GetFixedMap();
         #endregion
 
         #region StreamingAssets/native_data
@@ -257,6 +260,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private IDungeonBalance? dungeonBalance;
         protected static string GetDungeonBalancePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_balance");
 
+        public ItemArrange GetItemArrange()
+        {
+            if (itemArrange == null)
+            {
+                itemArrange = new ItemArrange(FileSystem.ReadAllBytes(GetItemArrangePath(this.RomDirectory) + ".bin"), FileSystem.ReadAllBytes(GetItemArrangePath(this.RomDirectory) + ".ent"));
+            }
+            return itemArrange;
+        }
+        private ItemArrange? itemArrange;
+        protected static string GetItemArrangePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/item_arrange");
+
         public DungeonMapDataInfo GetDungeonMapDataInfo()
         {
             if (dungeonMapDataInfo == null)
@@ -264,6 +278,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 dungeonMapDataInfo = new DungeonMapDataInfo(FileSystem.ReadAllBytes(GetDungeonMapDataInfoPath(this.RomDirectory)));
             }
             return dungeonMapDataInfo;
+        }
+        private FixedMap? fixedMap;
+        protected static string GetFixedMapPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_map.bin");
+
+        public FixedMap GetFixedMap()
+        {
+            if (fixedMap == null)
+            {
+                fixedMap = new FixedMap(FileSystem.ReadAllBytes(GetFixedMapPath(this.RomDirectory)));
+            }
+            return fixedMap;
         }
         private DungeonMapDataInfo? dungeonMapDataInfo;
         protected static string GetDungeonMapDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_map_data_info.bin");
@@ -474,6 +499,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, dungeonDataInfo.ToByteArray());
             }
+            if (fixedMap != null)
+            {
+                var path = GetFixedMapPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, fixedMap.ToByteArray());
+            }
             if (dungeonBalance != null)
             {
                 var path = GetDungeonBalancePath(directory);
@@ -482,6 +513,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 fileSystem.WriteAllBytes(path + ".bin", binData);
                 fileSystem.WriteAllBytes(path + ".ent", entData);
             }
+            /*if (itemArrange != null)
+            {
+                var path = GetItemArrangePath(directory);
+                EnsureDirectoryExists(path);
+                var (binData, entData) = itemArrange.Build();
+                fileSystem.WriteAllBytes(path + ".bin", binData);
+                fileSystem.WriteAllBytes(path + ".ent", entData);
+            }*/
             if (dungeonMapDataInfo != null)
             {
                 var path = GetDungeonMapDataInfoPath(directory);
