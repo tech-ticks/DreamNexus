@@ -108,9 +108,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     {
                         XPos = data.ReadByte(relativeOffset),
                         YPos = data.ReadByte(relativeOffset + 1),
+                        Byte02 = data.ReadByte(relativeOffset + 2),
+                        Byte03 = data.ReadByte(relativeOffset + 3),
                         Index = (FixedCreatureIndex) (creatureIndexAndDirection & 0x3FFFu),
                         Direction = (EntityDirection) (creatureIndexAndDirection >> 14),
                         Faction = (FixedMapCreature.CreatureFaction) data.ReadByte(relativeOffset + 6),
+                        Byte07 = data.ReadByte(relativeOffset + 7),
                     });
                 }
 
@@ -130,9 +133,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     {
                         XPos = data.ReadByte(relativeOffset),
                         YPos = data.ReadByte(relativeOffset + 1),
+                        Byte02 = data.ReadByte(relativeOffset + 2),
+                        Byte03 = data.ReadByte(relativeOffset + 3),
                         UnknownItemIndex = data.ReadByte(relativeOffset + 4),
                         Direction = (EntityDirection) data.ReadByte(relativeOffset + 5),
                         UnknownItemVariation = data.ReadByte(relativeOffset + 6),
+                        Byte07 = data.ReadByte(relativeOffset + 7),
                     });
                 }
             }
@@ -173,10 +179,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     ushort creatureIndexAndDirection = (ushort) ((int) creature.Index | (((int) creature.Direction) << 14));
                     sir0.Write(sir0.Length, creature.XPos);
                     sir0.Write(sir0.Length, creature.YPos);
-                    sir0.WriteInt16(sir0.Length, 0);
+                    sir0.Write(sir0.Length, creature.Byte02);
+                    sir0.Write(sir0.Length, creature.Byte03);
                     sir0.WriteUInt16(sir0.Length, creatureIndexAndDirection);
                     sir0.Write(sir0.Length, (byte) creature.Faction);
-                    sir0.Write(sir0.Length, 0);
+                    sir0.Write(sir0.Length, creature.Byte07);
                 }
 
                 align(16);
@@ -185,11 +192,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 {
                     sir0.Write(sir0.Length, item.XPos);
                     sir0.Write(sir0.Length, item.YPos);
-                    sir0.WriteUInt16(sir0.Length, 0);
+                    sir0.Write(sir0.Length, item.Byte02);
+                    sir0.Write(sir0.Length, item.Byte03);
                     sir0.Write(sir0.Length, (byte) item.UnknownItemIndex);
                     sir0.Write(sir0.Length, (byte) item.Direction);
                     sir0.Write(sir0.Length, item.UnknownItemVariation);
-                    sir0.Write(sir0.Length, 0);
+                    sir0.Write(sir0.Length, item.Byte07);
                 }
 
                 align(16);
@@ -237,11 +245,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte XPos { get; set; }
             public byte YPos { get; set; }
 
+            // Always zero
+            public byte Byte02 { get; set; }
+
+            // Always zero
+            public byte Byte03 { get; set; }
+
             public FixedCreatureIndex Index { get; set; }
 
             public EntityDirection Direction { get; set; }
 
             public CreatureFaction Faction { get; set; }
+
+            // Always zero
+            public byte Byte07 { get; set; }
 
             public enum CreatureFaction : byte
             {
@@ -259,6 +276,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte XPos { get; set; }
             public byte YPos { get; set; }
 
+            // Apparently always zero on maps that weren't copied from PSMD
+            public byte Byte02 { get; set; }
+
+            // Apparently always zero on maps that weren't copied from PSMD
+            public byte Byte03 { get; set; }
+
             // Item index. Probably related to fixed_item.bin
             // 0x9C = Stairs, 0xCC = Evolution crystal (Index might vary per dungeon)
             public byte UnknownItemIndex { get; set; }
@@ -270,6 +293,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             // Non-stairs items seem to behave the same no matter if the this is set to 1 or 3.
             // Might be bit flags?
             public byte UnknownItemVariation { get; set; }
+
+            // Apparently always zero on maps that weren't copied from PSMD
+            public byte Byte07 { get; set; }
         }
 
         public class FixedMapTile
