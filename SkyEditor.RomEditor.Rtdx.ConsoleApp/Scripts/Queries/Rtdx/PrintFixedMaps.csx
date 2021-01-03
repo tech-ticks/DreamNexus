@@ -15,8 +15,15 @@ for (int i = 0; i < maps.Count; i++)
     {
         for (int x = 0; x < map.Width; x++)
         {
-            var type = map.GetTile(x, y).Type;
-            Console.Write(type == 0 ? "█" : type.ToString());
+            var type = (byte) map.GetTile(x, y).Type;
+            if (type > 9)
+            {
+                Console.Write("+");
+            }
+            else
+            {
+                Console.Write(type == 0 ? "█" : type.ToString());
+            }
         }
         Console.Write("  ");
         for (int x = 0; x < map.Width; x++)
@@ -52,7 +59,7 @@ for (int i = 0; i < maps.Count; i++)
     for (int j = 0; j < map.Items.Count; j++)
     {
         var item = map.Items[j];
-        Console.WriteLine($"#{j} @ {item.XPos},{item.YPos}: {item.UnknownItemIndex}, {item.Direction}, {Convert.ToString(item.UnknownItemType, 2)}");
+        Console.WriteLine($"#{j} @ {item.XPos},{item.YPos}: {item.UnknownItemIndex}, {item.MaybeDirection}, {Convert.ToString(item.UnknownItemType, 2)}");
     }
 
     Console.WriteLine();

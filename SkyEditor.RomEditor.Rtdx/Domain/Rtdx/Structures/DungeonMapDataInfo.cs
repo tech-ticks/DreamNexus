@@ -80,8 +80,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             // Seems to be ignored by the game
             public ushort Index { get; set; }
 
-            // 0x54 if no fixed map is used. Another flag could be responsible for
-            // whether a fixed map is used or not?
+            // The index of the last value in fixed_map.ent (pointing to the end) if no fixed map is used.
             public ushort FixedMapIndex { get; set; }
 
             public byte Byte06 { get; set; }

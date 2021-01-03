@@ -280,13 +280,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             return dungeonMapDataInfo;
         }
         private FixedMap? fixedMap;
-        protected static string GetFixedMapPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_map.bin");
+        protected static string GetFixedMapPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_map");
 
         public FixedMap GetFixedMap()
         {
             if (fixedMap == null)
             {
-                fixedMap = new FixedMap(FileSystem.ReadAllBytes(GetFixedMapPath(this.RomDirectory)));
+                fixedMap = new FixedMap(
+                    FileSystem.ReadAllBytes(GetFixedMapPath(this.RomDirectory) + ".bin"),
+                    FileSystem.ReadAllBytes(GetFixedMapPath(this.RomDirectory) + ".ent")
+                );
             }
             return fixedMap;
         }
@@ -503,7 +506,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             {
                 var path = GetFixedMapPath(directory);
                 EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, fixedMap.ToByteArray());
+                var (binData, entData) = fixedMap.Build();
+                fileSystem.WriteAllBytes(path + ".bin", binData);
+                fileSystem.WriteAllBytes(path + ".ent", entData);
             }
             if (dungeonBalance != null)
             {
