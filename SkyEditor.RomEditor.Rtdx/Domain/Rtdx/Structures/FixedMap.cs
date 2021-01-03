@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using SkyEditor.IO.Binary;
 using SkyEditor.RomEditor.Domain.Common.Structures;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
@@ -102,12 +101,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 for (int i = 0; i < creatureCount; i++)
                 {
                     int relativeOffset = i * FixedMapCreature.EntrySize + creaturesOffset;
+
+                    // The two high bits contain the direction
+                    ushort creatureIndexAndDirection = data.ReadUInt16(relativeOffset + 4);
                     Creatures.Add(new FixedMapCreature
                     {
                         XPos = data.ReadByte(relativeOffset),
                         YPos = data.ReadByte(relativeOffset + 1),
-                        Index = (FixedCreatureIndex) data.ReadByte(relativeOffset + 4),
-                        UnknownFlags = data.ReadByte(relativeOffset + 5),
+                        Index = (FixedCreatureIndex) (creatureIndexAndDirection & 0x3FFFu),
+                        Direction = (EntityDirection) (creatureIndexAndDirection >> 14),
                         Faction = (FixedMapCreature.CreatureFaction) data.ReadByte(relativeOffset + 6),
                     });
                 }
@@ -129,8 +131,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                         XPos = data.ReadByte(relativeOffset),
                         YPos = data.ReadByte(relativeOffset + 1),
                         UnknownItemIndex = data.ReadByte(relativeOffset + 4),
-                        MaybeDirection = data.ReadByte(relativeOffset + 5),
-                        UnknownItemType = data.ReadByte(relativeOffset + 6),
+                        Direction = (EntityDirection) data.ReadByte(relativeOffset + 5),
+                        UnknownItemVariation = data.ReadByte(relativeOffset + 6),
                     });
                 }
             }
@@ -168,11 +170,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 int creaturesPointer = sir0.Length;
                 foreach (var creature in Creatures)
                 {
+                    ushort creatureIndexAndDirection = (ushort) ((int) creature.Index | (((int) creature.Direction) << 14));
                     sir0.Write(sir0.Length, creature.XPos);
                     sir0.Write(sir0.Length, creature.YPos);
                     sir0.WriteInt16(sir0.Length, 0);
-                    sir0.Write(sir0.Length, (byte) creature.Index);
-                    sir0.Write(sir0.Length, creature.UnknownFlags);
+                    sir0.WriteUInt16(sir0.Length, creatureIndexAndDirection);
                     sir0.Write(sir0.Length, (byte) creature.Faction);
                     sir0.Write(sir0.Length, 0);
                 }
@@ -185,8 +187,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     sir0.Write(sir0.Length, item.YPos);
                     sir0.WriteUInt16(sir0.Length, 0);
                     sir0.Write(sir0.Length, (byte) item.UnknownItemIndex);
-                    sir0.Write(sir0.Length, item.MaybeDirection);
-                    sir0.Write(sir0.Length, (byte) item.UnknownItemType);
+                    sir0.Write(sir0.Length, (byte) item.Direction);
+                    sir0.Write(sir0.Length, item.UnknownItemVariation);
                     sir0.Write(sir0.Length, 0);
                 }
 
@@ -237,9 +239,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public FixedCreatureIndex Index { get; set; }
 
-            // Seems to encode where the Pokémon is facing and maybe other things
-            // (0x00 = facing down, 0x80 = facing up)
-            public byte UnknownFlags { get; set; }
+            public EntityDirection Direction { get; set; }
 
             public CreatureFaction Faction { get; set; }
 
@@ -263,14 +263,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             // 0x9C = Stairs, 0xCC = Evolution crystal (Index might vary per dungeon)
             public byte UnknownItemIndex { get; set; }
 
-            // Seems to encode where the item is facing
-            // 0 = down, 1 = right, 2 = up, 3 = left?
-            // TODO: investigate
-            public byte MaybeDirection { get; set; }
+            // It seems like non-zero values cause crashes on items that can't be rotated.
+            public EntityDirection Direction { get; set; }
 
-            // 1 for normal items and 3 for stairs. Might be related to whether the item can be picked up?
-            // TODO: check this and investigate fixed map 9 (contains an item with value 2)
-            public byte UnknownItemType { get; set; }
+            // 1 for upwards stairs and 3 for downwards stairs. 2 causes all items to disappear (?)
+            // Non-stairs items seem to behave the same no matter if the this is set to 1 or 3.
+            // Might be bit flags?
+            public byte UnknownItemVariation { get; set; }
         }
 
         public class FixedMapTile
@@ -296,8 +295,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Chasm = 5,
                 MysteryHouseDoor = 15,
 
-                // TODO: see if there are more
+                // TODO: see if there are more, maybe some leftovers from PSMD?
             }
+        }
+
+        public enum EntityDirection : byte
+        {
+            Down = 0,
+            Right = 1,
+            Up = 2,
+            Left = 3,
         }
     }
 }

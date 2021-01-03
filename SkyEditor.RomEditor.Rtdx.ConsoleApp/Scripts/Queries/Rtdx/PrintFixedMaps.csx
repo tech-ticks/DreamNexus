@@ -51,7 +51,7 @@ for (int i = 0; i < maps.Count; i++)
     for (int j = 0; j < map.Creatures.Count; j++)
     {
         var creature = map.Creatures[j];
-        Console.WriteLine($"#{j} @ {creature.XPos},{creature.YPos}: {creature.Index}, {creature.Faction}, {Convert.ToString(creature.UnknownFlags, 2)}");
+        Console.WriteLine($"#{j} @ {creature.XPos},{creature.YPos}: {creature.Index}, {creature.Faction}, {creature.Direction}");
     }
     Console.WriteLine();
 
@@ -59,7 +59,7 @@ for (int i = 0; i < maps.Count; i++)
     for (int j = 0; j < map.Items.Count; j++)
     {
         var item = map.Items[j];
-        Console.WriteLine($"#{j} @ {item.XPos},{item.YPos}: {item.UnknownItemIndex}, {item.MaybeDirection}, {Convert.ToString(item.UnknownItemType, 2)}");
+        Console.WriteLine($"#{j} @ {item.XPos},{item.YPos}: {item.UnknownItemIndex}, {item.Direction}, {Convert.ToString(item.UnknownItemVariation, 2)}");
     }
 
     Console.WriteLine();
