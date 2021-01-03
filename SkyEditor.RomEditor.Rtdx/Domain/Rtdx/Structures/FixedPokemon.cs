@@ -56,6 +56,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         {
             FixedCreatureId = (FixedCreatureIndex)index;
             PokemonId = (CreatureIndex)BitConverter.ToInt16(data, offset + 0);
+            HitPoints = BitConverter.ToInt16(data, offset + 2);
             Move1 = (WazaIndex)BitConverter.ToInt16(data, offset + 8);
             Move2 = (WazaIndex)BitConverter.ToInt16(data, offset + 0xA);
             Move3 = (WazaIndex)BitConverter.ToInt16(data, offset + 0xC);
@@ -76,6 +77,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         public byte[] ToByteArray()
         {
             BitConverter.GetBytes((short)PokemonId).CopyTo(Data, 0);
+            BitConverter.GetBytes(HitPoints).CopyTo(Data, 2);
             BitConverter.GetBytes((short)Move1).CopyTo(Data, 8);
             BitConverter.GetBytes((short)Move2).CopyTo(Data, 0xA);
             BitConverter.GetBytes((short)Move3).CopyTo(Data, 0xC);
@@ -101,6 +103,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         public WazaIndex Move4 { get; set; }
         public DungeonIndex DungeonIndex { get; set; }
         public byte Level { get; set; }
+        public short HitPoints { get; set; }
         public byte AttackBoost { get; set; }
         public byte SpAttackBoost { get; set; }
         public byte DefenseBoost { get; set; }
