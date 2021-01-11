@@ -61,8 +61,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IDungeonDataInfo GetDungeonDataInfo();
 
         IDungeonExtra GetDungeonExtra();
-        
+
         IDungeonBalance GetDungeonBalance();
+        
+        IRandomParts GetRandomParts();
         #endregion
 
         #region StreamingAssets/native_data
@@ -256,6 +258,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private IDungeonBalance? dungeonBalance;
         protected static string GetDungeonBalancePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_balance");
+        
+        public IRandomParts GetRandomParts()
+        {
+            if (randomParts == null)
+            {
+                randomParts = new RandomParts(new BinaryFile(GetRandomPartsPath(this.RomDirectory) + ".bin"), new BinaryFile(GetRandomPartsPath(this.RomDirectory) + ".ent"));
+            }
+            return randomParts;
+        }
+        private IRandomParts? randomParts;
+        protected static string GetRandomPartsPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/random_parts");
         #endregion
 
         #region StreamingAssets/native_data

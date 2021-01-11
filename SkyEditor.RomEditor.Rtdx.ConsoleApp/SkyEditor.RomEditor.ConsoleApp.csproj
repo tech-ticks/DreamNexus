@@ -1207,6 +1207,9 @@
     <None Update="Scripts\Queries\Rtdx\MessageBinEncoding.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Scripts\Queries\Rtdx\PrintRandomParts.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Scripts\Queries\Rtdx\PrintSymbolLists.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
