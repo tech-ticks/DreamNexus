@@ -95,7 +95,7 @@ foreach (var dungeon in dungeons)
         + $"{data.Short08,3}    {data.Short0A,3}      {data.DungeonBalanceIndex,3}       {data.Byte13,3}    {data.Byte17,3}    {data.Byte18,3}    {data.Byte19,3}");
 
     // Print floor infos
-    /*/foreach (var info in floorInfos)
+    /*foreach (var info in floorInfos)
     {
         Console.WriteLine($"   {info.Index,5}  "
             + $"{info.InvitationIndex,5}  "
@@ -112,7 +112,6 @@ foreach (var dungeon in dungeons)
             + $"{info.Short32,5}  "
             + $"{info.Byte34,3}  "
             + $"{info.Byte35,3}  "
-            + $"{info.Byte36,3}  "
             + $"{info.Byte36,3}  "
             + $"{string.Join(",", info.Bytes37to53)}  "
             + $"{string.Join(",", info.Bytes55to61)}");
