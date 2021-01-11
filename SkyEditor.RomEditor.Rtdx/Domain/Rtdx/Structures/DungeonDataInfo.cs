@@ -142,7 +142,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte MaxItems { get; set; }
             public byte MaxTeammates { get; set; }
             public byte Byte17 { get; set; }  // always 32
-            public byte Byte18 { get; set; }
+            public byte Byte18 { get; set; }  // might be related to dungeon_variation_data_info.bin/ent
             public byte Byte19 { get; set; }
         }
     }
