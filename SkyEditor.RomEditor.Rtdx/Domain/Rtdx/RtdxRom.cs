@@ -61,11 +61,18 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IDungeonDataInfo GetDungeonDataInfo();
 
         IDungeonExtra GetDungeonExtra();
-        
+
         IDungeonBalance GetDungeonBalance();
+
         ItemArrange GetItemArrange();
+
         DungeonMapDataInfo GetDungeonMapDataInfo();
+
         FixedMap GetFixedMap();
+        
+        IRandomParts GetRandomParts();
+
+        IActHitCountTableDataInfo GetActHitCountTableDataInfo();
         #endregion
 
         #region StreamingAssets/native_data
@@ -295,6 +302,29 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private DungeonMapDataInfo? dungeonMapDataInfo;
         protected static string GetDungeonMapDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_map_data_info.bin");
+        
+        public IRandomParts GetRandomParts()
+        {
+            if (randomParts == null)
+            {
+                randomParts = new RandomParts(new BinaryFile(GetRandomPartsPath(this.RomDirectory) + ".bin"), new BinaryFile(GetRandomPartsPath(this.RomDirectory) + ".ent"));
+            }
+            return randomParts;
+        }
+        private IRandomParts? randomParts;
+        protected static string GetRandomPartsPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/random_parts");
+
+        public IActHitCountTableDataInfo GetActHitCountTableDataInfo()
+        {
+            if (actHitCountTableDataInfo == null)
+            {
+                actHitCountTableDataInfo = new ActHitCountTableDataInfo(FileSystem.ReadAllBytes(GetActHitCountTableDataInfoPath(this.RomDirectory)));
+            }
+            return actHitCountTableDataInfo;
+        }
+        private IActHitCountTableDataInfo? actHitCountTableDataInfo;
+
+        protected static string GetActHitCountTableDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_hit_count_table_data_info.bin");
         #endregion
 
         #region StreamingAssets/native_data

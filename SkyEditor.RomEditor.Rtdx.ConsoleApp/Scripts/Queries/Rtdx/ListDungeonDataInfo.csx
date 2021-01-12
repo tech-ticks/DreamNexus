@@ -113,7 +113,6 @@ foreach (var dungeon in dungeons)
             + $"{info.Byte34,3}  "
             + $"{info.Byte35,3}  "
             + $"{info.Byte36,3}  "
-            + $"{info.Byte36,3}  "
             + $"{string.Join(",", info.Bytes37to53)}  "
             + $"{string.Join(",", info.Bytes55to61)}");
     }

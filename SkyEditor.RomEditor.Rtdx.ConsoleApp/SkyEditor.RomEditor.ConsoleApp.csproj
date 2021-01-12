@@ -1198,10 +1198,19 @@
     <None Update="Scripts\Queries\Rtdx\ListDungeonDataInfo.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Scripts\Queries\Rtdx\ListFixedPokemonInfo.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Scripts\Queries\Rtdx\ListPokemonGraphicsDatabase.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Scripts\Queries\Rtdx\MessageBinEncoding.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Rtdx\PrintRandomParts.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Rtdx\PrintActHitCountTableDataInfo.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Scripts\Queries\Rtdx\PrintSymbolLists.csx">
