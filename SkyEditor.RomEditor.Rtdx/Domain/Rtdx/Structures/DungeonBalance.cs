@@ -194,7 +194,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Short24 = data.ReadInt16(0x24);
                 Short26 = data.ReadInt16(0x26);
                 Short28 = data.ReadInt16(0x28);
-                Short2A = data.ReadInt16(0x2A);
+                DungeonMapDataInfoIndex = data.ReadInt16(0x2A);
                 Byte2C = data.ReadByte(0x2C);
                 Byte2D = data.ReadByte(0x2D);
                 Byte2E = data.ReadByte(0x2E);
@@ -220,7 +220,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 accessor.WriteInt16(0x24, Short24);
                 accessor.WriteInt16(0x26, Short26);
                 accessor.WriteInt16(0x28, Short28);
-                accessor.WriteInt16(0x2A, Short2A);
+                accessor.WriteInt16(0x2A, DungeonMapDataInfoIndex);
                 accessor.Write(0x2C, Byte2C);
                 accessor.Write(0x2D, Byte2D);
                 accessor.Write(0x2E, Byte2E);
@@ -243,7 +243,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public short Short24 { get; set; }   // possibly the max number of turns?
             public short Short26 { get; set; }
             public short Short28 { get; set; }
-            public short Short2A { get; set; }
+            public short DungeonMapDataInfoIndex { get; set; }
             public byte Byte2C { get; set; }
             public byte Byte2D { get; set; }
             public byte Byte2E { get; set; }

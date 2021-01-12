@@ -163,25 +163,29 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             await this.WriteAsync(index, paddingLength, padding);
         }
 
-        public byte[] ToByteArray()
+        public byte[] ToByteArray(bool alignFooter = true)
         {
             this.WriteString(0, Encoding.ASCII, Magic);
             this.WritePointer(8, SubHeaderOffset);
-            var footerOffset = this.Length + (0x10 - (this.Length % 0x10));
+            var footerOffset = this.Length;
+            if (alignFooter)
+            {
+                footerOffset += 0x10 - (this.Length % 0x10);
+            }
             this.WritePointer(16, footerOffset);
-            WriteFooter(footerOffset);
+            WriteFooter(footerOffset, alignFooter);
 
             var newData = new byte[this.Length];
             Array.Copy(Data.ReadArray(), newData, this.Length);
             return newData;
         }
 
-        public Sir0 Build()
+        public Sir0 Build(bool alignFooter = true)
         {            
-            return new Sir0(ToByteArray());
+            return new Sir0(ToByteArray(alignFooter));
         }
 
-        private void WriteFooter(int footerOffset)
+        private void WriteFooter(int footerOffset, bool alignFooter)
         {
             long lastPointer = 0;
             PointerOffsets.Sort();
@@ -215,11 +219,14 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             }
             this.Write(footerOffset++, 0); // Marks the end of the pointers
 
-            // Align to 16 bytes
-            var paddingLength = 0x10 - (this.Length % 0x10);
-            if (paddingLength != 0x10)
+            if (alignFooter)
             {
-                this.WritePadding(footerOffset, paddingLength);
+                // Align to 16 bytes
+                var paddingLength = 0x10 - (this.Length % 0x10);
+                if (paddingLength != 0x10)
+                {
+                    this.WritePadding(footerOffset, paddingLength);
+                }
             }
         }
 
