@@ -65,6 +65,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IDungeonBalance GetDungeonBalance();
         
         IRandomParts GetRandomParts();
+
+        IActHitCountTableDataInfo GetActHitCountTableDataInfo();
         #endregion
 
         #region StreamingAssets/native_data
@@ -269,6 +271,18 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private IRandomParts? randomParts;
         protected static string GetRandomPartsPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/random_parts");
+
+        public IActHitCountTableDataInfo GetActHitCountTableDataInfo()
+        {
+            if (actHitCountTableDataInfo == null)
+            {
+                actHitCountTableDataInfo = new ActHitCountTableDataInfo(FileSystem.ReadAllBytes(GetActHitCountTableDataInfoPath(this.RomDirectory)));
+            }
+            return actHitCountTableDataInfo;
+        }
+        private IActHitCountTableDataInfo? actHitCountTableDataInfo;
+
+        protected static string GetActHitCountTableDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_hit_count_table_data_info.bin");
         #endregion
 
         #region StreamingAssets/native_data
