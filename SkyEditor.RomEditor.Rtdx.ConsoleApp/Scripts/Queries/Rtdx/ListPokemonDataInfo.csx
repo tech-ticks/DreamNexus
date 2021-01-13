@@ -1,6 +1,7 @@
 ﻿#load "../../../Stubs/RTDX.csx"
 
 using System;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 
 var pokemonInfo = Rom.GetPokemonDataInfo();
 var experience = Rom.GetExperience();
@@ -11,6 +12,18 @@ var strings = Rom.GetCommonStrings();
 
 // CSV header for Pokémon data per level
 //Console.WriteLine("Pokedex Num,Pokemon Name,Pokemon Index,Level,Exp. Required,HP Gain,Atk Gain,Def Gain,SpA Gain,SpD Gain,Spe Gain,Total HP,Total Atk,Total Def,Total SpA,Total SpD,Total Spe");
+
+public string FormatBits(byte b)
+{
+    var binary = Convert.ToString(b, 2);
+    return binary.Replace('0', '-').Replace('1', '#').PadLeft(8, '-');
+}
+
+public string FormatBits(ushort b)
+{
+    var binary = Convert.ToString(b, 2);
+    return binary.Replace('0', '-').Replace('1', '#').PadLeft(16, '-');
+}
 
 foreach (var pokemon in pokemonInfo.Entries)
 {
@@ -43,18 +56,52 @@ foreach (var pokemon in pokemonInfo.Entries)
     }*/
 
     // Human-readable format
-    Console.WriteLine($"{pokemon.PokedexNumber} {strings.Pokemon[pokemon.Id]} ({pokemon.Id:d} {pokemon.Id:f})");
+    /*
+    Console.WriteLine($"{pokemon.PokedexNumber} {strings.Pokemon[pokemon.Id]} ({pokemon.Id:d} {pokemon.Id:f})   {pokemon.Type1} {pokemon.Type2}");
     Console.WriteLine(strings.GetPokemonTaxonomy(pokemon.Taxon));
-    Console.WriteLine($"Types: {pokemon.Type1} {pokemon.Type2}");
+    if (pokemon.EvolvesFrom != 0)
+    {
+        var basePokemon = pokemonInfo.Entries[pokemon.EvolvesFrom];
+        Console.WriteLine($"Evolves from: {pokemon.EvolvesFrom} {strings.Pokemon[basePokemon.Id]}");
+    }
+    Console.WriteLine($"Size: {pokemon.Size,3}");
     Console.WriteLine($"Abilities: {strings.GetAbilityName(pokemon.Ability1)} ({pokemon.Ability1:d} {pokemon.Ability1:f}) {strings.GetAbilityName(pokemon.Ability2)} ({pokemon.Ability2:d} {pokemon.Ability2:f}) (HA: {strings.GetAbilityName(pokemon.HiddenAbility)} ({pokemon.HiddenAbility:d} {pokemon.HiddenAbility:f}))");
-    Console.WriteLine($"HP: {pokemon.BaseHitPoints}");
-    Console.WriteLine($"ATK: {pokemon.BaseAttack}");
-    Console.WriteLine($"DEF: {pokemon.BaseDefense}");
-    Console.WriteLine($"SPA: {pokemon.BaseSpecialAttack}");
-    Console.WriteLine($"SPD: {pokemon.BaseSpecialDefense}");
-    Console.WriteLine($"SPE: {pokemon.BaseSpeed}");
+    Console.WriteLine($"HP: {pokemon.BaseHitPoints}  ATK: {pokemon.BaseAttack}  DEF: {pokemon.BaseDefense}  SPA: {pokemon.BaseSpecialAttack}  SPD: {pokemon.BaseSpecialDefense}  SPE: {pokemon.BaseSpeed}");
     Console.WriteLine($"Experience Table ID: {pokemon.ExperienceEntry}");
-    var expTable = experience.Entries[pokemon.ExperienceEntry];
+    Console.WriteLine($"Recruitment prerequisite: {pokemon.RecruitPrereq}");
+    */
+
+    // Known fields that need to be made human-readable
+    /*
+    Console.WriteLine($"Features: {FormatBits((ushort)pokemon.Features)}");
+    */
+
+    // Somewhat known fields that need further investigation
+    /*
+    Console.Write($" {pokemon.MegaRelatedProperty,3}");
+    Console.WriteLine($"Some level range: {pokemon.SomeMinimumLevel} to {pokemon.SomeMaximumLevel}");
+    */
+
+    // Unknown fields
+    Console.Write($"{(int)pokemon.Id,4}  {pokemon.PokedexNumber,3}  {strings.Pokemon[pokemon.Id],-20} ");
+    Console.Write($" {((pokemon.Features & PokemonDataInfo.PokemonDataInfoEntry.FeatureFlags.Unknown13) != 0 ? '#' : '-')}");
+    Console.Write($" {pokemon.Unknown62,5}");
+    Console.Write($" {pokemon.Unknown66,6}");
+    Console.Write($" {pokemon.Unknown6A,6}");
+    Console.Write($" {pokemon.Unknown6C,6}");
+    Console.Write($" {pokemon.Unknown6E,6}");
+    Console.Write($" {pokemon.Unknown70,6}");
+    Console.Write($" {pokemon.Unknown72,6}");
+    Console.Write($" {pokemon.Unknown80,6}");
+    Console.Write($" {pokemon.Unknown8B,2}");
+    Console.Write($" {pokemon.Unknown8C,2}");
+    Console.Write($" {pokemon.Unknown8D,2}");
+    Console.Write($" {pokemon.Unknown8E,2}");
+    Console.Write($" {pokemon.Unknown95,3}");
+    Console.Write($" {pokemon.Unknown96,3}");
+
+    // Print experience table and stat gains
+    /*var expTable = experience.Entries[pokemon.ExperienceEntry];
     var currHP = pokemon.BaseHitPoints;
     var currAtk = pokemon.BaseAttack;
     var currDef = pokemon.BaseDefense;
@@ -75,8 +122,10 @@ foreach (var pokemon in pokemonInfo.Entries)
     if (!string.IsNullOrWhiteSpace(pokemon.RecruitPrereq))
     {
         Console.WriteLine($"Recruitment Prereq: {pokemon.RecruitPrereq}");
-    }
-    Console.WriteLine($"Moves:");
+    }*/
+
+    // Print moves
+    /*Console.WriteLine($"Moves:");
     foreach (var move in pokemon.LevelupLearnset)
     {
         if (move.Level == default && move.Move == default)
@@ -85,6 +134,21 @@ foreach (var pokemon in pokemonInfo.Entries)
         }
 
         Console.WriteLine($" - {move.Level}: {strings.GetMoveName(move.Move)}");
-    }
+    }*/
+
+    // Print learnable TMs
+    /*Console.WriteLine("Usable TMs:");
+    for (var i = 0; i < 16; i++)
+    {
+        for (var j = 0; j < 8; j++)
+        {
+            var index = j + i * 8;
+            if ((pokemon.LearnableTMs[i] & (1 << j)) != 0)
+            {
+                Console.WriteLine($"  {strings.Items[(ItemIndex)(index + (int)ItemIndex.BROKENMACHINE_TSUMETOGI)]}");
+            }
+        }
+    }*/
+
     Console.WriteLine();
 }

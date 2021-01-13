@@ -46,13 +46,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         {
             public CreatureIndex Id { get; }
 
-            public long Unknown00 { get; set; }
-            public long Unknown08 { get; set; }
+            public byte[] LearnableTMs { get; set; }
 
             public List<LevelUpMove> LevelupLearnset { get; set; }
 
-            public short Unknown5E { get; }
-            public int Unknown60 { get; }
+            public FeatureFlags Features;
+
+            public ushort Unknown62 { get; set; }
 
             public short PokedexNumber { get; set; }
 
@@ -61,8 +61,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public short Taxon { get; set; }
 
             public short Unknown6A { get; set; }
-            public int Unknown6C { get; set; }
-            public int Unknown70 { get; }
+            public short Unknown6C { get; set; }
+            public short Unknown6E { get; set; }
+            public short Unknown70 { get; set; }
+            public short Unknown72 { get; set; }
 
             public short BaseHitPoints { get; set; }
             public short BaseAttack { get; set; }
@@ -71,11 +73,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public short BaseSpecialDefense { get; set; }
             public short BaseSpeed { get; set; }
 
-            public int Unknown80 { get; }
+            public short Unknown80 { get; set; }
+            public short EvolvesFrom { get; set; }
 
-            public int ExperienceEntry { get; set; }
+            public byte ExperienceEntry { get; set; }
 
-            public long Unknown88 { get; }
+            // -2, -2, 0 and 0 (respectively) for the Kangaskhan Child (index 1001, GARUURA_CHILD)
+            // 2, 2, 1 and 1 (respectively) for everyone
+            public sbyte Unknown8B { get; set; }
+            public sbyte Unknown8C { get; set; }
+            public sbyte Unknown8D { get; set; }
+            public sbyte Unknown8E { get; set; }
 
             public AbilityIndex Ability1 { get; set; }
             public AbilityIndex Ability2 { get; set; }
@@ -83,12 +91,28 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public PokemonType Type1 { get; set; }
             public PokemonType Type2 { get; set; }
 
+            // 2 for the Deoxys Speed form (index 495, DEOKISHISU_S)
+            // 1 for everyone else
             public byte Unknown95 { get; set; }
+
+            // 100 for Snorlax and Sudowoodo (all variants)
+            //   0 for Mega Mewtwo Y
+            //  10 for everyone else
             public byte Unknown96 { get; set; }
-            public byte Unknown97 { get; set; }
-            public byte Unknown98 { get; set; }
-            public byte Unknown99 { get; set; }
-            public byte Unknown9A { get; set; }
+
+            public byte Size { get; set; }
+
+            // Set to 1 on several Megas, except:
+            //   Beedrill, Pidgeot, Steelix, Slowbro, Kangaskhan, Sceptile,
+            //   Swampert, Gallade, Sharpedo, Camerupt, Altaria, Glalie,
+            //   Salamence, Metagross, Kyogre, Groudon, Rayquaza
+            public byte MegaRelatedProperty { get; set; }
+
+            // Level range for ???
+            // - Wild spawns?
+            // - Recruits?
+            public byte SomeMinimumLevel { get; set; }
+            public byte SomeMaximumLevel { get; set; }
 
             public string RecruitPrereq { get; set; }
 
@@ -96,8 +120,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 this.Id = id;
 
-                Unknown00 = data.ReadInt64(0);
-                Unknown08 = data.ReadInt64(8);
+                LearnableTMs = data.ReadArray(0, 16);
 
                 var levelupLearnset = new List<LevelUpMove>(26);
                 for (int i = 0; i < 26; i++)
@@ -108,16 +131,18 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
                 this.LevelupLearnset = levelupLearnset;
 
-                Unknown5E = data.ReadInt16(0x5E);
-                Unknown60 = data.ReadInt32(0x60);
+                Features = (FeatureFlags)data.ReadUInt16(0x60);
+                Unknown62 = data.ReadUInt16(0x62);
 
                 PokedexNumber = data.ReadInt16(0x64);
                 Unknown66 = data.ReadInt16(0x66);
                 Taxon = data.ReadInt16(0x68);
 
                 Unknown6A = data.ReadInt16(0x6A);
-                Unknown6C = data.ReadInt32(0x6C);
-                Unknown70 = data.ReadInt32(0x70);
+                Unknown6C = data.ReadInt16(0x6C);
+                Unknown6E = data.ReadInt16(0x6E);
+                Unknown70 = data.ReadInt16(0x70);
+                Unknown72 = data.ReadInt16(0x72);
 
                 BaseHitPoints = data.ReadInt16(0x74);
                 BaseAttack = data.ReadInt16(0x76);
@@ -126,11 +151,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 BaseSpecialDefense = data.ReadInt16(0x7C);
                 BaseSpeed = data.ReadInt16(0x7E);
 
-                Unknown80 = data.ReadInt32(0x80);
+                Unknown80 = data.ReadInt16(0x80);
+                EvolvesFrom = data.ReadInt16(0x82);
 
-                ExperienceEntry = data.ReadInt32(0x84);
+                ExperienceEntry = data.ReadByte(0x84);
 
-                Unknown88 = data.ReadInt64(0x88);
+                Unknown8B = (sbyte)data.ReadByte(0x8B);
+                Unknown8C = (sbyte)data.ReadByte(0x8C);
+                Unknown8D = (sbyte)data.ReadByte(0x8D);
+                Unknown8E = (sbyte)data.ReadByte(0x8E);
 
                 Ability1 = (AbilityIndex)data.ReadByte(0x90);
                 Ability2 = (AbilityIndex)data.ReadByte(0x91);
@@ -140,34 +169,35 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
                 Unknown95 = data.ReadByte(0x95);
                 Unknown96 = data.ReadByte(0x96);
-                Unknown97 = data.ReadByte(0x97);
-                Unknown98 = data.ReadByte(0x98);
-                Unknown99 = data.ReadByte(0x99);
-                Unknown9A = data.ReadByte(0x9A);
+                Size = data.ReadByte(0x97);
+                MegaRelatedProperty = data.ReadByte(0x98);
+                SomeMinimumLevel = data.ReadByte(0x99);
+                SomeMaximumLevel = data.ReadByte(0x9A);
 
                 RecruitPrereq = data.ReadString(0x9B, 69, Encoding.ASCII).TrimEnd('\0');
             }
 
             public void Write(Span<byte> buffer)
             {
-                BinaryPrimitives.WriteInt64LittleEndian(buffer, Unknown00);
-                BinaryPrimitives.WriteInt64LittleEndian(buffer.Slice(8), Unknown08);
+                LearnableTMs.CopyTo(buffer.Slice(0));
                 for (int i = 0; i < 26; i++)
                 {
                     var move = LevelupLearnset[i];
                     BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x10 + i * sizeof(short)), (short)move.Move);
                     buffer[0x44 + i] = move.Level;
                 }
-                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x5E), Unknown5E);
-                BinaryPrimitives.WriteInt32LittleEndian(buffer.Slice(0x60), Unknown60);
+                BinaryPrimitives.WriteUInt16LittleEndian(buffer.Slice(0x60), (ushort)Features);
+                BinaryPrimitives.WriteUInt16LittleEndian(buffer.Slice(0x62), Unknown62);
 
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x64), PokedexNumber);
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x66), Unknown66);
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x68), Taxon);
 
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x6A), Unknown6A);
-                BinaryPrimitives.WriteInt32LittleEndian(buffer.Slice(0x6C), Unknown6C);
-                BinaryPrimitives.WriteInt32LittleEndian(buffer.Slice(0x70), Unknown70);
+                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x6C), Unknown6C);
+                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x6E), Unknown6E);
+                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x70), Unknown70);
+                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x72), Unknown72);
 
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x74), BaseHitPoints);
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x76), BaseAttack);
@@ -176,11 +206,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x7C), BaseSpecialDefense);
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x7E), BaseSpeed);
 
-                BinaryPrimitives.WriteInt32LittleEndian(buffer.Slice(0x80), Unknown80);
+                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x80), Unknown80);
+                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x82), EvolvesFrom);
 
-                BinaryPrimitives.WriteInt32LittleEndian(buffer.Slice(0x84), ExperienceEntry);
+                buffer[0x84] = ExperienceEntry;
 
-                BinaryPrimitives.WriteInt64LittleEndian(buffer.Slice(0x88), Unknown88);
+                buffer[0x8B] = (byte)Unknown8B;
+                buffer[0x8C] = (byte)Unknown8C;
+                buffer[0x8D] = (byte)Unknown8D;
+                buffer[0x8E] = (byte)Unknown8E;
 
                 buffer[0x90] = (byte)Ability1;
                 buffer[0x91] = (byte)Ability2;
@@ -190,16 +224,35 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
                 buffer[0x95] = Unknown95;
                 buffer[0x96] = Unknown96;
-                buffer[0x97] = Unknown97;
-                buffer[0x98] = Unknown98;
-                buffer[0x99] = Unknown99;
-                buffer[0x9A] = Unknown9A;
+                buffer[0x97] = Size;
+                buffer[0x98] = MegaRelatedProperty;
+                buffer[0x99] = SomeMinimumLevel;
+                buffer[0x9A] = SomeMaximumLevel;
 
 #if NETSTANDARD2_0
                 Encoding.ASCII.GetBytes(RecruitPrereq).CopyTo(buffer.Slice(0x9B, 69));
 #else
                 Encoding.ASCII.GetBytes(RecruitPrereq, buffer.Slice(0x9B, 69));
 #endif
+            }
+
+            [Flags]
+            public enum FeatureFlags : ushort
+            {
+                Male = 1 << 0,
+                Female = 1 << 1,
+                NoGender = 1 << 2,  // unsure
+                CanWalkOnWater = 1 << 3,
+                CanWalkOnMagma = 1 << 4,
+                CanPhaseThroughWalls = 1 << 5,
+                CanLevitate = 1 << 6,  // Levitate, fly, float, etc.
+                CannotMove = 1 << 7,  // Wild Pokémon only
+                // Bits 8, 9 and 10 are always zero
+                Starter = 1 << 11,
+                BaseForm = 1 << 12,  // Not set for Megas or alternate forms
+                Unknown13 = 1 << 13,
+                // Bit 14 is always zero
+                Active = 1 << 15,  // Set to 1 for Pokémon used in RTDX
             }
         }
 
