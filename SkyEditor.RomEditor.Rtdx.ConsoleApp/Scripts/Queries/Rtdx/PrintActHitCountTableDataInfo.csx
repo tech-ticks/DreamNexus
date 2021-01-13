@@ -43,6 +43,15 @@ foreach (var entry in hitCounts.Entries)
                 }
                 Console.Write($"{chance:f1}%");
             }
+            Console.Write(")  (");
+            for (var i = entry.MinHits; i <= entry.MaxHits; i++)
+            {
+                var weight = entry.Weights[i - entry.MinHits];
+                if (i > entry.MinHits) {
+                    Console.Write(" ");
+                }
+                Console.Write($"{weight}");
+            }
             Console.WriteLine(")");
         }
     }
