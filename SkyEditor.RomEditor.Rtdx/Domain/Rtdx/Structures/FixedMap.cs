@@ -135,9 +135,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                         YPos = data.ReadByte(relativeOffset + 1),
                         Byte02 = data.ReadByte(relativeOffset + 2),
                         Byte03 = data.ReadByte(relativeOffset + 3),
-                        UnknownItemIndex = data.ReadByte(relativeOffset + 4),
-                        Direction = (EntityDirection) data.ReadByte(relativeOffset + 5),
-                        UnknownItemVariation = data.ReadByte(relativeOffset + 6),
+                        FixedItemIndex = data.ReadUInt16(relativeOffset + 4),
+                        Variation = (FixedMapItem.ItemVariation)data.ReadByte(relativeOffset + 6),
                         Byte07 = data.ReadByte(relativeOffset + 7),
                     });
                 }
@@ -194,9 +193,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     sir0.Write(sir0.Length, item.YPos);
                     sir0.Write(sir0.Length, item.Byte02);
                     sir0.Write(sir0.Length, item.Byte03);
-                    sir0.Write(sir0.Length, (byte) item.UnknownItemIndex);
-                    sir0.Write(sir0.Length, (byte) item.Direction);
-                    sir0.Write(sir0.Length, item.UnknownItemVariation);
+                    sir0.WriteUInt16(sir0.Length, item.FixedItemIndex);
+                    sir0.Write(sir0.Length, (byte)item.Variation);
                     sir0.Write(sir0.Length, item.Byte07);
                 }
 
@@ -282,20 +280,21 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             // Apparently always zero on maps that weren't copied from PSMD
             public byte Byte03 { get; set; }
 
-            // Item index. Probably related to fixed_item.bin
-            // 0x9C = Stairs, 0xCC = Evolution crystal (Index might vary per dungeon)
-            public byte UnknownItemIndex { get; set; }
+            // Fixed item index (an index into fixed_item.bin)
+            public ushort FixedItemIndex { get; set; }
 
-            // It seems like non-zero values cause crashes on items that can't be rotated.
-            public EntityDirection Direction { get; set; }
-
-            // 1 for upwards stairs and 3 for downwards stairs. 2 causes all items to disappear (?)
-            // Non-stairs items seem to behave the same no matter if the this is set to 1 or 3.
-            // Might be bit flags?
-            public byte UnknownItemVariation { get; set; }
+            public ItemVariation Variation { get; set; }
 
             // Apparently always zero on maps that weren't copied from PSMD
             public byte Byte07 { get; set; }
+
+            public enum ItemVariation : byte
+            {
+                Item = 1,
+                Trap = 2,
+                StairsDown = 3,
+                StairsUp = 4,
+            }
         }
 
         public class FixedMapTile
@@ -319,7 +318,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Floor = 2,
                 MaybeSecondaryTerrain = 3, // Might be water, lava etc. depending on the dungeon. TODO: investigate
                 Chasm = 5,
-                MysteryHouseDoor = 15,
+                MysteryHouseDoor = 14,
 
                 // TODO: see if there are more, maybe some leftovers from PSMD?
             }

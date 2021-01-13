@@ -59,7 +59,7 @@ for (int i = 0; i < maps.Count; i++)
     for (int j = 0; j < map.Items.Count; j++)
     {
         var item = map.Items[j];
-        Console.WriteLine($"#{j} @ {item.XPos},{item.YPos}: {item.UnknownItemIndex}, {item.Direction}, {Convert.ToString(item.UnknownItemVariation, 2)}");
+        Console.WriteLine($"#{j} @ {item.XPos},{item.YPos}: {item.FixedItemIndex}, {item.Variation}");
     }
 
     Console.WriteLine();
