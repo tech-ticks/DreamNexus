@@ -36,13 +36,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Entries.Add(new Entry(sir0));
             }
         }
-        
+
         public (byte[] bin, byte[] ent) Build()
         {
             var binFile = new BinaryFile(new MemoryStream());
             var entryPointers = new List<int>();
 
-            void align(int length) 
+            void align(int length)
             {
                 var paddingLength = length - (binFile!.Length % length);
                 if (paddingLength != length)
@@ -54,10 +54,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             foreach (var entry in Entries)
             {
                 align(32);
-                entryPointers.Add((int) binFile.Length);
+                entryPointers.Add((int)binFile.Length);
                 binFile.Write(binFile.Length, entry.ToSir0().Data.ReadArray());
             }
-            entryPointers.Add((int) binFile.Length);
+            entryPointers.Add((int)binFile.Length);
 
             // Build the .ent file data
             var ent = new byte[entryPointers.Count * sizeof(int)];
@@ -70,6 +70,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
         public class Entry
         {
+            public Entry(ushort width, ushort height)
+            {
+                Width = width;
+                Height = height;
+                var tileCount = width * height;
+                Tiles = new FixedMapTile[tileCount];
+                for (var i = 0; i < tileCount; i++)
+                {
+                    Tiles[i] = new FixedMapTile();
+                }
+                Creatures = new List<FixedMapCreature>();
+                Items = new List<FixedMapItem>();
+            }
+
             public Entry(Sir0 sir0)
             {
                 Width = sir0.SubHeader.ReadUInt16(0x0);
@@ -88,7 +102,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     int relativeOffset = i * FixedMapTile.EntrySize;
                     Tiles[i] = new FixedMapTile
                     {
-                        Type = (FixedMapTile.TileType) data.ReadByte(relativeOffset),
+                        Type = (FixedMapTile.TileType)data.ReadByte(relativeOffset),
                         Byte01 = data.ReadByte(relativeOffset + 1),
                         RoomId = data.ReadByte(relativeOffset + 2),
                     };
@@ -116,9 +130,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                         YPos = data.ReadByte(relativeOffset + 1),
                         Byte02 = data.ReadByte(relativeOffset + 2),
                         Byte03 = data.ReadByte(relativeOffset + 3),
-                        Index = (FixedCreatureIndex) (creatureIndexAndDirection & 0x3FFFu),
-                        Direction = (EntityDirection) (creatureIndexAndDirection >> 14),
-                        Faction = (FixedMapCreature.CreatureFaction) data.ReadByte(relativeOffset + 6),
+                        Index = (FixedCreatureIndex)(creatureIndexAndDirection & 0x3FFFu),
+                        Direction = (EntityDirection)(creatureIndexAndDirection >> 14),
+                        Faction = (FixedMapCreature.CreatureFaction)data.ReadByte(relativeOffset + 6),
                         Byte07 = data.ReadByte(relativeOffset + 7),
                     });
                 }
@@ -170,7 +184,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 int layoutPointer = sir0.Length;
                 foreach (var tile in Tiles)
                 {
-                    sir0.Write(sir0.Length, (byte) tile.Type);
+                    sir0.Write(sir0.Length, (byte)tile.Type);
                     sir0.Write(sir0.Length, tile.Byte01);
                     sir0.Write(sir0.Length, tile.RoomId);
                     sir0.Write(sir0.Length, 0);
@@ -181,13 +195,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 int creaturesPointer = sir0.Length;
                 foreach (var creature in Creatures)
                 {
-                    ushort creatureIndexAndDirection = (ushort) ((int) creature.Index | (((int) creature.Direction) << 14));
+                    ushort creatureIndexAndDirection = (ushort)((int)creature.Index | (((int)creature.Direction) << 14));
                     sir0.Write(sir0.Length, creature.XPos);
                     sir0.Write(sir0.Length, creature.YPos);
                     sir0.Write(sir0.Length, creature.Byte02);
                     sir0.Write(sir0.Length, creature.Byte03);
                     sir0.WriteUInt16(sir0.Length, creatureIndexAndDirection);
-                    sir0.Write(sir0.Length, (byte) creature.Faction);
+                    sir0.Write(sir0.Length, (byte)creature.Faction);
                     sir0.Write(sir0.Length, creature.Byte07);
                 }
 
@@ -205,13 +219,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
 
                 align(16);
-                
+
                 int subHeaderPointer = sir0.Length;
 
                 sir0.WriteUInt16(sir0.Length, Width);
                 sir0.WriteUInt16(sir0.Length, Height);
-                sir0.WriteUInt16(sir0.Length, (ushort) Creatures.Count);
-                sir0.WriteUInt16(sir0.Length, (ushort) Items.Count);
+                sir0.WriteUInt16(sir0.Length, (ushort)Creatures.Count);
+                sir0.WriteUInt16(sir0.Length, (ushort)Items.Count);
 
                 align(16);
 
@@ -234,8 +248,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Tiles[y * Width + x] = tile;
             }
 
-            public ushort Width { get; set; }
-            public ushort Height { get; set; }
+            public ushort Width { get; }
+            public ushort Height { get; }
 
             public List<FixedMapCreature> Creatures { get; set; }
             public List<FixedMapItem> Items { get; set; }
