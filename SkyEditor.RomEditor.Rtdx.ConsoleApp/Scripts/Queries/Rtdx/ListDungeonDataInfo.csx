@@ -145,7 +145,7 @@ foreach (var dungeon in dungeons)
     }*/
 
     // Print wild Pokemon
-    /*if (wildPokemon != null)
+   /*if (wildPokemon != null)
     {
         Console.WriteLine("      #   Pokemon         Lvl    HP   Atk   Def   SpA   SpD   Spe    XP Yield");
         Console.WriteLine("             Spawn  Recruit");

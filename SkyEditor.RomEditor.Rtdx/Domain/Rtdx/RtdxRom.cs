@@ -77,6 +77,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IRandomParts GetRandomParts();
 
         IActHitCountTableDataInfo GetActHitCountTableDataInfo();
+        
+        IMoveList GetTameMoveList();
+        
+        IMoveList GetXLMoveList();
         #endregion
 
         #region StreamingAssets/native_data
@@ -350,6 +354,28 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private IActHitCountTableDataInfo? actHitCountTableDataInfo;
 
         protected static string GetActHitCountTableDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_hit_count_table_data_info.bin");
+
+        public IMoveList GetTameMoveList()
+        {
+            if (tameMoveList == null)
+            {
+                tameMoveList = new MoveList(FileSystem.ReadAllBytes(GetTameMoveListPath(this.RomDirectory)));
+            }
+            return tameMoveList;
+        }
+        private MoveList? tameMoveList;
+        protected static string GetTameMoveListPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_tamewaza.bin");
+
+        public IMoveList GetXLMoveList()
+        {
+            if (xlMoveList == null)
+            {
+                xlMoveList = new MoveList(FileSystem.ReadAllBytes(GetXLMoveListPath(this.RomDirectory)));
+            }
+            return xlMoveList;
+        }
+        private MoveList? xlMoveList;
+        protected static string GetXLMoveListPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_xlwaza.bin");
         #endregion
 
         #region StreamingAssets/native_data
