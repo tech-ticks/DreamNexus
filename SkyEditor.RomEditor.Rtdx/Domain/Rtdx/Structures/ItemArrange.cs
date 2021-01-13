@@ -7,7 +7,14 @@ using System.IO;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
-    public class ItemArrange
+    public interface IItemArrange
+    {
+        public ItemArrange.Entry[] Entries { get; set; }
+
+        public (byte[] bin, byte[] ent) Build();
+    }
+
+    public class ItemArrange : IItemArrange
     {
         public ItemArrange(byte[] binData, byte[] entData)
         {

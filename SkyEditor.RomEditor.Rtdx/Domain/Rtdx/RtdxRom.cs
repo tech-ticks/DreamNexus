@@ -57,19 +57,21 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// Gets static Pokemon data, loading it if needed
         /// </summary>
         IFixedPokemon GetFixedPokemon();
-        
+
         IDungeonDataInfo GetDungeonDataInfo();
 
         IDungeonExtra GetDungeonExtra();
 
         IDungeonBalance GetDungeonBalance();
 
-        ItemArrange GetItemArrange();
+        IItemArrange GetItemArrange();
 
-        DungeonMapDataInfo GetDungeonMapDataInfo();
+        IDungeonMapDataInfo GetDungeonMapDataInfo();
 
-        FixedMap GetFixedMap();
-        
+        IFixedMap GetFixedMap();
+
+        IFixedItem GetFixedItem();
+
         IRandomParts GetRandomParts();
 
         IActHitCountTableDataInfo GetActHitCountTableDataInfo();
@@ -87,7 +89,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         #region Models
         IStarterCollection GetStarters();
-        
+
         IDungeonCollection GetDungeons();
         #endregion
 
@@ -233,7 +235,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private IFixedPokemon? fixedPokemon;
 
         protected static string GetFixedPokemonPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_pokemon.bin");
-        
+
         public IDungeonDataInfo GetDungeonDataInfo()
         {
             if (dungeonDataInfo == null)
@@ -244,7 +246,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private IDungeonDataInfo? dungeonDataInfo;
         protected static string GetDungeonDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_data_info.bin");
-        
+
         public IDungeonExtra GetDungeonExtra()
         {
             if (dungeonExtra == null)
@@ -254,8 +256,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             return dungeonExtra;
         }
         private IDungeonExtra? dungeonExtra;
-		protected static string GetDungeonExtraPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_extra.bin");
-        
+        protected static string GetDungeonExtraPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_extra.bin");
+
         public IDungeonBalance GetDungeonBalance()
         {
             if (dungeonBalance == null)
@@ -267,7 +269,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private IDungeonBalance? dungeonBalance;
         protected static string GetDungeonBalancePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_balance");
 
-        public ItemArrange GetItemArrange()
+        public IItemArrange GetItemArrange()
         {
             if (itemArrange == null)
             {
@@ -278,7 +280,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private ItemArrange? itemArrange;
         protected static string GetItemArrangePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/item_arrange");
 
-        public DungeonMapDataInfo GetDungeonMapDataInfo()
+        public IDungeonMapDataInfo GetDungeonMapDataInfo()
         {
             if (dungeonMapDataInfo == null)
             {
@@ -286,10 +288,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
             return dungeonMapDataInfo;
         }
-        private FixedMap? fixedMap;
-        protected static string GetFixedMapPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_map");
+        private DungeonMapDataInfo? dungeonMapDataInfo;
+        protected static string GetDungeonMapDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_map_data_info.bin");
 
-        public FixedMap GetFixedMap()
+        public IFixedMap GetFixedMap()
         {
             if (fixedMap == null)
             {
@@ -300,9 +302,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
             return fixedMap;
         }
-        private DungeonMapDataInfo? dungeonMapDataInfo;
-        protected static string GetDungeonMapDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/dungeon_map_data_info.bin");
-        
+        private FixedMap? fixedMap;
+        protected static string GetFixedMapPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_map");
+
+        public IFixedItem GetFixedItem()
+        {
+            if (fixedItem == null)
+            {
+                fixedItem = new FixedItem(FileSystem.ReadAllBytes(GetFixedItemPath(this.RomDirectory)));
+            }
+            return fixedItem;
+        }
+        private FixedItem? fixedItem;
+        protected static string GetFixedItemPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/fixed_item.bin");
+
         public IRandomParts GetRandomParts()
         {
             if (randomParts == null)
@@ -378,7 +391,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             return commonStrings;
         }
         private ICommonStrings? commonStrings;
-        
+
         public Sir0StringList GetDungeonMapSymbol()
         {
             if (dungeonMapSymbol == null)
@@ -389,7 +402,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private Sir0StringList? dungeonMapSymbol;
         protected static string GetDungeonMapSymbolPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon_map_symbol.bin");
-        
+
         public Sir0StringList GetDungeonBgmSymbol()
         {
             if (dungeonBgmSymbol == null)
@@ -477,7 +490,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     Directory.CreateDirectory(Path.GetDirectoryName(path));
                 }
             }
-            
+
             // Save wrappers around files
             if (starterCollection != null)
             {
@@ -519,7 +532,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
 
             // To-do: save commonStrings when implemented
-            
+
             if (messageBin != null)
             {
                 var path = GetMessageBinUSPath(directory);

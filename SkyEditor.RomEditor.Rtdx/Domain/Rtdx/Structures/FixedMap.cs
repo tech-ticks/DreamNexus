@@ -7,9 +7,15 @@ using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
-    public class FixedMap
+    public interface IFixedMap
     {
-        public List<Entry> Entries { get; } = new List<Entry>();
+        public IList<FixedMap.Entry> Entries { get; }
+        public (byte[] bin, byte[] ent) Build();
+    }
+
+    public class FixedMap : IFixedMap
+    {
+        public IList<Entry> Entries { get; } = new List<Entry>();
 
         public FixedMap()
         {
@@ -312,7 +318,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             // that hit all targets in the room). 0 in walls and corridors.
             public byte RoomId { get; set; }
 
-            public enum TileType
+            public enum TileType : byte
             {
                 Wall = 0,
                 Floor = 2,

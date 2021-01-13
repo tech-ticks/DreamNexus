@@ -6,12 +6,19 @@ using SkyEditor.IO.Binary;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
+    public interface IDungeonMapDataInfo
+    {
+        public IList<DungeonMapDataInfo.Entry> Entries { get; }
+
+        public byte[] ToByteArray();
+    }
+
     /// <summary>
     /// Contains reusable data for dungeon floors, such as the music and fixed map index.
     /// For each entry in this file, there's also an entry for the tileset in dungeon_map_symbol.bin
     /// with the same index.
     /// </summary>
-    public class DungeonMapDataInfo
+    public class DungeonMapDataInfo : IDungeonMapDataInfo
     {
         public const int EntrySize = 0xc;
 
@@ -23,7 +30,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         public DungeonMapDataInfo(byte[] data)
         {
             var entries = new List<Entry>();
-            for (int i = 0; i < data.Length / EntrySize; i++) 
+            for (int i = 0; i < data.Length / EntrySize; i++)
             {
                 entries.Add(new Entry(data.AsSpan(i * EntrySize, EntrySize)));
             }
@@ -42,12 +49,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             return data.ReadArray();
         }
 
-        public List<Entry> Entries { get; }
+        public IList<Entry> Entries { get; }
 
         [DebuggerDisplay("{Name}")]
         public class Entry
         {
-            public Entry() {}
+            public Entry() { }
 
             public Entry(Span<byte> data)
             {
@@ -73,7 +80,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 data.Write(0x9, Byte09);
                 data.Write(0xA, Byte0A);
                 data.Write(0xB, Byte0B);
-                
+
                 return data.ReadSpan();
             }
 
