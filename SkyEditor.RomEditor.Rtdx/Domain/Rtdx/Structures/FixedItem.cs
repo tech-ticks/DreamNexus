@@ -12,7 +12,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
     public interface IFixedItem
     {
         IList<FixedItem.Entry> Entries { get; }
-        byte[] Build();
+        Sir0 Build();
     }
 
     public class FixedItem : IFixedItem
@@ -41,15 +41,37 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             Entries = entries;
         }
 
-        public byte[] Build()
+        public Sir0 Build()
         {
-            MemoryStream bin = new MemoryStream();
+            var sir0 = new Sir0Builder(8);
+
+            void align(int length)
+            {
+                var paddingLength = length - (sir0.Length % length);
+                if (paddingLength != length)
+                {
+                    sir0.WritePadding(sir0.Length, paddingLength);
+                }
+            }
+
+            var offsets = new List<int>();
             foreach (var entry in Entries)
             {
+                offsets.Add(sir0.Length);
                 var entryData = entry.ToByteArray();
-                bin.Write(entryData, 0, entryData.Length);
+                sir0.Write(sir0.Length, entryData);
             }
-            return bin.ToArray();
+
+            align(16);
+            sir0.SubHeaderOffset = sir0.Length;
+            sir0.WriteInt32(sir0.Length, Entries.Count);
+            align(8);
+            foreach (var offset in offsets)
+            {
+                sir0.WritePointer(sir0.Length, offset);
+            }
+
+            return sir0.Build();
         }
 
         public class Entry
