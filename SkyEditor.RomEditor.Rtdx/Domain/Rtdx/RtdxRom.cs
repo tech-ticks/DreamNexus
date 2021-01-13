@@ -50,6 +50,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         PokemonDataInfo GetPokemonDataInfo();
 
         IExperience GetExperience();
+
+        IWazaDataInfo GetWazaDataInfo();
         #endregion
 
         #region StreamingAssets/native_data/dungeon
@@ -218,6 +220,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private IExperience? experience;
         protected static string GetExperiencePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon/experience");
 
+        public IWazaDataInfo GetWazaDataInfo()
+        {
+            if (wazaDataInfo == null)
+            {
+                wazaDataInfo = new WazaDataInfo(FileSystem.ReadAllBytes(GetWazaDataInfoPath(this.RomDirectory)));
+            }
+            return wazaDataInfo;
+        }
+        private WazaDataInfo? wazaDataInfo;
+        protected static string GetWazaDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon/waza_data_info.bin");
         #endregion
 
         #region StreamingAssets/native_data/dungeon
