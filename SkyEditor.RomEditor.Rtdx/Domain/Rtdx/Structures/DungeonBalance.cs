@@ -362,8 +362,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     XPYield = accessor.ReadInt32(0x00);
                     HitPoints = accessor.ReadInt16(0x04);
                     Attack = accessor.ReadByte(0x06);
-                    Defense = accessor.ReadByte(0x07);
-                    SpecialAttack = accessor.ReadByte(0x08);
+                    SpecialAttack = accessor.ReadByte(0x07);
+                    Defense = accessor.ReadByte(0x08);
                     SpecialDefense = accessor.ReadByte(0x09);
                     Speed = accessor.ReadByte(0x0A);
                     StrongFoe = accessor.ReadByte(0x0B);
@@ -380,8 +380,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     accessor.WriteInt32(0x00, XPYield);
                     accessor.WriteInt16(0x04, HitPoints);
                     accessor.Write(0x06, Attack);
-                    accessor.Write(0x07, Defense);
-                    accessor.Write(0x08, SpecialAttack);
+                    accessor.Write(0x07, SpecialAttack);
+                    accessor.Write(0x08, Defense);
                     accessor.Write(0x09, SpecialDefense);
                     accessor.Write(0x0A, Speed);
                     accessor.Write(0x0B, StrongFoe);
@@ -395,8 +395,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 public int XPYield { get; set; }
                 public short HitPoints { get; set; }
                 public byte Attack { get; set; }
-                public byte Defense { get; set; }
                 public byte SpecialAttack { get; set; }
+                public byte Defense { get; set; }
                 public byte SpecialDefense { get; set; }
                 public byte Speed { get; set; }
                 public byte StrongFoe { get; set; }
