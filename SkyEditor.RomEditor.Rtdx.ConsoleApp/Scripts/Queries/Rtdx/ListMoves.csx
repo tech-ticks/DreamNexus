@@ -15,7 +15,7 @@ foreach (var entry in db.Entries)
     var act = acts[entry.ActIndex];
     var text1 = dungeonBin.GetStringByHash((int)act.Text08);
     var text2 = dungeonBin.GetStringByHash((int)act.Text0C);
-    Console.WriteLine($"#{i,-3} {moveName,-25}  {entry.Short00,3}  {entry.Short02,3}  {entry.Short04,3}  {entry.Short0E,5}  {entry.Byte10,3}  {entry.Byte11,3}");
+    Console.WriteLine($"#{i,-3} {moveName,-25}  {entry.ActIndex,5}  {entry.Short00,3}  {entry.Short02,3}  {entry.Short04,3}  {entry.Short0E,5}  {entry.Byte10,3}  {entry.Byte11,3}");
     if (!string.IsNullOrEmpty(text1))
     {
         Console.WriteLine($"  Dungeon message 1: \"{text1}\"");

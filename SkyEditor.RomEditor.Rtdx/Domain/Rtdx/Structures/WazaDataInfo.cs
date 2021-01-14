@@ -47,7 +47,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
         public IList<Entry> Entries { get; }
 
-        [DebuggerDisplay("{Name}")]
+        [DebuggerDisplay("{Short00}|{Short02}|{Short04}|{ActIndex}|{Short0E}|{Byte10}|{Byte11}")]
         public class Entry
         {
             public Entry() { }

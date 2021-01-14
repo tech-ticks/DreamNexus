@@ -1,6 +1,6 @@
 ﻿namespace SkyEditor.RomEditor.Domain.Rtdx.Constants
 {
-    public enum ItemKind
+    public enum ItemKind : byte
     {
         NONE,
         ARROW,

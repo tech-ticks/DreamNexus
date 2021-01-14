@@ -98,6 +98,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         Sir0StringList GetDungeonMapSymbol();
         Sir0StringList GetDungeonBgmSymbol();
         ICodeTable GetCodeTable();
+        IItemDataInfo GetItemDataInfo();
         #endregion
 
         #region Models
@@ -553,6 +554,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private ICodeTable? codeTable;
         protected static string GetCodeTablePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/code_table.bin");
+
+        public IItemDataInfo GetItemDataInfo()
+        {
+            if (itemDataInfo == null)
+            {
+                itemDataInfo = new ItemDataInfo(FileSystem.ReadAllBytes(GetItemDataInfoPath(this.RomDirectory)));
+            }
+            return itemDataInfo;
+        }
+        private IItemDataInfo? itemDataInfo;
+        protected static string GetItemDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/item_data_info.bin");
         #endregion
 
         #region Models
