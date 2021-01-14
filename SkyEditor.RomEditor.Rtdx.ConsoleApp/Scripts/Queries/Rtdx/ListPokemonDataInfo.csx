@@ -69,6 +69,7 @@ foreach (var pokemon in pokemonInfo.Entries)
     Console.WriteLine($"HP: {pokemon.BaseHitPoints}  ATK: {pokemon.BaseAttack}  DEF: {pokemon.BaseDefense}  SPA: {pokemon.BaseSpecialAttack}  SPD: {pokemon.BaseSpecialDefense}  SPE: {pokemon.BaseSpeed}");
     Console.WriteLine($"Experience Table ID: {pokemon.ExperienceEntry}");
     Console.WriteLine($"Recruitment prerequisite: {pokemon.RecruitPrereq}");
+    Console.WriteLine($"Recruitment rate: {pokemon.BaseRecruitRate / 10.0f:f1}%  {pokemon.BoostedRecruitRate / 10.0f:f1}%");
     */
 
     // Known fields that need to be made human-readable
@@ -87,12 +88,11 @@ foreach (var pokemon in pokemonInfo.Entries)
     Console.Write($" {((pokemon.Features & PokemonDataInfo.PokemonDataInfoEntry.FeatureFlags.Unknown13) != 0 ? '#' : '-')}");
     Console.Write($" {pokemon.Unknown62,5}");
     Console.Write($" {pokemon.Unknown66,6}");
-    Console.Write($" {pokemon.Unknown6A,6}");
-    Console.Write($" {pokemon.Unknown6C,6}");
     Console.Write($" {pokemon.Unknown6E,6}");
     Console.Write($" {pokemon.Unknown70,6}");
     Console.Write($" {pokemon.Unknown72,6}");
     Console.Write($" {pokemon.Unknown80,6}");
+    Console.Write($" |");
     Console.Write($" {pokemon.Unknown8B,2}");
     Console.Write($" {pokemon.Unknown8C,2}");
     Console.Write($" {pokemon.Unknown8D,2}");

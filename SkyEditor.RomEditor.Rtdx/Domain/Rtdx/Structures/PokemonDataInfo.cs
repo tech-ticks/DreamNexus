@@ -60,8 +60,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public short Taxon { get; set; }
 
-            public short Unknown6A { get; set; }
-            public short Unknown6C { get; set; }
+            public short BoostedRecruitRate { get; set; }  // Used on the second and further recruitments
+            public short BaseRecruitRate { get; set; }  // Used on the first recruitment
             public short Unknown6E { get; set; }
             public short Unknown70 { get; set; }
             public short Unknown72 { get; set; }
@@ -138,8 +138,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Unknown66 = data.ReadInt16(0x66);
                 Taxon = data.ReadInt16(0x68);
 
-                Unknown6A = data.ReadInt16(0x6A);
-                Unknown6C = data.ReadInt16(0x6C);
+                BoostedRecruitRate = data.ReadInt16(0x6A);
+                BaseRecruitRate = data.ReadInt16(0x6C);
                 Unknown6E = data.ReadInt16(0x6E);
                 Unknown70 = data.ReadInt16(0x70);
                 Unknown72 = data.ReadInt16(0x72);
@@ -193,8 +193,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x66), Unknown66);
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x68), Taxon);
 
-                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x6A), Unknown6A);
-                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x6C), Unknown6C);
+                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x6A), BoostedRecruitRate);
+                BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x6C), BaseRecruitRate);
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x6E), Unknown6E);
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x70), Unknown70);
                 BinaryPrimitives.WriteInt16LittleEndian(buffer.Slice(0x72), Unknown72);
