@@ -78,6 +78,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         IActDataInfo GetActDataInfo();
 
+        IActEffectDataInfo GetActEffectDataInfo();
+
         IActHitCountTableDataInfo GetActHitCountTableDataInfo();
 
         IMoveList GetTameMoveList();
@@ -361,6 +363,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private IActDataInfo? actDataInfo;
         protected static string GetActDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_data_info.bin");
+
+        public IActEffectDataInfo GetActEffectDataInfo()
+        {
+            if (actEffectDataInfo == null)
+            {
+                actEffectDataInfo = new ActEffectDataInfo(FileSystem.ReadAllBytes(GetActEffectDataInfoPath(this.RomDirectory)));
+            }
+            return actEffectDataInfo;
+        }
+        private IActEffectDataInfo? actEffectDataInfo;
+        protected static string GetActEffectDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_effect_data_info.bin");
 
         public IActHitCountTableDataInfo GetActHitCountTableDataInfo()
         {
