@@ -76,14 +76,21 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         IRandomParts GetRandomParts();
 
+        IActDataInfo GetActDataInfo();
+
         IActHitCountTableDataInfo GetActHitCountTableDataInfo();
-        
+
         IMoveList GetTameMoveList();
-        
+
         IMoveList GetXLMoveList();
         #endregion
 
         #region StreamingAssets/native_data
+        public MessageBinEntry GetCommonBinEntry();
+        public MessageBinEntry GetDungeonBinEntry();
+        public MessageBinEntry GetScriptBinEntry();
+        public MessageBinEntry GetDebugBinEntry();
+        public MessageBinEntry GetTestBinEntry();
         ICommonStrings GetCommonStrings();
         PokemonGraphicsDatabase GetPokemonGraphicsDatabase();
         Farc GetUSMessageBin();
@@ -343,6 +350,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private IRandomParts? randomParts;
         protected static string GetRandomPartsPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/random_parts");
 
+        public IActDataInfo GetActDataInfo()
+        {
+            if (actDataInfo == null)
+            {
+                actDataInfo = new ActDataInfo(FileSystem.ReadAllBytes(GetActDataInfoPath(this.RomDirectory)));
+            }
+            return actDataInfo;
+        }
+        private IActDataInfo? actDataInfo;
+        protected static string GetActDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_data_info.bin");
+
         public IActHitCountTableDataInfo GetActHitCountTableDataInfo()
         {
             if (actHitCountTableDataInfo == null)
@@ -352,7 +370,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             return actHitCountTableDataInfo;
         }
         private IActHitCountTableDataInfo? actHitCountTableDataInfo;
-
         protected static string GetActHitCountTableDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_hit_count_table_data_info.bin");
 
         public IMoveList GetTameMoveList()
@@ -413,17 +430,91 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private Farc? messageBin;
         protected string GetMessageBinUSPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/message_us.bin");
 
-        public ICommonStrings GetCommonStrings()
+        public MessageBinEntry GetCommonBinEntry()
         {
-            if (commonStrings == null)
+            if (commonBinEntry == null)
             {
-                var commonData = GetUSMessageBin().GetFile("common.bin");
-                if (commonData == null)
+                var data = GetUSMessageBin().GetFile("common.bin");
+                if (data == null)
                 {
                     throw new Exception("Unable to load common.bin from US message bin");
                 }
 
-                var common = new MessageBinEntry(commonData, GetCodeTable());
+                commonBinEntry = new MessageBinEntry(data, GetCodeTable());
+            }
+            return commonBinEntry;
+        }
+        private MessageBinEntry? commonBinEntry;
+
+        public MessageBinEntry GetDungeonBinEntry()
+        {
+            if (dungeonBinEntry == null)
+            {
+                var data = GetUSMessageBin().GetFile("dungeon.bin");
+                if (data == null)
+                {
+                    throw new Exception("Unable to load dungeon.bin from US message bin");
+                }
+
+                dungeonBinEntry = new MessageBinEntry(data, GetCodeTable());
+            }
+            return dungeonBinEntry;
+        }
+        private MessageBinEntry? dungeonBinEntry;
+
+        public MessageBinEntry GetScriptBinEntry()
+        {
+            if (scriptBinEntry == null)
+            {
+                var data = GetUSMessageBin().GetFile("script.bin");
+                if (data == null)
+                {
+                    throw new Exception("Unable to load script.bin from US message bin");
+                }
+
+                scriptBinEntry = new MessageBinEntry(data, GetCodeTable());
+            }
+            return scriptBinEntry;
+        }
+        private MessageBinEntry? scriptBinEntry;
+
+        public MessageBinEntry GetDebugBinEntry()
+        {
+            if (debugBinEntry == null)
+            {
+                var data = GetUSMessageBin().GetFile("debug.bin");
+                if (data == null)
+                {
+                    throw new Exception("Unable to load debug.bin from US message bin");
+                }
+
+                debugBinEntry = new MessageBinEntry(data, GetCodeTable());
+            }
+            return debugBinEntry;
+        }
+        private MessageBinEntry? debugBinEntry;
+
+        public MessageBinEntry GetTestBinEntry()
+        {
+            if (testBinEntry == null)
+            {
+                var data = GetUSMessageBin().GetFile("test.bin");
+                if (data == null)
+                {
+                    throw new Exception("Unable to load test.bin from US message bin");
+                }
+
+                testBinEntry = new MessageBinEntry(data, GetCodeTable());
+            }
+            return testBinEntry;
+        }
+        private MessageBinEntry? testBinEntry;
+
+        public ICommonStrings GetCommonStrings()
+        {
+            if (commonStrings == null)
+            {
+                var common = GetCommonBinEntry();
                 commonStrings = new CommonStrings(common);
             }
             return commonStrings;

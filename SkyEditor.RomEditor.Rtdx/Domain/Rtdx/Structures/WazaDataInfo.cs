@@ -54,11 +54,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public Entry(Span<byte> data)
             {
-                // short 0x0 is a redundant entry index and seems to be ignored by the game
                 Short00 = MemoryMarshal.Read<ushort>(data.Slice(0x00, sizeof(ushort)));
                 Short02 = MemoryMarshal.Read<ushort>(data.Slice(0x02, sizeof(ushort)));
                 Short04 = MemoryMarshal.Read<ushort>(data.Slice(0x04, sizeof(ushort)));
-                Index = (WazaIndex)MemoryMarshal.Read<ushort>(data.Slice(0x0C, sizeof(ushort)));
+                ActIndex = MemoryMarshal.Read<ushort>(data.Slice(0x0C, sizeof(ushort)));
                 Short0E = MemoryMarshal.Read<ushort>(data.Slice(0x0E, sizeof(ushort)));
                 Byte10 = data[0x10];
                 Byte11 = data[0x11];
@@ -70,20 +69,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 data.WriteUInt16(0x00, Short00);
                 data.WriteUInt16(0x02, Short02);
                 data.WriteUInt16(0x04, Short04);
-                data.WriteUInt16(0x0C, (ushort)Index);
+                data.WriteUInt16(0x0C, ActIndex);
                 data.WriteUInt16(0x0E, Short0E);
                 data.Write(0x10, Byte10);
                 data.Write(0x11, Byte11);
                 return data.ReadSpan();
             }
 
-            public ushort Short00 { get; set; } // only entry 82 has a non-zero value (0x07)
-            public ushort Short02 { get; set; } // only entry 82 has a non-zero value (0xA7)
-            public ushort Short04 { get; set; } // only entry 82 has a non-zero value (0xC4)
-            public WazaIndex Index { get; set; }
-            public ushort Short0E { get; set; }
-            public byte Byte10 { get; set; }
-            public byte Byte11 { get; set; }
+            public ushort Short00 { get; set; } // only entry 82 (Dragon Rage) has a non-zero value (0x07)
+            public ushort Short02 { get; set; } // only entry 82 (Dragon Rage) has a non-zero value (0xA7)
+            public ushort Short04 { get; set; } // only entry 82 (Dragon Rage) has a non-zero value (0xC4)
+            public ushort ActIndex { get; set; }  // Index into the ActDataInfo table
+            public ushort Short0E { get; set; } // Most values seem to be 10000, some go as low as ~5000, a few as high as ~19000
+            public byte Byte10 { get; set; } // Seems to indicate if the move is usable by the player
+            public byte Byte11 { get; set; } // All 100s
         }
     }
 }
