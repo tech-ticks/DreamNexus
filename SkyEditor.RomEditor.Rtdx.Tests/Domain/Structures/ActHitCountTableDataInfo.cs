@@ -14,7 +14,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
 
             var entry = new ActHitCountTableDataInfo.Entry(0);
             table.Entries.Add(entry);
-            entry.Byte00 = 1;
+            entry.StopOnMiss = 1;
             entry.MinHits = 2;
             entry.MaxHits = 5;
             entry.Weights[0] = 50;
@@ -29,7 +29,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             var rebuiltTable = new ActHitCountTableDataInfo(bin);
 
             var rebuiltEntry = rebuiltTable.Entries[0];
-            rebuiltEntry.Byte00.Should().Be(1);
+            rebuiltEntry.StopOnMiss.Should().Be(1);
             rebuiltEntry.MinHits.Should().Be(2);
             rebuiltEntry.MaxHits.Should().Be(5);
             rebuiltEntry.Weights[0].Should().Be(50);

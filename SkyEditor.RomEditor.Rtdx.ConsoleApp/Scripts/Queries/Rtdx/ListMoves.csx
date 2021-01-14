@@ -4,6 +4,7 @@ using System;
 
 var db = Rom.GetWazaDataInfo();
 var acts = Rom.GetActDataInfo().Entries;
+var hitCountData = Rom.GetActHitCountTableDataInfo().Entries;
 var tameMoves = Rom.GetTameMoveList().Entries;
 var xlMoves = Rom.GetXLMoveList().Entries;
 var strings = Rom.GetCommonStrings();
@@ -13,17 +14,63 @@ foreach (var entry in db.Entries)
 {
     var moveName = strings.Moves.ContainsKey((WazaIndex)i) ? strings.Moves[(WazaIndex)i] : ((WazaIndex)i).ToString();
     var act = acts[entry.ActIndex];
+    var hitCountEntry = hitCountData[act.ActHitCountIndex];
     var text1 = dungeonBin.GetStringByHash((int)act.Text08);
     var text2 = dungeonBin.GetStringByHash((int)act.Text0C);
-    Console.WriteLine($"#{i,-3} {moveName,-25}  {entry.ActIndex,5}  {entry.Short00,3}  {entry.Short02,3}  {entry.Short04,3}  {entry.Short0E,5}  {entry.Byte10,3}  {entry.Byte11,3}");
-    if (!string.IsNullOrEmpty(text1))
+    Console.Write($"#{i,-3} {moveName,-25}");
+    //Console.Write($"  {entry.ActIndex,5}  {entry.Short00,3}  {entry.Short02,3}  {entry.Short04,3}  {entry.Short0E,5}  {entry.Byte10,3}  {entry.Byte11,3}");
+    if (hitCountEntry.Index > 1)
+    {
+        if (hitCountEntry.StopOnMiss != 0)
+        {
+            Console.Write($"  up to {hitCountEntry.MaxHits} hits");
+        }
+        else if (hitCountEntry.MinHits == hitCountEntry.MaxHits)
+        {
+            Console.Write($"  {hitCountEntry.MaxHits} hits");
+        }
+        else
+        {
+            double weightSum = 0;
+            for (var i = hitCountEntry.MinHits; i <= hitCountEntry.MaxHits; i++)
+            {
+                weightSum += hitCountEntry.Weights[i - hitCountEntry.MinHits];
+            }
+
+            Console.Write($"  {hitCountEntry.MinHits} to {hitCountEntry.MaxHits} hits (");
+            for (var i = hitCountEntry.MinHits; i <= hitCountEntry.MaxHits; i++)
+            {
+                var weight = hitCountEntry.Weights[i - hitCountEntry.MinHits];
+                double chance = weight / weightSum * 100.0;
+                if (i > hitCountEntry.MinHits)
+                {
+                    Console.Write(" ");
+                }
+                Console.Write($"{chance:f1}%");
+            }
+            Console.Write(")  (");
+            for (var i = hitCountEntry.MinHits; i <= hitCountEntry.MaxHits; i++)
+            {
+                var weight = hitCountEntry.Weights[i - hitCountEntry.MinHits];
+                if (i > hitCountEntry.MinHits)
+                {
+                    Console.Write(" ");
+                }
+                Console.Write($"{weight}");
+            }
+            Console.Write(")");
+        }
+    }
+    Console.WriteLine();
+
+    /*if (!string.IsNullOrEmpty(text1))
     {
         Console.WriteLine($"  Dungeon message 1: \"{text1}\"");
     }
     if (!string.IsNullOrEmpty(text2))
     {
         Console.WriteLine($"  Dungeon message 2: \"{text2}\"");
-    }
+    }*/
     i++;
 }
 Console.WriteLine();

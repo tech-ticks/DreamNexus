@@ -146,7 +146,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Byte90 = data[0x90];
                 Byte91 = data[0x91];
                 Byte92 = data[0x92];
-                Byte93 = data[0x93];
+                ActHitCountIndex = data[0x93];
                 Byte94 = data[0x94];
                 Byte95 = data[0x95];
                 Byte96 = data[0x96];
@@ -252,7 +252,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 data.Write(0x90, Byte90);
                 data.Write(0x91, Byte91);
                 data.Write(0x92, Byte92);
-                data.Write(0x93, Byte93);
+                data.Write(0x93, ActHitCountIndex);
                 data.Write(0x94, Byte94);
                 data.Write(0x95, Byte95);
                 data.Write(0x96, Byte96);
@@ -356,7 +356,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte Byte90 { get; set; }
             public byte Byte91 { get; set; }
             public byte Byte92 { get; set; }
-            public byte Byte93 { get; set; }
+            public byte ActHitCountIndex { get; set; }
             public byte Byte94 { get; set; }
             public byte Byte95 { get; set; }
             public byte Byte96 { get; set; }

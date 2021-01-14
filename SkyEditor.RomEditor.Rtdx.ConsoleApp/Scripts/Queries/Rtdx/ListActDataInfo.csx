@@ -12,14 +12,17 @@ public string FormatBits(ulong b)
 
 var data = Rom.GetActDataInfo().Entries;
 var effectData = Rom.GetActEffectDataInfo().Entries;
+var hitCountData = Rom.GetActHitCountTableDataInfo().Entries;
 var strings = Rom.GetDungeonBinEntry();
 for (var i = 0; i < data.Count; i++)
 {
     var entry = data[i];
     var effectEntry = effectData[i];
+    var hitCountEntry = hitCountData[entry.ActHitCountIndex];
     var text1 = strings.GetStringByHash((int)entry.Text08);
     var text2 = strings.GetStringByHash((int)entry.Text0C);
     Console.Write($"{i};");
+    Console.Write($"{entry.ActHitCountIndex};");
     Console.Write($"{FormatBits(entry.Long00)};");
     Console.Write($"{entry.Short10};");
     Console.Write($"{entry.Short12};");
@@ -113,7 +116,6 @@ for (var i = 0; i < data.Count; i++)
     Console.Write($"{entry.Byte90};");
     Console.Write($"{entry.Byte91};");
     Console.Write($"{entry.Byte92};");
-    Console.Write($"{entry.Byte93};");
     Console.Write($"{entry.Byte94};");
     Console.Write($"{entry.Byte95};");
     Console.Write($"{entry.Byte96};");
@@ -147,6 +149,10 @@ for (var i = 0; i < data.Count; i++)
     Console.Write($"{effectEntry.Short36};");
     Console.Write($"{effectEntry.Short38};");
     Console.Write($"{effectEntry.Int3C};");
+    Console.Write($"::;");
+    Console.Write($"{hitCountEntry.MinHits};");
+    Console.Write($"{hitCountEntry.MaxHits};");
+    Console.Write($"{hitCountEntry.StopOnMiss};");
     Console.Write($"::;");
     Console.Write($"{text1};");
     Console.Write($"{text2}");

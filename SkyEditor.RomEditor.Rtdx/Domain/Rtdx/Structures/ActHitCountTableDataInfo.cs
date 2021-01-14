@@ -53,7 +53,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public const int EntrySize = 0x10;
 
             public int Index { get; }
-            public byte Byte00 { get; set; }
+            public byte StopOnMiss { get; set; } // Rollout, Ice Ball
             public byte MinHits { get; set; }
             public byte MaxHits { get; set; }
             public short[] Weights = new short[4];
@@ -66,7 +66,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public Entry(int index, IReadOnlyBinaryDataAccessor data)
             {
                 Index = index;
-                Byte00 = data.ReadByte(0x0);
+                StopOnMiss = data.ReadByte(0x0);
                 MinHits = data.ReadByte(0x1);
                 MaxHits = data.ReadByte(0x2);
                 for (var i = 0; i < 4; i++)
@@ -78,7 +78,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte[] ToByteArray()
             {
                 var data = new byte[EntrySize];
-                data[0] = Byte00;
+                data[0] = StopOnMiss;
                 data[1] = MinHits;
                 data[2] = MaxHits;
                 for (var i = 0; i < 4; i++)
