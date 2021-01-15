@@ -23,6 +23,8 @@ for (var i = 0; i < data.Count; i++)
     var text2 = strings.GetStringByHash((int)entry.Text0C);
     Console.Write($"{i};");
     Console.Write($"{entry.ActHitCountIndex};");
+    Console.Write($"{entry.MoveType};");
+    Console.Write($"{entry.MoveCategory};");
     Console.Write($"{FormatBits(entry.Long00)};");
     Console.Write($"{entry.Short10};");
     Console.Write($"{entry.Short12};");
@@ -93,8 +95,6 @@ for (var i = 0; i < data.Count; i++)
     Console.Write($"{entry.Byte7A};");
 
     Console.Write($"{entry.Byte7C};");
-    Console.Write($"{entry.Byte7D};");
-    Console.Write($"{entry.Byte7E};");
     Console.Write($"{entry.Byte7F};");
 
     Console.Write($"{entry.Byte80};");

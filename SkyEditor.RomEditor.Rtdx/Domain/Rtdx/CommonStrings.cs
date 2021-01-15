@@ -13,6 +13,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         Dictionary<WazaIndex, string> Moves { get; }
         Dictionary<DungeonIndex, string> Dungeons { get; }
         Dictionary<ItemIndex, string> Items { get; }
+        Dictionary<PokemonType, string> PokemonTypes { get; }
 
         /// <summary>
         /// Gets the name of a Pokemon by the internal Japanese name.
@@ -41,6 +42,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         string? GetItemNameByInternalName(string internalName);
 
         string? GetItemName(ItemIndex itemIndex);
+
+        string? GetPokemonTypeNameByInternalName(string internalName);
+
+        string? GetPokemonTypeName(ItemIndex itemIndex);
     }
 
     public class CommonStrings : ICommonStrings
@@ -108,6 +113,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 var name = GetItemNameByInternalName(itemName);
                 Items.Add(item, name ?? "");
             }
+
+            PokemonTypes = new Dictionary<PokemonType, string>();
+            var pokemonTypes = Enum.GetValues(typeof(PokemonType)).Cast<PokemonType>().ToArray();
+            foreach (PokemonType pokemonType in pokemonTypes)
+            {
+                if (pokemonType == default)
+                {
+                    continue;
+                }
+
+                var name = GetPokemonTypeNameByInternalName(pokemonType.ToString("f"));
+                PokemonTypes.Add(pokemonType, name ?? "");
+            }
         }
 
         private readonly MessageBinEntry common;
@@ -116,6 +134,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public Dictionary<WazaIndex, string> Moves { get; }
         public Dictionary<DungeonIndex, string> Dungeons { get; }
         public Dictionary<ItemIndex, string> Items { get; }
+        public Dictionary<PokemonType, string> PokemonTypes { get; }
 
         /// <summary>
         /// Gets the name of a Pokemon by the internal Japanese name.
@@ -180,6 +199,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public string? GetItemName(ItemIndex itemIndex)
         {
             return GetItemNameByInternalName(itemIndex.ToString("f"));
+        }
+
+        public string? GetPokemonTypeNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("TYPE_NAME__TYPE_" + internalName.ToUpper());
+            return common.GetStringByHash(nameHash);
+        }
+
+        public string? GetPokemonTypeName(ItemIndex itemIndex)
+        {
+            return GetPokemonTypeNameByInternalName(itemIndex.ToString("f"));
         }
     }
 }

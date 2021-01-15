@@ -124,8 +124,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Byte7A = data[0x7A];
                 
                 Byte7C = data[0x7C];
-                Byte7D = data[0x7D];
-                Byte7E = data[0x7E];
+                MoveType = (PokemonType)data[0x7D];
+                MoveCategory = (MoveCategory)data[0x7E];
                 Byte7F = data[0x7F];
                 Byte80 = data[0x80];
                 Byte81 = data[0x81];
@@ -230,8 +230,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 data.Write(0x7A, Byte7A);
                 
                 data.Write(0x7C, Byte7C);
-                data.Write(0x7D, Byte7D);
-                data.Write(0x7E, Byte7E);
+                data.Write(0x7D, (byte)MoveType);
+                data.Write(0x7E, (byte)MoveCategory);
                 data.Write(0x7F, Byte7F);
                 data.Write(0x80, Byte80);
                 data.Write(0x81, Byte81);
@@ -279,7 +279,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public ushort Short22 { get; set; }
             public ushort Short24 { get; set; }
             public ushort Short26 { get; set; }
-            public ushort Short28 { get; set; }
+            public ushort Short28 { get; set; }  // Seems to be the chance to apply status effect
             public ushort Short2A { get; set; }
             public ushort Short2C { get; set; }
             public ushort Short2E { get; set; }
@@ -334,8 +334,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte Byte7A { get; set; }
 
             public byte Byte7C { get; set; }
-            public byte Byte7D { get; set; }
-            public byte Byte7E { get; set; }
+            public PokemonType MoveType { get; set; }
+            public MoveCategory MoveCategory { get; set; }
             public byte Byte7F { get; set; }
             public byte Byte80 { get; set; }
             public byte Byte81 { get; set; }

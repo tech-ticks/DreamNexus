@@ -1,6 +1,19 @@
 ﻿#load "../../../Stubs/Rtdx.csx"
 
 using System;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+
+public string GetCategoryName(MoveCategory category)
+{
+    switch (category)
+    {
+        case MoveCategory.Physical: return "Physical";
+        case MoveCategory.Special: return "Special";
+        case MoveCategory.Status: return "Status";
+        case MoveCategory.None: return "None";
+        default: return category.ToString();
+    }
+}
 
 var db = Rom.GetWazaDataInfo();
 var acts = Rom.GetActDataInfo().Entries;
@@ -12,12 +25,14 @@ var dungeonBin = Rom.GetDungeonBinEntry();
 var i = 0;
 foreach (var entry in db.Entries)
 {
-    var moveName = strings.Moves.ContainsKey((WazaIndex)i) ? strings.Moves[(WazaIndex)i] : ((WazaIndex)i).ToString();
     var act = acts[entry.ActIndex];
+    var moveName = strings.Moves.ContainsKey((WazaIndex)i) ? strings.Moves[(WazaIndex)i] : ((WazaIndex)i).ToString();
+    var type = strings.PokemonTypes.ContainsKey(act.MoveType) ? strings.PokemonTypes[act.MoveType] : act.MoveType.ToString();
+    var category = GetCategoryName(act.MoveCategory);
     var hitCountEntry = hitCountData[act.ActHitCountIndex];
     var text1 = dungeonBin.GetStringByHash((int)act.Text08);
     var text2 = dungeonBin.GetStringByHash((int)act.Text0C);
-    Console.Write($"#{i,-3} {moveName,-25}");
+    Console.Write($"#{i,-3} {moveName,-25}  {type,-8}  {category,-7}");
     //Console.Write($"  {entry.ActIndex,5}  {entry.Short00,3}  {entry.Short02,3}  {entry.Short04,3}  {entry.Short0E,5}  {entry.Byte10,3}  {entry.Byte11,3}");
     if (hitCountEntry.Index > 1)
     {

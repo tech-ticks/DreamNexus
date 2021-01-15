@@ -1,6 +1,6 @@
 ﻿namespace SkyEditor.RomEditor.Domain.Rtdx.Constants
 {
-    public enum PokemonType
+    public enum PokemonType : byte
     {
         NONE,
         NORMAL,
