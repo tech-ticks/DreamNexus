@@ -96,6 +96,21 @@ public string GetEffectName(EffectType type)
     return EffectTypeStrings.ResourceManager.GetString(type.ToString(), Thread.CurrentThread.CurrentUICulture) ?? $"Unknown effect {type}";
 }
 
+// Get the name of a stat
+// TODO: see if there is an enum or some other relation
+public string GetStatName(ushort index)
+{
+    switch (index)
+    {
+        case 148: return "Attack";
+        case 149: return "Defense";
+        case 150: return "Special Attack";
+        case 151: return "Special Defense";
+        case 152: return "Speed";
+        default: return $"Unknown stat {index}";
+    }
+}
+
 // Describes stat changes
 public string DescribeStatChanges(ushort index, bool percentage)
 {
@@ -139,33 +154,54 @@ public string DescribeEffectParameter(EffectParameterType paramType, ushort valu
 {
     switch (paramType)
     {
+        case EffectParameterType.None: return "(not used)";
         case EffectParameterType.EffectChance: return $"{value}% chance to apply effect";
         case EffectParameterType.CriticalHitRatio: return $"{value}% critical hit ratio";
         case EffectParameterType.RecoilPercentOfMaxHP: return $"{value}% of max HP as recoil damage";
         case EffectParameterType.DamagePercentOfCurrentHP: return $"{value}% of current HP as damage";
         case EffectParameterType.MinDamageLevelFactor: return $"Minimum damage equal to {value}% of attacker's level";
         case EffectParameterType.MinVisitsDamageMultiplier: return $"{value}% damage at minimum dungeons visited";
+        case EffectParameterType.DamageMultiplierAtMinimumPP: return $"{value}% damage multiplier at minimum PP";
         case EffectParameterType.DamageMultiplierAtMinimumHP: return $"{value}% damage multiplier at minimum HP";
         case EffectParameterType.DamageMultiplier: return $"{value}% damage multiplier";
+        case EffectParameterType.DamageMultiplierWithOneDepletedMove: return $"{value}% damage multiplier with one depleted move";
         case EffectParameterType.FixedDamage: return $"{value} fixed damage";
         case EffectParameterType.StockpileCount: return $"{value} stockpile count";
         case EffectParameterType.SpendPercentOfMaxHP: return $"Spend {value}% of max HP";
+        case EffectParameterType.SelectAttackerOrTargetStatBoosts: return (value == 0) ? "Use attacker's stat boosts" : "Use target's stat boosts";
         case EffectParameterType.HealPercentOfDamageDealt: return $"Heal {value}% of damage dealt";
         case EffectParameterType.HealPercentOfMaxHP: return $"Heal {value}% of max HP";
-        case EffectParameterType.SetBellyAmount: return $"{value} Belly";
+        case EffectParameterType.BellyAmount: return $"{value} Belly";
+        case EffectParameterType.ExcludeFloating: return (value == 0) ? "All targets" : "Exclude floating targets";
         case EffectParameterType.PPAmount: return $"{value} PP";
-        case EffectParameterType.DigTileCount: return $"Dig {value} tiles";
+        case EffectParameterType.HPAmount: return $"{value} HP";
+        case EffectParameterType.LevelAmount: return $"{value} level(s)";
+        case EffectParameterType.PowerAmount: return $"{value} Power";
+        case EffectParameterType.AccuracyAmount: return $"{value} Accuracy";
+        case EffectParameterType.DigTileCount: return $"Dig {value} tile(s)";
+        case EffectParameterType.MinMonsterCount: return $"At least {value} monsters";
         case EffectParameterType.HealPercentOfMaxHPInSunnyWeather: return $"Heal {value}% of max HP in sunny weather";
         case EffectParameterType.RemoveStatusOnHit: return (value == 0) ? "Keep status effect on hit" : "Remove status effect on hit";
         case EffectParameterType.MaxDamageLevelFactor: return $"Maximum damage equal to {value}% of attacker's level";
         case EffectParameterType.MaxVisitsDamageMultiplier: return $"{value}% damage at maximum dungeons visited";
+        case EffectParameterType.DamageMultiplierAtMaximumPP: return $"{value}% damage multiplier at maximum PP";
         case EffectParameterType.DamageMultiplierAtMaximumHP: return $"{value}% damage multiplier at maximum HP";
+        case EffectParameterType.DamageMultiplierWithTwoDepletedMoves: return $"{value}% damage multiplier with two depleted moves";
+        case EffectParameterType.MaxBellyAmount: return $"{value} max Belly";
+        case EffectParameterType.MaxHPAmount: return $"{value} max HP";
+        case EffectParameterType.MaxMonsterCount: return $"At most {value} monsters";
         case EffectParameterType.RecruitRateBoost: return $"{value / 10.0f:f1}% increased recruitment rate";
         case EffectParameterType.HealPercentOfMaxHPInBadWeather: return $"Heal {value}% of max HP in bad weather";
+        case EffectParameterType.PercentOfMaxHPThreshold: return $"Threshold of {value}% of max HP";
         case EffectParameterType.MaxDungeonsVisited: return $"Maximum effect at {value} dungeons visited";
+        case EffectParameterType.PPThreshold: return $"Threshold of {value} PP";
+        case EffectParameterType.DamageMultiplierWithThreeDepletedMoves: return $"{value}% damage multiplier with three depleted moves";
+        case EffectParameterType.HPThreshold: return $"Threshold of {value} HP";
         case EffectParameterType.StatusEffect: return $"{strings.Statuses.GetValueOrDefault((StatusIndex)value, $"Unknown ({value})")} status effect";
         case EffectParameterType.StatMultiplierIndex: return DescribeStatChanges(value, true);
         case EffectParameterType.StatChangeIndex: return DescribeStatChanges(value, false);
+        case EffectParameterType.StatIndex: return GetStatName(value);
+        case EffectParameterType.PokemonType: return $"{strings.PokemonTypes.GetValueOrDefault((PokemonType)value, $"Unknown ({value})")} type";
         case EffectParameterType.CheckDungeonStatusEffect: return $"{strings.DungeonStatuses.GetValueOrDefault((DungeonStatusIndex)value, $"Unknown ({value})")} dungeon status effect";
         case EffectParameterType.SetDungeonStatusEffect: return $"{strings.DungeonStatuses.GetValueOrDefault((DungeonStatusIndex)value, $"Unknown ({value})")} dungeon status effect";
         default: return $"(unknown parameter {paramType}) {value}";
@@ -271,7 +307,7 @@ for (var i = 1; i < actionData.Count; i++)
     Console.WriteLine($"  Power:    {formatRange(act.MinPower, act.MaxPower)}");
     Console.WriteLine($"  PP:       {formatRange(act.MinPP, act.MaxPP)}");
     Console.WriteLine($"  Accuracy: {formatAccuracyRange(act.MinAccuracy, act.MaxAccuracy)}");
-    
+
     // Print effects
     Console.WriteLine($"  Effects:");
     foreach (var effect in act.Effects)

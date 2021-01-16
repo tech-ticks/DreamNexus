@@ -10,25 +10,25 @@
         // Deal random basic attack damage
         BasicAttackDamage = 2,
 
-        // Deal random typed damage
+        // Deal random damage
         //   Params[0] = (percentage) Critical hit ratio
         Damage = 3,
 
         // 4 is unused
 
-        // Deal random typed damage using Defense instead of Special Defense
+        // Deal random damage using Defense instead of Special Defense
         //   Params[0] = (percentage) Critical hit ratio
         DamageUsingDefense = 5,
 
-        // Deal random typed damage ignoring target's Defense and Evasion stat changes
+        // Deal random damage ignoring target's Defense and Evasion stat changes
         //   Params[0] = (percentage) Critical hit ratio
         DamageIgnoringDefenseAndEvasion = 6,
 
-        // Remove target's Reflect/Light Screen and deal random typed damage
+        // Remove target's Reflect/Light Screen and deal random damage
         //   Params[0] = (percentage) Critical hit ratio
         DamageAndBreakDefenses = 7,
 
-        // Deal random typed damage; damage is increased if target is afflicted with an specific status
+        // Deal random damage; damage is increased if target is afflicted with an specific status
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier
         //   Params[2] = (boolean) Remove status on hit
@@ -36,85 +36,85 @@
         //   Params[4] = (StatusIndex) Status to check
         DamageWithBoostIfTargetHasStatus = 8,
 
-        // Deal random typed damage; damage is increased the faster the attacker is compared to the target (based on the Speed stat)
+        // Deal random damage; damage is increased the faster the attacker is compared to the target (based on the Speed stat)
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Maximum damage multiplier
         DamageWithBoostIfFaster = 9,
 
-        // Deal random typed damage; damage is increased the slower the attacker is compared to the target (based on the Speed stat)
+        // Deal random damage; damage is increased the slower the attacker is compared to the target (based on the Speed stat)
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Maximum damage multiplier
         DamageWithBoostIfSlower = 10,
 
-        // Deal random typed damage; damage is increased if not holding an item
+        // Deal random damage; damage is increased if not holding an item
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier
         DamageWithBoostIfNotHoldingItem = 11,
 
-        // Deal random typed damage; damage is modified based on attacker's HP
+        // Deal random damage; damage is modified based on attacker's HP
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier at minimum HP
         //   Params[2] = (percentage) Damage multiplier at maximum HP
         DamageWithBoostBasedOnAttackersHP = 12,
 
-        // Deal random typed damage; damage is modified based on target's HP
+        // Deal random damage; damage is modified based on target's HP
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier at minimum HP
         //   Params[2] = (percentage) Damage multiplier at maximum HP
         DamageWithBoostBasedOnTargetsHP = 13,
 
-        // Deal fixed typed damage based on how many dungeons the attacker was taken into
+        // Deal fixed damage based on how many dungeons the attacker was taken into
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier at zero visits
         //   Params[2] = (percentage) Damage multiplier at maximum visits (count unknown)
         //   Params[3] = (integer) Number of dungeons visited for maximum effect
         DamageWithBoostBasedOnDungeonsVisited = 14,
 
-        // 15 = Deal random typed damage; damage is increased the less PP the move has (Trump Card)
+        // 15 = Deal random damage; damage is increased the less PP the move has (Trump Card)
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier at zero PP
         //   Params[2] = (percentage) Damage multiplier at PP threshold
         //   Params[3] = PP threshold
         DamageWithBoostBasedOnPP = 15,
 
-        // Deal random typed damage; damage is increased based on how many of the user's moves have zero PP (Last Resort)
+        // Deal random damage; damage is increased based on how many of the user's moves have zero PP (Last Resort)
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier with one move depleted
         //   Params[2] = (percentage) Damage multiplier with two moves depleted
         //   Params[3] = (percentage) Damage multiplier with three moves depleted
         DamageWithBoostBasedOnDepletedMoves = 16,
 
-        // Deal random typed damage; damage is increased when the move is used consecutively (Fury Cutter)
+        // Deal random damage; damage is increased when the move is used consecutively (Fury Cutter)
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier when used consecutively
         DamageWithBoostOnConsecutiveUses = 17,
 
-        // Deal random typed damage; damage is increased when the move was used by a teammate in the same turn (Echoed Voice)
+        // Deal random damage; damage is increased when the move was used by a teammate in the same turn (Echoed Voice)
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier when used after a teammate also used the move
         DamageWithBoostWhenTeammateUsedTheMoveInTheSameTurn = 18,
 
-        // Deal random typed damage; damage is increased when the move was used by a teammate in the same turn and in the same room (Round)
+        // Deal random damage; damage is increased when the move was used by a teammate in the same turn and in the same room (Round)
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier when used after a teammate also used the move in the same room
         DamageWithBoostWhenTeammateUsedTheMoveInTheSameTurnInTheSameRoom = 19,
 
-        // Deal random typed damage; damage is increased if the target is holding an item (Knock Off)
+        // Deal random damage; damage is increased if the target is holding an item (Knock Off)
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier if the target was holding an item
         DamageWithBoostIfTargetHoldsItem = 20,
 
-        // Deal random typed damage; damage is increased if the target is afflicted with any status
+        // Deal random damage; damage is increased if the target is afflicted with any status
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier if the target is afflicted with any status
         DamageWithBoostIfTargetHasAnyStatus = 21,
 
-        // Deal random typed damage; damage is increased if the user is afflicted with Burn or Poison
+        // Deal random damage; damage is increased if the user is afflicted with Burn or Poison
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier if the target is afflicted with Burn or Poison
         DamageWithBoostIfTargetHasBurnOrPoison = 22,
 
-        // Deal random typed damage; damage is increased if the target's HP is below the threshold
+        // Deal random damage; damage is increased if the target's HP is below the threshold
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier if the target is at or below the HP threshold
         //   Params[2] = (unknown)
@@ -130,11 +130,11 @@
         //   Params[1] = (percentage) Damage multiplier at maximum threshold
         MagnitudeDamage = 25,
 
-        // Deal random typed damage; type is based on the held item (Natural Gift)
+        // Deal random damage; type is based on the held item (Natural Gift)
         //   Params[0] = (percentage) Critical hit ratio
         DamageWithTypeBasedOnHeldItem = 26,
 
-        // Deal random typed damage; super-effective against Water types (Freeze-Dry)
+        // Deal random damage; super-effective against Water types (Freeze-Dry)
         //   Params[0] = (percentage) Critical hit ratio
         DamageAlwaysSuperEffectiveAgainstWater = 27,
 
@@ -160,37 +160,37 @@
         //   Params[2] = (percentage) Maximum damage (equal to the attacker's level multiplied by this factor)
         DamageBasedOnAttackersLevel = 32,
 
-        // Deal random typed damage using the target's Attack stat
+        // Deal random damage using the target's Attack stat
         //   Params[0] = (percentage) Critical hit ratio
         DamageUsingTargetsAttack = 33,
 
-        // Deal typed damage based on the target's weight; damage is increased the heavier the target is
+        // Deal damage based on the target's weight; damage is increased the heavier the target is
         //   Params[0] = (percentage) Critical hit ratio
         DamageBasedOnTargetsWeight = 34,
 
-        // Deal random typed damage; damage is increased the based on how lighter the target is compared to the attacker
+        // Deal random damage; damage is increased the based on how lighter the target is compared to the attacker
         //   Params[0] = (percentage) Critical hit ratio
         DamageBasedOnAttackerAndTargetWeights = 35,
 
-        // Deal random typed damage and cause an explosion (Hyper Beam)
+        // Deal random damage and cause an explosion (Hyper Beam)
         //   Params[0] = (percentage) Critical hit ratio
         DamageAndExplode = 36,
 
-        // Deal random typed damage; enemy drops Poké if defeated (Pay Day)
+        // Deal random damage; enemy drops Poké if defeated (Pay Day)
         //   Params[0] = (percentage) Critical hit ratio
         DamageAndDropMoney = 37,
 
         // TODO: confirm this
-        // Deal random typed damage; continue executing effects if target is defeated (Fell Stinger)
+        // Deal random damage; continue executing effects if target is defeated (Fell Stinger)
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Chance on defeat to continue executing actions?
         DamageAndContinueActionOnDefeat = 38,
 
-        // Deal random typed damage if the target shares a type with the user (Synchronoise)
+        // Deal random damage if the target shares a type with the user (Synchronoise)
         //   Params[0] = (percentage) Critical hit ratio
         DamageIfTargetSharesTypeWithAttacker = 39,
 
-        // Deal random typed damage; damage is boosted based on the number of positive stat changes of the attacker or target
+        // Deal random damage; damage is boosted based on the number of positive stat changes of the attacker or target
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (enum) 0 = Attacker's stat boosts; 1 = Target's stat boosts
         DamageWithBoostBasedOnPositiveStatChanges = 40,
@@ -632,7 +632,39 @@
         // Remove sticky status from all items
         CleanseStickyItems = 156,
 
-        // TODO: investigate 157 through 168
+        // TODO: investigate 157
+        // TODO: investigate 158
+
+        // Exit the dungeon
+        ExitDungeon = 159,
+
+        // Pull all items on the floor toward the user
+        PullAllItems = 160,
+
+        // Reveal all hidden traps on the floor
+        RevealAllTraps = 161,
+
+        // Destroy all traps on the floor
+        DestroyAllTraps = 162,
+
+        // Reveal the entire floor
+        RevealFloor = 163,
+
+        // TODO: investigate 164
+
+        // Turn the current room into a Monster House
+        CreateMonsterHouse = 165,
+
+        // Apply the Petrify status effect to all targets
+        PetrifyAllTargets = 166,
+
+        // Deal random damage; damage is modified under Rain, Sandstorm or Hail
+        //   Params[0] = (percentage) Critical hit ratio
+        //   Params[1] = (percentage) Damage multiplier under Rain, Sandstorm or Hail
+        DamageWithModifierUnderBadWeather = 167,
+
+        // Warp target to the room containing the stairs
+        WarpToStairsRoom = 168,
 
         // Restore HP with a boost in sunny weather or penalty in bad weather
         //   Params[1] = (percentage) Percentage of HP restored in normal weather
@@ -645,16 +677,18 @@
 
         // Deal damage equal to attacker's level
         DamageEqualToAttackersLevel = 171,
-        
-        // TODO: investigate 172
+
+        // Pull all targets in the room together
+        PullTargetsTogether = 172,
+
         // TODO: investigate 173
 
-        // Deal random typed damage; damage is increased if target is in the semi-invulnerable turn of Bounce, Fly, and Sky Drop
+        // Deal random damage; damage is increased if target is in the semi-invulnerable turn of Bounce, Fly, and Sky Drop
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier
         DamageWithBoostIfTargetIsFlying = 174,
 
-        // Deal random typed damage, ignoring Protect
+        // Deal random damage, ignoring Protect
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier
         DamageIgnoreProtect = 175,
@@ -663,9 +697,10 @@
         //   Params[1] = (integer) Number of tiles to dig
         DigWalls = 176,
 
-        // TODO: investigate 177
+        // Turn the entire floor into one giant room
+        OneRoom = 177,
 
-        // Deal random typed damage until attack misses
+        // Deal random damage until attack misses
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier
         DamageUntilMiss = 178,
@@ -676,10 +711,10 @@
         // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
         ApplyStatusEffectWithChance2 = 179,
 
-        // Restore belly
+        // Restore belly and increase max belly if fully sated
         //   Params[1] = (integer) Amount of belly to restore
         //   Params[2] = (integer) Amount of max belly to increase
-        RestoreBelly = 180,
+        RestoreAndIncreaseBelly = 180,
 
         // Randomly apply Stuck, Poison, Paralysis or Burn (Grimy Food)
         //   Params[0] = (percentage) Effect chance?
@@ -690,13 +725,82 @@
         //   Params[2] = (integer) Amount of max HP to increase
         RestoreHP = 182,
 
-        // TODO: investigate 183 through 189
+        // TODO: investigate 183 (related to reviver seeds)
+        // TODO: investigate 184 (related to reviver seeds)
+
+        // Decrease target's level
+        //   Params[1] = (integer) Amount of levels to decrease
+        //   Params[2] = (integer) Unknown purpose
+        DecreaseLevel = 185,
+
+        // Increase target's level
+        //   Params[1] = (integer) Amount of levels to decrease
+        //   Params[2] = (integer) Unknown purpose
+        IncreaseLevel = 186,
+
+        // TODO: investigate 187
+
+        // Disable the target's last used move for everyone
+        DisableMove = 188,
+
+        // Restore PP on all of the target's moves
+        //   Params[1] = (integer) Amount of PP to restore
+        RestorePPAll = 189,
 
         // Increase max HP
         //   Params[2] = (integer) Amount of max HP to increase
         IncreaseMaxHP = 190,
 
-        // TODO: investigate 191 through 221
+        // Increase a stat
+        IncreaseStat = 191,
+
+        // Increase a move's power
+        //   Params[1] = (integer) Amount to increase
+        IncreaseMovePower = 192,
+
+        // Increase a move's accuracy
+        //   Params[1] = (integer) Amount to increase
+        IncreaseMoveAccuracy = 193,
+
+        // Increase a move's PP
+        //   Params[1] = (integer) Amount to increase
+        IncreaseMovePP = 194,
+
+        // Increase max HP, Attack, Defense, Special Attack, Special Defense or Speed at random
+        IncreaseRandomStats = 195,
+        
+        // TODO: investigate 196
+        // TODO: investigate 197
+
+        // Swap the user's and target's current HP
+        SwapHP = 198,
+
+        // Spawn a projectile that flies towards the stairs
+        RevealStairsDirection = 199,
+
+        // TODO: investigate 200
+        // TODO: investigate 201
+
+        // Summon a random number of monsters
+        //   Params[1] = (integer) Minimum number of monsters to summon
+        //   Params[2] = (integer) Maximum number of monsters to summon
+        SummonMonsters = 202,
+
+        // Deal fixed damage and fall to the next floor
+        //   Params[1] = (integer) Amount of damage to take
+        DamageAndFallToNextFloor = 203,
+
+        // TODO: investigate 204 through 218
+
+        // Open Kangaskhan storage window
+        OpenKangaskhanStorage = 219,
+
+        // TODO: investigate 220
+
+        // TODO: investigate the difference between this and effect 3 (Damage)
+        // Deal random damage (Vital Throw, Storm Throw)
+        //   Params[0] = (percentage) Critical hit ratio
+        DamageThrow = 221,
 
         // Heal HP and increase max HP until the threshold; increase max HP further if HP is at max above the threshold
         //   Params[1] = (integer) Amount of HP to restore
@@ -706,7 +810,36 @@
         //                  otherwise max HP will only be increased if user is at full HP
         RestoreAndIncreaseHP = 222,
 
-        // TODO: investigate 223 through 233
+        // Deal random damage boosted by Pledge moves used by teammates
+        //   Params[0] = (percentage) Critical hit ratio
+        //   Params[1] = (percentage) Damage multiplier
+        PledgeBoostedDamage = 223,
+
+        // Apply dungeon status effect if another teammate has used a matching Pledge move:
+        // - Grass -> Water: applies the Swamp dungeon status effect
+        // - Fire -> Grass Pledge: applies the Sea of Fire dungeon status effect
+        // - Water -> Fire Pledge: applies the Rainbow dungeon status effect
+        ApplyPledgeEffect = 224,
+
+        // Respawn all defeated teammates
+        //   Params[0] = (percentage) Chance to respawn
+        //   Params[1] = (percentage) Percentage of HP to heal
+        RespawnDefeatedTeammates = 225,
+
+        // Inflict a random status condition or reduce a random stat on a random target (Shadow Casting)
+        //   Params[0] = (percentage) Chance to inflict status effect or reduce random stat
+        InflictRandomStatusOrReduceRandomStat = 226,
+
+        // Deal random damage; damage is modified when there are many enemies nearby (Diamond Storm)
+        //   Params[0] = (percentage) Critical hit ratio
+        //   Params[1] = (percentage) Damage multiplier
+        DamageWithBoostBasedOnNumberOfEnemiesNearby = 227,
+
+        // TODO: investigate 228
+
+        DarkMatterChargingStart = 229,
+
+        // TODO: investigate 230 through 233
 
         // Begin or end storing damage taken
         BeginEndStoringDamage = 234,
@@ -722,13 +855,61 @@
         // TODO: investigate -- used by Switcher Wand and Pounce Wand
         Unknown238 = 238,
 
-        // TODO: investigate 239 through 247
+        // TODO: investigate 239
 
-        // Deal random typed damage with an increased recruitment rate on defeat
+        // Deal random damage; damage is increased if the move is used in any weather other than Clear
+        //   Params[0] = (percentage) Critical hit ratio
+        //   Params[1] = (percentage) Damage multiplier if the move is used in any weather other than Clear
+        DamageWithBoostIfNotClearWeather = 240,
+
+        // Reset all lowered stats
+        //   Params[0] = (percentage) Chance to apply effect
+        ResetLoweredStats = 241,
+
+        // Increase a random stat, with a chance for a bigger increase
+        //   Params[0] = (percentage) Chance to apply effect
+        IncreaseRandomStat = 242,
+
+        // Clear all water/magma tiles on the floor
+        //   Params[0] = (percentage) Chance to apply effect
+        ClearAllWaterAndMagma = 243,
+
+        // Summon a team of three helpers
+        //   Params[0] = (percentage) Chance to apply effect
+        SummonHelpers = 244,
+
+        // Open the Bank window (Bank Orb)
+        OpenBank = 245,
+
+        // Open the Rescue Team Camps window (Wigglytuff Orb)
+        //   Params[0] = (percentage) Chance to apply effect
+        OpenRescueTeamCamps = 246,
+
+        // TODO: investigate 247
+
+        // Deal random damage with an increased recruitment rate on defeat
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[2] = (per-mille) Recruitment rate increase
         DamageWithBoostedRecruitRate = 248,
 
-        // TODO: investigate 249 through 258
+        // TODO: investigate 249 through 252
+
+        // Restore PP on one of the target's moves
+        //   Params[1] = (integer) Amount of PP to restore
+        RestorePPOne = 253,
+
+        // Deal random damage; damage is increased if the move missed in the last turn
+        //   Params[0] = (percentage) Critical hit ratio
+        //   Params[1] = (percentage) Damage multiplier if the move missed in the last turn
+        DamageWithBoostIfPreviousTurnMissed = 254,
+
+        // TODO: investigate 255
+
+        // Remove the specified type from the target
+        //   Params[6] = (PokemonType) Type to remove
+        RemoveType = 256,
+
+        // TODO: investigate 257
+        // TODO: investigate 258
     }
 }

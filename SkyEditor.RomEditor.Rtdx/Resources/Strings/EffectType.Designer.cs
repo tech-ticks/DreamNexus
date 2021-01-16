@@ -106,6 +106,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply dungeon status effect if another teammate has used a matching Pledge move.
+        /// </summary>
+        public static string ApplyPledgeEffect {
+            get {
+                return ResourceManager.GetString("ApplyPledgeEffect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply stat changes.
         /// </summary>
         public static string ApplyStatChanges {
@@ -286,6 +295,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Clear all water/magma tiles on the floor.
+        /// </summary>
+        public static string ClearAllWaterAndMagma {
+            get {
+                return ResourceManager.GetString("ClearAllWaterAndMagma", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Clear stat changes.
         /// </summary>
         public static string ClearStatChanges {
@@ -340,6 +358,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Turn the current room into a Monster House.
+        /// </summary>
+        public static string CreateMonsterHouse {
+            get {
+                return ResourceManager.GetString("CreateMonsterHouse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deal random damage.
         /// </summary>
         public static string Damage {
@@ -367,7 +394,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random damage; continue executing effects if target is defeated.
+        ///   Looks up a localized string similar to Deal random damage and apply further effects if target is defeated.
         /// </summary>
         public static string DamageAndContinueActionOnDefeat {
             get {
@@ -390,6 +417,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string DamageAndExplode {
             get {
                 return ResourceManager.GetString("DamageAndExplode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deal fixed damage and fall to the next floor.
+        /// </summary>
+        public static string DamageAndFallToNextFloor {
+            get {
+                return ResourceManager.GetString("DamageAndFallToNextFloor", resourceCulture);
             }
         }
         
@@ -475,6 +511,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deal random damage.
+        /// </summary>
+        public static string DamageThrow {
+            get {
+                return ResourceManager.GetString("DamageThrow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deal random damage until attack misses.
         /// </summary>
         public static string DamageUntilMiss {
@@ -529,7 +574,16 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random damage; damage is boosted based on the number of positive stat changes of the attacker or target.
+        ///   Looks up a localized string similar to Deal random damage with a multiplier if there are many enemies nearby.
+        /// </summary>
+        public static string DamageWithBoostBasedOnNumberOfEnemiesNearby {
+            get {
+                return ResourceManager.GetString("DamageWithBoostBasedOnNumberOfEnemiesNearby", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deal random damage with multiplier based on the number of positive stat changes of the attacker or target.
         /// </summary>
         public static string DamageWithBoostBasedOnPositiveStatChanges {
             get {
@@ -574,11 +628,29 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deal random damage with a multiplier if the move is used in any weather other than Clear.
+        /// </summary>
+        public static string DamageWithBoostIfNotClearWeather {
+            get {
+                return ResourceManager.GetString("DamageWithBoostIfNotClearWeather", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deal random damage with multiplier if attacker is not holding an item.
         /// </summary>
         public static string DamageWithBoostIfNotHoldingItem {
             get {
                 return ResourceManager.GetString("DamageWithBoostIfNotHoldingItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deal damage with multiplier if the move missed in the last turn.
+        /// </summary>
+        public static string DamageWithBoostIfPreviousTurnMissed {
+            get {
+                return ResourceManager.GetString("DamageWithBoostIfPreviousTurnMissed", resourceCulture);
             }
         }
         
@@ -673,11 +745,29 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deal random damage with a multiplier if the move is used under Rain, Sandstorm or Hail.
+        /// </summary>
+        public static string DamageWithModifierUnderBadWeather {
+            get {
+                return ResourceManager.GetString("DamageWithModifierUnderBadWeather", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deal random damage with type based on the attacker&apos;s held item.
         /// </summary>
         public static string DamageWithTypeBasedOnHeldItem {
             get {
                 return ResourceManager.GetString("DamageWithTypeBasedOnHeldItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Begin charging dark spires attack.
+        /// </summary>
+        public static string DarkMatterChargingStart {
+            get {
+                return ResourceManager.GetString("DarkMatterChargingStart", resourceCulture);
             }
         }
         
@@ -709,6 +799,24 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Decrease target&apos;s level.
+        /// </summary>
+        public static string DecreaseLevel {
+            get {
+                return ResourceManager.GetString("DecreaseLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Destroy all traps on the floor.
+        /// </summary>
+        public static string DestroyAllTraps {
+            get {
+                return ResourceManager.GetString("DestroyAllTraps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Destroy target&apos;s food.
         /// </summary>
         public static string DestroyTargetsFood {
@@ -723,6 +831,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string DigWalls {
             get {
                 return ResourceManager.GetString("DigWalls", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Disable the target&apos;s last used move for everyone.
+        /// </summary>
+        public static string DisableMove {
+            get {
+                return ResourceManager.GetString("DisableMove", resourceCulture);
             }
         }
         
@@ -754,7 +871,16 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (unconfirmed) Finishes the Magnetic Flux move.
+        ///   Looks up a localized string similar to Exit the dungeon.
+        /// </summary>
+        public static string ExitDungeon {
+            get {
+                return ResourceManager.GetString("ExitDungeon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (unconfirmed) Final effect Magnetic Flux.
         /// </summary>
         public static string FinishMagneticFlux {
             get {
@@ -763,7 +889,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (unconfirmed) Finish the TypeSelect action (Flower Shield).
+        ///   Looks up a localized string similar to (unconfirmed) Final effect of Flower Shield .
         /// </summary>
         public static string FinishTypeSelect1 {
             get {
@@ -772,7 +898,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (unconfirmed) Finish the TypeSelect action (Rototiller).
+        ///   Looks up a localized string similar to (unconfirmed) Final effect of Rototiller.
         /// </summary>
         public static string FinishTypeSelect2 {
             get {
@@ -826,11 +952,83 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Increase target&apos;s level.
+        /// </summary>
+        public static string IncreaseLevel {
+            get {
+                return ResourceManager.GetString("IncreaseLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Increase max HP.
         /// </summary>
         public static string IncreaseMaxHP {
             get {
                 return ResourceManager.GetString("IncreaseMaxHP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase a move&apos;s accuracy.
+        /// </summary>
+        public static string IncreaseMoveAccuracy {
+            get {
+                return ResourceManager.GetString("IncreaseMoveAccuracy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase a move&apos;s power.
+        /// </summary>
+        public static string IncreaseMovePower {
+            get {
+                return ResourceManager.GetString("IncreaseMovePower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase a move&apos;s PP.
+        /// </summary>
+        public static string IncreaseMovePP {
+            get {
+                return ResourceManager.GetString("IncreaseMovePP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase a random stat, with a chance for a bigger increase.
+        /// </summary>
+        public static string IncreaseRandomStat {
+            get {
+                return ResourceManager.GetString("IncreaseRandomStat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase max HP, Attack, Defense, Special Attack, Special Defense or Speed at random.
+        /// </summary>
+        public static string IncreaseRandomStats {
+            get {
+                return ResourceManager.GetString("IncreaseRandomStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Increase stat.
+        /// </summary>
+        public static string IncreaseStat {
+            get {
+                return ResourceManager.GetString("IncreaseStat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inflict a random status condition or reduce a random stat on a random target.
+        /// </summary>
+        public static string InflictRandomStatusOrReduceRandomStat {
+            get {
+                return ResourceManager.GetString("InflictRandomStatusOrReduceRandomStat", resourceCulture);
             }
         }
         
@@ -889,7 +1087,61 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (unconfirmed) Cause all effects of the action to only apply to targets that have the Plus or Minus ability.
+        ///   Looks up a localized string similar to Turn the entire floor into one giant room.
+        /// </summary>
+        public static string OneRoom {
+            get {
+                return ResourceManager.GetString("OneRoom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the Bank window.
+        /// </summary>
+        public static string OpenBank {
+            get {
+                return ResourceManager.GetString("OpenBank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open Kangaskhan storage window.
+        /// </summary>
+        public static string OpenKangaskhanStorage {
+            get {
+                return ResourceManager.GetString("OpenKangaskhanStorage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Open the Rescue Team Camps window.
+        /// </summary>
+        public static string OpenRescueTeamCamps {
+            get {
+                return ResourceManager.GetString("OpenRescueTeamCamps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Apply the Petrify status effect to all targets.
+        /// </summary>
+        public static string PetrifyAllTargets {
+            get {
+                return ResourceManager.GetString("PetrifyAllTargets", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deal random damage with multiplier if another teammate used a Pledge move in the same turn.
+        /// </summary>
+        public static string PledgeBoostedDamage {
+            get {
+                return ResourceManager.GetString("PledgeBoostedDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to (unconfirmed) Select only targets that have the Plus or Minus ability.
         /// </summary>
         public static string PlusAndMinusSelect {
             get {
@@ -903,6 +1155,24 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string PresentDamageOrHeal {
             get {
                 return ResourceManager.GetString("PresentDamageOrHeal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pull all items on the floor toward the user.
+        /// </summary>
+        public static string PullAllItems {
+            get {
+                return ResourceManager.GetString("PullAllItems", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pull all targets in the room together.
+        /// </summary>
+        public static string PullTargetsTogether {
+            get {
+                return ResourceManager.GetString("PullTargetsTogether", resourceCulture);
             }
         }
         
@@ -988,6 +1258,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove type.
+        /// </summary>
+        public static string RemoveType {
+            get {
+                return ResourceManager.GetString("RemoveType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Replace target&apos;s Ability with user&apos;s Ability.
         /// </summary>
         public static string ReplaceTargetAbility {
@@ -1015,6 +1294,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset all lowered stats.
+        /// </summary>
+        public static string ResetLoweredStats {
+            get {
+                return ResourceManager.GetString("ResetLoweredStats", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset positive Evasion stat changes to zero.
         /// </summary>
         public static string ResetPositiveEvasion {
@@ -1024,20 +1312,29 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Respawn all defeated teammates.
+        /// </summary>
+        public static string RespawnDefeatedTeammates {
+            get {
+                return ResourceManager.GetString("RespawnDefeatedTeammates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore belly and increase max belly if fully sated.
+        /// </summary>
+        public static string RestoreAndIncreaseBelly {
+            get {
+                return ResourceManager.GetString("RestoreAndIncreaseBelly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Heal HP and increase max HP until the threshold; increase max HP further if HP is at max above the threshold.
         /// </summary>
         public static string RestoreAndIncreaseHP {
             get {
                 return ResourceManager.GetString("RestoreAndIncreaseHP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Restore belly.
-        /// </summary>
-        public static string RestoreBelly {
-            get {
-                return ResourceManager.GetString("RestoreBelly", resourceCulture);
             }
         }
         
@@ -1083,6 +1380,51 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string RestoreHPWithBoostInSunnyWeather {
             get {
                 return ResourceManager.GetString("RestoreHPWithBoostInSunnyWeather", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore PP on all of the target&apos;s moves.
+        /// </summary>
+        public static string RestorePPAll {
+            get {
+                return ResourceManager.GetString("RestorePPAll", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore PP on one of the target&apos;s moves.
+        /// </summary>
+        public static string RestorePPOne {
+            get {
+                return ResourceManager.GetString("RestorePPOne", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reveal all hidden traps on the floor.
+        /// </summary>
+        public static string RevealAllTraps {
+            get {
+                return ResourceManager.GetString("RevealAllTraps", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Reveal the entire floor.
+        /// </summary>
+        public static string RevealFloor {
+            get {
+                return ResourceManager.GetString("RevealFloor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spawn a projectile that flies towards the stairs.
+        /// </summary>
+        public static string RevealStairsDirection {
+            get {
+                return ResourceManager.GetString("RevealStairsDirection", resourceCulture);
             }
         }
         
@@ -1240,7 +1582,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (unconfirmed) Cause all effects of the action to only apply to targets affected by the specified status effect.
+        ///   Looks up a localized string similar to (unconfirmed) Select only targets affected by the specified status effect.
         /// </summary>
         public static string StatusSelect {
             get {
@@ -1249,7 +1591,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (unconfirmed) Cause all effects of the action to only apply to targets affected by the specified status effect.
+        ///   Looks up a localized string similar to (unconfirmed) Select only targets affected by the specified status effect.
         /// </summary>
         public static string StatusSelect2 {
             get {
@@ -1281,6 +1623,24 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string StruggleRecoilDamage {
             get {
                 return ResourceManager.GetString("StruggleRecoilDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Summon a team of three helpers.
+        /// </summary>
+        public static string SummonHelpers {
+            get {
+                return ResourceManager.GetString("SummonHelpers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Summon a random number of monsters.
+        /// </summary>
+        public static string SummonMonsters {
+            get {
+                return ResourceManager.GetString("SummonMonsters", resourceCulture);
             }
         }
         
@@ -1335,6 +1695,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string SwapDefenseAndSpDefenseBoosts {
             get {
                 return ResourceManager.GetString("SwapDefenseAndSpDefenseBoosts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Swap the user&apos;s and target&apos;s current HP.
+        /// </summary>
+        public static string SwapHP {
+            get {
+                return ResourceManager.GetString("SwapHP", resourceCulture);
             }
         }
         
@@ -1420,7 +1789,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (unconfirmed) Cause all effects of the action to only apply to targets of the specified type (Rototiller, Flower Shield).
+        ///   Looks up a localized string similar to (unconfirmed) Select only targets of the specified type.
         /// </summary>
         public static string TypeSelect {
             get {
@@ -1596,6 +1965,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string WarpTeammatesAroundTarget {
             get {
                 return ResourceManager.GetString("WarpTeammatesAroundTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warp target to the room containing the stairs.
+        /// </summary>
+        public static string WarpToStairsRoom {
+            get {
+                return ResourceManager.GetString("WarpToStairsRoom", resourceCulture);
             }
         }
     }

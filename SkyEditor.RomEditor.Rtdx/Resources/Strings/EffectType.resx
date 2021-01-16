@@ -226,13 +226,13 @@
     <value>Deal random damage; target drops Poké if defeated</value>
   </data>
   <data name="DamageAndContinueActionOnDefeat" xml:space="preserve">
-    <value>Deal random damage; continue executing effects if target is defeated</value>
+    <value>Deal random damage and apply further effects if target is defeated</value>
   </data>
   <data name="DamageIfTargetSharesTypeWithAttacker" xml:space="preserve">
     <value>Deal random damage if the target shares a type with the user</value>
   </data>
   <data name="DamageWithBoostBasedOnPositiveStatChanges" xml:space="preserve">
-    <value>Deal random damage; damage is boosted based on the number of positive stat changes of the attacker or target</value>
+    <value>Deal random damage with multiplier based on the number of positive stat changes of the attacker or target</value>
   </data>
   <data name="ChargedMove" xml:space="preserve">
     <value>Charged move</value>
@@ -400,25 +400,25 @@
     <value>Transform into the target</value>
   </data>
   <data name="PlusAndMinusSelect" xml:space="preserve">
-    <value>(unconfirmed) Cause all effects of the action to only apply to targets that have the Plus or Minus ability</value>
+    <value>(unconfirmed) Select only targets that have the Plus or Minus ability</value>
   </data>
   <data name="FinishMagneticFlux" xml:space="preserve">
-    <value>(unconfirmed) Finishes the Magnetic Flux move</value>
+    <value>(unconfirmed) Final effect Magnetic Flux</value>
   </data>
   <data name="TypeSelect" xml:space="preserve">
-    <value>(unconfirmed) Cause all effects of the action to only apply to targets of the specified type (Rototiller, Flower Shield)</value>
+    <value>(unconfirmed) Select only targets of the specified type</value>
   </data>
   <data name="FinishTypeSelect1" xml:space="preserve">
-    <value>(unconfirmed) Finish the TypeSelect action (Flower Shield)</value>
+    <value>(unconfirmed) Final effect of Flower Shield </value>
   </data>
   <data name="FinishTypeSelect2" xml:space="preserve">
-    <value>(unconfirmed) Finish the TypeSelect action (Rototiller)</value>
+    <value>(unconfirmed) Final effect of Rototiller</value>
   </data>
   <data name="StatusSelect" xml:space="preserve">
-    <value>(unconfirmed) Cause all effects of the action to only apply to targets affected by the specified status effect</value>
+    <value>(unconfirmed) Select only targets affected by the specified status effect</value>
   </data>
   <data name="StatusSelect2" xml:space="preserve">
-    <value>(unconfirmed) Cause all effects of the action to only apply to targets affected by the specified status effect</value>
+    <value>(unconfirmed) Select only targets affected by the specified status effect</value>
   </data>
   <data name="SpendHP" xml:space="preserve">
     <value>Spend HP equal to a percentage of max HP</value>
@@ -579,8 +579,8 @@
   <data name="DamageWithBoostIfTargetIsFlying" xml:space="preserve">
     <value>Deal random damage with multiplier if target is in the semi-invulnerable turn of Bounce, Fly, and Sky Drop</value>
   </data>
-  <data name="RestoreBelly" xml:space="preserve">
-    <value>Restore belly</value>
+  <data name="RestoreAndIncreaseBelly" xml:space="preserve">
+    <value>Restore belly and increase max belly if fully sated</value>
   </data>
   <data name="BadFoodStatus" xml:space="preserve">
     <value>Randomly apply Stuck, Poison, Paralysis or Burn</value>
@@ -606,8 +606,20 @@
   <data name="ApplyStatusEffectWithChance2" xml:space="preserve">
     <value>Chance to apply status effect</value>
   </data>
+  <data name="ApplyPledgeEffect" xml:space="preserve">
+    <value>Apply dungeon status effect if another teammate has used a matching Pledge move</value>
+  </data>
   <data name="BeginEndStoringDamage" xml:space="preserve">
     <value>Begin or end storing damage taken</value>
+  </data>
+  <data name="ClearAllWaterAndMagma" xml:space="preserve">
+    <value>Clear all water/magma tiles on the floor</value>
+  </data>
+  <data name="CreateMonsterHouse" xml:space="preserve">
+    <value>Turn the current room into a Monster House</value>
+  </data>
+  <data name="DamageAndFallToNextFloor" xml:space="preserve">
+    <value>Deal fixed damage and fall to the next floor</value>
   </data>
   <data name="DamageEqualToAttackersLevel" xml:space="preserve">
     <value>Deal damage equal to attacker's level</value>
@@ -615,19 +627,133 @@
   <data name="DamageIgnoreProtect" xml:space="preserve">
     <value>Deal random damage, ignoring Protect</value>
   </data>
+  <data name="DamageThrow" xml:space="preserve">
+    <value>Deal random damage</value>
+  </data>
   <data name="DamageUntilMiss" xml:space="preserve">
     <value>Deal random damage until attack misses</value>
+  </data>
+  <data name="DamageWithBoostBasedOnNumberOfEnemiesNearby" xml:space="preserve">
+    <value>Deal random damage with a multiplier if there are many enemies nearby</value>
   </data>
   <data name="DamageWithBoostedRecruitRate" xml:space="preserve">
     <value>Deal random damage with an increased recruitment rate on defeat</value>
   </data>
+  <data name="DamageWithBoostIfNotClearWeather" xml:space="preserve">
+    <value>Deal random damage with a multiplier if the move is used in any weather other than Clear</value>
+  </data>
+  <data name="DamageWithBoostIfPreviousTurnMissed" xml:space="preserve">
+    <value>Deal damage with multiplier if the move missed in the last turn</value>
+  </data>
+  <data name="DamageWithModifierUnderBadWeather" xml:space="preserve">
+    <value>Deal random damage with a multiplier if the move is used under Rain, Sandstorm or Hail</value>
+  </data>
+  <data name="DarkMatterChargingStart" xml:space="preserve">
+    <value>Begin charging dark spires attack</value>
+  </data>
+  <data name="DecreaseLevel" xml:space="preserve">
+    <value>Decrease target's level</value>
+  </data>
+  <data name="DestroyAllTraps" xml:space="preserve">
+    <value>Destroy all traps on the floor</value>
+  </data>
   <data name="DigWalls" xml:space="preserve">
     <value>Dig walls</value>
+  </data>
+  <data name="DisableMove" xml:space="preserve">
+    <value>Disable the target's last used move for everyone</value>
+  </data>
+  <data name="ExitDungeon" xml:space="preserve">
+    <value>Exit the dungeon</value>
+  </data>
+  <data name="IncreaseLevel" xml:space="preserve">
+    <value>Increase target's level</value>
+  </data>
+  <data name="IncreaseMoveAccuracy" xml:space="preserve">
+    <value>Increase a move's accuracy</value>
+  </data>
+  <data name="IncreaseMovePower" xml:space="preserve">
+    <value>Increase a move's power</value>
+  </data>
+  <data name="IncreaseMovePP" xml:space="preserve">
+    <value>Increase a move's PP</value>
+  </data>
+  <data name="IncreaseRandomStat" xml:space="preserve">
+    <value>Increase a random stat, with a chance for a bigger increase</value>
+  </data>
+  <data name="IncreaseRandomStats" xml:space="preserve">
+    <value>Increase max HP, Attack, Defense, Special Attack, Special Defense or Speed at random</value>
+  </data>
+  <data name="IncreaseStat" xml:space="preserve">
+    <value>Increase stat</value>
+  </data>
+  <data name="InflictRandomStatusOrReduceRandomStat" xml:space="preserve">
+    <value>Inflict a random status condition or reduce a random stat on a random target</value>
+  </data>
+  <data name="OneRoom" xml:space="preserve">
+    <value>Turn the entire floor into one giant room</value>
+  </data>
+  <data name="OpenBank" xml:space="preserve">
+    <value>Open the Bank window</value>
+  </data>
+  <data name="OpenKangaskhanStorage" xml:space="preserve">
+    <value>Open Kangaskhan storage window</value>
+  </data>
+  <data name="OpenRescueTeamCamps" xml:space="preserve">
+    <value>Open the Rescue Team Camps window</value>
+  </data>
+  <data name="PetrifyAllTargets" xml:space="preserve">
+    <value>Apply the Petrify status effect to all targets</value>
+  </data>
+  <data name="PledgeBoostedDamage" xml:space="preserve">
+    <value>Deal random damage with multiplier if another teammate used a Pledge move in the same turn</value>
+  </data>
+  <data name="PullAllItems" xml:space="preserve">
+    <value>Pull all items on the floor toward the user</value>
+  </data>
+  <data name="PullTargetsTogether" xml:space="preserve">
+    <value>Pull all targets in the room together</value>
+  </data>
+  <data name="RemoveType" xml:space="preserve">
+    <value>Remove type</value>
+  </data>
+  <data name="ResetLoweredStats" xml:space="preserve">
+    <value>Reset all lowered stats</value>
+  </data>
+  <data name="RespawnDefeatedTeammates" xml:space="preserve">
+    <value>Respawn all defeated teammates</value>
   </data>
   <data name="RestoreHPWithBoostInSunnyWeather" xml:space="preserve">
     <value>Restore HP with a boost in sunny weather or penalty in bad weather</value>
   </data>
+  <data name="RestorePPAll" xml:space="preserve">
+    <value>Restore PP on all of the target's moves</value>
+  </data>
+  <data name="RestorePPOne" xml:space="preserve">
+    <value>Restore PP on one of the target's moves</value>
+  </data>
+  <data name="RevealAllTraps" xml:space="preserve">
+    <value>Reveal all hidden traps on the floor</value>
+  </data>
+  <data name="RevealFloor" xml:space="preserve">
+    <value>Reveal the entire floor</value>
+  </data>
+  <data name="RevealStairsDirection" xml:space="preserve">
+    <value>Spawn a projectile that flies towards the stairs</value>
+  </data>
+  <data name="SummonHelpers" xml:space="preserve">
+    <value>Summon a team of three helpers</value>
+  </data>
+  <data name="SummonMonsters" xml:space="preserve">
+    <value>Summon a random number of monsters</value>
+  </data>
+  <data name="SwapHP" xml:space="preserve">
+    <value>Swap the user's and target's current HP</value>
+  </data>
   <data name="WarpTeammatesAroundTarget" xml:space="preserve">
     <value>Warp teammates around target</value>
+  </data>
+  <data name="WarpToStairsRoom" xml:space="preserve">
+    <value>Warp target to the room containing the stairs</value>
   </data>
 </root>
