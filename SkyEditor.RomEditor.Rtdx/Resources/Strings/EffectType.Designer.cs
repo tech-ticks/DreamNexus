@@ -151,6 +151,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chance to apply status effect.
+        /// </summary>
+        public static string ApplyStatusEffectWithChance2 {
+            get {
+                return ResourceManager.GetString("ApplyStatusEffectWithChance2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chance to apply status effect with an additional unknown parameter.
         /// </summary>
         public static string ApplyStatusEffectWithChanceAndSomethingElse {
@@ -192,6 +201,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string BasicAttackDamage {
             get {
                 return ResourceManager.GetString("BasicAttackDamage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Begin or end storing damage taken.
+        /// </summary>
+        public static string BeginEndStoringDamage {
+            get {
+                return ResourceManager.GetString("BeginEndStoringDamage", resourceCulture);
             }
         }
         
@@ -277,7 +295,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Reset stockpile count to zero.
+        ///   Looks up a localized string similar to Reset stockpile count to zero and remove defense boosts.
         /// </summary>
         public static string ClearStockpile {
             get {
@@ -322,7 +340,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage.
+        ///   Looks up a localized string similar to Deal random damage.
         /// </summary>
         public static string Damage {
             get {
@@ -331,7 +349,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage; always super-effective against Water types.
+        ///   Looks up a localized string similar to Deal random damage; always super-effective against Water types.
         /// </summary>
         public static string DamageAlwaysSuperEffectiveAgainstWater {
             get {
@@ -349,7 +367,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage; continue executing effects if target is defeated.
+        ///   Looks up a localized string similar to Deal random damage; continue executing effects if target is defeated.
         /// </summary>
         public static string DamageAndContinueActionOnDefeat {
             get {
@@ -358,7 +376,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage; target drops Poké if defeated.
+        ///   Looks up a localized string similar to Deal random damage; target drops Poké if defeated.
         /// </summary>
         public static string DamageAndDropMoney {
             get {
@@ -367,7 +385,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage and cause an explosion.
+        ///   Looks up a localized string similar to Deal random damage and cause an explosion.
         /// </summary>
         public static string DamageAndExplode {
             get {
@@ -376,7 +394,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier based on how lighter the target is compared to the attacker.
+        ///   Looks up a localized string similar to Deal random damage with multiplier based on how lighter the target is compared to the attacker.
         /// </summary>
         public static string DamageBasedOnAttackerAndTargetWeights {
             get {
@@ -394,7 +412,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal typed damage based on the target&apos;s weight; damage is increased the heavier the target is.
+        ///   Looks up a localized string similar to Deal damage based on the target&apos;s weight; damage is increased the heavier the target is.
         /// </summary>
         public static string DamageBasedOnTargetsWeight {
             get {
@@ -403,7 +421,16 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage if the target shares a type with the user.
+        ///   Looks up a localized string similar to Deal damage equal to attacker&apos;s level.
+        /// </summary>
+        public static string DamageEqualToAttackersLevel {
+            get {
+                return ResourceManager.GetString("DamageEqualToAttackersLevel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deal random damage if the target shares a type with the user.
         /// </summary>
         public static string DamageIfTargetSharesTypeWithAttacker {
             get {
@@ -412,7 +439,16 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage ignoring target&apos;s Defense and Evasion stat changes.
+        ///   Looks up a localized string similar to Deal random damage, ignoring Protect.
+        /// </summary>
+        public static string DamageIgnoreProtect {
+            get {
+                return ResourceManager.GetString("DamageIgnoreProtect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deal random damage ignoring target&apos;s Defense and Evasion stat changes.
         /// </summary>
         public static string DamageIgnoringDefenseAndEvasion {
             get {
@@ -439,7 +475,16 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage using target&apos;s Defense.
+        ///   Looks up a localized string similar to Deal random damage until attack misses.
+        /// </summary>
+        public static string DamageUntilMiss {
+            get {
+                return ResourceManager.GetString("DamageUntilMiss", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deal random damage using target&apos;s Defense.
         /// </summary>
         public static string DamageUsingDefense {
             get {
@@ -448,7 +493,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage using the target&apos;s Attack stat.
+        ///   Looks up a localized string similar to Deal random damage using the target&apos;s Attack stat.
         /// </summary>
         public static string DamageUsingTargetsAttack {
             get {
@@ -457,7 +502,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier based on attacker&apos;s HP.
+        ///   Looks up a localized string similar to Deal random damage with multiplier based on attacker&apos;s HP.
         /// </summary>
         public static string DamageWithBoostBasedOnAttackersHP {
             get {
@@ -466,7 +511,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier based on the attacker&apos;s number of depleted moves.
+        ///   Looks up a localized string similar to Deal random damage with multiplier based on the attacker&apos;s number of depleted moves.
         /// </summary>
         public static string DamageWithBoostBasedOnDepletedMoves {
             get {
@@ -475,7 +520,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier based on the number of dungeons visited by the attacker.
+        ///   Looks up a localized string similar to Deal random damage with multiplier based on the number of dungeons visited by the attacker.
         /// </summary>
         public static string DamageWithBoostBasedOnDungeonsVisited {
             get {
@@ -484,7 +529,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage; damage is boosted based on the number of positive stat changes of the attacker or target.
+        ///   Looks up a localized string similar to Deal random damage; damage is boosted based on the number of positive stat changes of the attacker or target.
         /// </summary>
         public static string DamageWithBoostBasedOnPositiveStatChanges {
             get {
@@ -493,7 +538,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier if the move&apos;s PP is below the threshold.
+        ///   Looks up a localized string similar to Deal random damage with multiplier if the move&apos;s PP is below the threshold.
         /// </summary>
         public static string DamageWithBoostBasedOnPP {
             get {
@@ -502,7 +547,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier based on target&apos;s HP.
+        ///   Looks up a localized string similar to Deal random damage with multiplier based on target&apos;s HP.
         /// </summary>
         public static string DamageWithBoostBasedOnTargetsHP {
             get {
@@ -511,7 +556,16 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier based on how faster the attacker is compared to the target.
+        ///   Looks up a localized string similar to Deal random damage with an increased recruitment rate on defeat.
+        /// </summary>
+        public static string DamageWithBoostedRecruitRate {
+            get {
+                return ResourceManager.GetString("DamageWithBoostedRecruitRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deal random damage with multiplier based on how faster the attacker is compared to the target.
         /// </summary>
         public static string DamageWithBoostIfFaster {
             get {
@@ -520,7 +574,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier if attacker is not holding an item.
+        ///   Looks up a localized string similar to Deal random damage with multiplier if attacker is not holding an item.
         /// </summary>
         public static string DamageWithBoostIfNotHoldingItem {
             get {
@@ -529,7 +583,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier based on how slower the attacker is compared to the target.
+        ///   Looks up a localized string similar to Deal random damage with multiplier based on how slower the attacker is compared to the target.
         /// </summary>
         public static string DamageWithBoostIfSlower {
             get {
@@ -538,7 +592,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier if the target has any status effect.
+        ///   Looks up a localized string similar to Deal random damage with multiplier if the target has any status effect.
         /// </summary>
         public static string DamageWithBoostIfTargetHasAnyStatus {
             get {
@@ -547,7 +601,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier if the target is afflicted with Burn or Poison.
+        ///   Looks up a localized string similar to Deal random damage with multiplier if the target is afflicted with Burn or Poison.
         /// </summary>
         public static string DamageWithBoostIfTargetHasBurnOrPoison {
             get {
@@ -556,7 +610,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier if target is afflicted with an specific status.
+        ///   Looks up a localized string similar to Deal random damage with multiplier if target is afflicted with an specific status.
         /// </summary>
         public static string DamageWithBoostIfTargetHasStatus {
             get {
@@ -565,7 +619,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier if the target is holding an item.
+        ///   Looks up a localized string similar to Deal random damage with multiplier if the target is holding an item.
         /// </summary>
         public static string DamageWithBoostIfTargetHoldsItem {
             get {
@@ -574,7 +628,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier if target is in the semi-invulnerable turn of Bounce, Fly, and Sky Drop.
+        ///   Looks up a localized string similar to Deal random damage with multiplier if target is in the semi-invulnerable turn of Bounce, Fly, and Sky Drop.
         /// </summary>
         public static string DamageWithBoostIfTargetIsFlying {
             get {
@@ -583,7 +637,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier if the target&apos;s HP is at or below the threshold.
+        ///   Looks up a localized string similar to Deal random damage with multiplier if the target&apos;s HP is at or below the threshold.
         /// </summary>
         public static string DamageWithBoostIfTargetsHPIsAtOrBelowThreshold {
             get {
@@ -592,7 +646,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier if the move is used consecutively.
+        ///   Looks up a localized string similar to Deal random damage with multiplier if the move is used consecutively.
         /// </summary>
         public static string DamageWithBoostOnConsecutiveUses {
             get {
@@ -601,7 +655,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier if the move was used by a teammate on the same turn.
+        ///   Looks up a localized string similar to Deal random damage with multiplier if the move was used by a teammate on the same turn.
         /// </summary>
         public static string DamageWithBoostWhenTeammateUsedTheMoveInTheSameTurn {
             get {
@@ -610,7 +664,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage with multiplier if the move was used by a teammate on the same turn and in the same room.
+        ///   Looks up a localized string similar to Deal random damage with multiplier if the move was used by a teammate on the same turn and in the same room.
         /// </summary>
         public static string DamageWithBoostWhenTeammateUsedTheMoveInTheSameTurnInTheSameRoom {
             get {
@@ -660,6 +714,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string DestroyTargetsFood {
             get {
                 return ResourceManager.GetString("DestroyTargetsFood", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dig walls.
+        /// </summary>
+        public static string DigWalls {
+            get {
+                return ResourceManager.GetString("DigWalls", resourceCulture);
             }
         }
         
@@ -718,7 +781,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal fixed typed damage.
+        ///   Looks up a localized string similar to Deal fixed damage.
         /// </summary>
         public static string FixedDamage {
             get {
@@ -745,29 +808,11 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Heal all negative status effects and remove seals.
-        /// </summary>
-        public static string HealAllNegativeStatusEffects {
-            get {
-                return ResourceManager.GetString("HealAllNegativeStatusEffects", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Heal self for a percentage of damage dealt.
         /// </summary>
         public static string HealSelfBasedOnDamageDealt {
             get {
                 return ResourceManager.GetString("HealSelfBasedOnDamageDealt", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Heal status effect.
-        /// </summary>
-        public static string HealStatusEffect {
-            get {
-                return ResourceManager.GetString("HealStatusEffect", resourceCulture);
             }
         }
         
@@ -790,7 +835,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Deal random typed damage based on a random magnitude.
+        ///   Looks up a localized string similar to Deal random damage based on a random magnitude.
         /// </summary>
         public static string MagnitudeDamage {
             get {
@@ -916,11 +961,29 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Remove all negative status effects and remove seals.
+        /// </summary>
+        public static string RemoveAllNegativeStatusEffects {
+            get {
+                return ResourceManager.GetString("RemoveAllNegativeStatusEffects", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to (unconfirmed) Remove Flying type temporarily.
         /// </summary>
         public static string RemoveFlyingType {
             get {
                 return ResourceManager.GetString("RemoveFlyingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove status effect.
+        /// </summary>
+        public static string RemoveStatusEffect {
+            get {
+                return ResourceManager.GetString("RemoveStatusEffect", resourceCulture);
             }
         }
         
@@ -1011,6 +1074,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string RestoreHPPercent {
             get {
                 return ResourceManager.GetString("RestoreHPPercent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore HP with a boost in sunny weather or penalty in bad weather.
+        /// </summary>
+        public static string RestoreHPWithBoostInSunnyWeather {
+            get {
+                return ResourceManager.GetString("RestoreHPWithBoostInSunnyWeather", resourceCulture);
             }
         }
         
@@ -1510,11 +1582,20 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warp and surround target.
+        ///   Looks up a localized string similar to Warp a random target to the front of the user.
         /// </summary>
-        public static string WarpAndSurround {
+        public static string WarpRandomTargetToFront {
             get {
-                return ResourceManager.GetString("WarpAndSurround", resourceCulture);
+                return ResourceManager.GetString("WarpRandomTargetToFront", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Warp teammates around target.
+        /// </summary>
+        public static string WarpTeammatesAroundTarget {
+            get {
+                return ResourceManager.GetString("WarpTeammatesAroundTarget", resourceCulture);
             }
         }
     }

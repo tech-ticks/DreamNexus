@@ -124,79 +124,79 @@
     <value>Deal basic attack damage</value>
   </data>
   <data name="Damage" xml:space="preserve">
-    <value>Deal random typed damage</value>
+    <value>Deal random damage</value>
   </data>
   <data name="DamageUsingDefense" xml:space="preserve">
-    <value>Deal random typed damage using target's Defense</value>
+    <value>Deal random damage using target's Defense</value>
   </data>
   <data name="DamageIgnoringDefenseAndEvasion" xml:space="preserve">
-    <value>Deal random typed damage ignoring target's Defense and Evasion stat changes</value>
+    <value>Deal random damage ignoring target's Defense and Evasion stat changes</value>
   </data>
   <data name="DamageAndBreakDefenses" xml:space="preserve">
     <value>Remove target's Reflect/Light Screen and deal random typed damage</value>
   </data>
   <data name="DamageWithBoostIfTargetHasStatus" xml:space="preserve">
-    <value>Deal random typed damage with multiplier if target is afflicted with an specific status</value>
+    <value>Deal random damage with multiplier if target is afflicted with an specific status</value>
   </data>
   <data name="DamageWithBoostIfFaster" xml:space="preserve">
-    <value>Deal random typed damage with multiplier based on how faster the attacker is compared to the target</value>
+    <value>Deal random damage with multiplier based on how faster the attacker is compared to the target</value>
   </data>
   <data name="DamageWithBoostIfSlower" xml:space="preserve">
-    <value>Deal random typed damage with multiplier based on how slower the attacker is compared to the target</value>
+    <value>Deal random damage with multiplier based on how slower the attacker is compared to the target</value>
   </data>
   <data name="DamageWithBoostIfNotHoldingItem" xml:space="preserve">
-    <value>Deal random typed damage with multiplier if attacker is not holding an item</value>
+    <value>Deal random damage with multiplier if attacker is not holding an item</value>
   </data>
   <data name="DamageWithBoostBasedOnAttackersHP" xml:space="preserve">
-    <value>Deal random typed damage with multiplier based on attacker's HP</value>
+    <value>Deal random damage with multiplier based on attacker's HP</value>
   </data>
   <data name="DamageWithBoostBasedOnTargetsHP" xml:space="preserve">
-    <value>Deal random typed damage with multiplier based on target's HP</value>
+    <value>Deal random damage with multiplier based on target's HP</value>
   </data>
   <data name="DamageWithBoostBasedOnDungeonsVisited" xml:space="preserve">
-    <value>Deal random typed damage with multiplier based on the number of dungeons visited by the attacker</value>
+    <value>Deal random damage with multiplier based on the number of dungeons visited by the attacker</value>
   </data>
   <data name="DamageWithBoostBasedOnPP" xml:space="preserve">
-    <value>Deal random typed damage with multiplier if the move's PP is below the threshold</value>
+    <value>Deal random damage with multiplier if the move's PP is below the threshold</value>
   </data>
   <data name="DamageWithBoostBasedOnDepletedMoves" xml:space="preserve">
-    <value>Deal random typed damage with multiplier based on the attacker's number of depleted moves</value>
+    <value>Deal random damage with multiplier based on the attacker's number of depleted moves</value>
   </data>
   <data name="DamageWithBoostOnConsecutiveUses" xml:space="preserve">
-    <value>Deal random typed damage with multiplier if the move is used consecutively</value>
+    <value>Deal random damage with multiplier if the move is used consecutively</value>
   </data>
   <data name="DamageWithBoostWhenTeammateUsedTheMoveInTheSameTurn" xml:space="preserve">
-    <value>Deal random typed damage with multiplier if the move was used by a teammate on the same turn</value>
+    <value>Deal random damage with multiplier if the move was used by a teammate on the same turn</value>
   </data>
   <data name="DamageWithBoostWhenTeammateUsedTheMoveInTheSameTurnInTheSameRoom" xml:space="preserve">
-    <value>Deal random typed damage with multiplier if the move was used by a teammate on the same turn and in the same room</value>
+    <value>Deal random damage with multiplier if the move was used by a teammate on the same turn and in the same room</value>
   </data>
   <data name="DamageWithBoostIfTargetHoldsItem" xml:space="preserve">
-    <value>Deal random typed damage with multiplier if the target is holding an item</value>
+    <value>Deal random damage with multiplier if the target is holding an item</value>
   </data>
   <data name="DamageWithBoostIfTargetHasAnyStatus" xml:space="preserve">
-    <value>Deal random typed damage with multiplier if the target has any status effect</value>
+    <value>Deal random damage with multiplier if the target has any status effect</value>
   </data>
   <data name="DamageWithBoostIfTargetHasBurnOrPoison" xml:space="preserve">
-    <value>Deal random typed damage with multiplier if the target is afflicted with Burn or Poison</value>
+    <value>Deal random damage with multiplier if the target is afflicted with Burn or Poison</value>
   </data>
   <data name="DamageWithBoostIfTargetsHPIsAtOrBelowThreshold" xml:space="preserve">
-    <value>Deal random typed damage with multiplier if the target's HP is at or below the threshold</value>
+    <value>Deal random damage with multiplier if the target's HP is at or below the threshold</value>
   </data>
   <data name="PresentDamageOrHeal" xml:space="preserve">
     <value>Randomly deal damage or heal</value>
   </data>
   <data name="MagnitudeDamage" xml:space="preserve">
-    <value>Deal random typed damage based on a random magnitude</value>
+    <value>Deal random damage based on a random magnitude</value>
   </data>
   <data name="DamageWithTypeBasedOnHeldItem" xml:space="preserve">
     <value>Deal random damage with type based on the attacker's held item</value>
   </data>
   <data name="DamageAlwaysSuperEffectiveAgainstWater" xml:space="preserve">
-    <value>Deal random typed damage; always super-effective against Water types</value>
+    <value>Deal random damage; always super-effective against Water types</value>
   </data>
   <data name="FixedDamage" xml:space="preserve">
-    <value>Deal fixed typed damage</value>
+    <value>Deal fixed damage</value>
   </data>
   <data name="DamagePercentageCurrentHP" xml:space="preserve">
     <value>Deal damage equal to a percentage of target's current HP</value>
@@ -211,28 +211,28 @@
     <value>Deal damage based on the attacker's level</value>
   </data>
   <data name="DamageUsingTargetsAttack" xml:space="preserve">
-    <value>Deal random typed damage using the target's Attack stat</value>
+    <value>Deal random damage using the target's Attack stat</value>
   </data>
   <data name="DamageBasedOnTargetsWeight" xml:space="preserve">
-    <value>Deal typed damage based on the target's weight; damage is increased the heavier the target is</value>
+    <value>Deal damage based on the target's weight; damage is increased the heavier the target is</value>
   </data>
   <data name="DamageBasedOnAttackerAndTargetWeights" xml:space="preserve">
-    <value>Deal random typed damage with multiplier based on how lighter the target is compared to the attacker</value>
+    <value>Deal random damage with multiplier based on how lighter the target is compared to the attacker</value>
   </data>
   <data name="DamageAndExplode" xml:space="preserve">
-    <value>Deal random typed damage and cause an explosion</value>
+    <value>Deal random damage and cause an explosion</value>
   </data>
   <data name="DamageAndDropMoney" xml:space="preserve">
-    <value>Deal random typed damage; target drops Poké if defeated</value>
+    <value>Deal random damage; target drops Poké if defeated</value>
   </data>
   <data name="DamageAndContinueActionOnDefeat" xml:space="preserve">
-    <value>Deal random typed damage; continue executing effects if target is defeated</value>
+    <value>Deal random damage; continue executing effects if target is defeated</value>
   </data>
   <data name="DamageIfTargetSharesTypeWithAttacker" xml:space="preserve">
-    <value>Deal random typed damage if the target shares a type with the user</value>
+    <value>Deal random damage if the target shares a type with the user</value>
   </data>
   <data name="DamageWithBoostBasedOnPositiveStatChanges" xml:space="preserve">
-    <value>Deal random typed damage; damage is boosted based on the number of positive stat changes of the attacker or target</value>
+    <value>Deal random damage; damage is boosted based on the number of positive stat changes of the attacker or target</value>
   </data>
   <data name="ChargedMove" xml:space="preserve">
     <value>Charged move</value>
@@ -321,11 +321,11 @@
   <data name="ApplyStatusEffectBasedOnLocation" xml:space="preserve">
     <value>Apply status effect based on current location</value>
   </data>
-  <data name="HealStatusEffect" xml:space="preserve">
-    <value>Heal status effect</value>
+  <data name="RemoveStatusEffect" xml:space="preserve">
+    <value>Remove status effect</value>
   </data>
-  <data name="HealAllNegativeStatusEffects" xml:space="preserve">
-    <value>Heal all negative status effects and remove seals</value>
+  <data name="RemoveAllNegativeStatusEffects" xml:space="preserve">
+    <value>Remove all negative status effects and remove seals</value>
   </data>
   <data name="SealLastUsedMove" xml:space="preserve">
     <value>Seal the last move used by the target</value>
@@ -369,8 +369,8 @@
   <data name="ThiefCovetPartTwo" xml:space="preserve">
     <value>Part two of Thief and Covet (unknown effect)</value>
   </data>
-  <data name="WarpAndSurround" xml:space="preserve">
-    <value>Warp and surround target</value>
+  <data name="WarpRandomTargetToFront" xml:space="preserve">
+    <value>Warp a random target to the front of the user</value>
   </data>
   <data name="DecreaseBelly" xml:space="preserve">
     <value>Decrease target's belly</value>
@@ -514,7 +514,7 @@
     <value>Heal HP based on stockpile count</value>
   </data>
   <data name="ClearStockpile" xml:space="preserve">
-    <value>Reset stockpile count to zero</value>
+    <value>Reset stockpile count to zero and remove defense boosts</value>
   </data>
   <data name="SetUserHPToPercentageOfMaximum" xml:space="preserve">
     <value>Set user's HP to a percentage of max HP</value>
@@ -577,7 +577,7 @@
     <value>Remove sticky status from all items</value>
   </data>
   <data name="DamageWithBoostIfTargetIsFlying" xml:space="preserve">
-    <value>Deal random typed damage with multiplier if target is in the semi-invulnerable turn of Bounce, Fly, and Sky Drop</value>
+    <value>Deal random damage with multiplier if target is in the semi-invulnerable turn of Bounce, Fly, and Sky Drop</value>
   </data>
   <data name="RestoreBelly" xml:space="preserve">
     <value>Restore belly</value>
@@ -602,5 +602,32 @@
   </data>
   <data name="Unknown238" xml:space="preserve">
     <value>Unknown effect 238</value>
+  </data>
+  <data name="ApplyStatusEffectWithChance2" xml:space="preserve">
+    <value>Chance to apply status effect</value>
+  </data>
+  <data name="BeginEndStoringDamage" xml:space="preserve">
+    <value>Begin or end storing damage taken</value>
+  </data>
+  <data name="DamageEqualToAttackersLevel" xml:space="preserve">
+    <value>Deal damage equal to attacker's level</value>
+  </data>
+  <data name="DamageIgnoreProtect" xml:space="preserve">
+    <value>Deal random damage, ignoring Protect</value>
+  </data>
+  <data name="DamageUntilMiss" xml:space="preserve">
+    <value>Deal random damage until attack misses</value>
+  </data>
+  <data name="DamageWithBoostedRecruitRate" xml:space="preserve">
+    <value>Deal random damage with an increased recruitment rate on defeat</value>
+  </data>
+  <data name="DigWalls" xml:space="preserve">
+    <value>Dig walls</value>
+  </data>
+  <data name="RestoreHPWithBoostInSunnyWeather" xml:space="preserve">
+    <value>Restore HP with a boost in sunny weather or penalty in bad weather</value>
+  </data>
+  <data name="WarpTeammatesAroundTarget" xml:space="preserve">
+    <value>Warp teammates around target</value>
   </data>
 </root>

@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Threading;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using ActionKindStrings = SkyEditor.RomEditor.Resources.Strings.ActionKind;
 using ActionAreaStrings = SkyEditor.RomEditor.Resources.Strings.ActionArea;
 using ActionTargetStrings = SkyEditor.RomEditor.Resources.Strings.ActionTarget;
 using EffectTypeStrings = SkyEditor.RomEditor.Resources.Strings.EffectType;
@@ -55,8 +56,8 @@ public string FormatBits(ulong b)
     // Split into groups of 8
     var groups = Enumerable.Range(0, text.Length / 8).Select(i => text.Substring(i * 8, 8));
 
-    // Join back into a string, separating each group with a quote mark
-    return string.Join("'", groups);
+    // Join back into a string, separating each group with a space and each set of four with an additional space
+    return string.Join(" ", groups).Insert(35, " ");
 }
 
 // Get the name of a move category
@@ -70,6 +71,11 @@ public string GetCategoryName(MoveCategory category)
         case MoveCategory.None: return "None";
         default: return category.ToString();
     }
+}
+
+public string GetActionKindString(ActDataInfo.ActionKind kind)
+{
+    return ActionKindStrings.ResourceManager.GetString(kind.ToString(), Thread.CurrentThread.CurrentUICulture) ?? $"Unknown ActionKind {kind}";
 }
 
 // Get the name of an ActionArea value
@@ -91,7 +97,7 @@ public string GetEffectName(EffectType type)
 }
 
 // Describes stat changes
-public string DescribeStatChanges(ushort index)
+public string DescribeStatChanges(ushort index, bool percentage)
 {
     if (index < statChangeData.Count)
     {
@@ -102,18 +108,25 @@ public string DescribeStatChanges(ushort index)
         {
             if (mod != 0)
             {
-                changes.Add($"{mod:+#;-#} {name}");
+                if (percentage)
+                {
+                    changes.Add($"{mod}% {name}");
+                }
+                else
+                {
+                    changes.Add($"{mod:+#;-#} {name}");
+                }
             }
         }
 
-        addEntry(entry.AttackMod, "Atk");
-        addEntry(entry.SpecialAttackMod, "SpA");
-        addEntry(entry.DefenseMod, "Def");
-        addEntry(entry.SpecialDefenseMod, "SpD");
-        addEntry(entry.SpeedMod, "Spe");
-        addEntry(entry.AccuracyMod, "Acc");
-        addEntry(entry.EvasionMod, "Eva");
-        return string.Join(" ", changes);
+        addEntry(entry.AttackMod, "Attack");
+        addEntry(entry.SpecialAttackMod, "Special Attack");
+        addEntry(entry.DefenseMod, "Defense");
+        addEntry(entry.SpecialDefenseMod, "Special Defense");
+        addEntry(entry.SpeedMod, "Speed");
+        addEntry(entry.AccuracyMod, "Accuracy");
+        addEntry(entry.EvasionMod, "Evasion");
+        return string.Join(", ", changes);
     }
     else
     {
@@ -128,12 +141,34 @@ public string DescribeEffectParameter(EffectParameterType paramType, ushort valu
     {
         case EffectParameterType.EffectChance: return $"{value}% chance to apply effect";
         case EffectParameterType.CriticalHitRatio: return $"{value}% critical hit ratio";
-        case EffectParameterType.PercentOfMaxHP: return $"{value}% of max HP";
+        case EffectParameterType.RecoilPercentOfMaxHP: return $"{value}% of max HP as recoil damage";
+        case EffectParameterType.DamagePercentOfCurrentHP: return $"{value}% of current HP as damage";
+        case EffectParameterType.MinDamageLevelFactor: return $"Minimum damage equal to {value}% of attacker's level";
+        case EffectParameterType.MinVisitsDamageMultiplier: return $"{value}% damage at minimum dungeons visited";
+        case EffectParameterType.DamageMultiplierAtMinimumHP: return $"{value}% damage multiplier at minimum HP";
         case EffectParameterType.DamageMultiplier: return $"{value}% damage multiplier";
         case EffectParameterType.FixedDamage: return $"{value} fixed damage";
+        case EffectParameterType.StockpileCount: return $"{value} stockpile count";
+        case EffectParameterType.SpendPercentOfMaxHP: return $"Spend {value}% of max HP";
+        case EffectParameterType.HealPercentOfDamageDealt: return $"Heal {value}% of damage dealt";
+        case EffectParameterType.HealPercentOfMaxHP: return $"Heal {value}% of max HP";
+        case EffectParameterType.SetBellyAmount: return $"{value} Belly";
+        case EffectParameterType.PPAmount: return $"{value} PP";
+        case EffectParameterType.DigTileCount: return $"Dig {value} tiles";
+        case EffectParameterType.HealPercentOfMaxHPInSunnyWeather: return $"Heal {value}% of max HP in sunny weather";
+        case EffectParameterType.RemoveStatusOnHit: return (value == 0) ? "Keep status effect on hit" : "Remove status effect on hit";
+        case EffectParameterType.MaxDamageLevelFactor: return $"Maximum damage equal to {value}% of attacker's level";
+        case EffectParameterType.MaxVisitsDamageMultiplier: return $"{value}% damage at maximum dungeons visited";
+        case EffectParameterType.DamageMultiplierAtMaximumHP: return $"{value}% damage multiplier at maximum HP";
+        case EffectParameterType.RecruitRateBoost: return $"{value / 10.0f:f1}% increased recruitment rate";
+        case EffectParameterType.HealPercentOfMaxHPInBadWeather: return $"Heal {value}% of max HP in bad weather";
+        case EffectParameterType.MaxDungeonsVisited: return $"Maximum effect at {value} dungeons visited";
         case EffectParameterType.StatusEffect: return $"{strings.Statuses.GetValueOrDefault((StatusIndex)value, $"Unknown ({value})")} status effect";
-        case EffectParameterType.StatChangeIndex: return DescribeStatChanges(value);
-        default: return $"({paramType}) {value}";
+        case EffectParameterType.StatMultiplierIndex: return DescribeStatChanges(value, true);
+        case EffectParameterType.StatChangeIndex: return DescribeStatChanges(value, false);
+        case EffectParameterType.CheckDungeonStatusEffect: return $"{strings.DungeonStatuses.GetValueOrDefault((DungeonStatusIndex)value, $"Unknown ({value})")} dungeon status effect";
+        case EffectParameterType.SetDungeonStatusEffect: return $"{strings.DungeonStatuses.GetValueOrDefault((DungeonStatusIndex)value, $"Unknown ({value})")} dungeon status effect";
+        default: return $"(unknown parameter {paramType}) {value}";
     }
 }
 
@@ -175,15 +210,16 @@ for (var i = 1; i < actionData.Count; i++)
     var act = actionData[i];
     var effectEntry = effectData[i];
     var hitCountEntry = hitCountData[act.ActHitCountIndex];
-    var text1 = dungeonBin.GetStringByHash((int)act.Text08);
-    var text2 = dungeonBin.GetStringByHash((int)act.Text0C);
+    var text1 = dungeonBin.GetStringByHash((int)act.DungeonMessage1);
+    var text2 = dungeonBin.GetStringByHash((int)act.DungeonMessage2);
     var moves = actionsToMoves.GetValueOrDefault(i);
     var items = actionsToItems.GetValueOrDefault(i);
     var type = strings.PokemonTypes.GetValueOrDefault(act.MoveType, act.MoveType.ToString());
     var category = GetCategoryName(act.MoveCategory);
 
-    Console.WriteLine($"Action {i}: {GetActionTargetString(act.Target)}, {GetActionAreaString(act.Area)}, range {act.Range}");
+    Console.WriteLine($"Action {i}: {GetActionKindString(act.Kind)} - {GetActionTargetString(act.Target)}, {GetActionAreaString(act.Area)}, range {act.Range}");
 
+    // Print moves and items that invoke the action
     var totalUseCount = moves.Count + items.Count;
     if (totalUseCount == 1)
     {
@@ -200,7 +236,7 @@ for (var i = 1; i < actionData.Count; i++)
             Console.WriteLine($"  Used by item {(int)item.Index}: {name}");
         }
     }
-    else
+    else if (totalUseCount > 1)
     {
         Console.WriteLine("  Used by:");
         foreach (var move in moves)
@@ -215,6 +251,28 @@ for (var i = 1; i < actionData.Count; i++)
         }
     }
 
+    string formatAccuracy(ushort acc)
+    {
+        return (acc >= 101) ? "Sure shot" : acc.ToString();
+    }
+
+    string formatRange(byte min, byte max)
+    {
+        return (min == max) ? $"{min}" : $"{min} to {max}";
+    }
+
+    string formatAccuracyRange(ushort min, ushort max)
+    {
+        return (min == max) ? $"{formatAccuracy(min)}" : $"{formatAccuracy(min)} to {formatAccuracy(max)}";
+    }
+
+    // Print attributes
+    // Console.WriteLine($"  Flags:    {FormatBits(act.Flags)}");
+    Console.WriteLine($"  Power:    {formatRange(act.MinPower, act.MaxPower)}");
+    Console.WriteLine($"  PP:       {formatRange(act.MinPP, act.MaxPP)}");
+    Console.WriteLine($"  Accuracy: {formatAccuracyRange(act.MinAccuracy, act.MaxAccuracy)}");
+    
+    // Print effects
     Console.WriteLine($"  Effects:");
     foreach (var effect in act.Effects)
     {
@@ -222,15 +280,26 @@ for (var i = 1; i < actionData.Count; i++)
         {
             continue;
         }
-        Console.WriteLine($"    {GetEffectName(effect.Type)}");
+        Console.WriteLine($"    ({(int)effect.Type}) {GetEffectName(effect.Type)}");
         for (var j = 0; j < 8; j++)
         {
             if (effect.ParamTypes[j] != 0)
             {
-                Console.WriteLine($"      [{j}] {DescribeEffectParameter(effect.ParamTypes[j], effect.Params[j])}");
+                Console.WriteLine($"      [{j}] ({(int)effect.ParamTypes[j]}) {DescribeEffectParameter(effect.ParamTypes[j], effect.Params[j])}");
             }
         }
     }
+
+    // Print messages
+    if (!string.IsNullOrEmpty(text1))
+    {
+        Console.WriteLine($"  Dungeon message 1: \"{text1}\"");
+    }
+    if (!string.IsNullOrEmpty(text2))
+    {
+        Console.WriteLine($"  Dungeon message 2: \"{text2}\"");
+    }
+
     Console.WriteLine();
 }
 

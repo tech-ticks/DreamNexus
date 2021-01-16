@@ -41,6 +41,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>ActionArea.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Strings\ActionKind.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ActionKind.resx</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Strings\ActionTarget.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -54,6 +59,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings\ActionKind.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ActionKind.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Update="Resources\Strings\ActionTarget.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ActionTarget.Designer.cs</LastGenOutput>

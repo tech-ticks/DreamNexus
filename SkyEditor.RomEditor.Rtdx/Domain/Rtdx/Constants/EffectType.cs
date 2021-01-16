@@ -67,7 +67,7 @@
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier at zero visits
         //   Params[2] = (percentage) Damage multiplier at maximum visits (count unknown)
-        //   Params[3] = Base damage value?
+        //   Params[3] = (integer) Number of dungeons visited for maximum effect
         DamageWithBoostBasedOnDungeonsVisited = 14,
 
         // 15 = Deal random typed damage; damage is increased the less PP the move has (Trump Card)
@@ -318,16 +318,16 @@
         // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
         ApplyStatusEffectBasedOnLocation = 69,
 
-        // Heal status effect
-        //   Params[0] = (percentage) Chance to heal status effect
+        // Remove status effect
+        //   Params[0] = (percentage) Chance to remove status effect
         //   Params[2] = (boolean) Unknown purpose
         //   Params[3] = (boolean) Unknown purpose
         //   Params[4] = (StatusIndex) Status effect to remove
         // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
-        HealStatusEffect = 70,
+        RemoveStatusEffect = 70,
 
-        // Heal all negative status effects and remove seals
-        HealAllNegativeStatusEffects = 71,
+        // Remove all negative status effects and remove seals
+        RemoveAllNegativeStatusEffects = 71,
 
         // Seal the last move used by the target
         SealLastUsedMove = 72,
@@ -374,8 +374,8 @@
         //   Params[1] = (unknown)  (15 in both moves)
         ThiefCovetPartTwo = 85,
 
-        // Warp and surround target by teleporting the target one square in front of the user and teleporting all teammates around it
-        WarpAndSurround = 86,
+        // Warp a random target to the front of the user
+        WarpRandomTargetToFront = 86,
 
         // Decrease target's belly. Will not reduce belly below zero.
         //   Params[0] = (percentage) Chance to reduce belly
@@ -632,14 +632,49 @@
         // Remove sticky status from all items
         CleanseStickyItems = 156,
 
-        // TODO: investigate 157 through 173
+        // TODO: investigate 157 through 168
+
+        // Restore HP with a boost in sunny weather or penalty in bad weather
+        //   Params[1] = (percentage) Percentage of HP restored in normal weather
+        //   Params[2] = (percentage) Percentage of HP restored in sunny weather
+        //   Params[3] = (percentage) Percentage of HP restored in bad weather
+        RestoreHPWithBoostInSunnyWeather = 169,
+
+        // Warp teammates around target
+        WarpTeammatesAroundTarget = 170,
+
+        // Deal damage equal to attacker's level
+        DamageEqualToAttackersLevel = 171,
+        
+        // TODO: investigate 172
+        // TODO: investigate 173
 
         // Deal random typed damage; damage is increased if target is in the semi-invulnerable turn of Bounce, Fly, and Sky Drop
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier
         DamageWithBoostIfTargetIsFlying = 174,
 
-        // TODO: investigate 175 through 179
+        // Deal random typed damage, ignoring Protect
+        //   Params[0] = (percentage) Critical hit ratio
+        //   Params[1] = (percentage) Damage multiplier
+        DamageIgnoreProtect = 175,
+
+        // Dig walls
+        //   Params[1] = (integer) Number of tiles to dig
+        DigWalls = 176,
+
+        // TODO: investigate 177
+
+        // Deal random typed damage until attack misses
+        //   Params[0] = (percentage) Critical hit ratio
+        //   Params[1] = (percentage) Damage multiplier
+        DamageUntilMiss = 178,
+
+        // Chance to apply status effect
+        //   Params[0] = (percentage) Chance to apply stat changes
+        //   Params[4] = (StatusIndex) Status effect to apply
+        // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
+        ApplyStatusEffectWithChance2 = 179,
 
         // Restore belly
         //   Params[1] = (integer) Amount of belly to restore
@@ -671,7 +706,12 @@
         //                  otherwise max HP will only be increased if user is at full HP
         RestoreAndIncreaseHP = 222,
 
-        // TODO: investigate 223 through 235
+        // TODO: investigate 223 through 233
+
+        // Begin or end storing damage taken
+        BeginEndStoringDamage = 234,
+
+        // TODO: investigate 235
 
         // TODO: investigate -- used by Switcher Wand (236 131 236 238)
         Unknown236 = 236,
@@ -682,6 +722,13 @@
         // TODO: investigate -- used by Switcher Wand and Pounce Wand
         Unknown238 = 238,
 
-        // TODO: investigate 239 through 258
+        // TODO: investigate 239 through 247
+
+        // Deal random typed damage with an increased recruitment rate on defeat
+        //   Params[0] = (percentage) Critical hit ratio
+        //   Params[2] = (per-mille) Recruitment rate increase
+        DamageWithBoostedRecruitRate = 248,
+
+        // TODO: investigate 249 through 258
     }
 }

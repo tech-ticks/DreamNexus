@@ -65,25 +65,25 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public Entry(IReadOnlyBinaryDataAccessor data)
             {
-                Long00 = data.ReadUInt64(0x00);
-                Text08 = (TextIDHash)data.ReadInt32(0x08);
-                Text0C = (TextIDHash)data.ReadInt32(0x0C);
+                Flags = data.ReadUInt64(0x00);
+                DungeonMessage1 = (TextIDHash)data.ReadInt32(0x08);
+                DungeonMessage2 = (TextIDHash)data.ReadInt32(0x0C);
 
                 for (var i = 0; i < 4; i++)
                 {
                     Effects[i] = new Effect(data, i);
                 }
 
-                Short58 = data.ReadUInt16(0x58);
-                Short5A = data.ReadUInt16(0x5A);
+                MinAccuracy = data.ReadUInt16(0x58);
+                MaxAccuracy = data.ReadUInt16(0x5A);
 
-                Byte7C = data.ReadByte(0x7C);
+                Kind = (ActionKind)data.ReadByte(0x7C);
                 MoveType = (PokemonType)data.ReadByte(0x7D);
                 MoveCategory = (MoveCategory)data.ReadByte(0x7E);
-                Byte7F = data.ReadByte(0x7F);
-                Byte80 = data.ReadByte(0x80);
-                Byte81 = data.ReadByte(0x81);
-                Byte82 = data.ReadByte(0x82);
+                MinPower = data.ReadByte(0x7F);
+                MaxPower = data.ReadByte(0x80);
+                MinPP = data.ReadByte(0x81);
+                MaxPP = data.ReadByte(0x82);
                 Byte83 = data.ReadByte(0x83);
                 Byte84 = data.ReadByte(0x84);
                 Byte85 = data.ReadByte(0x85);
@@ -118,25 +118,25 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public ReadOnlySpan<byte> ToBytes()
             {
                 IBinaryDataAccessor data = new BinaryFile(new byte[EntrySize]);
-                data.WriteUInt64(0x00, Long00);
-                data.WriteInt32(0x08, (int)Text08);
-                data.WriteInt32(0x0C, (int)Text0C);
+                data.WriteUInt64(0x00, Flags);
+                data.WriteInt32(0x08, (int)DungeonMessage1);
+                data.WriteInt32(0x0C, (int)DungeonMessage2);
 
                 for (var i = 0; i < 4; i++)
                 {
                     Effects[i].WriteTo(data, i);
                 }
 
-                data.WriteUInt16(0x58, Short58);
-                data.WriteUInt16(0x5A, Short5A);
+                data.WriteUInt16(0x58, MinAccuracy);
+                data.WriteUInt16(0x5A, MaxAccuracy);
 
-                data.Write(0x7C, Byte7C);
+                data.Write(0x7C, (byte)Kind);
                 data.Write(0x7D, (byte)MoveType);
                 data.Write(0x7E, (byte)MoveCategory);
-                data.Write(0x7F, Byte7F);
-                data.Write(0x80, Byte80);
-                data.Write(0x81, Byte81);
-                data.Write(0x82, Byte82);
+                data.Write(0x7F, MinPower);
+                data.Write(0x80, MaxPower);
+                data.Write(0x81, MinPP);
+                data.Write(0x82, MaxPP);
                 data.Write(0x83, Byte83);
                 data.Write(0x84, Byte84);
                 data.Write(0x85, Byte85);
@@ -171,9 +171,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             // Contains several flags
             //   Bit 10: Target of stat changes: 0 = target, 1 = self
-            public ulong Long00 { get; set; }
-            public TextIDHash Text08 { get; set; }
-            public TextIDHash Text0C { get; set; }
+            public ulong Flags { get; set; }
+            public TextIDHash DungeonMessage1 { get; set; }
+            public TextIDHash DungeonMessage2 { get; set; }
 
             public class Effect
             {
@@ -209,15 +209,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public Effect[] Effects { get; } = new Effect[4];
 
-            public ushort Short58 { get; set; }
-            public ushort Short5A { get; set; }
-            public byte Byte7C { get; set; }
+            public ushort MinAccuracy { get; set; }
+            public ushort MaxAccuracy { get; set; }
+            public ActionKind Kind { get; set; }
             public PokemonType MoveType { get; set; }
             public MoveCategory MoveCategory { get; set; }
-            public byte Byte7F { get; set; }
-            public byte Byte80 { get; set; }
-            public byte Byte81 { get; set; }
-            public byte Byte82 { get; set; }
+
+            public byte MinPower { get; set; }
+            public byte MaxPower { get; set; }
+            public byte MinPP { get; set; }
+            public byte MaxPP { get; set; }
+
             public byte Byte83 { get; set; }
             public byte Byte84 { get; set; }
             public byte Byte85 { get; set; }
@@ -252,6 +254,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte Byte9D { get; set; }
             public byte Byte9E { get; set; }
             public byte Byte9F { get; set; }
+        }
+
+        public enum ActionKind : byte
+        {
+            Unspecified = 0,
+            Move = 1,
+            Consumable = 2,
+            Wand = 3,
+            Trap = 4,
         }
 
         public enum ActionArea : byte
