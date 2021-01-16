@@ -35,4 +35,40 @@
     <ProjectReference Include="..\AssetStudio\AssetStudio.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Resources\Strings\ActionArea.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ActionArea.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Strings\ActionTarget.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ActionTarget.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Strings\EffectType.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EffectType.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings\ActionTarget.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ActionTarget.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Strings\ActionArea.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ActionArea.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Strings\EffectType.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>EffectType.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Strings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>

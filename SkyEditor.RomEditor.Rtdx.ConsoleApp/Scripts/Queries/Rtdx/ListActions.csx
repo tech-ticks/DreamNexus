@@ -1,0 +1,390 @@
+#load "../../../Stubs/Rtdx.csx"
+
+using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using ActionAreaStrings = SkyEditor.RomEditor.Resources.Strings.ActionArea;
+using ActionTargetStrings = SkyEditor.RomEditor.Resources.Strings.ActionTarget;
+using EffectTypeStrings = SkyEditor.RomEditor.Resources.Strings.EffectType;
+
+// Grab all the data we'll need
+var actionData = Rom.GetActDataInfo().Entries;
+var paramData = Rom.GetActParamDataInfo().Entries;
+var statChangeData = Rom.GetActStatusTableDataInfo().Entries;
+var hitCountData = Rom.GetActHitCountTableDataInfo().Entries;
+var effectData = Rom.GetActEffectDataInfo().Entries;
+var moveData = Rom.GetWazaDataInfo().Entries;
+var itemData = Rom.GetItemDataInfo().Entries;
+var strings = Rom.GetCommonStrings();
+var dungeonBin = Rom.GetDungeonBinEntry();
+
+// ----- Helper functions -----
+
+// Add an entry to a map of lists. Creates a new list for new entries.
+public static void AddToList<TKey, TValue>(this IDictionary<TKey, IList<TValue>> dictionary, TKey key, TValue value)
+{
+    if (!dictionary.ContainsKey(key))
+    {
+        dictionary.Add(key, new List<TValue>());
+    }
+    dictionary[key].Add(value);
+}
+
+// Retrieves the list corresponding to the given key from the map, or an empty list if the map doesn't contain that entry
+public static IList<TValue> GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, IList<TValue>> dictionary, TKey key)
+{
+    return dictionary.TryGetValue(key, out IList<TValue> value) ? value : Array.Empty<TValue>();
+}
+
+// Retrieves the value corresponding to the given key from the map or the specified default value
+public static TValue GetValueOrDefault<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key, TValue defaultValue)
+{
+    return dictionary.TryGetValue(key, out TValue value) ? value : defaultValue;
+}
+
+// Format a 64-bit number as a series of dashes and hashes that are easy to read.
+public string FormatBits(ulong b)
+{
+    var binary = Convert.ToString((long)b, 2);
+    var text = binary.Replace('0', '-').Replace('1', '#').PadLeft(64, '-');
+
+    // Split into groups of 8
+    var groups = Enumerable.Range(0, text.Length / 8).Select(i => text.Substring(i * 8, 8));
+
+    // Join back into a string, separating each group with a quote mark
+    return string.Join("'", groups);
+}
+
+// Get the name of a move category
+public string GetCategoryName(MoveCategory category)
+{
+    switch (category)
+    {
+        case MoveCategory.Physical: return "Physical";
+        case MoveCategory.Special: return "Special";
+        case MoveCategory.Status: return "Status";
+        case MoveCategory.None: return "None";
+        default: return category.ToString();
+    }
+}
+
+// Get the name of an ActionArea value
+public string GetActionAreaString(ActDataInfo.ActionArea area)
+{
+    return ActionAreaStrings.ResourceManager.GetString(area.ToString(), Thread.CurrentThread.CurrentUICulture) ?? $"Unknown ActionArea {area}";
+}
+
+// Get the name of an ActionTarget value
+public string GetActionTargetString(ActDataInfo.ActionTarget target)
+{
+    return ActionTargetStrings.ResourceManager.GetString(target.ToString(), Thread.CurrentThread.CurrentUICulture) ?? $"Unknown ActionTarget {target}";
+}
+
+// Get the name of an effect
+public string GetEffectName(EffectType type)
+{
+    return EffectTypeStrings.ResourceManager.GetString(type.ToString(), Thread.CurrentThread.CurrentUICulture) ?? $"Unknown effect {type}";
+}
+
+// Describes stat changes
+public string DescribeStatChanges(ushort index)
+{
+    if (index < statChangeData.Count)
+    {
+        var entry = statChangeData[index];
+        var changes = new List<string>();
+
+        void addEntry(short mod, string name)
+        {
+            if (mod != 0)
+            {
+                changes.Add($"{mod:+#;-#} {name}");
+            }
+        }
+
+        addEntry(entry.AttackMod, "Atk");
+        addEntry(entry.SpecialAttackMod, "SpA");
+        addEntry(entry.DefenseMod, "Def");
+        addEntry(entry.SpecialDefenseMod, "SpD");
+        addEntry(entry.SpeedMod, "Spe");
+        addEntry(entry.AccuracyMod, "Acc");
+        addEntry(entry.EvasionMod, "Eva");
+        return string.Join(" ", changes);
+    }
+    else
+    {
+        return $"{index} (out of range)";
+    }
+}
+
+// Describes an effect parameter
+public string DescribeEffectParameter(EffectParameterType paramType, ushort value)
+{
+    switch (paramType)
+    {
+        case EffectParameterType.EffectChance: return $"{value}% chance to apply effect";
+        case EffectParameterType.CriticalHitRatio: return $"{value}% critical hit ratio";
+        case EffectParameterType.PercentOfMaxHP: return $"{value}% of max HP";
+        case EffectParameterType.DamageMultiplier: return $"{value}% damage multiplier";
+        case EffectParameterType.FixedDamage: return $"{value} fixed damage";
+        case EffectParameterType.StatusEffect: return $"{strings.Statuses.GetValueOrDefault((StatusIndex)value, $"Unknown ({value})")} status effect";
+        case EffectParameterType.StatChangeIndex: return DescribeStatChanges(value);
+        default: return $"({paramType}) {value}";
+    }
+}
+
+// ----------------------------
+
+// Build lookup tables of action indices to moves and items for fast lookups
+var actionsToMoves = new Dictionary<int, IList<WazaDataInfo.Entry>>();
+var actionsToItems = new Dictionary<int, IList<ItemDataInfo.Entry>>();
+
+foreach (var move in moveData)
+{
+    if (move.ActIndex != 0)
+    {
+        actionsToMoves.AddToList(move.ActIndex, move);
+    }
+}
+
+foreach (var item in itemData)
+{
+    if (item.PrimaryActIndex != 0)
+    {
+        actionsToItems.AddToList(item.PrimaryActIndex, item);
+    }
+    if (item.ReviveActIndex != 0)
+    {
+        actionsToItems.AddToList(item.ReviveActIndex, item);
+    }
+    if (item.ThrowActIndex != 0)
+    {
+        actionsToItems.AddToList(item.ThrowActIndex, item);
+    }
+}
+
+// ----------------------------
+
+// Print everything nicely formatted for humans
+for (var i = 1; i < actionData.Count; i++)
+{
+    var act = actionData[i];
+    var effectEntry = effectData[i];
+    var hitCountEntry = hitCountData[act.ActHitCountIndex];
+    var text1 = dungeonBin.GetStringByHash((int)act.Text08);
+    var text2 = dungeonBin.GetStringByHash((int)act.Text0C);
+    var moves = actionsToMoves.GetValueOrDefault(i);
+    var items = actionsToItems.GetValueOrDefault(i);
+    var type = strings.PokemonTypes.GetValueOrDefault(act.MoveType, act.MoveType.ToString());
+    var category = GetCategoryName(act.MoveCategory);
+
+    Console.WriteLine($"Action {i}: {GetActionTargetString(act.Target)}, {GetActionAreaString(act.Area)}, range {act.Range}");
+
+    var totalUseCount = moves.Count + items.Count;
+    if (totalUseCount == 1)
+    {
+        if (moves.Count == 1)
+        {
+            var move = moves[0];
+            var name = strings.Moves.GetValueOrDefault(move.Index, move.Index.ToString());
+            Console.WriteLine($"  Used by move {(int)move.Index}: {name} ({type}, {category})");
+        }
+        else
+        {
+            var item = items[0];
+            var name = strings.Items.GetValueOrDefault(item.Index, item.Index.ToString());
+            Console.WriteLine($"  Used by item {(int)item.Index}: {name}");
+        }
+    }
+    else
+    {
+        Console.WriteLine("  Used by:");
+        foreach (var move in moves)
+        {
+            var name = strings.Moves.GetValueOrDefault(move.Index, move.Index.ToString());
+            Console.WriteLine($"    Move {(int)move.Index}: {name} ({type}, {category})");
+        }
+        foreach (var item in items)
+        {
+            var name = strings.Items.GetValueOrDefault(item.Index, item.Index.ToString());
+            Console.WriteLine($"    Item {(int)item.Index}: {name}");
+        }
+    }
+
+    Console.WriteLine($"  Effects:");
+    foreach (var effect in act.Effects)
+    {
+        if (effect.Type == default)
+        {
+            continue;
+        }
+        Console.WriteLine($"    {GetEffectName(effect.Type)}");
+        for (var j = 0; j < 8; j++)
+        {
+            if (effect.ParamTypes[j] != 0)
+            {
+                Console.WriteLine($"      [{j}] {DescribeEffectParameter(effect.ParamTypes[j], effect.Params[j])}");
+            }
+        }
+    }
+    Console.WriteLine();
+}
+
+/*Console.WriteLine("#;Type;Category;00;10;12;14;16;18;1A;1C;1E;20;22;24;26;StatusChance;2A;2C;2E;30;32;34;36;38;3A;3C;3E;40;42;44;46;48;4A;4C;4E;50;52;54;56;58;5A;5C;5D;5E;5F;60;61;62;63;64;65;66;67;68;69;6A;6B;6C;6D;6E;6F;70;71;72;73;74;75;76;77;78;79;7A;7B;7C;7F;80;81;82;83;84;85;86;87;Range;89;8A;8B;Area;Target;8E;8F;90;91;92;94;95;96;97;98;99;9A;9B;9C;9D;9E;9F;::;00;01;02;04;08;0C;10;12;14;16;18;1A;1C;1E;20;22;24;26;28;2A;2C;2E;30;32;34;36;38;3C;::;HitCountIdx;MinHits;MaxHits;StopOnMiss;::;Text 1;Text 2");
+for (var i = 0; i < actionData.Count; i++)
+{
+    var entry = actionData[i];
+    var effectEntry = effectData[i];
+    var hitCountEntry = hitCountData[entry.ActHitCountIndex];
+    var text1 = dungeonBin.GetStringByHash((int)entry.Text08);
+    var text2 = dungeonBin.GetStringByHash((int)entry.Text0C);
+    Console.Write($"{i};");
+    Console.Write($"{entry.MoveType};");
+    Console.Write($"{entry.MoveCategory};");
+    Console.Write($"{FormatBits(entry.Long00)};");
+    Console.Write($"{entry.Short10};");
+    Console.Write($"{entry.Short12};");
+    Console.Write($"{entry.Short14};");
+    Console.Write($"{entry.Short16};");
+    Console.Write($"{entry.Short18};");
+    Console.Write($"{entry.Short1A};");
+    Console.Write($"{entry.Short1C};");
+    Console.Write($"{entry.Short1E};");
+    Console.Write($"{entry.Short20};");
+    Console.Write($"{entry.Short22};");
+    Console.Write($"{entry.Short24};");
+    Console.Write($"{entry.Short26};");
+    Console.Write($"{entry.StatusChance};");
+    Console.Write($"{entry.Short2A};");
+    Console.Write($"{entry.Short2C};");
+    Console.Write($"{entry.Short2E};");
+    Console.Write($"{entry.Short30};");
+    Console.Write($"{entry.Short32};");
+    Console.Write($"{entry.Short34};");
+    Console.Write($"{entry.Short36};");
+    Console.Write($"{entry.Short38};");
+    Console.Write($"{entry.Short3A};");
+    Console.Write($"{entry.Short3C};");
+    Console.Write($"{entry.Short3E};");
+    Console.Write($"{entry.Short40};");
+    Console.Write($"{entry.Short42};");
+    Console.Write($"{entry.Short44};");
+    Console.Write($"{entry.Short46};");
+    Console.Write($"{entry.Short48};");
+    Console.Write($"{entry.Short4A};");
+    Console.Write($"{entry.Short4C};");
+    Console.Write($"{entry.Short4E};");
+    Console.Write($"{entry.Short50};");
+    Console.Write($"{entry.Short52};");
+    Console.Write($"{entry.Short54};");
+    Console.Write($"{entry.Short56};");
+    Console.Write($"{entry.Short58};");
+    Console.Write($"{entry.Short5A};");
+    Console.Write($"{entry.Byte5C};");
+    Console.Write($"{entry.Byte5D};");
+    Console.Write($"{entry.Byte5E};");
+    Console.Write($"{entry.Byte5F};");
+    Console.Write($"{entry.Byte60};");
+    Console.Write($"{entry.Byte61};");
+    Console.Write($"{entry.Byte62};");
+    Console.Write($"{entry.Byte63};");
+    Console.Write($"{entry.Byte64};");
+    Console.Write($"{entry.Byte65};");
+    Console.Write($"{entry.Byte66};");
+    Console.Write($"{entry.Byte67};");
+    Console.Write($"{entry.Byte68};");
+    Console.Write($"{entry.Byte69};");
+    Console.Write($"{entry.Byte6A};");
+    Console.Write($"{entry.Byte6B};");
+    Console.Write($"{entry.Byte6C};");
+    Console.Write($"{entry.Byte6D};");
+    Console.Write($"{entry.Byte6E};");
+    Console.Write($"{entry.Byte6F};");
+    Console.Write($"{entry.Byte70};");
+    Console.Write($"{entry.Byte71};");
+    Console.Write($"{entry.Byte72};");
+    Console.Write($"{entry.Byte73};");
+    Console.Write($"{entry.Byte74};");
+    Console.Write($"{entry.Byte75};");
+    Console.Write($"{entry.Byte76};");
+    Console.Write($"{entry.Byte77};");
+    Console.Write($"{entry.Byte78};");
+    Console.Write($"{entry.Byte79};");
+    Console.Write($"{entry.Byte7A};");
+    Console.Write($"{entry.Byte7B};");
+    Console.Write($"{entry.Byte7C};");
+    Console.Write($"{entry.Byte7F};");
+    Console.Write($"{entry.Byte80};");
+    Console.Write($"{entry.Byte81};");
+    Console.Write($"{entry.Byte82};");
+    Console.Write($"{entry.Byte83};");
+    Console.Write($"{entry.Byte84};");
+    Console.Write($"{entry.Byte85};");
+    Console.Write($"{entry.Byte86};");
+    Console.Write($"{entry.Byte87};");
+    Console.Write($"{entry.Range};");
+    Console.Write($"{entry.Byte89};");
+    Console.Write($"{entry.Byte8A};");
+    Console.Write($"{entry.Byte8B};");
+    Console.Write($"{entry.Area};");
+    Console.Write($"{entry.Target};");
+    Console.Write($"{entry.Byte8E};");
+    Console.Write($"{entry.Byte8F};");
+    Console.Write($"{entry.Byte90};");
+    Console.Write($"{entry.Byte91};");
+    Console.Write($"{entry.Byte92};");
+    Console.Write($"{entry.Byte94};");
+    Console.Write($"{entry.Byte95};");
+    Console.Write($"{entry.Byte96};");
+    Console.Write($"{entry.Byte97};");
+    Console.Write($"{entry.Byte98};");
+    Console.Write($"{entry.Byte99};");
+    Console.Write($"{entry.Byte9A};");
+    Console.Write($"{entry.Byte9B};");
+    Console.Write($"{entry.Byte9C};");
+    Console.Write($"{entry.Byte9D};");
+    Console.Write($"{entry.Byte9E};");
+    Console.Write($"{entry.Byte9F};");
+    Console.Write($"::;");
+    Console.Write($"{effectEntry.Byte00};");
+    Console.Write($"{effectEntry.Byte01};");
+    Console.Write($"{effectEntry.Short02};");
+    Console.Write($"{effectEntry.Float04};");
+    Console.Write($"{effectEntry.Float08};");
+    Console.Write($"{effectEntry.Int0C};");
+    Console.Write($"{effectEntry.Short10};");
+    Console.Write($"{effectEntry.Short12};");
+    Console.Write($"{effectEntry.Short14};");
+    Console.Write($"{effectEntry.Short16};");
+    Console.Write($"{effectEntry.Short18};");
+    Console.Write($"{effectEntry.Short1A};");
+    Console.Write($"{effectEntry.Short1C};");
+    Console.Write($"{effectEntry.Short1E};");
+    Console.Write($"{effectEntry.Short20};");
+    Console.Write($"{effectEntry.Short22};");
+    Console.Write($"{effectEntry.Short24};");
+    Console.Write($"{effectEntry.Short26};");
+    Console.Write($"{effectEntry.Short28};");
+    Console.Write($"{effectEntry.Short2A};");
+    Console.Write($"{effectEntry.Short2C};");
+    Console.Write($"{effectEntry.Short2E};");
+    Console.Write($"{effectEntry.Short30};");
+    Console.Write($"{effectEntry.Short32};");
+    Console.Write($"{effectEntry.Short34};");
+    Console.Write($"{effectEntry.Short36};");
+    Console.Write($"{effectEntry.Short38};");
+    Console.Write($"{effectEntry.Int3C};");
+    Console.Write($"::;");
+    Console.Write($"{entry.ActHitCountIndex};");
+    Console.Write($"{hitCountEntry.MinHits};");
+    Console.Write($"{hitCountEntry.MaxHits};");
+    Console.Write($"{hitCountEntry.StopOnMiss};");
+    Console.Write($"::;");
+    Console.Write($"{text1};");
+    Console.Write($"{text2}");
+    Console.WriteLine();
+}*/

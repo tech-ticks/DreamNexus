@@ -71,7 +71,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
                 for (var i = 0; i < 4; i++)
                 {
-                    Actions[i] = new Action(data, i);
+                    Effects[i] = new Effect(data, i);
                 }
 
                 Short58 = data.ReadUInt16(0x58);
@@ -93,8 +93,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Byte89 = data.ReadByte(0x89);
                 Byte8A = data.ReadByte(0x8A);
                 Byte8B = data.ReadByte(0x8B);
-                Target = (ActionTarget)data.ReadByte(0x8C);
-                Byte8D = data.ReadByte(0x8D);
+                Area = (ActionArea)data.ReadByte(0x8C);
+                Target = (ActionTarget)data.ReadByte(0x8D);
                 Byte8E = data.ReadByte(0x8E);
                 Byte8F = data.ReadByte(0x8F);
                 Byte90 = data.ReadByte(0x90);
@@ -124,7 +124,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
                 for (var i = 0; i < 4; i++)
                 {
-                    Actions[i].WriteTo(data, i);
+                    Effects[i].WriteTo(data, i);
                 }
 
                 data.WriteUInt16(0x58, Short58);
@@ -146,8 +146,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 data.Write(0x89, Byte89);
                 data.Write(0x8A, Byte8A);
                 data.Write(0x8B, Byte8B);
-                data.Write(0x8C, (byte)Target);
-                data.Write(0x8D, Byte8D);
+                data.Write(0x8C, (byte)Area);
+                data.Write(0x8D, (byte)Target);
                 data.Write(0x8E, Byte8E);
                 data.Write(0x8F, Byte8F);
                 data.Write(0x90, Byte90);
@@ -175,20 +175,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public TextIDHash Text08 { get; set; }
             public TextIDHash Text0C { get; set; }
 
-            public class Action
+            public class Effect
             {
-                public Action(ActionType type)
+                public Effect(EffectType type)
                 {
                     Type = type;
                 }
 
-                public Action(IReadOnlyBinaryDataAccessor data, int index)
+                public Effect(IReadOnlyBinaryDataAccessor data, int index)
                 {
-                    Type = (ActionType)data.ReadUInt16(0x10 + index * 2);
+                    Type = (EffectType)data.ReadUInt16(0x10 + index * 2);
                     for (var i = 0; i < 8; i++)
                     {
                         Params[i] = data.ReadUInt16(0x18 + i * 2 + index * 0x10);
-                        ExtraParams[i] = data.ReadByte(0x5C + i + index * 0x8);
+                        ParamTypes[i] = (EffectParameterType)data.ReadByte(0x5C + i + index * 0x8);
                     }
                 }
 
@@ -198,16 +198,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     for (var i = 0; i < 8; i++)
                     {
                         data.WriteUInt16(0x18 + i * 2 + index * 0x10, Params[i]);
-                        data.Write(0x5C + i * 2 + index * 0x8, ExtraParams[i]);
+                        data.Write(0x5C + i * 2 + index * 0x8, (byte)ParamTypes[i]);
                     }
                 }
 
-                public ActionType Type { get; set; }
+                public EffectType Type { get; set; }
                 public ushort[] Params { get; } = new ushort[8];
-                public byte[] ExtraParams { get; } = new byte[8];
+                public EffectParameterType[] ParamTypes { get; } = new EffectParameterType[8];
             }
 
-            public Action[] Actions { get; } = new Action[4];
+            public Effect[] Effects { get; } = new Effect[4];
 
             public ushort Short58 { get; set; }
             public ushort Short5A { get; set; }
@@ -231,8 +231,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte Byte8A { get; set; }
             public byte Byte8B { get; set; }
 
+            public ActionArea Area { get; set; }
             public ActionTarget Target { get; set; }
-            public byte Byte8D { get; set; }
+
             public byte Byte8E { get; set; }
             public byte Byte8F { get; set; }
             public byte Byte90 { get; set; }
@@ -253,18 +254,29 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte Byte9F { get; set; }
         }
 
-        public enum ActionTarget : byte
+        public enum ActionArea : byte
         {
             Self = 1,            // Self
             Front = 2,           // Directly in front
             FrontFan = 3,        // Fan pattern in front
             Around = 4,          // All tiles around user
             Room = 5,            // Entire room
-            Floor = 6,          // Entire floor
+            Floor = 6,           // Entire floor
             Unknown7 = 7,        // unknown
             RangedSingle = 8,    // Ranged (single target)
             RangedPiercing = 9,  // Ranged (piercing)
             Other = 10,          // Special cases (e.g. Spikes, Sleep Talk, Dragon Rage, Metronome, Assist)
+        }
+
+        public enum ActionTarget : byte
+        {
+            Enemies = 1,
+            Allies = 2,
+            Everyone = 3,
+            Self = 9,
+            EveryoneExceptUser = 10,
+            AlliesExceptUser = 11,
+            Other = 15, // dungeon status effects, trap moves, warp orbs, Metronome, Curse and Recycle
         }
     }
 }

@@ -12,7 +12,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
         {
             // Arrange
             var dataInfo = new WazaDataInfo();
-            var entry = new WazaDataInfo.Entry();
+            var entry = new WazaDataInfo.Entry(WazaIndex.NONE);
             dataInfo.Entries.Add(entry);
             entry.Short00 = 1;
             entry.Short02 = 2;

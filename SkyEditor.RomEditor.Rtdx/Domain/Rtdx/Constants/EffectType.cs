@@ -1,6 +1,6 @@
 ﻿namespace SkyEditor.RomEditor.Domain.Rtdx.Constants
 {
-    public enum ActionType : ushort
+    public enum EffectType : ushort
     {
         // No action
         None = 0,
@@ -28,7 +28,7 @@
         //   Params[0] = (percentage) Critical hit ratio
         DamageAndBreakDefenses = 7,
 
-        // Deal random typed damage; double damage if target is afflicted with an specific status
+        // Deal random typed damage; damage is increased if target is afflicted with an specific status
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier
         //   Params[2] = (boolean) Remove status on hit
@@ -143,16 +143,16 @@
         //   Params[1] = (integer) Damage amount
         FixedDamage = 28,
 
-        // Deal damage equal to a percentage of current target's HP
-        //   Params[0] = (percentage) Critical hit ratio?
-        //   Params[1] = (percentage) Percentage of current target's HP
-        PercentageDamage = 29,
+        // Deal damage equal to a percentage of target's current HP
+        //   Params[1] = (percentage) Percentage of current HP
+        DamagePercentageCurrentHP = 29,
 
         // Reduce target's HP to user's HP if the user has less HP than the target (Endeavor)
         EqualizeHP = 30,
 
-        // Deal damage equal to the user's HP minus 1 (Final Gambit)
-        DamageEqualToUsersHPMinusOne = 31,
+        // Deal damage equal to a percentage of target's max HP
+        //   Params[1] = (percentage) Percentage of max HP
+        DamagePercentageMaxHP = 31,
 
         // Deal damage based on the attacker's level
         //   Params[0] = (percentage) Critical hit ratio
@@ -180,14 +180,15 @@
         //   Params[0] = (percentage) Critical hit ratio
         DamageAndDropMoney = 37,
 
-        // Deal random typed damage; raises user's Attack stat if target is defeated (Fell Stinger)
+        // TODO: confirm this
+        // Deal random typed damage; continue executing effects if target is defeated (Fell Stinger)
         //   Params[0] = (percentage) Critical hit ratio
-        //   Params[1] = (percentage) Chance to increase Attack stat?
-        DamageAndRaiseAttackOnDefeat = 38,
+        //   Params[1] = (percentage) Chance on defeat to continue executing actions?
+        DamageAndContinueActionOnDefeat = 38,
 
         // Deal random typed damage if the target shares a type with the user (Synchronoise)
         //   Params[0] = (percentage) Critical hit ratio
-        DamageWithBoostIfTargetSharesTypeWithAttacker = 39,
+        DamageIfTargetSharesTypeWithAttacker = 39,
 
         // Deal random typed damage; damage is boosted based on the number of positive stat changes of the attacker or target
         //   Params[0] = (percentage) Critical hit ratio
@@ -214,7 +215,7 @@
         //   Params[1] = (percentage) Damage taken as a percentage of HP
         RecoilDamage = 45,
 
-        // Struggle recoil damage
+        // Take recoil damage from Struggle
         //   Params[0] = (unknown)
         //   Params[1] = (percentage) Damage taken as a percentage of HP
         StruggleRecoilDamage = 46,
@@ -261,10 +262,10 @@
         // Reverse stat changes (making positive changes negative and vice-versa) (Topsy-Turvy)
         ReverseStatChanges = 55,
 
-        // Swap raw Attack stat with raw Defense state (Power Trick)
+        // Swap raw Attack stat with raw Defense stat (Power Trick)
         SwapAttackWithDefense = 56,
 
-        // Copy the target's stat changes (Psych Up)
+        // Copy target's stat changes (Psych Up)
         CopyTargetStatChanges = 57,
 
         // Raise a random stat by two stages (Acupressure)
@@ -340,12 +341,14 @@
         // Grant Protect to user and all teammates; duration depends on team size
         AllProtect = 75,
 
-        // TODO: investigate 76 -- used by action 796, which is not used by any moves or items
+        // TODO: investigate -- used by action 796, which is not used by any moves or items
         //   Params[0] = (percent) Unknown purpose
+        Unknown76 = 76,
 
-        // TODO: investigate 77 -- used by action 797, which is not used by any moves or items
+        // TODO: investigate -- used by action 797, which is not used by any moves or items
+        Unknown77 = 77,
 
-        // Throw the target to another Pokémon (Seismic Toss)
+        // Throw the target at another Pokémon (Seismic Toss)
         ThrowTargetAtOther = 78,
 
         // Puts the target to Sleep if not sleeping already.
@@ -355,12 +358,14 @@
         // Blow away target up to 10 tiles; cause 5 damage on collision
         BlowAwayTarget = 80,
 
-        // TODO: investigate 81: used by Pounce Wand (237 81 237 238)
+        // TODO: investigate -- used by Pounce Wand (237 81 237 238)
+        Unknown81 = 81,
 
         // Warp to a random place on the same floor
         Warp = 82,
 
-        // TODO: investigate 83: used by action 769, which is not used by any moves or items
+        // TODO: investigate -- used by action 769, which is not used by any moves or items
+        Unknown83 = 83,
 
         // Steal target's item (Thief, Covet)
         Steal = 84,
@@ -465,7 +470,7 @@
         //   Params[6] = (PokemonType) Type to change to
         ChangeType = 109,
 
-        // Copy the target's type
+        // Copy target's type
         CopyType = 110,
 
         // Set user's type to its first move's type
@@ -515,7 +520,7 @@
         // Replace move with target's last used move (Sketch)
         ReplaceWithLastUsedMove = 124,
 
-        // TODO: investigate this; used by actions 674 and 675 (second "versions" of Snore and Sleep Talk)
+        // TODO: investigate -- used by actions 674 and 675 (second "versions" of Snore and Sleep Talk)
         Unknown125 = 125,
 
         // Set a Spikes Trap where the user stands
@@ -539,13 +544,12 @@
         // Switch places between user and target
         SwitchPlaces = 131,
 
-        // Teleports all teammates around the target
+        // Teleport all teammates around the target
         //   Params[1] = (boolean?) Unknown purpose
         //   Params[2] = (integer?) Unknown purpose
         //   Params[3] = (boolean?) Unknown purpose
         SurroundTarget = 132,
 
-        // TODO: investigate 133 through 138
         // Increase stockpile count
         //   Params[1] = (integer) Amount to increase
         Stockpile = 133,
@@ -565,7 +569,8 @@
         //   Params[1] = (percentage) Percentage of max HP to set user's current HP to. Will not reduce HP below 1.
         SetUserHPToPercentageOfMaximum = 137,
 
-        // Take percentage of max HP as damage if user's type is Ghost (Curse)
+        // TODO: confirm this
+        // Take percentage of max HP as damage if user is Ghost type (Curse)
         //   Params[1] = (percentage) Percentage of max HP to take damage
         TakeDamageIfGhost = 138,
 
@@ -575,12 +580,66 @@
 
         // Set target's HP to a percentage of max HP
         //   Params[1] = (percentage) Percentage of max HP to set user's current HP to. Will not reduce HP below 1.
-        SetTargetHPToPercentageOfMaximum2 = 140,
+        SetTargetHPToPercentageOfMaximum = 140,
 
         // Warp user and set user's HP to one
         WarpAndSetHPToOne = 141,
-        
-        // TODO: investigate 142 through 179
+
+        // Replace user's Ability with target's Ability (Role Play)
+        ReplaceUserAbility = 142,
+
+        // Replace target's Ability with user's Ability (Entrainment)
+        ReplaceTargetAbility = 143,
+
+        // Swap user's and target's Abilities (Skill Swap)
+        SwapAbility = 144,
+
+        // Replace target's Ability with Insomnia (Worry Seed)
+        SetTargetAbilityToInsomnia = 145,
+
+        // Replace target's Ability with Simple (Simple Beam)
+        SetTargetAbilityToSimple = 146,
+
+        // TODO: investigate -- used by action 941, which is not used by any moves or items
+        Unknown147 = 147,
+
+        // Force target to drop held item
+        //   Params[0] = (percentage) Chance to knock item off
+        DropItem = 148,
+
+        // Eat target's food
+        EatTargetsFood = 149,
+
+        // Convert a Plain Seed into another seed or an Oran Berry
+        ConvertPlainSeedToOtherFood = 150,
+
+        // Fling an item
+        FlingItem = 151,
+
+        // Destroy target's food
+        DestroyTargetsFood = 152,
+
+        // Switch user's and target's held items
+        SwitchHeldItems = 153,
+
+        // Give held item to target
+        GiveItemToTarget = 154,
+
+        // Make target's held item or a random item in the player's inventory sticky
+        //   Params[0] = (percentage) Chance to make item sticky
+        MakeItemSticky = 155,
+
+        // Remove sticky status from all items
+        CleanseStickyItems = 156,
+
+        // TODO: investigate 157 through 173
+
+        // Deal random typed damage; damage is increased if target is in the semi-invulnerable turn of Bounce, Fly, and Sky Drop
+        //   Params[0] = (percentage) Critical hit ratio
+        //   Params[1] = (percentage) Damage multiplier
+        DamageWithBoostIfTargetIsFlying = 174,
+
+        // TODO: investigate 175 through 179
 
         // Restore belly
         //   Params[1] = (integer) Amount of belly to restore
@@ -614,9 +673,14 @@
 
         // TODO: investigate 223 through 235
 
-        // TODO: investigate 236: used by Switcher Wand (236 131 236 238)
-        // TODO: investigate 237: used by Pounce Wand (237 81 237 238)
-        // TODO: investigate 238: used by Switcher Wand and Pounce Wand
+        // TODO: investigate -- used by Switcher Wand (236 131 236 238)
+        Unknown236 = 236,
+
+        // TODO: investigate -- used by Pounce Wand (237 81 237 238)
+        Unknown237 = 237,
+
+        // TODO: investigate -- used by Switcher Wand and Pounce Wand
+        Unknown238 = 238,
 
         // TODO: investigate 239 through 258
     }

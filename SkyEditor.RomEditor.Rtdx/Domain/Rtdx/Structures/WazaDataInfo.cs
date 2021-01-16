@@ -28,7 +28,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             var entries = new List<Entry>();
             for (int i = 0; i < data.Length / EntrySize; i++)
             {
-                entries.Add(new Entry(data.AsSpan(i * EntrySize, EntrySize)));
+                entries.Add(new Entry((WazaIndex)i, data.AsSpan(i * EntrySize, EntrySize)));
             }
             this.Entries = entries;
         }
@@ -50,10 +50,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         [DebuggerDisplay("{Short00}|{Short02}|{Short04}|{ActIndex}|{Short0E}|{Byte10}|{Byte11}")]
         public class Entry
         {
-            public Entry() { }
-
-            public Entry(Span<byte> data)
+            public Entry(WazaIndex index)
             {
+                Index = index;
+            }
+
+            public Entry(WazaIndex index, Span<byte> data)
+            {
+                Index = index;
                 Short00 = MemoryMarshal.Read<ushort>(data.Slice(0x00, sizeof(ushort)));
                 Short02 = MemoryMarshal.Read<ushort>(data.Slice(0x02, sizeof(ushort)));
                 Short04 = MemoryMarshal.Read<ushort>(data.Slice(0x04, sizeof(ushort)));
@@ -76,6 +80,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 return data.ReadSpan();
             }
 
+            public WazaIndex Index { get; }
             public ushort Short00 { get; set; } // only entry 82 (Dragon Rage) has a non-zero value (0x07)
             public ushort Short02 { get; set; } // only entry 82 (Dragon Rage) has a non-zero value (0xA7)
             public ushort Short04 { get; set; } // only entry 82 (Dragon Rage) has a non-zero value (0xC4)

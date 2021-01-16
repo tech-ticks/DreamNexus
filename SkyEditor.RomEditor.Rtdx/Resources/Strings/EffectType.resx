@@ -1,0 +1,606 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="None" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="BasicAttackDamage" xml:space="preserve">
+    <value>Deal basic attack damage</value>
+  </data>
+  <data name="Damage" xml:space="preserve">
+    <value>Deal random typed damage</value>
+  </data>
+  <data name="DamageUsingDefense" xml:space="preserve">
+    <value>Deal random typed damage using target's Defense</value>
+  </data>
+  <data name="DamageIgnoringDefenseAndEvasion" xml:space="preserve">
+    <value>Deal random typed damage ignoring target's Defense and Evasion stat changes</value>
+  </data>
+  <data name="DamageAndBreakDefenses" xml:space="preserve">
+    <value>Remove target's Reflect/Light Screen and deal random typed damage</value>
+  </data>
+  <data name="DamageWithBoostIfTargetHasStatus" xml:space="preserve">
+    <value>Deal random typed damage with multiplier if target is afflicted with an specific status</value>
+  </data>
+  <data name="DamageWithBoostIfFaster" xml:space="preserve">
+    <value>Deal random typed damage with multiplier based on how faster the attacker is compared to the target</value>
+  </data>
+  <data name="DamageWithBoostIfSlower" xml:space="preserve">
+    <value>Deal random typed damage with multiplier based on how slower the attacker is compared to the target</value>
+  </data>
+  <data name="DamageWithBoostIfNotHoldingItem" xml:space="preserve">
+    <value>Deal random typed damage with multiplier if attacker is not holding an item</value>
+  </data>
+  <data name="DamageWithBoostBasedOnAttackersHP" xml:space="preserve">
+    <value>Deal random typed damage with multiplier based on attacker's HP</value>
+  </data>
+  <data name="DamageWithBoostBasedOnTargetsHP" xml:space="preserve">
+    <value>Deal random typed damage with multiplier based on target's HP</value>
+  </data>
+  <data name="DamageWithBoostBasedOnDungeonsVisited" xml:space="preserve">
+    <value>Deal random typed damage with multiplier based on the number of dungeons visited by the attacker</value>
+  </data>
+  <data name="DamageWithBoostBasedOnPP" xml:space="preserve">
+    <value>Deal random typed damage with multiplier if the move's PP is below the threshold</value>
+  </data>
+  <data name="DamageWithBoostBasedOnDepletedMoves" xml:space="preserve">
+    <value>Deal random typed damage with multiplier based on the attacker's number of depleted moves</value>
+  </data>
+  <data name="DamageWithBoostOnConsecutiveUses" xml:space="preserve">
+    <value>Deal random typed damage with multiplier if the move is used consecutively</value>
+  </data>
+  <data name="DamageWithBoostWhenTeammateUsedTheMoveInTheSameTurn" xml:space="preserve">
+    <value>Deal random typed damage with multiplier if the move was used by a teammate on the same turn</value>
+  </data>
+  <data name="DamageWithBoostWhenTeammateUsedTheMoveInTheSameTurnInTheSameRoom" xml:space="preserve">
+    <value>Deal random typed damage with multiplier if the move was used by a teammate on the same turn and in the same room</value>
+  </data>
+  <data name="DamageWithBoostIfTargetHoldsItem" xml:space="preserve">
+    <value>Deal random typed damage with multiplier if the target is holding an item</value>
+  </data>
+  <data name="DamageWithBoostIfTargetHasAnyStatus" xml:space="preserve">
+    <value>Deal random typed damage with multiplier if the target has any status effect</value>
+  </data>
+  <data name="DamageWithBoostIfTargetHasBurnOrPoison" xml:space="preserve">
+    <value>Deal random typed damage with multiplier if the target is afflicted with Burn or Poison</value>
+  </data>
+  <data name="DamageWithBoostIfTargetsHPIsAtOrBelowThreshold" xml:space="preserve">
+    <value>Deal random typed damage with multiplier if the target's HP is at or below the threshold</value>
+  </data>
+  <data name="PresentDamageOrHeal" xml:space="preserve">
+    <value>Randomly deal damage or heal</value>
+  </data>
+  <data name="MagnitudeDamage" xml:space="preserve">
+    <value>Deal random typed damage based on a random magnitude</value>
+  </data>
+  <data name="DamageWithTypeBasedOnHeldItem" xml:space="preserve">
+    <value>Deal random damage with type based on the attacker's held item</value>
+  </data>
+  <data name="DamageAlwaysSuperEffectiveAgainstWater" xml:space="preserve">
+    <value>Deal random typed damage; always super-effective against Water types</value>
+  </data>
+  <data name="FixedDamage" xml:space="preserve">
+    <value>Deal fixed typed damage</value>
+  </data>
+  <data name="DamagePercentageCurrentHP" xml:space="preserve">
+    <value>Deal damage equal to a percentage of target's current HP</value>
+  </data>
+  <data name="EqualizeHP" xml:space="preserve">
+    <value>Reduce target's HP to user's HP if the user has less HP than the target</value>
+  </data>
+  <data name="DamagePercentageMaxHP" xml:space="preserve">
+    <value>Deal damage equal to a percentage of target's max HP</value>
+  </data>
+  <data name="DamageBasedOnAttackersLevel" xml:space="preserve">
+    <value>Deal damage based on the attacker's level</value>
+  </data>
+  <data name="DamageUsingTargetsAttack" xml:space="preserve">
+    <value>Deal random typed damage using the target's Attack stat</value>
+  </data>
+  <data name="DamageBasedOnTargetsWeight" xml:space="preserve">
+    <value>Deal typed damage based on the target's weight; damage is increased the heavier the target is</value>
+  </data>
+  <data name="DamageBasedOnAttackerAndTargetWeights" xml:space="preserve">
+    <value>Deal random typed damage with multiplier based on how lighter the target is compared to the attacker</value>
+  </data>
+  <data name="DamageAndExplode" xml:space="preserve">
+    <value>Deal random typed damage and cause an explosion</value>
+  </data>
+  <data name="DamageAndDropMoney" xml:space="preserve">
+    <value>Deal random typed damage; target drops Poké if defeated</value>
+  </data>
+  <data name="DamageAndContinueActionOnDefeat" xml:space="preserve">
+    <value>Deal random typed damage; continue executing effects if target is defeated</value>
+  </data>
+  <data name="DamageIfTargetSharesTypeWithAttacker" xml:space="preserve">
+    <value>Deal random typed damage if the target shares a type with the user</value>
+  </data>
+  <data name="DamageWithBoostBasedOnPositiveStatChanges" xml:space="preserve">
+    <value>Deal random typed damage; damage is boosted based on the number of positive stat changes of the attacker or target</value>
+  </data>
+  <data name="ChargedMove" xml:space="preserve">
+    <value>Charged move</value>
+  </data>
+  <data name="DealStoredDamage" xml:space="preserve">
+    <value>Deal damage stored by Bide/Revenge/Avalanche</value>
+  </data>
+  <data name="SkyDropFirstTurn" xml:space="preserve">
+    <value>Grab target, fly and apply Sky Drop status (first turn of Sky Drop)</value>
+  </data>
+  <data name="SkyDropSecondTurn" xml:space="preserve">
+    <value>Drop target and deal damage (second turn of Sky Drop)</value>
+  </data>
+  <data name="RecoilDamage" xml:space="preserve">
+    <value>Take recoil damage</value>
+  </data>
+  <data name="StruggleRecoilDamage" xml:space="preserve">
+    <value>Take recoil damage from Struggle</value>
+  </data>
+  <data name="RecoilDamageOnMiss" xml:space="preserve">
+    <value>Take recoil damage on miss</value>
+  </data>
+  <data name="ReduceHPToOne" xml:space="preserve">
+    <value>Reduce user's HP to 1</value>
+  </data>
+  <data name="HealSelfBasedOnDamageDealt" xml:space="preserve">
+    <value>Heal self for a percentage of damage dealt</value>
+  </data>
+  <data name="OneHitKO" xml:space="preserve">
+    <value>Deal one-hit KO damage</value>
+  </data>
+  <data name="ClearStatChanges" xml:space="preserve">
+    <value>Clear stat changes</value>
+  </data>
+  <data name="ApplyStatChanges" xml:space="preserve">
+    <value>Apply stat changes</value>
+  </data>
+  <data name="ApplyStatChangesWithWeatherBoost" xml:space="preserve">
+    <value>Apply stat changes; double if under specified weather</value>
+  </data>
+  <data name="ModifyStats" xml:space="preserve">
+    <value>Modify attack/defense stats</value>
+  </data>
+  <data name="ReverseStatChanges" xml:space="preserve">
+    <value>Reverse stat changes</value>
+  </data>
+  <data name="SwapAttackWithDefense" xml:space="preserve">
+    <value>Swap raw Attack stat with raw Defense stat</value>
+  </data>
+  <data name="CopyTargetStatChanges" xml:space="preserve">
+    <value>Copy target's stat changes</value>
+  </data>
+  <data name="RaiseRandomStat" xml:space="preserve">
+    <value>Raise a random stat by two stages</value>
+  </data>
+  <data name="ReduceBellyAndMaximizeAttack" xml:space="preserve">
+    <value>Lower belly to the specified value and maximize Attack modifier</value>
+  </data>
+  <data name="ResetPositiveEvasion" xml:space="preserve">
+    <value>Reset positive Evasion stat changes to zero</value>
+  </data>
+  <data name="SwapAttackAndSpAttackBoosts" xml:space="preserve">
+    <value>Swap Attack and Special Attack boosts and multipliers between attacker and target</value>
+  </data>
+  <data name="SwapDefenseAndSpDefenseBoosts" xml:space="preserve">
+    <value>Swap Defense and Special Defense boosts and multipliers between attacker and target</value>
+  </data>
+  <data name="SwapStatBoostsExceptSpeed" xml:space="preserve">
+    <value>Swap all stat boosts and multipliers (except Speed) between attacker and target</value>
+  </data>
+  <data name="AverageAttackAndSpecialAttack" xml:space="preserve">
+    <value>Average Attack and Special Attack stats, replacing both attacker's and target's stats</value>
+  </data>
+  <data name="AverageDefenseAndSpecialDefense" xml:space="preserve">
+    <value>Average Defense and Special Defense stats, replacing both attacker's and target's stats</value>
+  </data>
+  <data name="ApplyStatusEffectWithChance" xml:space="preserve">
+    <value>Chance to apply status effect</value>
+  </data>
+  <data name="ApplyStatusEffectWithChanceAndSomethingElse" xml:space="preserve">
+    <value>Chance to apply status effect with an additional unknown parameter</value>
+  </data>
+  <data name="ApplyFreezeBurnOrParalysis" xml:space="preserve">
+    <value>Apply freeze, burn or paralysis</value>
+  </data>
+  <data name="ApplyStatusEffectBasedOnLocation" xml:space="preserve">
+    <value>Apply status effect based on current location</value>
+  </data>
+  <data name="HealStatusEffect" xml:space="preserve">
+    <value>Heal status effect</value>
+  </data>
+  <data name="HealAllNegativeStatusEffects" xml:space="preserve">
+    <value>Heal all negative status effects and remove seals</value>
+  </data>
+  <data name="SealLastUsedMove" xml:space="preserve">
+    <value>Seal the last move used by the target</value>
+  </data>
+  <data name="SealMovesKnownByUser" xml:space="preserve">
+    <value>Seal all moves from enemies that the user also knows</value>
+  </data>
+  <data name="TransferNegativeStatusEffectsToTarget" xml:space="preserve">
+    <value>Transfer all negative status effects to the target and unseals all moves</value>
+  </data>
+  <data name="AllProtect" xml:space="preserve">
+    <value>Grant Protect to user and all teammates; duration depends on team size</value>
+  </data>
+  <data name="Unknown76" xml:space="preserve">
+    <value>Unknown effect 76</value>
+  </data>
+  <data name="Unknown77" xml:space="preserve">
+    <value>Unknown effect 77</value>
+  </data>
+  <data name="ThrowTargetAtOther" xml:space="preserve">
+    <value>Throw the target at another Pokémon</value>
+  </data>
+  <data name="Hypnosis" xml:space="preserve">
+    <value>Puts the target to sleep; applies Terrified on NPCs or Puppet on the player if already sleeping</value>
+  </data>
+  <data name="BlowAwayTarget" xml:space="preserve">
+    <value>Blow away target up to 10 tiles and cause 5 damage on collision</value>
+  </data>
+  <data name="Unknown81" xml:space="preserve">
+    <value>Unknown effect 81</value>
+  </data>
+  <data name="Warp" xml:space="preserve">
+    <value>Warp to a random place on the same floor</value>
+  </data>
+  <data name="Unknown83" xml:space="preserve">
+    <value>Unknown effect 83</value>
+  </data>
+  <data name="Steal" xml:space="preserve">
+    <value>Steal target's item</value>
+  </data>
+  <data name="ThiefCovetPartTwo" xml:space="preserve">
+    <value>Part two of Thief and Covet (unknown effect)</value>
+  </data>
+  <data name="WarpAndSurround" xml:space="preserve">
+    <value>Warp and surround target</value>
+  </data>
+  <data name="DecreaseBelly" xml:space="preserve">
+    <value>Decrease target's belly</value>
+  </data>
+  <data name="RestoreHPPercent" xml:space="preserve">
+    <value>Restore HP equal to a percentage of maximum HP</value>
+  </data>
+  <data name="RestoreFullHPAndHealAllNegativeStatusEffects" xml:space="preserve">
+    <value>Fully heal HP and remove all negative status conditions</value>
+  </data>
+  <data name="RestoreFullHPAndPPAndHealAllNegativeStatusEffects" xml:space="preserve">
+    <value>Fully heal HP and PP and remove all negative status conditions</value>
+  </data>
+  <data name="DealDamageToSurroundingTargets" xml:space="preserve">
+    <value>Deal damage to creatures surrounding the target</value>
+  </data>
+  <data name="ApplyGrounded" xml:space="preserve">
+    <value>Apply the Grounded status effect</value>
+  </data>
+  <data name="SmackDownSecondaryEffect" xml:space="preserve">
+    <value>Unknown secondary effect applied by Smack Down</value>
+  </data>
+  <data name="SplashBounce" xml:space="preserve">
+    <value>Jump over the target until the next square not occupied by a creature in a straight line</value>
+  </data>
+  <data name="Transform" xml:space="preserve">
+    <value>Transform into the target</value>
+  </data>
+  <data name="PlusAndMinusSelect" xml:space="preserve">
+    <value>(unconfirmed) Cause all effects of the action to only apply to targets that have the Plus or Minus ability</value>
+  </data>
+  <data name="FinishMagneticFlux" xml:space="preserve">
+    <value>(unconfirmed) Finishes the Magnetic Flux move</value>
+  </data>
+  <data name="TypeSelect" xml:space="preserve">
+    <value>(unconfirmed) Cause all effects of the action to only apply to targets of the specified type (Rototiller, Flower Shield)</value>
+  </data>
+  <data name="FinishTypeSelect1" xml:space="preserve">
+    <value>(unconfirmed) Finish the TypeSelect action (Flower Shield)</value>
+  </data>
+  <data name="FinishTypeSelect2" xml:space="preserve">
+    <value>(unconfirmed) Finish the TypeSelect action (Rototiller)</value>
+  </data>
+  <data name="StatusSelect" xml:space="preserve">
+    <value>(unconfirmed) Cause all effects of the action to only apply to targets affected by the specified status effect</value>
+  </data>
+  <data name="StatusSelect2" xml:space="preserve">
+    <value>(unconfirmed) Cause all effects of the action to only apply to targets affected by the specified status effect</value>
+  </data>
+  <data name="SpendHP" xml:space="preserve">
+    <value>Spend HP equal to a percentage of max HP</value>
+  </data>
+  <data name="CheckBellyNotEmpty" xml:space="preserve">
+    <value>Cause the action to fail if the belly is empty</value>
+  </data>
+  <data name="ReducePP" xml:space="preserve">
+    <value>Reduce PP of target's last used move</value>
+  </data>
+  <data name="AddType" xml:space="preserve">
+    <value>Add a type to the target</value>
+  </data>
+  <data name="ChangeType" xml:space="preserve">
+    <value>Change target's type</value>
+  </data>
+  <data name="CopyType" xml:space="preserve">
+    <value>Copy target's type</value>
+  </data>
+  <data name="ChangeToFirstMoveType" xml:space="preserve">
+    <value>Set user's type to its first move's type</value>
+  </data>
+  <data name="ChangeToTypeWithAdvantageOverLastMove" xml:space="preserve">
+    <value>Set user's type to one that has defensive advantage against the target's last used move</value>
+  </data>
+  <data name="ChangeTypeBasedOnDungeon" xml:space="preserve">
+    <value>Set user's type based on the dungeon</value>
+  </data>
+  <data name="RemoveFlyingType" xml:space="preserve">
+    <value>(unconfirmed) Remove Flying type temporarily</value>
+  </data>
+  <data name="SwitchWithTeammateBehind" xml:space="preserve">
+    <value>Switch places with the teammate directly behind user</value>
+  </data>
+  <data name="ApplyDungeonStatus" xml:space="preserve">
+    <value>Apply the specified dungeon status</value>
+  </data>
+  <data name="UseRandomMove" xml:space="preserve">
+    <value>Use a random move</value>
+  </data>
+  <data name="UseLastMove" xml:space="preserve">
+    <value>Use the last move used by the target</value>
+  </data>
+  <data name="UseRandomTeammateMove" xml:space="preserve">
+    <value>Use a random move from a teammate</value>
+  </data>
+  <data name="UseRandomEnemyMove" xml:space="preserve">
+    <value>Use a random move from the enemy</value>
+  </data>
+  <data name="UseRandomKnownMove" xml:space="preserve">
+    <value>Use a random known move</value>
+  </data>
+  <data name="UseMoveBasedOnTerrain" xml:space="preserve">
+    <value>Use a move based on the current terrain</value>
+  </data>
+  <data name="CopyLastUsedMove" xml:space="preserve">
+    <value>Copy target's last used move</value>
+  </data>
+  <data name="ReplaceWithLastUsedMove" xml:space="preserve">
+    <value>Replace move with target's last used move</value>
+  </data>
+  <data name="Unknown125" xml:space="preserve">
+    <value>Unknown effect 125</value>
+  </data>
+  <data name="SetSpikesTrap" xml:space="preserve">
+    <value>Set a Spikes Trap</value>
+  </data>
+  <data name="SetToxicSpikesTrap" xml:space="preserve">
+    <value>Set a Toxic Spikes Trap</value>
+  </data>
+  <data name="SetStealthRockTrap" xml:space="preserve">
+    <value>Set a Stealth Rock Trap</value>
+  </data>
+  <data name="ApplyStatusEffect" xml:space="preserve">
+    <value>Apply status effect unconditionally</value>
+  </data>
+  <data name="SetHPToAverage" xml:space="preserve">
+    <value>Set user's and target's HP to the average of both HPs</value>
+  </data>
+  <data name="SwitchPlaces" xml:space="preserve">
+    <value>Switch places between user and target</value>
+  </data>
+  <data name="SurroundTarget" xml:space="preserve">
+    <value>Teleport all teammates around the target</value>
+  </data>
+  <data name="Stockpile" xml:space="preserve">
+    <value>Increase stockpile count</value>
+  </data>
+  <data name="SpitUp" xml:space="preserve">
+    <value>Deal damage based on stockpile count</value>
+  </data>
+  <data name="Swallow" xml:space="preserve">
+    <value>Heal HP based on stockpile count</value>
+  </data>
+  <data name="ClearStockpile" xml:space="preserve">
+    <value>Reset stockpile count to zero</value>
+  </data>
+  <data name="SetUserHPToPercentageOfMaximum" xml:space="preserve">
+    <value>Set user's HP to a percentage of max HP</value>
+  </data>
+  <data name="TakeDamageIfGhost" xml:space="preserve">
+    <value>(unconfirmed) Take percentage of max HP as damage if user is Ghost type</value>
+  </data>
+  <data name="MultiplyHPByPercentage" xml:space="preserve">
+    <value>Set target's HP to a percentage of current HP</value>
+  </data>
+  <data name="SetTargetHPToPercentageOfMaximum" xml:space="preserve">
+    <value>Set target's HP to a percentage of max HP</value>
+  </data>
+  <data name="WarpAndSetHPToOne" xml:space="preserve">
+    <value>Warp user and set user's HP to one</value>
+  </data>
+  <data name="ReplaceUserAbility" xml:space="preserve">
+    <value>Replace user's Ability with target's Ability</value>
+  </data>
+  <data name="ReplaceTargetAbility" xml:space="preserve">
+    <value>Replace target's Ability with user's Ability</value>
+  </data>
+  <data name="SwapAbility" xml:space="preserve">
+    <value>Swap user's and target's Abilities</value>
+  </data>
+  <data name="SetTargetAbilityToInsomnia" xml:space="preserve">
+    <value>Replace target's Ability with Insomnia</value>
+  </data>
+  <data name="SetTargetAbilityToSimple" xml:space="preserve">
+    <value>Replace target's Ability with Simple</value>
+  </data>
+  <data name="Unknown147" xml:space="preserve">
+    <value>Unknown effect 147</value>
+  </data>
+  <data name="DropItem" xml:space="preserve">
+    <value>Force target to drop held item</value>
+  </data>
+  <data name="EatTargetsFood" xml:space="preserve">
+    <value>Eat target's food</value>
+  </data>
+  <data name="ConvertPlainSeedToOtherFood" xml:space="preserve">
+    <value>Convert a Plain Seed into another seed or an Oran Berry</value>
+  </data>
+  <data name="FlingItem" xml:space="preserve">
+    <value>Fling an item</value>
+  </data>
+  <data name="DestroyTargetsFood" xml:space="preserve">
+    <value>Destroy target's food</value>
+  </data>
+  <data name="SwitchHeldItems" xml:space="preserve">
+    <value>Switch user's and target's held items</value>
+  </data>
+  <data name="GiveItemToTarget" xml:space="preserve">
+    <value>Give held item to target</value>
+  </data>
+  <data name="MakeItemSticky" xml:space="preserve">
+    <value>Make target's held item or a random item in the player's inventory sticky</value>
+  </data>
+  <data name="CleanseStickyItems" xml:space="preserve">
+    <value>Remove sticky status from all items</value>
+  </data>
+  <data name="DamageWithBoostIfTargetIsFlying" xml:space="preserve">
+    <value>Deal random typed damage with multiplier if target is in the semi-invulnerable turn of Bounce, Fly, and Sky Drop</value>
+  </data>
+  <data name="RestoreBelly" xml:space="preserve">
+    <value>Restore belly</value>
+  </data>
+  <data name="BadFoodStatus" xml:space="preserve">
+    <value>Randomly apply Stuck, Poison, Paralysis or Burn</value>
+  </data>
+  <data name="RestoreHP" xml:space="preserve">
+    <value>Heal HP or increase max HP if at max</value>
+  </data>
+  <data name="IncreaseMaxHP" xml:space="preserve">
+    <value>Increase max HP</value>
+  </data>
+  <data name="RestoreAndIncreaseHP" xml:space="preserve">
+    <value>Heal HP and increase max HP until the threshold; increase max HP further if HP is at max above the threshold</value>
+  </data>
+  <data name="Unknown236" xml:space="preserve">
+    <value>Unknown effect 236</value>
+  </data>
+  <data name="Unknown237" xml:space="preserve">
+    <value>Unknown effect 237</value>
+  </data>
+  <data name="Unknown238" xml:space="preserve">
+    <value>Unknown effect 238</value>
+  </data>
+</root>

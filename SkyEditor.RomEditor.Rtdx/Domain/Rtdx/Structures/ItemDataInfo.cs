@@ -29,7 +29,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             var entries = new List<Entry>();
             for (int i = 0; i < data.Length / EntrySize; i++)
             {
-                entries.Add(new Entry(data.AsSpan(i * EntrySize, EntrySize)));
+                entries.Add(new Entry((ItemIndex)i, data.AsSpan(i * EntrySize, EntrySize)));
             }
             this.Entries = entries;
         }
@@ -51,17 +51,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         [DebuggerDisplay("{Name}")]
         public class Entry
         {
-            public Entry()
+            public Entry(ItemIndex index)
             {
+                Index = index;
                 Symbol = "";
             }
 
-            public Entry(Span<byte> data)
+            public Entry(ItemIndex index, Span<byte> data)
             {
-                Short00 = MemoryMarshal.Read<ushort>(data.Slice(0x00, sizeof(ushort)));
-                Short02 = MemoryMarshal.Read<ushort>(data.Slice(0x02, sizeof(ushort)));
-                Short04 = MemoryMarshal.Read<ushort>(data.Slice(0x04, sizeof(ushort)));
-                PrimaryActIndex = MemoryMarshal.Read<ushort>(data.Slice(0x0C, sizeof(ushort)));
+                Index = index;
                 Short00 = MemoryMarshal.Read<ushort>(data.Slice(0x00, sizeof(ushort)));
                 Short02 = MemoryMarshal.Read<ushort>(data.Slice(0x02, sizeof(ushort)));
                 Short04 = MemoryMarshal.Read<ushort>(data.Slice(0x04, sizeof(ushort)));
@@ -119,6 +117,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 return data.ReadSpan();
             }
 
+            public ItemIndex Index { get; }
             public ushort Short00 { get; set; }
             public ushort Short02 { get; set; }
             public ushort Short04 { get; set; }
@@ -128,7 +127,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public ushort Short0C { get; set; }
             public ushort PrimaryActIndex { get; set; }  // Action taken when used (items) or stepped on (traps)
             public ushort ReviveActIndex { get; set; }  // Action taken while reviving (only Tiny Reviver Seeds and Reviver Seeds)
-
+            // 0x12 seems to be always zero
             public ushort ThrowActIndex { get; set; }  // Action taken when the item is thrown
             public ItemKind ItemKind { get; set; }
             public byte Byte17 { get; set; }
