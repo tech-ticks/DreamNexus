@@ -23,6 +23,7 @@ var xlMoves = Rom.GetXLMoveList().Entries;
 var strings = Rom.GetCommonStrings();
 var dungeonBin = Rom.GetDungeonBinEntry();
 var i = 0;
+Console.WriteLine("#;ActIndex;Name;Type;Category;MinHits;MaxHits;Stop on miss;Short00;Short02;Short04;Short0E;Byte10;Byte11;Text 1;Text 2");
 foreach (var entry in db.Entries)
 {
     var act = acts[entry.ActIndex];
@@ -32,8 +33,25 @@ foreach (var entry in db.Entries)
     var hitCountEntry = hitCountData[act.ActHitCountIndex];
     var text1 = dungeonBin.GetStringByHash((int)act.Text08);
     var text2 = dungeonBin.GetStringByHash((int)act.Text0C);
-    Console.Write($"#{i,-3} {moveName,-25}  {type,-8}  {category,-7}");
-    //Console.Write($"  {entry.ActIndex,5}  {entry.Short00,3}  {entry.Short02,3}  {entry.Short04,3}  {entry.Short0E,5}  {entry.Byte10,3}  {entry.Byte11,3}");
+    Console.Write($"{i};");
+    Console.Write($"{entry.ActIndex};");
+    Console.Write($"{moveName};");
+    Console.Write($"{type};");
+    Console.Write($"{category};");
+    Console.Write($"{hitCountEntry.MinHits};");
+    Console.Write($"{hitCountEntry.MaxHits};");
+    Console.Write($"{hitCountEntry.StopOnMiss};");
+    Console.Write($"{entry.Short00};");
+    Console.Write($"{entry.Short02};");
+    Console.Write($"{entry.Short04};");
+    Console.Write($"{entry.Short0E};");
+    Console.Write($"{entry.Byte10};");
+    Console.Write($"{entry.Byte11};");
+    Console.Write($"{text1};");
+    Console.Write($"{text2};");
+    Console.WriteLine();
+
+    /*Console.Write($"#{i,-3} {moveName,-25}  {type,-8}  {category,-7}");
     if (hitCountEntry.Index > 1)
     {
         if (hitCountEntry.StopOnMiss != 0)
@@ -76,7 +94,7 @@ foreach (var entry in db.Entries)
             Console.Write(")");
         }
     }
-    Console.WriteLine();
+    Console.WriteLine();*/
 
     /*if (!string.IsNullOrEmpty(text1))
     {

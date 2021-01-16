@@ -1213,6 +1213,15 @@
     <None Update="Scripts\Queries\Rtdx\PrintActHitCountTableDataInfo.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Scripts\Queries\Rtdx\PrintRareQualities.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Rtdx\PrintDungeonStatuses.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Scripts\Queries\Rtdx\PrintStatuses.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Scripts\Queries\Rtdx\PrintSymbolLists.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

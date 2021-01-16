@@ -13,14 +13,40 @@ public string FormatBits(ushort b)
 var itemDataInfo = Rom.GetItemDataInfo().Entries;
 var strings = Rom.GetCommonStrings();
 var i = 0;
+
+Console.WriteLine("#;Kind;Symbol;Name;Short00;Short02;Short04;Buy Price;Sell Price;TM Move;Short0C;Primary Action Index;Revive Action Index;Throw Action Index;Byte17;Byte18;Byte19;Byte1A;Byte1B;Byte1C;Byte1D;Byte1E;Byte1F;Byte20");
 foreach (var item in itemDataInfo)
 {
-    //Console.WriteLine($"{(int) item.Key} {0x((int) item.Key).ToString("x")} {item.Key}: {item.Value}");
     var itemName = strings.Items.ContainsKey((ItemIndex)i) ? strings.Items[(ItemIndex)i] : "(none)";
     var tmMoveName = strings.Moves.ContainsKey(item.TaughtMove) ? strings.Moves[item.TaughtMove] : "";
     //var desc = $"[{item.ItemKind}] ({item.Symbol}) {itemName}";
     var desc = $"[{item.ItemKind}] {itemName}";
-    Console.Write($"{i,3}:");
+    Console.Write($"{i};");
+    Console.Write($"{item.ItemKind};");
+    Console.Write($"{item.Symbol};");
+    Console.Write($"{itemName};");
+    Console.Write($"{item.Short00};");
+    Console.Write($"{item.Short02};");
+    Console.Write($"{FormatBits(item.Short04)};");
+    Console.Write($"{item.BuyPrice};");
+    Console.Write($"{item.SellPrice};");
+    Console.Write($"{tmMoveName};");
+    Console.Write($"{item.Short0C};");
+    Console.Write($"{item.PrimaryActIndex};");
+    Console.Write($"{item.ReviveActIndex};");
+    Console.Write($"{item.ThrowActIndex};");
+    Console.Write($"{item.Byte17};");
+    Console.Write($"{item.Byte18};");
+    Console.Write($"{item.Byte19};");
+    Console.Write($"{item.Byte1A};");
+    Console.Write($"{item.Byte1B};");
+    Console.Write($"{item.Byte1C};");
+    Console.Write($"{item.Byte1D};");
+    Console.Write($"{item.Byte1E};");
+    Console.Write($"{item.Byte1F};");
+    Console.Write($"{item.Byte20}");
+    Console.WriteLine();
+    /*Console.Write($"{i,3}:");
     Console.Write($" {desc,-40} ");
     Console.Write($" {item.Short00,5} ");
     Console.Write($" {item.Short02,5} ");
@@ -43,6 +69,6 @@ foreach (var item in itemDataInfo)
     Console.Write($" {item.Byte1E,3} ");
     Console.Write($" {item.Byte1F,3} ");
     Console.Write($" {item.Byte20,3} ");
-    Console.WriteLine();
+    Console.WriteLine();*/
     i++;
 }

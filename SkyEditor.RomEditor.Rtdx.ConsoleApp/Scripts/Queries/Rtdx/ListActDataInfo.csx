@@ -14,6 +14,7 @@ var data = Rom.GetActDataInfo().Entries;
 var effectData = Rom.GetActEffectDataInfo().Entries;
 var hitCountData = Rom.GetActHitCountTableDataInfo().Entries;
 var strings = Rom.GetDungeonBinEntry();
+Console.WriteLine("#;Type;Category;00;10;12;14;16;18;1A;1C;1E;20;22;24;26;StatusChance;2A;2C;2E;30;32;34;36;38;3A;3C;3E;40;42;44;46;48;4A;4C;4E;50;52;54;56;58;5A;5C;5D;5E;5F;60;61;62;63;64;65;66;67;68;69;6A;6B;6C;6D;6E;6F;70;71;72;73;74;75;76;77;78;79;7A;7B;7C;7F;80;81;82;83;84;85;86;87;Range;89;8A;8B;Target;8D;8E;8F;90;91;92;94;95;96;97;98;99;9A;9B;9C;9D;9E;9F;::;00;01;02;04;08;0C;10;12;14;16;18;1A;1C;1E;20;22;24;26;28;2A;2C;2E;30;32;34;36;38;3C;::;HitCountIdx;MinHits;MaxHits;StopOnMiss;::;Text 1;Text 2");
 for (var i = 0; i < data.Count; i++)
 {
     var entry = data[i];
@@ -22,7 +23,6 @@ for (var i = 0; i < data.Count; i++)
     var text1 = strings.GetStringByHash((int)entry.Text08);
     var text2 = strings.GetStringByHash((int)entry.Text0C);
     Console.Write($"{i};");
-    Console.Write($"{entry.ActHitCountIndex};");
     Console.Write($"{entry.MoveType};");
     Console.Write($"{entry.MoveCategory};");
     Console.Write($"{FormatBits(entry.Long00)};");
@@ -38,32 +38,32 @@ for (var i = 0; i < data.Count; i++)
     Console.Write($"{entry.Short22};");
     Console.Write($"{entry.Short24};");
     Console.Write($"{entry.Short26};");
-    Console.Write($"{entry.Short28};");
+    Console.Write($"{entry.StatusChance};");
     Console.Write($"{entry.Short2A};");
     Console.Write($"{entry.Short2C};");
     Console.Write($"{entry.Short2E};");
-
+    Console.Write($"{entry.Short30};");
     Console.Write($"{entry.Short32};");
     Console.Write($"{entry.Short34};");
     Console.Write($"{entry.Short36};");
     Console.Write($"{entry.Short38};");
     Console.Write($"{entry.Short3A};");
+    Console.Write($"{entry.Short3C};");
+    Console.Write($"{entry.Short3E};");
     Console.Write($"{entry.Short40};");
     Console.Write($"{entry.Short42};");
-
+    Console.Write($"{entry.Short44};");
+    Console.Write($"{entry.Short46};");
     Console.Write($"{entry.Short48};");
     Console.Write($"{entry.Short4A};");
-
+    Console.Write($"{entry.Short4C};");
+    Console.Write($"{entry.Short4E};");
     Console.Write($"{entry.Short50};");
     Console.Write($"{entry.Short52};");
     Console.Write($"{entry.Short54};");
-
+    Console.Write($"{entry.Short56};");
     Console.Write($"{entry.Short58};");
     Console.Write($"{entry.Short5A};");
-
-    Console.Write($"{entry.Short98};");
-    Console.Write($"{entry.Short9A};");
-
     Console.Write($"{entry.Byte5C};");
     Console.Write($"{entry.Byte5D};");
     Console.Write($"{entry.Byte5E};");
@@ -71,7 +71,7 @@ for (var i = 0; i < data.Count; i++)
     Console.Write($"{entry.Byte60};");
     Console.Write($"{entry.Byte61};");
     Console.Write($"{entry.Byte62};");
-
+    Console.Write($"{entry.Byte63};");
     Console.Write($"{entry.Byte64};");
     Console.Write($"{entry.Byte65};");
     Console.Write($"{entry.Byte66};");
@@ -82,10 +82,12 @@ for (var i = 0; i < data.Count; i++)
     Console.Write($"{entry.Byte6B};");
     Console.Write($"{entry.Byte6C};");
     Console.Write($"{entry.Byte6D};");
-
+    Console.Write($"{entry.Byte6E};");
+    Console.Write($"{entry.Byte6F};");
     Console.Write($"{entry.Byte70};");
     Console.Write($"{entry.Byte71};");
-
+    Console.Write($"{entry.Byte72};");
+    Console.Write($"{entry.Byte73};");
     Console.Write($"{entry.Byte74};");
     Console.Write($"{entry.Byte75};");
     Console.Write($"{entry.Byte76};");
@@ -93,10 +95,9 @@ for (var i = 0; i < data.Count; i++)
     Console.Write($"{entry.Byte78};");
     Console.Write($"{entry.Byte79};");
     Console.Write($"{entry.Byte7A};");
-
+    Console.Write($"{entry.Byte7B};");
     Console.Write($"{entry.Byte7C};");
     Console.Write($"{entry.Byte7F};");
-
     Console.Write($"{entry.Byte80};");
     Console.Write($"{entry.Byte81};");
     Console.Write($"{entry.Byte82};");
@@ -105,11 +106,11 @@ for (var i = 0; i < data.Count; i++)
     Console.Write($"{entry.Byte85};");
     Console.Write($"{entry.Byte86};");
     Console.Write($"{entry.Byte87};");
-    Console.Write($"{entry.Byte88};");
+    Console.Write($"{entry.Range};");
     Console.Write($"{entry.Byte89};");
     Console.Write($"{entry.Byte8A};");
     Console.Write($"{entry.Byte8B};");
-    Console.Write($"{entry.Byte8C};");
+    Console.Write($"{entry.Target};");
     Console.Write($"{entry.Byte8D};");
     Console.Write($"{entry.Byte8E};");
     Console.Write($"{entry.Byte8F};");
@@ -120,6 +121,14 @@ for (var i = 0; i < data.Count; i++)
     Console.Write($"{entry.Byte95};");
     Console.Write($"{entry.Byte96};");
     Console.Write($"{entry.Byte97};");
+    Console.Write($"{entry.Byte98};");
+    Console.Write($"{entry.Byte99};");
+    Console.Write($"{entry.Byte9A};");
+    Console.Write($"{entry.Byte9B};");
+    Console.Write($"{entry.Byte9C};");
+    Console.Write($"{entry.Byte9D};");
+    Console.Write($"{entry.Byte9E};");
+    Console.Write($"{entry.Byte9F};");
     Console.Write($"::;");
     Console.Write($"{effectEntry.Byte00};");
     Console.Write($"{effectEntry.Byte01};");
@@ -150,6 +159,7 @@ for (var i = 0; i < data.Count; i++)
     Console.Write($"{effectEntry.Short38};");
     Console.Write($"{effectEntry.Int3C};");
     Console.Write($"::;");
+    Console.Write($"{entry.ActHitCountIndex};");
     Console.Write($"{hitCountEntry.MinHits};");
     Console.Write($"{hitCountEntry.MaxHits};");
     Console.Write($"{hitCountEntry.StopOnMiss};");
@@ -242,11 +252,11 @@ for (var i = 0; i < data.Count; i++)
     Console.Write($" {entry.Byte85,3}");
     Console.Write($" {entry.Byte86,3}");
     Console.Write($" {entry.Byte87,3}");
-    Console.Write($" {entry.Byte88,3}");
+    Console.Write($" {entry.Range,3}");
     Console.Write($" {entry.Byte89,3}");
     Console.Write($" {entry.Byte8A,3}");
     Console.Write($" {entry.Byte8B,3}");
-    Console.Write($" {entry.Byte8C,3}");
+    Console.Write($" {entry.Target,-14}");
     Console.Write($" {entry.Byte8D,3}");
     Console.Write($" {entry.Byte8E,3}");
     Console.Write($" {entry.Byte8F,3}");

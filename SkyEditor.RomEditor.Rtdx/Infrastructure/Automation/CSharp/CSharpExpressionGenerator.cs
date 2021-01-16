@@ -93,4 +93,60 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.CSharp
             }
         }
     }
+
+    public class StatusIndexCSharpExpressionGenerator : ICSharpExpressionGenerator
+    {
+        public StatusIndexCSharpExpressionGenerator(ICommonStrings? commonStrings = null)
+        {
+            this.commonStrings = commonStrings;
+        }
+
+        private readonly ICommonStrings? commonStrings;
+
+        public string Generate(object? obj)
+        {
+            if (!(obj is StatusIndex index))
+            {
+                throw new ArgumentException("Unsupported value type");
+            }
+
+            string? friendlyName = commonStrings?.Statuses?.GetValueOrDefault(index);
+            if (!string.IsNullOrEmpty(friendlyName))
+            {
+                return $"StatusIndex.{obj:f} /* {friendlyName} */";
+            }
+            else
+            {
+                return $"StatusIndex.{obj:f}";
+            }
+        }
+    }
+
+    public class DungeonStatusIndexCSharpExpressionGenerator : ICSharpExpressionGenerator
+    {
+        public DungeonStatusIndexCSharpExpressionGenerator(ICommonStrings? commonStrings = null)
+        {
+            this.commonStrings = commonStrings;
+        }
+
+        private readonly ICommonStrings? commonStrings;
+
+        public string Generate(object? obj)
+        {
+            if (!(obj is DungeonStatusIndex index))
+            {
+                throw new ArgumentException("Unsupported value type");
+            }
+
+            string? friendlyName = commonStrings?.DungeonStatuses?.GetValueOrDefault(index);
+            if (!string.IsNullOrEmpty(friendlyName))
+            {
+                return $"DungeonStatusIndex.{obj:f} /* {friendlyName} */";
+            }
+            else
+            {
+                return $"DungeonStatusIndex.{obj:f}";
+            }
+        }
+    }
 }

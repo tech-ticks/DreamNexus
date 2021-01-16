@@ -11,8 +11,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
     {
         Dictionary<CreatureIndex, string> Pokemon { get; }
         Dictionary<WazaIndex, string> Moves { get; }
+        Dictionary<SugowazaIndex, string> RareQualities { get; }
         Dictionary<DungeonIndex, string> Dungeons { get; }
         Dictionary<ItemIndex, string> Items { get; }
+        Dictionary<DungeonStatusIndex, string> DungeonStatuses { get; }
+        Dictionary<StatusIndex, string> Statuses { get; }
         Dictionary<PokemonType, string> PokemonTypes { get; }
 
         /// <summary>
@@ -31,6 +34,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         string? GetMoveName(WazaIndex wazaIndex);
 
+        string? GetRareQualityNameByInternalName(string internalName);
+
+        string? GetRareQualityName(SugowazaIndex sugowazaIndex);
+
         string? GetAbilityNameByInternalName(string internalName);
 
         string? GetAbilityName(AbilityIndex abilityIndex);
@@ -43,9 +50,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         string? GetItemName(ItemIndex itemIndex);
 
+        string? GetDungeonStatusNameByInternalName(string internalName);
+
+        string? GetDungeonStatusName(DungeonStatusIndex dungeonStatusIndex);
+
+        string? GetStatusNameByInternalName(string internalName);
+
+        string? GetStatusName(StatusIndex statusIndex);
+
         string? GetPokemonTypeNameByInternalName(string internalName);
 
-        string? GetPokemonTypeName(ItemIndex itemIndex);
+        string? GetPokemonTypeName(PokemonType pokemonTypeIndex);
     }
 
     public class CommonStrings : ICommonStrings
@@ -83,6 +98,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 Moves.Add(waza, name ?? "");
             }
 
+            RareQualities = new Dictionary<SugowazaIndex, string>();
+            var rareQualities = Enum.GetValues(typeof(SugowazaIndex)).Cast<SugowazaIndex>().ToArray();
+            foreach (SugowazaIndex sugowaza in rareQualities)
+            {
+                if (sugowaza == default)
+                {
+                    continue;
+                }
+
+                var nameHash = TextIdValues.GetValueOrDefault("SUGOWAZA_NAME__" + sugowaza.ToString("f"));
+                var name = common.GetStringByHash(nameHash);
+                RareQualities.Add(sugowaza, name ?? "");
+            }
+
             Dungeons = new Dictionary<DungeonIndex, string>();
             var dungeons = Enum.GetValues(typeof(DungeonIndex)).Cast<DungeonIndex>().ToArray();
             foreach (DungeonIndex dungeon in dungeons)
@@ -105,13 +134,39 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             {
                 string itemName = itemNames[i];
                 var item = items[i];
-                if (item == default || itemName.EndsWith("_MIN") || itemName.EndsWith("_MAX"))
+                if (item == default || itemName.EndsWith("_MIN") || itemName.EndsWith("_MAX"))
                 {
                     continue;
                 }
 
                 var name = GetItemNameByInternalName(itemName);
                 Items.Add(item, name ?? "");
+            }
+
+            DungeonStatuses = new Dictionary<DungeonStatusIndex, string>();
+            var dungeonStatuses = Enum.GetValues(typeof(DungeonStatusIndex)).Cast<DungeonStatusIndex>().ToArray();
+            foreach (DungeonStatusIndex status in dungeonStatuses)
+            {
+                if (status == default)
+                {
+                    continue;
+                }
+
+                var name = GetDungeonStatusNameByInternalName(status.ToString("f"));
+                DungeonStatuses.Add(status, name ?? "");
+            }
+
+            Statuses = new Dictionary<StatusIndex, string>();
+            var statuses = Enum.GetValues(typeof(StatusIndex)).Cast<StatusIndex>().ToArray();
+            foreach (StatusIndex status in statuses)
+            {
+                if (status == default)
+                {
+                    continue;
+                }
+
+                var name = GetStatusNameByInternalName(status.ToString("f"));
+                Statuses.Add(status, name ?? "");
             }
 
             PokemonTypes = new Dictionary<PokemonType, string>();
@@ -132,8 +187,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         public Dictionary<CreatureIndex, string> Pokemon { get; }
         public Dictionary<WazaIndex, string> Moves { get; }
+        public Dictionary<SugowazaIndex, string> RareQualities { get; }
         public Dictionary<DungeonIndex, string> Dungeons { get; }
         public Dictionary<ItemIndex, string> Items { get; }
+        public Dictionary<DungeonStatusIndex, string> DungeonStatuses { get; }
+        public Dictionary<StatusIndex, string> Statuses { get; }
         public Dictionary<PokemonType, string> PokemonTypes { get; }
 
         /// <summary>
@@ -166,6 +224,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public string? GetMoveName(WazaIndex wazaIndex)
         {
             return GetMoveNameByInternalName(wazaIndex.ToString("f"));
+        }
+
+        public string? GetRareQualityNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("SUGOWAZA_NAME__" + internalName.ToUpper());
+            return common.GetStringByHash(nameHash);
+        }
+
+        public string? GetRareQualityName(SugowazaIndex sugowazaIndex)
+        {
+            return GetRareQualityNameByInternalName(sugowazaIndex.ToString("f"));
         }
 
         public string? GetAbilityNameByInternalName(string internalName)
@@ -201,15 +270,37 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             return GetItemNameByInternalName(itemIndex.ToString("f"));
         }
 
+        public string? GetDungeonStatusNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("DUNGEON_STATUS_NAME__DUNGEON_STATUS_" + internalName.ToUpper());
+            return common.GetStringByHash(nameHash);
+        }
+
+        public string? GetDungeonStatusName(DungeonStatusIndex statusIndex)
+        {
+            return GetDungeonStatusNameByInternalName(statusIndex.ToString("f"));
+        }
+
+        public string? GetStatusNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("STATUS_NAME__STATUS_" + internalName.ToUpper());
+            return common.GetStringByHash(nameHash);
+        }
+
+        public string? GetStatusName(StatusIndex statusIndex)
+        {
+            return GetStatusNameByInternalName(statusIndex.ToString("f"));
+        }
+
         public string? GetPokemonTypeNameByInternalName(string internalName)
         {
             var nameHash = TextIdValues.GetValueOrDefault("TYPE_NAME__TYPE_" + internalName.ToUpper());
             return common.GetStringByHash(nameHash);
         }
 
-        public string? GetPokemonTypeName(ItemIndex itemIndex)
+        public string? GetPokemonTypeName(PokemonType pokemonType)
         {
-            return GetPokemonTypeNameByInternalName(itemIndex.ToString("f"));
+            return GetPokemonTypeNameByInternalName(pokemonType.ToString("f"));
         }
     }
 }
