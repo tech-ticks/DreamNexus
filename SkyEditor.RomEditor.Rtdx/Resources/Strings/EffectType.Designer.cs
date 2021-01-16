@@ -151,6 +151,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply status effect to summoned monsters.
+        /// </summary>
+        public static string ApplyStatusEffectToSummonedMonsters {
+            get {
+                return ResourceManager.GetString("ApplyStatusEffectToSummonedMonsters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chance to apply status effect.
         /// </summary>
         public static string ApplyStatusEffectWithChance {
@@ -844,11 +853,29 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Drain all PP of a random move.
+        /// </summary>
+        public static string DrainPP {
+            get {
+                return ResourceManager.GetString("DrainPP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Force target to drop held item.
         /// </summary>
         public static string DropItem {
             get {
                 return ResourceManager.GetString("DropItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Force target to drop items.
+        /// </summary>
+        public static string DropItems {
+            get {
+                return ResourceManager.GetString("DropItems", resourceCulture);
             }
         }
         
@@ -876,6 +903,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string ExitDungeon {
             get {
                 return ResourceManager.GetString("ExitDungeon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cause an explosion.
+        /// </summary>
+        public static string Explode {
+            get {
+                return ResourceManager.GetString("Explode", resourceCulture);
             }
         }
         
@@ -921,6 +957,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string FlingItem {
             get {
                 return ResourceManager.GetString("FlingItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Give Gold Bars and rare items if the leader is holding a Gold Scope.
+        /// </summary>
+        public static string GiveGoldOrRareItem {
+            get {
+                return ResourceManager.GetString("GiveGoldOrRareItem", resourceCulture);
             }
         }
         
@@ -1182,6 +1227,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string RaiseRandomStat {
             get {
                 return ResourceManager.GetString("RaiseRandomStat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Produce the effects of a random trap.
+        /// </summary>
+        public static string RandomTrapEffect {
+            get {
+                return ResourceManager.GetString("RandomTrapEffect", resourceCulture);
             }
         }
         
@@ -1456,6 +1510,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Seal a random move.
+        /// </summary>
+        public static string SealRandomMove {
+            get {
+                return ResourceManager.GetString("SealRandomMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Set user&apos;s and target&apos;s HP to the average of both HPs.
         /// </summary>
         public static string SetHPToAverage {
@@ -1555,6 +1618,33 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spawn an enemy Ditto nearby.
+        /// </summary>
+        public static string SpawnDitto {
+            get {
+                return ResourceManager.GetString("SpawnDitto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spawn a random wild Pokémon or give a random rare item.
+        /// </summary>
+        public static string SpawnPokemonOrGiveRandomItem {
+            get {
+                return ResourceManager.GetString("SpawnPokemonOrGiveRandomItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Spawn an enemy Stunfisk nearby.
+        /// </summary>
+        public static string SpawnStunfisk {
+            get {
+                return ResourceManager.GetString("SpawnStunfisk", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Spend HP equal to a percentage of max HP.
         /// </summary>
         public static string SpendHP {
@@ -1605,6 +1695,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string Steal {
             get {
                 return ResourceManager.GetString("Steal", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deal Stealth Rock damage.
+        /// </summary>
+        public static string StealthRockDamage {
+            get {
+                return ResourceManager.GetString("StealthRockDamage", resourceCulture);
             }
         }
         
@@ -1771,6 +1870,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Throw target to a random direction up to 10 tiles, causing 5 damage on collision.
+        /// </summary>
+        public static string ThrowTargetToARandomDirection {
+            get {
+                return ResourceManager.GetString("ThrowTargetToARandomDirection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Transfer all negative status effects to the target and unseals all moves.
         /// </summary>
         public static string TransferNegativeStatusEffectsToTarget {
@@ -1785,6 +1893,24 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string Transform {
             get {
                 return ResourceManager.GetString("Transform", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transform all items in the room into random wild Pokémon.
+        /// </summary>
+        public static string TransformItemsIntoPokemon {
+            get {
+                return ResourceManager.GetString("TransformItemsIntoPokemon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Turn a random item in the inventory into an Apple.
+        /// </summary>
+        public static string TurnRandomItemIntoApple {
+            get {
+                return ResourceManager.GetString("TurnRandomItemIntoApple", resourceCulture);
             }
         }
         

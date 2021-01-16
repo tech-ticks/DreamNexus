@@ -180,6 +180,9 @@ public string DescribeEffectParameter(EffectParameterType paramType, ushort valu
         case EffectParameterType.AccuracyAmount: return $"{value} Accuracy";
         case EffectParameterType.DigTileCount: return $"Dig {value} tile(s)";
         case EffectParameterType.MinMonsterCount: return $"At least {value} monsters";
+        case EffectParameterType.SparklingFloorEmpty: return (value == 0) ? "Contains items" : "Does not contain items";
+        case EffectParameterType.ExplosionSize: return (value == 0) ? "Small (3x3) explosion" : "Large (5x5) explosion";
+        case EffectParameterType.MinItemsToDrop: return $"At least {value} items";
         case EffectParameterType.HealPercentOfMaxHPInSunnyWeather: return $"Heal {value}% of max HP in sunny weather";
         case EffectParameterType.RemoveStatusOnHit: return (value == 0) ? "Keep status effect on hit" : "Remove status effect on hit";
         case EffectParameterType.MaxDamageLevelFactor: return $"Maximum damage equal to {value}% of attacker's level";
@@ -191,6 +194,7 @@ public string DescribeEffectParameter(EffectParameterType paramType, ushort valu
         case EffectParameterType.MaxHPAmount: return $"{value} max HP";
         case EffectParameterType.MaxMonsterCount: return $"At most {value} monsters";
         case EffectParameterType.RecruitRateBoost: return $"{value / 10.0f:f1}% increased recruitment rate";
+        case EffectParameterType.MaxItemsToDrop: return $"At most {value} items";
         case EffectParameterType.HealPercentOfMaxHPInBadWeather: return $"Heal {value}% of max HP in bad weather";
         case EffectParameterType.PercentOfMaxHPThreshold: return $"Threshold of {value}% of max HP";
         case EffectParameterType.MaxDungeonsVisited: return $"Maximum effect at {value} dungeons visited";
@@ -304,9 +308,12 @@ for (var i = 1; i < actionData.Count; i++)
 
     // Print attributes
     // Console.WriteLine($"  Flags:    {FormatBits(act.Flags)}");
-    Console.WriteLine($"  Power:    {formatRange(act.MinPower, act.MaxPower)}");
-    Console.WriteLine($"  PP:       {formatRange(act.MinPP, act.MaxPP)}");
-    Console.WriteLine($"  Accuracy: {formatAccuracyRange(act.MinAccuracy, act.MaxAccuracy)}");
+    if (act.Kind == ActDataInfo.ActionKind.Move)
+    {
+        Console.WriteLine($"  Power:    {formatRange(act.MinPower, act.MaxPower)}");
+        Console.WriteLine($"  PP:       {formatRange(act.MinPP, act.MaxPP)}");
+        Console.WriteLine($"  Accuracy: {formatAccuracyRange(act.MinAccuracy, act.MaxAccuracy)}");
+    }
 
     // Print effects
     Console.WriteLine($"  Effects:");

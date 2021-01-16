@@ -36,10 +36,10 @@
         DigTileCount = 31,
         MinMonsterCount = 32,
         // TODO: investigate 33
-        // TODO: investigate 34
-        // TODO: investigate 35
+        SparklingFloorEmpty = 34,
+        ExplosionSize = 35,
         // TODO: investigate 36
-        // TODO: investigate 37
+        MinItemsToDrop = 37,
         HealPercentOfMaxHPInSunnyWeather = 38,
         RemoveStatusOnHit = 39,
         // TODO: investigate 40  (related to warping teammates)
@@ -54,7 +54,7 @@
         // TODO: investigate 49  (related to level increase/decrease)
         // TODO: investigate 50  (related to status effects)
         RecruitRateBoost = 51,
-        // TODO: investigate 52
+        MaxItemsToDrop = 52,
         HealPercentOfMaxHPInBadWeather = 53,
         PercentOfMaxHPThreshold = 54,
         MaxDungeonsVisited = 55,

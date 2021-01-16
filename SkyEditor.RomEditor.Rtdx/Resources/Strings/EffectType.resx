@@ -609,6 +609,9 @@
   <data name="ApplyPledgeEffect" xml:space="preserve">
     <value>Apply dungeon status effect if another teammate has used a matching Pledge move</value>
   </data>
+  <data name="ApplyStatusEffectToSummonedMonsters" xml:space="preserve">
+    <value>Apply status effect to summoned monsters</value>
+  </data>
   <data name="BeginEndStoringDamage" xml:space="preserve">
     <value>Begin or end storing damage taken</value>
   </data>
@@ -663,8 +666,20 @@
   <data name="DisableMove" xml:space="preserve">
     <value>Disable the target's last used move for everyone</value>
   </data>
+  <data name="DrainPP" xml:space="preserve">
+    <value>Drain all PP of a random move</value>
+  </data>
+  <data name="DropItems" xml:space="preserve">
+    <value>Force target to drop items</value>
+  </data>
   <data name="ExitDungeon" xml:space="preserve">
     <value>Exit the dungeon</value>
+  </data>
+  <data name="Explode" xml:space="preserve">
+    <value>Cause an explosion</value>
+  </data>
+  <data name="GiveGoldOrRareItem" xml:space="preserve">
+    <value>Give Gold Bars and rare items if the leader is holding a Gold Scope</value>
   </data>
   <data name="IncreaseLevel" xml:space="preserve">
     <value>Increase target's level</value>
@@ -714,6 +729,9 @@
   <data name="PullTargetsTogether" xml:space="preserve">
     <value>Pull all targets in the room together</value>
   </data>
+  <data name="RandomTrapEffect" xml:space="preserve">
+    <value>Produce the effects of a random trap</value>
+  </data>
   <data name="RemoveType" xml:space="preserve">
     <value>Remove type</value>
   </data>
@@ -741,6 +759,21 @@
   <data name="RevealStairsDirection" xml:space="preserve">
     <value>Spawn a projectile that flies towards the stairs</value>
   </data>
+  <data name="SealRandomMove" xml:space="preserve">
+    <value>Seal a random move</value>
+  </data>
+  <data name="SpawnDitto" xml:space="preserve">
+    <value>Spawn an enemy Ditto nearby</value>
+  </data>
+  <data name="SpawnPokemonOrGiveRandomItem" xml:space="preserve">
+    <value>Spawn a random wild Pokémon or give a random rare item</value>
+  </data>
+  <data name="SpawnStunfisk" xml:space="preserve">
+    <value>Spawn an enemy Stunfisk nearby</value>
+  </data>
+  <data name="StealthRockDamage" xml:space="preserve">
+    <value>Deal Stealth Rock damage</value>
+  </data>
   <data name="SummonHelpers" xml:space="preserve">
     <value>Summon a team of three helpers</value>
   </data>
@@ -749,6 +782,15 @@
   </data>
   <data name="SwapHP" xml:space="preserve">
     <value>Swap the user's and target's current HP</value>
+  </data>
+  <data name="ThrowTargetToARandomDirection" xml:space="preserve">
+    <value>Throw target to a random direction up to 10 tiles, causing 5 damage on collision</value>
+  </data>
+  <data name="TransformItemsIntoPokemon" xml:space="preserve">
+    <value>Transform all items in the room into random wild Pokémon</value>
+  </data>
+  <data name="TurnRandomItemIntoApple" xml:space="preserve">
+    <value>Turn a random item in the inventory into an Apple</value>
   </data>
   <data name="WarpTeammatesAroundTarget" xml:space="preserve">
     <value>Warp teammates around target</value>

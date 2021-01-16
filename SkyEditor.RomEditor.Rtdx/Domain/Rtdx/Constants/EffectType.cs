@@ -790,7 +790,56 @@
         //   Params[1] = (integer) Amount of damage to take
         DamageAndFallToNextFloor = 203,
 
-        // TODO: investigate 204 through 218
+        // Throw target to a random direction up to 10 tiles, causing 5 damage on collision
+        ThrowTargetToARandomDirection = 204,
+        
+        // Seal a random move
+        //   Params[0] = (percentage) Chance to apply effect
+        SealRandomMove = 205,
+
+        // Drain all PP of a random move
+        DrainPP = 206,
+
+        // Transform all items in the room into random wild Pokémon appropriate for the floor
+        TransformItemsIntoPokemon = 207,
+        
+        // TODO: investigate further
+        // Deal Stealth Rock damage
+        //   Params[1] = (integer) Unknown purpose
+        StealthRockDamage = 208,
+
+        // Force target to drop items
+        //   Params[1] = (integer) Minimum number of items
+        //   Params[2] = (integer) Maximum number of items
+        DropItems = 209,
+        
+        // Produce the effects of a random trap
+        RandomTrapEffect = 210,
+
+        // Spawn a random wild Pokémon or give a random rare item (Sparkling Floor)
+        //   Params[1] = (unknown)
+        SpawnPokemonOrGiveRandomItem = 211,
+
+        // Give Gold Bars and rare items if the leader is holding a Gold Scope (Gold Floor; GtI leftover)
+        GiveGoldOrRareItem = 212,
+
+        // Turn a random food item in the inventory into Grimy Food
+        //   Params[0] = (percentage) Chance to apply effect
+        TurnFoodIntoGrimyFood = 213,
+
+        // TODO: investigate 214
+
+        // Turn a random item in the inventory into an Apple
+        TurnRandomItemIntoApple = 215,
+
+        // Spawn an enemy Stunfisk nearby (Stunfisk "trap")
+        SpawnStunfisk = 216,
+
+        // Cause an explosion that reduces current HP of affected target by 50% and destroys items and walls in the area
+        //   Params[1] = (integer) Size of the explosion: 0 = small (3x3), 1 = large (5x5)
+        Explode = 217,
+
+        // TODO: investigate 218
 
         // Open Kangaskhan storage window
         OpenKangaskhanStorage = 219,
@@ -839,7 +888,16 @@
 
         DarkMatterChargingStart = 229,
 
-        // TODO: investigate 230 through 233
+        // TODO: investigate 230
+        // TODO: investigate 231
+
+        // Spawn an enemy Ditto nearby (Ditto "trap")
+        SpawnDitto = 232,
+
+        // Apply status effect to summoned monsters
+        //   Params[0] = (percentage) Chance to apply status effect
+        //   Params[1] = (StatusIndex) Status effect to apply
+        ApplyStatusEffectToSummonedMonsters = 233,
 
         // Begin or end storing damage taken
         BeginEndStoringDamage = 234,
