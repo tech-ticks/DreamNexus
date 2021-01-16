@@ -1222,6 +1222,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pull user towards target.
+        /// </summary>
+        public static string PullTowardsTarget {
+            get {
+                return ResourceManager.GetString("PullTowardsTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Raise a random stat by two stages.
         /// </summary>
         public static string RaiseRandomStat {

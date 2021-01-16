@@ -729,6 +729,9 @@
   <data name="PullTargetsTogether" xml:space="preserve">
     <value>Pull all targets in the room together</value>
   </data>
+  <data name="PullTowardsTarget" xml:space="preserve">
+    <value>Pull user towards target</value>
+  </data>
   <data name="RandomTrapEffect" xml:space="preserve">
     <value>Produce the effects of a random trap</value>
   </data>

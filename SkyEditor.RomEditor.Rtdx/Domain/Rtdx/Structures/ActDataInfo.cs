@@ -229,6 +229,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             // Maximum distance for moves: 2 tiles, 4 tiles, 10 tiles, etc.
             // For charged moves, fhe first turn has a range of 0, while the second turn has the correct range.
             public byte Range { get; set; }
+
             public byte Byte89 { get; set; }
             public byte Byte8A { get; set; }
             public byte Byte8B { get; set; }

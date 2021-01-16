@@ -299,6 +299,7 @@
         //   Params[0] = (percentage) Chance to apply stat changes
         //   Params[5] = (StatusIndex) Status effect to apply
         // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
+        // TODO: confirm this -- Scald has this effect apply to the target
         ApplyStatusEffectWithChance = 66,
 
         // Chance to apply status effect, with an additional unknown parameter
@@ -324,6 +325,7 @@
         //   Params[3] = (boolean) Unknown purpose
         //   Params[4] = (StatusIndex) Status effect to remove
         // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
+        // TODO: confirm this -- Scald has this effect apply to the target
         RemoveStatusEffect = 70,
 
         // Remove all negative status effects and remove seals
@@ -358,8 +360,8 @@
         // Blow away target up to 10 tiles; cause 5 damage on collision
         BlowAwayTarget = 80,
 
-        // TODO: investigate -- used by Pounce Wand (237 81 237 238)
-        Unknown81 = 81,
+        // Pull user towards target
+        PullTowardsTarget = 81,
 
         // Warp to a random place on the same floor
         Warp = 82,
@@ -632,8 +634,8 @@
         // Remove sticky status from all items
         CleanseStickyItems = 156,
 
-        // TODO: investigate 157
-        // TODO: investigate 158
+        // TODO: investigate 157 -- used by Gastro Acid and a dummied out trap (action 979)
+        // TODO: investigate 158 -- used by a dummied out item (action 807)
 
         // Exit the dungeon
         ExitDungeon = 159,
@@ -650,7 +652,7 @@
         // Reveal the entire floor
         RevealFloor = 163,
 
-        // TODO: investigate 164
+        // TODO: investigate 164 -- used by a dummied out item (action 781)
 
         // Turn the current room into a Monster House
         CreateMonsterHouse = 165,
@@ -681,7 +683,7 @@
         // Pull all targets in the room together
         PullTargetsTogether = 172,
 
-        // TODO: investigate 173
+        // 173 is unused
 
         // Deal random damage; damage is increased if target is in the semi-invulnerable turn of Bounce, Fly, and Sky Drop
         //   Params[0] = (percentage) Critical hit ratio
@@ -725,8 +727,8 @@
         //   Params[2] = (integer) Amount of max HP to increase
         RestoreHP = 182,
 
-        // TODO: investigate 183 (related to reviver seeds)
-        // TODO: investigate 184 (related to reviver seeds)
+        // TODO: investigate 183 -- used by Tiny Reviver Seeds and Reviver Seeds
+        // TODO: investigate 184 -- used by Tiny Reviver Seeds and Reviver Seeds
 
         // Decrease target's level
         //   Params[1] = (integer) Amount of levels to decrease
@@ -738,7 +740,7 @@
         //   Params[2] = (integer) Unknown purpose
         IncreaseLevel = 186,
 
-        // TODO: investigate 187
+        // TODO: investigate 187 -- used by Tiny Reviver Seeds, Reviver Seeds and Plain Seeds
 
         // Disable the target's last used move for everyone
         DisableMove = 188,
@@ -769,8 +771,8 @@
         // Increase max HP, Attack, Defense, Special Attack, Special Defense or Speed at random
         IncreaseRandomStats = 195,
         
-        // TODO: investigate 196
-        // TODO: investigate 197
+        // 196 is unused
+        // 197 is unused
 
         // Swap the user's and target's current HP
         SwapHP = 198,
@@ -778,8 +780,8 @@
         // Spawn a projectile that flies towards the stairs
         RevealStairsDirection = 199,
 
-        // TODO: investigate 200
-        // TODO: investigate 201
+        // TODO: investigate 200 -- used by a dummied out item (action 944)
+        // TODO: investigate 201 -- used by a dummied out item (action 945)
 
         // Summon a random number of monsters
         //   Params[1] = (integer) Minimum number of monsters to summon
@@ -827,7 +829,7 @@
         //   Params[0] = (percentage) Chance to apply effect
         TurnFoodIntoGrimyFood = 213,
 
-        // TODO: investigate 214
+        // TODO: investigate 214 -- used by a dummied out trap (action 980)
 
         // Turn a random item in the inventory into an Apple
         TurnRandomItemIntoApple = 215,
@@ -839,12 +841,12 @@
         //   Params[1] = (integer) Size of the explosion: 0 = small (3x3), 1 = large (5x5)
         Explode = 217,
 
-        // TODO: investigate 218
+        // TODO: investigate 218 -- used by Sleep Talk and a dummied out move (action 638)
 
         // Open Kangaskhan storage window
         OpenKangaskhanStorage = 219,
 
-        // TODO: investigate 220
+        // TODO: investigate 220 -- used by dummied out items (actions 924 and 925)
 
         // TODO: investigate the difference between this and effect 3 (Damage)
         // Deal random damage (Vital Throw, Storm Throw)
@@ -884,12 +886,12 @@
         //   Params[1] = (percentage) Damage multiplier
         DamageWithBoostBasedOnNumberOfEnemiesNearby = 227,
 
-        // TODO: investigate 228
+        // TODO: investigate 228 -- used by dummied out move 679 (action 645)
 
         DarkMatterChargingStart = 229,
 
-        // TODO: investigate 230
-        // TODO: investigate 231
+        // TODO: investigate 230 -- used by dummied out item (action 986)
+        // TODO: investigate 231 -- used by dummied out items (actions 946, 947, 948, 949 and 950)
 
         // Spawn an enemy Ditto nearby (Ditto "trap")
         SpawnDitto = 232,
@@ -902,7 +904,7 @@
         // Begin or end storing damage taken
         BeginEndStoringDamage = 234,
 
-        // TODO: investigate 235
+        // TODO: investigate 235 -- used by dummied out items (actions 888, 889 and 
 
         // TODO: investigate -- used by Switcher Wand (236 131 236 238)
         Unknown236 = 236,
@@ -913,7 +915,7 @@
         // TODO: investigate -- used by Switcher Wand and Pounce Wand
         Unknown238 = 238,
 
-        // TODO: investigate 239
+        // TODO: investigate 239 -- used by dummied out item (action 890)
 
         // Deal random damage; damage is increased if the move is used in any weather other than Clear
         //   Params[0] = (percentage) Critical hit ratio
@@ -943,14 +945,17 @@
         //   Params[0] = (percentage) Chance to apply effect
         OpenRescueTeamCamps = 246,
 
-        // TODO: investigate 247
+        // TODO: investigate 247 -- used by dummied out action 988
 
         // Deal random damage with an increased recruitment rate on defeat
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[2] = (per-mille) Recruitment rate increase
         DamageWithBoostedRecruitRate = 248,
 
-        // TODO: investigate 249 through 252
+        // TODO: investigate 249 -- used by dummied out action 992
+        // TODO: investigate 250 -- used by Reset Orb
+        // TODO: investigate 251 -- used by dummied out action 990 (with parameters specifying 5 to 10 items)
+        // TODO: investigate 252 -- used by item 612 - Unidentified Floating Object (action 991)
 
         // Restore PP on one of the target's moves
         //   Params[1] = (integer) Amount of PP to restore
@@ -961,13 +966,13 @@
         //   Params[1] = (percentage) Damage multiplier if the move missed in the last turn
         DamageWithBoostIfPreviousTurnMissed = 254,
 
-        // TODO: investigate 255
+        // 255 is unused
 
         // Remove the specified type from the target
         //   Params[6] = (PokemonType) Type to remove
         RemoveType = 256,
 
-        // TODO: investigate 257
-        // TODO: investigate 258
+        // TODO: investigate 257 -- used by dummied out move (action 659) - also deals 10 fixed damage
+        // TODO: investigate 258 -- used by dummied out move (action 638)
     }
 }
