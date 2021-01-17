@@ -61,7 +61,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         [DebuggerDisplay("{Name}")]
         public class Entry
         {
-            public Entry() { }
+            public Entry() {
+                for (var i = 0; i < 4; i++)
+                {
+                    Effects[i] = new Effect();
+                }
+            }
 
             public Entry(IReadOnlyBinaryDataAccessor data)
             {
@@ -169,48 +174,88 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 return data.ReadSpan();
             }
 
-            // Contains several flags
-            //   Bit 10: Target of stat changes: 0 = target, 1 = self
+            // Contains several flags:
+            //   Bit  0: (only set for Tunnel Wand)
+            //   Bit  1: Cuts corners
+            //   Bit  2: ** unknown
+            //   Bit  3: ** unknown
+            //   Bit  4: ** unknown
+            //   Bit  5: -- always zero
+            //   Bit  6: ** unknown
+            //   Bit  7: (seems related to levitation moves like Fly, Sky Drop, Flying Press, or teleportation items like Spurn Orb, Warp Wand, Pure Seed)
+            //
+            //   Bit  8: (seems related to ground-based moves like Earthquake, Fissure, Earth Power)
+            //   Bit  9: Affected by Magic Coat
+            //   Bit 10: (maybe) Target of stat changes: 0 = target, 1 = self
+            //   Bit 11: ** unknown
+            //   Bit 12: Sound-based move
+            //   Bit 13: ** unknown
+            //   Bit 14: (seems related to powder-based moves like Powder, Poison Powder, Stun Spore, Sleep Powder)
+            //   Bit 15: (seems related to biting moves like Hyper Fang, Fire Fang, Ice Fang, Crunch)
+            //
+            //   Bit 16: (seems related to pulse moves like Dragon Pulse, Origin Pulse, Water Pulse, Dark Pulse, Aura Sphere)
+            //   Bit 17: (seems related to punch moves like Comet Punch, Drain Punch, Fire/Ice/Thunder Punch, Hammer Arm, Sky Uppercut)
+            //   Bit 18: (seems to indicate moves that have recoil damage like Jump Kick, High Jump Kick, Brave Bird, Wild Charge)
+            //   Bit 19: (seems to indicate moves that are useful to teammates like Mist, Agility, Light Screen, Reflect, Soft-Boiled)
+            //   Bit 20: (seems related to light-based moves like Flash, Tail Glow, Luster Purge, Solar Beam, Moonlight, Morning Sun)
+            //   Bit 21: (seems related to spore-based moves like Powder, Poison Powder, Stun Spore, Sleep Powder)
+            //   Bit 22: Makes contact
+            //   Bit 23: ** unknown
+            //
+            //   Bit 24: ** unknown
+            //   Bit 25: ** unknown
+            //   Bit 26: ** unknown
+            //   Bit 27: ** unknown
+            //   Bit 28: ** unknown
+            //   Bit 29: (seems mostly related to healing moves like Recover, Soft-Boiled, Rest, Roost, Aqua Ring, Milk Drink, but also includes unrelated moves)
+            //   Bit 30: -- always zero
+            //   Bit 31: -- always zero
+            //
+            //   Bit 32: -- always zero
+            //   Bit 33: -- always zero
+            //   Bit 34: -- always zero
+            //   Bit 35: -- always zero
+            //   Bit 36: -- always zero
+            //   Bit 37: -- always zero
+            //   Bit 38: -- always zero
+            //   Bit 39: -- always zero
+            //
+            //   Bit 40: (almost identical to bit 11, with a few exceptions)
+            //   Bit 41: -- always zero
+            //   Bit 42: -- always zero
+            //   Bit 43: -- always zero
+            //   Bit 44: (set for Foresight, Odor Sleuth, Miracle Eye... and Scald?!)
+            //   Bit 45: -- always zero
+            //   Bit 46: ** unknown
+            //   Bit 47: ** unknown
+            //
+            //   Bit 48: ** unknown
+            //   Bit 49: ** unknown
+            //   Bit 50: ** unknown
+            //   Bit 51: -- always zero
+            //   Bit 52: -- always zero
+            //   Bit 53: ** unknown (53, 54 and 55 are identical)
+            //   Bit 54: ** unknown (53, 54 and 55 are identical)
+            //   Bit 55: ** unknown (53, 54 and 55 are identical)
+            //
+            //   Bit 56: ** unknown
+            //   Bit 57: -- always zero
+            //   Bit 58: ** unknown
+            //   Bit 59: ** unknown (59, 60 and 61 are identical)
+            //   Bit 60: ** unknown (59, 60 and 61 are identical)
+            //   Bit 61: ** unknown (59, 60 and 61 are identical)
+            //   Bit 62: ** unknown
+            //   Bit 63: -- always zero
             public ulong Flags { get; set; }
+
             public TextIDHash DungeonMessage1 { get; set; }
             public TextIDHash DungeonMessage2 { get; set; }
-
-            public class Effect
-            {
-                public Effect(EffectType type)
-                {
-                    Type = type;
-                }
-
-                public Effect(IReadOnlyBinaryDataAccessor data, int index)
-                {
-                    Type = (EffectType)data.ReadUInt16(0x10 + index * 2);
-                    for (var i = 0; i < 8; i++)
-                    {
-                        Params[i] = data.ReadUInt16(0x18 + i * 2 + index * 0x10);
-                        ParamTypes[i] = (EffectParameterType)data.ReadByte(0x5C + i + index * 0x8);
-                    }
-                }
-
-                public void WriteTo(IBinaryDataAccessor data, int index)
-                {
-                    data.WriteUInt16(0x10 + index * 2, (ushort)Type);
-                    for (var i = 0; i < 8; i++)
-                    {
-                        data.WriteUInt16(0x18 + i * 2 + index * 0x10, Params[i]);
-                        data.Write(0x5C + i * 2 + index * 0x8, (byte)ParamTypes[i]);
-                    }
-                }
-
-                public EffectType Type { get; set; }
-                public ushort[] Params { get; } = new ushort[8];
-                public EffectParameterType[] ParamTypes { get; } = new EffectParameterType[8];
-            }
 
             public Effect[] Effects { get; } = new Effect[4];
 
             public ushort MinAccuracy { get; set; }
             public ushort MaxAccuracy { get; set; }
+
             public ActionKind Kind { get; set; }
             public PokemonType MoveType { get; set; }
             public MoveCategory MoveCategory { get; set; }
@@ -227,7 +272,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte Byte87 { get; set; }
 
             // Maximum distance for moves: 2 tiles, 4 tiles, 10 tiles, etc.
-            // For charged moves, fhe first turn has a range of 0, while the second turn has the correct range.
+            // For charged moves, the first turn has a range of 0, while the second turn has the correct range.
             public byte Range { get; set; }
 
             public byte Byte89 { get; set; }
@@ -242,7 +287,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte Byte90 { get; set; }
             public byte Byte91 { get; set; }
             public byte Byte92 { get; set; }
+
             public byte ActHitCountIndex { get; set; }
+
             public byte Byte94 { get; set; }
             public byte Byte95 { get; set; }
             public byte Byte96 { get; set; }
@@ -255,6 +302,38 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte Byte9D { get; set; }
             public byte Byte9E { get; set; }
             public byte Byte9F { get; set; }
+        }
+
+        public class Effect
+        {
+            public Effect()
+            {
+                Type = EffectType.None;
+            }
+
+            public Effect(IReadOnlyBinaryDataAccessor data, int index)
+            {
+                Type = (EffectType)data.ReadUInt16(0x10 + index * 2);
+                for (var i = 0; i < 8; i++)
+                {
+                    Params[i] = data.ReadUInt16(0x18 + i * 2 + index * 0x10);
+                    ParamTypes[i] = (EffectParameterType)data.ReadByte(0x5C + i + index * 0x8);
+                }
+            }
+
+            public void WriteTo(IBinaryDataAccessor data, int index)
+            {
+                data.WriteUInt16(0x10 + index * 2, (ushort)Type);
+                for (var i = 0; i < 8; i++)
+                {
+                    data.WriteUInt16(0x18 + i * 2 + index * 0x10, Params[i]);
+                    data.Write(0x5C + i * 2 + index * 0x8, (byte)ParamTypes[i]);
+                }
+            }
+
+            public EffectType Type { get; set; }
+            public ushort[] Params { get; } = new ushort[8];
+            public EffectParameterType[] ParamTypes { get; } = new EffectParameterType[8];
         }
 
         public enum ActionKind : byte
@@ -288,7 +367,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             Self = 9,
             EveryoneExceptUser = 10,
             AlliesExceptUser = 11,
-            Other = 15, // dungeon status effects, trap moves, warp orbs, Metronome, Curse and Recycle
+            Other = 15, // Dungeon status effects, trap moves, warp orbs, Metronome, Curse and Recycle
         }
     }
 }

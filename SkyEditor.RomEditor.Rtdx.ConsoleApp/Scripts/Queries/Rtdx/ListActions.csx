@@ -311,6 +311,21 @@ for (var i = 1; i < actionData.Count; i++)
     var type = strings.PokemonTypes.GetValueOrDefault(act.MoveType, act.MoveType.ToString());
     var category = GetCategoryName(act.MoveCategory);
 
+    // Print flags for moves and items related to actions
+    /*foreach (var move in moves)
+    {
+        var name = strings.Moves.GetValueOrDefault(move.Index, move.Index.ToString());
+        Console.WriteLine($"{i,3}  {(int)move.Index,3}  {name,-30}  {FormatBits(act.Flags)}");
+    }
+
+    foreach (var item in items)
+    {
+        var name = strings.Items.GetValueOrDefault(item.Index, item.Index.ToString());
+        Console.WriteLine($"{i,3}  {(int)item.Index,3}  {name,-30}  {FormatBits(act.Flags)}");
+    }
+
+    continue;*/
+    
     Console.WriteLine($"Action {i}: {GetActionKindString(act.Kind)} - {GetActionTargetString(act.Target)}, {GetActionAreaString(act.Area)}, range {act.Range}");
 
     // Print moves and items that invoke the action
