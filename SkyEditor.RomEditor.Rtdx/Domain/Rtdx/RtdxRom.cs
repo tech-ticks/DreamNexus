@@ -105,6 +105,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         PokemonFormDatabase GetPokemonFormDatabase();
         Sir0StringList GetDungeonMapSymbol();
         Sir0StringList GetDungeonBgmSymbol();
+        Sir0StringList GetDungeonSeSymbol();
+        Sir0StringList GetEffectSymbol();
         ICodeTable GetCodeTable();
         IItemDataInfo GetItemDataInfo();
         #endregion
@@ -595,6 +597,28 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private Sir0StringList? dungeonBgmSymbol;
         protected static string GetDungeonBgmSymbolPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon_bgm_symbol.bin");
+
+        public Sir0StringList GetDungeonSeSymbol()
+        {
+            if (dungeonSeSymbol == null)
+            {
+                dungeonSeSymbol = new Sir0StringList(FileSystem.ReadAllBytes(GetDungeonSeSymbolPath(this.RomDirectory)));
+            }
+            return dungeonSeSymbol;
+        }
+        private Sir0StringList? dungeonSeSymbol;
+        protected static string GetDungeonSeSymbolPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon_se_symbol.bin");
+
+        public Sir0StringList GetEffectSymbol()
+        {
+            if (effectSymbol == null)
+            {
+                effectSymbol = new Sir0StringList(FileSystem.ReadAllBytes(GetEffectSymbolPath(this.RomDirectory)), Encoding.ASCII);
+            }
+            return effectSymbol;
+        }
+        private Sir0StringList? effectSymbol;
+        protected static string GetEffectSymbolPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/effect_symbol.bin");
 
         public ICodeTable GetCodeTable()
         {

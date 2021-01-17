@@ -19,6 +19,8 @@ var paramData = Rom.GetActParamDataInfo().Entries;
 var statChangeData = Rom.GetActStatusTableDataInfo().Entries;
 var hitCountData = Rom.GetActHitCountTableDataInfo().Entries;
 var effectData = Rom.GetActEffectDataInfo().Entries;
+var effectSymbols = Rom.GetEffectSymbol().Entries;
+var sfxSymbols = Rom.GetDungeonSeSymbol().Entries;
 var moveData = Rom.GetWazaDataInfo().Entries;
 var chargedMoves = Rom.GetChargedMoves().Entries;
 var xlMoves = Rom.GetExtraLargeMoves().Entries;
@@ -168,6 +170,18 @@ public string GetActionTargetString(ActDataInfo.ActionTarget target)
 public string GetEffectName(EffectType type)
 {
     return EffectTypeStrings.ResourceManager.GetString(type.ToString(), Thread.CurrentThread.CurrentUICulture) ?? $"Unknown effect {type}";
+}
+
+// Get the symbol of a graphical effect
+public string GetEffectSymbol(ushort index)
+{
+    return (index < effectSymbols.Count) ? effectSymbols[index] : $"{index} (out of range)";
+}
+
+// Get the symbol of a sound effect
+public string GetSfxSymbol(ushort index)
+{
+    return (index < sfxSymbols.Count) ? sfxSymbols[index] : $"{index} (out of range)";
 }
 
 // Get the name of a stat
@@ -496,18 +510,33 @@ for (var i = 1; i < actionData.Count; i++)
         Console.WriteLine($"  Dungeon message 2: \"{text2}\"");
     }
 
+    // Print graphical effects
+    Console.WriteLine($"  Graphical effect symbols:");
+    Console.WriteLine($"    Invoke (ally):     {GetEffectSymbol(effectEntry.AllyInvokeGfxSymbol)}");
+    Console.WriteLine($"    Invoke (enemy):    {GetEffectSymbol(effectEntry.EnemyInvokeGfxSymbol)}");
+    Console.WriteLine($"    On user:           {GetEffectSymbol(effectEntry.UserGfxSymbol)}");
+    Console.WriteLine($"    Area around user:  {GetEffectSymbol(effectEntry.AreaGfxSymbol)}");
+    Console.WriteLine($"    On impact:         {GetEffectSymbol(effectEntry.ImpactGfxSymbol)}");
+    Console.WriteLine($"    Projectile:        {GetEffectSymbol(effectEntry.ProjectileGfxSymbol)}");
+    Console.WriteLine($"    Projectile impact: {GetEffectSymbol(effectEntry.ProjectileImpactGfxSymbol)}");
+    Console.WriteLine($"  Sound effect symbols:");
+    Console.WriteLine($"    Invoke (ally):   {GetSfxSymbol(effectEntry.AllyInvokeSfxSymbol)}");
+    Console.WriteLine($"    Invoke (enemy):  {GetSfxSymbol(effectEntry.EnemyInvokeSfxSymbol)}");
+    Console.WriteLine($"    Initiate:        {GetSfxSymbol(effectEntry.InitiateSfxSymbol)}");
+    Console.WriteLine($"    On impact:       {GetSfxSymbol(effectEntry.ImpactSfxSymbol)}");
+    Console.WriteLine($"    Fire projectile: {GetSfxSymbol(effectEntry.FireProjectileSfxSymbol)}");
+
     // Print unknown fields
-    Console.WriteLine("  Unknown fields:");
+    Console.WriteLine($"  Unknown ActDataInfo fields:");
     Console.WriteLine($"    Flags: {FormatBits(act.Flags)}");
     Console.WriteLine($"    0x80..0x8F:   -    -    -  {act.Byte83,3}  {act.Byte84,3}  {act.Byte85,3}  {act.Byte86,3}  {act.Byte87,3}    -  {act.Byte89,3}  {act.Byte8A,3}  {act.Byte8B,3}    -    -  {act.Byte8E,3}  {act.Byte8F,3}");
     Console.WriteLine($"    0x90..0x9F: {act.Byte90,3}  {act.Byte91,3}  {act.Byte92,3}    -  {act.Byte94,3}  {act.Byte95,3}  {act.Byte96,3}  {act.Byte97,3}  {act.Byte98,3}  {act.Byte99,3}  {act.Byte9A,3}  {act.Byte9B,3}  {act.Byte9C,3}  {act.Byte9D,3}  {act.Byte9E,3}  {act.Byte9F,3}");
 
-    // Print ActEffectDataInfo
-    Console.WriteLine("  ActEffectDataInfo:");
-    Console.WriteLine($"    0x00: {effectEntry.Byte00,3}  {effectEntry.Byte01,3}  {effectEntry.Short02,5}  {effectEntry.Float04,7:f2}  {effectEntry.Float08,7:f2}  {effectEntry.Int0C,10}");
-    Console.WriteLine($"    0x10: {effectEntry.Short10,5}  {effectEntry.Short12,5}  {effectEntry.Short14,5}  {effectEntry.Short16,5}  {effectEntry.Short18,5}  {effectEntry.Short1A,5}  {effectEntry.Short1C,5}  {effectEntry.Short1E,5}");
-    Console.WriteLine($"    0x20: {effectEntry.Short20,5}  {effectEntry.Short22,5}  {effectEntry.Short24,5}  {effectEntry.Short26,5}  {effectEntry.Short28,5}  {effectEntry.Short2A,5}  {effectEntry.Short2C,5}  {effectEntry.Short2E,5}");
-    Console.WriteLine($"    0x30: {effectEntry.Short30,5}  {effectEntry.Short32,5}  {effectEntry.Short34,5}  {effectEntry.Short36,5}  {effectEntry.Short38,5}  {effectEntry.Int3C,10}");
+    // Print unknown ActEffectDataInfo fields
+    Console.WriteLine($"  Unknown ActEffectDataInfo fields:");
+    Console.WriteLine($"    0x00..0x0F: {effectEntry.Byte00,3}  {effectEntry.Byte01,3}  {effectEntry.Short02,5}  {effectEntry.Float04,7:f2}  {effectEntry.Float08,7:f2}  {effectEntry.Int0C,10}");
+    Console.WriteLine($"    0x10..0x1F: {effectEntry.Short10,5}  {effectEntry.Short12,5}  {effectEntry.Short14,5}  {effectEntry.Short16,5}      -      -      -  {effectEntry.Short1E,5}");
+    Console.WriteLine($"    0x30..0x3F:     -  {effectEntry.Short32,5}  {effectEntry.Short34,5}  {effectEntry.Short36,5}  {effectEntry.Short38,5}  {effectEntry.Int3C,10}");
 
     Console.WriteLine();
 }

@@ -30,7 +30,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             for (int i = 0; i < entryCount; i++)
             {
                 long stringOffset = sir0.SubHeader.ReadInt32(8 + i * sizeof(long));
-                string value = sir0.Data.ReadNullTerminatedUnicodeString(stringOffset);
+                string value;
+                // For some reason, ReadNullTerminatedString with Encoding.Unicode doesn't read UTF-16 characters properly
+                if (encoding == Encoding.Unicode)
+                {
+                    value = sir0.Data.ReadNullTerminatedUnicodeString(stringOffset);
+                }
+                else
+                {
+                    value = sir0.Data.ReadNullTerminatedString(stringOffset, encoding);
+                }
                 Entries.Add(value);
             }
         }

@@ -14,6 +14,14 @@ void Print(Sir0StringList stringList)
 Console.WriteLine("-------- DungeonMapSymbol");
 Print(Rom.GetDungeonMapSymbol());
 
-Console.WriteLine("");
+Console.WriteLine();
 Console.WriteLine("-------- DungeonBgmSymbol");
 Print(Rom.GetDungeonBgmSymbol());
+
+Console.WriteLine();
+Console.WriteLine("-------- DungeonSeSymbol");
+Print(Rom.GetDungeonSeSymbol());
+
+Console.WriteLine();
+Console.WriteLine("-------- EffectSymbol");
+Print(Rom.GetEffectSymbol());

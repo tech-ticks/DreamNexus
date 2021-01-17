@@ -64,19 +64,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Short12 = MemoryMarshal.Read<ushort>(data.Slice(0x12, sizeof(ushort)));
                 Short14 = MemoryMarshal.Read<ushort>(data.Slice(0x14, sizeof(ushort)));
                 Short16 = MemoryMarshal.Read<ushort>(data.Slice(0x16, sizeof(ushort)));
-                Short18 = MemoryMarshal.Read<ushort>(data.Slice(0x18, sizeof(ushort)));
-                Short1A = MemoryMarshal.Read<ushort>(data.Slice(0x1A, sizeof(ushort)));
-                Short1C = MemoryMarshal.Read<ushort>(data.Slice(0x1C, sizeof(ushort)));
+                AllyInvokeGfxSymbol = MemoryMarshal.Read<ushort>(data.Slice(0x18, sizeof(ushort)));
+                EnemyInvokeGfxSymbol = MemoryMarshal.Read<ushort>(data.Slice(0x1A, sizeof(ushort)));
+                UserGfxSymbol = MemoryMarshal.Read<ushort>(data.Slice(0x1C, sizeof(ushort)));
                 Short1E = MemoryMarshal.Read<ushort>(data.Slice(0x1E, sizeof(ushort)));
-                Short20 = MemoryMarshal.Read<ushort>(data.Slice(0x20, sizeof(ushort)));
-                Short22 = MemoryMarshal.Read<ushort>(data.Slice(0x22, sizeof(ushort)));
-                Short24 = MemoryMarshal.Read<ushort>(data.Slice(0x24, sizeof(ushort)));
-                Short26 = MemoryMarshal.Read<ushort>(data.Slice(0x26, sizeof(ushort)));
-                Short28 = MemoryMarshal.Read<ushort>(data.Slice(0x28, sizeof(ushort)));
-                Short2A = MemoryMarshal.Read<ushort>(data.Slice(0x2A, sizeof(ushort)));
-                Short2C = MemoryMarshal.Read<ushort>(data.Slice(0x2C, sizeof(ushort)));
-                Short2E = MemoryMarshal.Read<ushort>(data.Slice(0x2E, sizeof(ushort)));
-                Short30 = MemoryMarshal.Read<ushort>(data.Slice(0x30, sizeof(ushort)));
+                AreaGfxSymbol = MemoryMarshal.Read<ushort>(data.Slice(0x20, sizeof(ushort)));
+                ImpactGfxSymbol = MemoryMarshal.Read<ushort>(data.Slice(0x22, sizeof(ushort)));
+                ProjectileGfxSymbol = MemoryMarshal.Read<ushort>(data.Slice(0x24, sizeof(ushort)));
+                ProjectileImpactGfxSymbol = MemoryMarshal.Read<ushort>(data.Slice(0x26, sizeof(ushort)));
+                AllyInvokeSfxSymbol = MemoryMarshal.Read<ushort>(data.Slice(0x28, sizeof(ushort)));
+                EnemyInvokeSfxSymbol = MemoryMarshal.Read<ushort>(data.Slice(0x2A, sizeof(ushort)));
+                InitiateSfxSymbol = MemoryMarshal.Read<ushort>(data.Slice(0x2C, sizeof(ushort)));
+                ImpactSfxSymbol = MemoryMarshal.Read<ushort>(data.Slice(0x2E, sizeof(ushort)));
+                FireProjectileSfxSymbol = MemoryMarshal.Read<ushort>(data.Slice(0x30, sizeof(ushort)));
                 Short32 = MemoryMarshal.Read<ushort>(data.Slice(0x32, sizeof(ushort)));
                 Short34 = MemoryMarshal.Read<ushort>(data.Slice(0x34, sizeof(ushort)));
                 Short36 = MemoryMarshal.Read<ushort>(data.Slice(0x36, sizeof(ushort)));
@@ -98,19 +98,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 data.WriteUInt16(0x12, Short12);
                 data.WriteUInt16(0x14, Short14);
                 data.WriteUInt16(0x16, Short16);
-                data.WriteUInt16(0x18, Short18);
-                data.WriteUInt16(0x1A, Short1A);
-                data.WriteUInt16(0x1C, Short1C);
+                data.WriteUInt16(0x18, AllyInvokeGfxSymbol);
+                data.WriteUInt16(0x1A, EnemyInvokeGfxSymbol);
+                data.WriteUInt16(0x1C, UserGfxSymbol);
                 data.WriteUInt16(0x1E, Short1E);
-                data.WriteUInt16(0x20, Short20);
-                data.WriteUInt16(0x22, Short22);
-                data.WriteUInt16(0x24, Short24);
-                data.WriteUInt16(0x26, Short26);
-                data.WriteUInt16(0x28, Short28);
-                data.WriteUInt16(0x2A, Short2A);
-                data.WriteUInt16(0x2C, Short2C);
-                data.WriteUInt16(0x2E, Short2E);
-                data.WriteUInt16(0x30, Short30);
+                data.WriteUInt16(0x20, AreaGfxSymbol);
+                data.WriteUInt16(0x22, ImpactGfxSymbol);
+                data.WriteUInt16(0x24, ProjectileGfxSymbol);
+                data.WriteUInt16(0x26, ProjectileImpactGfxSymbol);
+                data.WriteUInt16(0x28, AllyInvokeSfxSymbol);
+                data.WriteUInt16(0x2A, EnemyInvokeSfxSymbol);
+                data.WriteUInt16(0x2C, InitiateSfxSymbol);
+                data.WriteUInt16(0x2E, ImpactSfxSymbol);
+                data.WriteUInt16(0x30, FireProjectileSfxSymbol);
                 data.WriteUInt16(0x32, Short32);
                 data.WriteUInt16(0x34, Short34);
                 data.WriteUInt16(0x36, Short36);
@@ -130,19 +130,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public ushort Short12 { get; set; }
             public ushort Short14 { get; set; }
             public ushort Short16 { get; set; }
-            public ushort Short18 { get; set; }
-            public ushort Short1A { get; set; }
-            public ushort Short1C { get; set; }
+
+            public ushort AllyInvokeGfxSymbol { get; set; }
+            public ushort EnemyInvokeGfxSymbol { get; set; }
+            public ushort UserGfxSymbol { get; set; }
             public ushort Short1E { get; set; }
-            public ushort Short20 { get; set; }
-            public ushort Short22 { get; set; }
-            public ushort Short24 { get; set; }
-            public ushort Short26 { get; set; }
-            public ushort Short28 { get; set; }
-            public ushort Short2A { get; set; }
-            public ushort Short2C { get; set; }
-            public ushort Short2E { get; set; }
-            public ushort Short30 { get; set; }
+            public ushort AreaGfxSymbol { get; set; }
+            public ushort ImpactGfxSymbol { get; set; }
+            public ushort ProjectileGfxSymbol { get; set; }
+            public ushort ProjectileImpactGfxSymbol { get; set; }
+            public ushort AllyInvokeSfxSymbol { get; set; }
+            public ushort EnemyInvokeSfxSymbol { get; set; }
+            public ushort InitiateSfxSymbol { get; set; }
+            public ushort ImpactSfxSymbol { get; set; }
+            public ushort FireProjectileSfxSymbol { get; set; }
             public ushort Short32 { get; set; }
             public ushort Short34 { get; set; }
             public ushort Short36 { get; set; }
