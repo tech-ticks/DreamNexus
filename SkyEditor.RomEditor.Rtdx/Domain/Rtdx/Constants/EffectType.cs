@@ -117,7 +117,6 @@
         // Deal random damage; damage is increased if the target's HP is below the threshold
         //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier if the target is at or below the HP threshold
-        //   Params[2] = (unknown)
         //   Params[3] = (percentage) HP threshold
         DamageWithBoostIfTargetsHPIsAtOrBelowThreshold = 23,
 
@@ -139,7 +138,7 @@
         DamageAlwaysSuperEffectiveAgainstWater = 27,
 
         // Deal fixed damage
-        //   Params[0] = (percentage) Critical hit ratio?
+        //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (integer) Damage amount
         FixedDamage = 28,
 
@@ -150,9 +149,9 @@
         // Reduce target's HP to user's HP if the user has less HP than the target (Endeavor)
         EqualizeHP = 30,
 
-        // Deal damage equal to a percentage of target's max HP
-        //   Params[1] = (percentage) Percentage of max HP
-        DamagePercentageMaxHP = 31,
+        // Deal damage equal to the amount of HP that would be lost to reach the target value
+        //   Params[1] = (percentage) Target HP as a percentage of max HP
+        DealDamageEqualToLostHP = 31,
 
         // Deal damage based on the attacker's level
         //   Params[0] = (percentage) Critical hit ratio
@@ -183,7 +182,7 @@
         // TODO: confirm this
         // Deal random damage; continue executing effects if target is defeated (Fell Stinger)
         //   Params[0] = (percentage) Critical hit ratio
-        //   Params[1] = (percentage) Chance on defeat to continue executing actions?
+        //   Params[1] = (percentage) Chance on defeat to continue executing effects
         DamageAndContinueActionOnDefeat = 38,
 
         // Deal random damage if the target shares a type with the user (Synchronoise)
@@ -199,7 +198,7 @@
         ChargedMove = 41,
 
         // Deal damage stored by Bide/Revenge/Avalanche
-        //   Params[0] = (percentage) Critical hit ratio?
+        //   Params[0] = (percentage) Critical hit ratio
         //   Params[1] = (percentage) Damage multiplier
         DealStoredDamage = 42,
 
@@ -211,17 +210,14 @@
         SkyDropSecondTurn = 44,
 
         // Take recoil damage
-        //   Params[0] = (unknown)
         //   Params[1] = (percentage) Damage taken as a percentage of HP
         RecoilDamage = 45,
 
         // Take recoil damage from Struggle
-        //   Params[0] = (unknown)
         //   Params[1] = (percentage) Damage taken as a percentage of HP
         StruggleRecoilDamage = 46,
 
         // Take recoil damage on miss
-        //   Params[0] = (unknown)
         //   Params[1] = (percentage) Damage taken as a percentage of HP
         RecoilDamageOnMiss = 47,
 
@@ -229,7 +225,6 @@
         ReduceHPToOne = 48,
 
         // Heal self for % of damage dealt
-        //   Params[0] = (unknown)
         //   Params[1] = (percentage) Amount healed as a percentage of damage dealt
         HealSelfBasedOnDamageDealt = 49,
 
@@ -243,20 +238,17 @@
         // Apply stat changes
         //   Params[0] = (percentage) Chance to apply stat changes
         //   Params[5] = (index) Index into ActStatusTableDataInfo for the stat changes to apply
-        // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
         ApplyStatChanges = 52,
 
         // Apply stat changes
         //   Params[0] = (percentage) Chance to apply stat changes
         //   Params[5] = (index) Index into ActStatusTableDataInfo for the stat changes to apply
         //   Params[7] = (DungeonStatusIndex) Dungeon status effect under which the stat boosts are doubled
-        // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
         ApplyStatChangesWithWeatherBoost = 53,
 
-        // Modify attack/defense stats (Screech, Charm, Aurora Beam, Memento)
+        // Modify stats (Screech, Charm, Aurora Beam, Memento)
         //   Params[0] = (percentage) Chance to apply stat changes
         //   Params[5] = (index) Index into ActStatusTableDataInfo for the stat changes to apply
-        // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
         ModifyStats = 54,
 
         // Reverse stat changes (making positive changes negative and vice-versa) (Topsy-Turvy)
@@ -268,10 +260,10 @@
         // Copy target's stat changes (Psych Up)
         CopyTargetStatChanges = 57,
 
-        // Raise a random stat by two stages (Acupressure)
-        //   Params[0] = (percentage) Chance to apply stat change?
-        //   Params[5] = (unknown)
-        RaiseRandomStat = 58,
+        // Apply a random stat change (Acupressure)
+        //   Params[0] = (percentage) Chance to apply stat change
+        //   Params[5] = (index) Index into ActStatusTableDataInfo for the stat changes to apply
+        ApplyRandomStatChange = 58,
 
         // Lower belly to the specified value and maximize Attack boost (Belly Drum)
         //   Params[1] = (integer) Amount of belly to reduce to; if current belly is below this value, the action fails
@@ -298,25 +290,20 @@
         // Chance to apply status effect
         //   Params[0] = (percentage) Chance to apply stat changes
         //   Params[5] = (StatusIndex) Status effect to apply
-        // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
-        // TODO: confirm this -- Scald has this effect apply to the target
         ApplyStatusEffectWithChance = 66,
 
         // Chance to apply status effect, with an additional unknown parameter
         //   Params[0] = (percentage) Chance to apply status effect
         //   Params[3] = (unknown)
         //   Params[4] = (StatusIndex) Status effect to apply
-        // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
         ApplyStatusEffectWithChanceAndSomethingElse = 67,
 
         // Apply freeze, burn or paralysis (Tri Attack)
         //   Params[0] = (percentage) Chance to apply status effect
-        // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
         ApplyFreezeBurnOrParalysis = 68,
 
         // Apply status effect based on current location (Secret Power)
         //   Params[0] = (percentage) Chance to apply status effect
-        // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
         ApplyStatusEffectBasedOnLocation = 69,
 
         // Remove status effect
@@ -324,8 +311,6 @@
         //   Params[2] = (boolean) Unknown purpose
         //   Params[3] = (boolean) Unknown purpose
         //   Params[4] = (StatusIndex) Status effect to remove
-        // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
-        // TODO: confirm this -- Scald has this effect apply to the target
         RemoveStatusEffect = 70,
 
         // Remove all negative status effects and remove seals
@@ -536,7 +521,6 @@
 
         // Apply status effect
         //   Params[4] = (StatusIndex) Status effect to apply
-        // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
         ApplyStatusEffect = 129,
 
         // Set user's and target's HP to the average of both HPs. Excess HP above max is lost.
@@ -584,8 +568,8 @@
         //   Params[1] = (percentage) Percentage of max HP to set user's current HP to. Will not reduce HP below 1.
         SetTargetHPToPercentageOfMaximum = 140,
 
-        // Warp user and set user's HP to one
-        WarpAndSetHPToOne = 141,
+        // Warp user and set user's HP to a percentage of current HP
+        WarpAndSetHPToPercentOfCurrentHP = 141,
 
         // Replace user's Ability with target's Ability (Role Play)
         ReplaceUserAbility = 142,
@@ -710,7 +694,6 @@
         // Chance to apply status effect
         //   Params[0] = (percentage) Chance to apply stat changes
         //   Params[4] = (StatusIndex) Status effect to apply
-        // Bit 10 of action flags indicate if the target is user (when set) or target (when clear)
         ApplyStatusEffectWithChance2 = 179,
 
         // Restore belly and increase max belly if fully sated

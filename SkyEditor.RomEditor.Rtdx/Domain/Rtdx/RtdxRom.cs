@@ -86,9 +86,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         IActStatusTableDataInfo GetActStatusTableDataInfo();
 
-        IMoveList GetTameMoveList();
+        IChargedMoves GetChargedMoves();
 
-        IMoveList GetXLMoveList();
+        IExtraLargeMoves GetExtraLargeMoves();
         #endregion
 
         #region StreamingAssets/native_data
@@ -412,27 +412,27 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private IActStatusTableDataInfo? actStatusTableDataInfo;
         protected static string GetActStatusTableDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_status_table_data_info.bin");
 
-        public IMoveList GetTameMoveList()
+        public IChargedMoves GetChargedMoves()
         {
-            if (tameMoveList == null)
+            if (chargedMoves == null)
             {
-                tameMoveList = new MoveList(FileSystem.ReadAllBytes(GetTameMoveListPath(this.RomDirectory)));
+                chargedMoves = new ChargedMoves(FileSystem.ReadAllBytes(GetChargedMovesPath(this.RomDirectory)));
             }
-            return tameMoveList;
+            return chargedMoves;
         }
-        private MoveList? tameMoveList;
-        protected static string GetTameMoveListPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_tamewaza.bin");
+        private ChargedMoves? chargedMoves;
+        protected static string GetChargedMovesPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_tamewaza.bin");
 
-        public IMoveList GetXLMoveList()
+        public IExtraLargeMoves GetExtraLargeMoves()
         {
-            if (xlMoveList == null)
+            if (extraLargeMoves == null)
             {
-                xlMoveList = new MoveList(FileSystem.ReadAllBytes(GetXLMoveListPath(this.RomDirectory)));
+                extraLargeMoves = new ExtraLargeMoves(FileSystem.ReadAllBytes(GetExtraLargeMovesPath(this.RomDirectory)));
             }
-            return xlMoveList;
+            return extraLargeMoves;
         }
-        private MoveList? xlMoveList;
-        protected static string GetXLMoveListPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_xlwaza.bin");
+        private ExtraLargeMoves? extraLargeMoves;
+        protected static string GetExtraLargeMovesPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_xlwaza.bin");
         #endregion
 
         #region StreamingAssets/native_data

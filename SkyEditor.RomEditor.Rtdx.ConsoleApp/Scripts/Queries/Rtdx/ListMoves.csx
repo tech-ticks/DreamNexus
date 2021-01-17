@@ -18,12 +18,12 @@ public string GetCategoryName(MoveCategory category)
 var db = Rom.GetWazaDataInfo();
 var acts = Rom.GetActDataInfo().Entries;
 var hitCountData = Rom.GetActHitCountTableDataInfo().Entries;
-var tameMoves = Rom.GetTameMoveList().Entries;
-var xlMoves = Rom.GetXLMoveList().Entries;
+var chargedMoves = Rom.GetChargedMoves().Entries;
+var xlMoves = Rom.GetExtraLargeMoves().Entries;
 var strings = Rom.GetCommonStrings();
 var dungeonBin = Rom.GetDungeonBinEntry();
 var i = 0;
-Console.WriteLine("#;ActIndex;Name;Type;Category;MinHits;MaxHits;Stop on miss;Short00;Short02;Short04;Short0E;Byte10;Byte11;Text 1;Text 2");
+/*Console.WriteLine("#;ActIndex;Name;Type;Category;MinHits;MaxHits;Stop on miss;Short00;Short02;Short04;Short0E;Byte10;Byte11;Text 1;Text 2");
 foreach (var entry in db.Entries)
 {
     var act = acts[entry.ActIndex];
@@ -31,8 +31,8 @@ foreach (var entry in db.Entries)
     var type = strings.PokemonTypes.ContainsKey(act.MoveType) ? strings.PokemonTypes[act.MoveType] : act.MoveType.ToString();
     var category = GetCategoryName(act.MoveCategory);
     var hitCountEntry = hitCountData[act.ActHitCountIndex];
-    var text1 = dungeonBin.GetStringByHash((int)act.Text08);
-    var text2 = dungeonBin.GetStringByHash((int)act.Text0C);
+    var text1 = dungeonBin.GetStringByHash((int)act.DungeonMessage1);
+    var text2 = dungeonBin.GetStringByHash((int)act.DungeonMessage2);
     Console.Write($"{i};");
     Console.Write($"{entry.ActIndex};");
     Console.Write($"{moveName};");
@@ -51,7 +51,7 @@ foreach (var entry in db.Entries)
     Console.Write($"{text2};");
     Console.WriteLine();
 
-    /*Console.Write($"#{i,-3} {moveName,-25}  {type,-8}  {category,-7}");
+    Console.Write($"#{i,-3} {moveName,-25}  {type,-8}  {category,-7}");
     if (hitCountEntry.Index > 1)
     {
         if (hitCountEntry.StopOnMiss != 0)
@@ -94,43 +94,45 @@ foreach (var entry in db.Entries)
             Console.Write(")");
         }
     }
-    Console.WriteLine();*/
+    Console.WriteLine();
 
-    /*if (!string.IsNullOrEmpty(text1))
+    if (!string.IsNullOrEmpty(text1))
     {
         Console.WriteLine($"  Dungeon message 1: \"{text1}\"");
     }
     if (!string.IsNullOrEmpty(text2))
     {
         Console.WriteLine($"  Dungeon message 2: \"{text2}\"");
-    }*/
+    }
     i++;
-}
-Console.WriteLine();
-
-/*Console.WriteLine("\"Tame\" moves:");
-foreach (var entry in tameMoves)
-{
-    if (strings.Moves.TryGetValue(entry, out string name))
-    {
-        Console.WriteLine($"  {entry}  {name}");
-    }
-    else
-    {
-        Console.WriteLine($"  {entry}");
-    }
 }
 Console.WriteLine();*/
 
-/*Console.WriteLine(@"XL moves:");
-foreach (var entry in xlMoves)
+public string GetMoveName(WazaIndex index)
 {
-    if (strings.Moves.TryGetValue(entry, out string name))
+    if (strings.Moves.TryGetValue(index, out string name))
     {
-        Console.WriteLine($"  {entry}  {name}");
+        return $"({(ushort)index}) {name}";
     }
     else
     {
-        Console.WriteLine($"  {entry}");
+        return $"({(ushort)index}) {index}";
     }
-}*/
+}
+
+Console.WriteLine("Charged moves:");
+foreach (var entry in chargedMoves)
+{
+    var baseName = GetMoveName(entry.BaseMove);
+    var finalName = GetMoveName(entry.FinalMove);
+    Console.WriteLine($"  {baseName,-25}  {entry.BaseAction,5}  {finalName,-25}  {entry.FinalAction,5}  {entry.Short08,5}");
+}
+Console.WriteLine();
+
+Console.WriteLine("XL moves:");
+foreach (var entry in xlMoves)
+{
+    var baseName = GetMoveName(entry.BaseMove);
+    var xlName = GetMoveName(entry.LargeMove);
+    Console.WriteLine($"  {baseName,-25}  {xlName,-25}  {entry.BaseAction,5}  {entry.LargeAction,5}");
+}

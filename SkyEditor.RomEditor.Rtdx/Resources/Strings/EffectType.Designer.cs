@@ -115,6 +115,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply a random stat change.
+        /// </summary>
+        public static string ApplyRandomStatChange {
+            get {
+                return ResourceManager.GetString("ApplyRandomStatChange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply stat changes.
         /// </summary>
         public static string ApplyStatChanges {
@@ -277,7 +286,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Charged move.
+        ///   Looks up a localized string similar to Initiate charged move.
         /// </summary>
         public static string ChargedMove {
             get {
@@ -507,15 +516,6 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string DamagePercentageCurrentHP {
             get {
                 return ResourceManager.GetString("DamagePercentageCurrentHP", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Deal damage equal to a percentage of target&apos;s max HP.
-        /// </summary>
-        public static string DamagePercentageMaxHP {
-            get {
-                return ResourceManager.GetString("DamagePercentageMaxHP", resourceCulture);
             }
         }
         
@@ -781,6 +781,15 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Deal damage equal to the amount of HP that would be lost to reach the target value.
+        /// </summary>
+        public static string DealDamageEqualToLostHP {
+            get {
+                return ResourceManager.GetString("DealDamageEqualToLostHP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Deal damage to creatures surrounding the target.
         /// </summary>
         public static string DealDamageToSurroundingTargets {
@@ -916,7 +925,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to (unconfirmed) Final effect Magnetic Flux.
+        ///   Looks up a localized string similar to (unconfirmed) Final effect of Magnetic Flux.
         /// </summary>
         public static string FinishMagneticFlux {
             get {
@@ -1096,7 +1105,7 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Modify attack/defense stats.
+        ///   Looks up a localized string similar to Modify stats.
         /// </summary>
         public static string ModifyStats {
             get {
@@ -1227,15 +1236,6 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         public static string PullTowardsTarget {
             get {
                 return ResourceManager.GetString("PullTowardsTarget", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Raise a random stat by two stages.
-        /// </summary>
-        public static string RaiseRandomStat {
-            get {
-                return ResourceManager.GetString("RaiseRandomStat", resourceCulture);
             }
         }
         
@@ -2077,11 +2077,11 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Warp user and set user&apos;s HP to one.
+        ///   Looks up a localized string similar to Warp user and set user&apos;s HP to a percentage of current HP.
         /// </summary>
-        public static string WarpAndSetHPToOne {
+        public static string WarpAndSetHPToPercentOfCurrentHP {
             get {
-                return ResourceManager.GetString("WarpAndSetHPToOne", resourceCulture);
+                return ResourceManager.GetString("WarpAndSetHPToPercentOfCurrentHP", resourceCulture);
             }
         }
         

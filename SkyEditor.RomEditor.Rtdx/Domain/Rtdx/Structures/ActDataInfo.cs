@@ -186,7 +186,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             //
             //   Bit  8: (seems related to ground-based moves like Earthquake, Fissure, Earth Power)
             //   Bit  9: Affected by Magic Coat
-            //   Bit 10: (maybe) Target of stat changes: 0 = target, 1 = self
+            //   Bit 10: ** unknown
             //   Bit 11: ** unknown
             //   Bit 12: Sound-based move
             //   Bit 13: ** unknown

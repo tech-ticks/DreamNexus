@@ -20,6 +20,8 @@ var statChangeData = Rom.GetActStatusTableDataInfo().Entries;
 var hitCountData = Rom.GetActHitCountTableDataInfo().Entries;
 var effectData = Rom.GetActEffectDataInfo().Entries;
 var moveData = Rom.GetWazaDataInfo().Entries;
+var chargedMoves = Rom.GetChargedMoves().Entries;
+var xlMoves = Rom.GetExtraLargeMoves().Entries;
 var itemData = Rom.GetItemDataInfo().Entries;
 var strings = Rom.GetCommonStrings();
 var dungeonBin = Rom.GetDungeonBinEntry();
@@ -59,6 +61,25 @@ public string FormatBits(ulong b)
 
     // Join back into a string, separating each group with a space and each set of four with an additional space
     return string.Join(" ", groups).Insert(35, " ");
+}
+
+// Format an accuracy value, where 101 means "sure shot"
+string FormatAccuracy(ushort acc)
+{
+    return (acc >= 101) ? "Sure shot" : acc.ToString();
+}
+
+// Format a range of values
+string FormatRange(byte min, byte max)
+{
+    return (min == max) ? $"{min}" : $"{min} to {max}";
+}
+
+// Format a range of accuracy values
+string FormatAccuracyRange(ushort min, ushort max)
+{
+    if (min == 101) return "Sure shot";
+    return (min == max) ? $"{FormatAccuracy(min)}" : $"{FormatAccuracy(min)} to {FormatAccuracy(max)}";
 }
 
 // Format a hit count entry
@@ -211,7 +232,7 @@ public string DescribeEffectParameter(EffectParameterType paramType, ushort valu
         case EffectParameterType.EffectChance: return $"{value}% chance to execute effect";
         case EffectParameterType.CriticalHitRatio: return $"{value}% critical hit ratio";
         case EffectParameterType.RecoilPercentOfMaxHP: return $"{value}% of max HP as recoil damage";
-        case EffectParameterType.DamagePercentOfCurrentHP: return $"{value}% of current HP as damage";
+        case EffectParameterType.HPPercent: return $"{value}% of HP";
         case EffectParameterType.ChanceToApplyFurtherEffects: return $"{value}% chance to apply further effects";
         case EffectParameterType.MinDamageLevelFactor: return $"Minimum damage equal to {value}% of attacker's level";
         case EffectParameterType.MinVisitsDamageMultiplier: return $"{value}% damage at minimum dungeons visited";
@@ -223,7 +244,7 @@ public string DescribeEffectParameter(EffectParameterType paramType, ushort valu
         case EffectParameterType.StockpileCount: return $"{value} stockpile count";
         case EffectParameterType.SpendPercentOfMaxHP: return $"Spend {value}% of max HP";
         case EffectParameterType.SelectAttackerOrTargetStatBoosts: return (value == 0) ? "Use attacker's stat boosts" : "Use target's stat boosts";
-        case EffectParameterType.HealPercentOfDamageDealt: return $"Heal {value}% of damage dealt";
+        case EffectParameterType.HealPercentOfDamageDealt: return $"Heal for {value}% of damage dealt";
         case EffectParameterType.HealPercentOfMaxHP: return $"Heal {value}% of max HP";
         case EffectParameterType.BellyAmount: return $"{value} Belly";
         case EffectParameterType.ExcludeFloating: return (value == 0) ? "All targets" : "Exclude floating targets";
@@ -298,6 +319,26 @@ foreach (var item in itemData)
 
 // ----------------------------
 
+// Build lookup tables for charged and XL moves using the action indices
+var movesRegularToXL = new Dictionary<int, ExtraLargeMoves.Entry>();
+var movesXLToRegular = new Dictionary<int, ExtraLargeMoves.Entry>();
+var chargedMovesBeginToEnd = new Dictionary<int, ChargedMoves.Entry>();
+var chargedMovesEndToBegin = new Dictionary<int, ChargedMoves.Entry>();
+
+foreach (var move in xlMoves)
+{
+    movesRegularToXL[move.BaseAction] = move;
+    movesXLToRegular[move.LargeAction] = move;
+}
+
+foreach (var move in chargedMoves)
+{
+    chargedMovesBeginToEnd[move.BaseAction] = move;
+    chargedMovesEndToBegin[move.FinalAction] = move;
+}
+
+// ----------------------------
+
 // Print everything nicely formatted for humans
 for (var i = 1; i < actionData.Count; i++)
 {
@@ -325,7 +366,22 @@ for (var i = 1; i < actionData.Count; i++)
     }
 
     continue;*/
-    
+
+    // Print unknown values for moves and items related to actions
+    /*foreach (var move in moves)
+    {
+        var name = strings.Moves.GetValueOrDefault(move.Index, move.Index.ToString());
+        Console.WriteLine($"{i,3}  {(int)move.Index,3}  {name,-30}    -    -    -  {act.Byte83,3}  {act.Byte84,3}  {act.Byte85,3}  {act.Byte86,3}  {act.Byte87,3}    -  {act.Byte89,3}  {act.Byte8A,3}  {act.Byte8B,3}    -    -  {act.Byte8E,3}  {act.Byte8F,3}  {act.Byte90,3}  {act.Byte91,3}  {act.Byte92,3}    -  {act.Byte94,3}  {act.Byte95,3}  {act.Byte96,3}  {act.Byte97,3}  {act.Byte98,3}  {act.Byte99,3}  {act.Byte9A,3}  {act.Byte9B,3}  {act.Byte9C,3}  {act.Byte9D,3}  {act.Byte9E,3}  {act.Byte9F,3}");
+    }
+
+    foreach (var item in items)
+    {
+        var name = strings.Items.GetValueOrDefault(item.Index, item.Index.ToString());
+        Console.WriteLine($"{i,3}  {(int)item.Index,3}  {name,-30}    -    -    -  {act.Byte83,3}  {act.Byte84,3}  {act.Byte85,3}  {act.Byte86,3}  {act.Byte87,3}    -  {act.Byte89,3}  {act.Byte8A,3}  {act.Byte8B,3}    -    -  {act.Byte8E,3}  {act.Byte8F,3}  {act.Byte90,3}  {act.Byte91,3}  {act.Byte92,3}    -  {act.Byte94,3}  {act.Byte95,3}  {act.Byte96,3}  {act.Byte97,3}  {act.Byte98,3}  {act.Byte99,3}  {act.Byte9A,3}  {act.Byte9B,3}  {act.Byte9C,3}  {act.Byte9D,3}  {act.Byte9E,3}  {act.Byte9F,3}");
+    }
+
+    continue;*/
+
     Console.WriteLine($"Action {i}: {GetActionKindString(act.Kind)} - {GetActionTargetString(act.Target)}, {GetActionAreaString(act.Area)}, range {act.Range}");
 
     // Print moves and items that invoke the action
@@ -360,19 +416,28 @@ for (var i = 1; i < actionData.Count; i++)
         }
     }
 
-    string formatAccuracy(ushort acc)
+    // Print corresponding extra large and charged moves
+    ExtraLargeMoves.Entry xlMove;
+    ChargedMoves.Entry chargedMove;
+    if (movesRegularToXL.TryGetValue(i, out xlMove))
     {
-        return (acc >= 101) ? "Sure shot" : acc.ToString();
+        var name = strings.Moves.GetValueOrDefault(xlMove.LargeMove, xlMove.LargeMove.ToString());
+        Console.WriteLine($"  Corresponding extra large move: (action {xlMove.LargeAction}, move {(ushort)xlMove.LargeMove}) {name}");
     }
-
-    string formatRange(byte min, byte max)
+    if (movesXLToRegular.TryGetValue(i, out xlMove))
     {
-        return (min == max) ? $"{min}" : $"{min} to {max}";
+        var name = strings.Moves.GetValueOrDefault(xlMove.BaseMove, xlMove.BaseMove.ToString());
+        Console.WriteLine($"  Corresponding normal-sized move: (action {xlMove.BaseAction}, move {(ushort)xlMove.BaseMove}) {name}");
     }
-
-    string formatAccuracyRange(ushort min, ushort max)
+    if (chargedMovesBeginToEnd.TryGetValue(i, out chargedMove))
     {
-        return (min == max) ? $"{formatAccuracy(min)}" : $"{formatAccuracy(min)} to {formatAccuracy(max)}";
+        var name = strings.Moves.GetValueOrDefault(chargedMove.FinalMove, chargedMove.FinalMove.ToString());
+        Console.WriteLine($"  Corresponding end of charged move: (action {chargedMove.FinalAction}, move {(ushort)chargedMove.FinalMove}) {name} -- {chargedMove.Short08}");
+    }
+    if (chargedMovesEndToBegin.TryGetValue(i, out chargedMove))
+    {
+        var name = strings.Moves.GetValueOrDefault(chargedMove.BaseMove, chargedMove.BaseMove.ToString());
+        Console.WriteLine($"  Corresponding start of charged move: (action {chargedMove.BaseAction}, move {(ushort)chargedMove.BaseMove}) {name} -- {chargedMove.Short08}");
     }
 
     // Print attributes
@@ -380,10 +445,10 @@ for (var i = 1; i < actionData.Count; i++)
     if (act.Kind == ActDataInfo.ActionKind.Move)
     {
         Console.WriteLine($"  Hits:     {FormatHits(hitCountEntry)}");
-        Console.WriteLine($"  Power:    {formatRange(act.MinPower, act.MaxPower)}");
-        Console.WriteLine($"  PP:       {formatRange(act.MinPP, act.MaxPP)}");
+        Console.WriteLine($"  Power:    {FormatRange(act.MinPower, act.MaxPower)}");
+        Console.WriteLine($"  PP:       {FormatRange(act.MinPP, act.MaxPP)}");
     }
-    Console.WriteLine($"  Accuracy: {formatAccuracyRange(act.MinAccuracy, act.MaxAccuracy)}");
+    Console.WriteLine($"  Accuracy: {FormatAccuracyRange(act.MinAccuracy, act.MaxAccuracy)}");
 
     // Print effects
     Console.WriteLine($"  Effects:");
@@ -393,7 +458,25 @@ for (var i = 1; i < actionData.Count; i++)
         {
             continue;
         }
+
         Console.WriteLine($"    ({(int)effect.Type}) {GetEffectName(effect.Type)}");
+
+        // TODO: confirm this; seems accurate, but not all moves that have effects that apply to user/target
+        /*switch (effect.Type)
+        {
+            case EffectType.ApplyStatChanges:
+                Console.Write($"      (applies to ");
+                switch (act.Byte92)
+                {
+                    case 0: Console.Write("user"); break;
+                    case 1: Console.Write("target"); break;
+                    case 9: Console.Write("teammates"); break;
+                    default: Console.Write($"unknown ({act.Byte92})"); break; // also seen 4, 5 and 6
+                }
+                Console.WriteLine(")");
+                break;
+        }*/
+
         for (var j = 0; j < 8; j++)
         {
             if (effect.ParamTypes[j] != 0)
@@ -425,7 +508,7 @@ for (var i = 1; i < actionData.Count; i++)
     Console.WriteLine($"    0x10: {effectEntry.Short10,5}  {effectEntry.Short12,5}  {effectEntry.Short14,5}  {effectEntry.Short16,5}  {effectEntry.Short18,5}  {effectEntry.Short1A,5}  {effectEntry.Short1C,5}  {effectEntry.Short1E,5}");
     Console.WriteLine($"    0x20: {effectEntry.Short20,5}  {effectEntry.Short22,5}  {effectEntry.Short24,5}  {effectEntry.Short26,5}  {effectEntry.Short28,5}  {effectEntry.Short2A,5}  {effectEntry.Short2C,5}  {effectEntry.Short2E,5}");
     Console.WriteLine($"    0x30: {effectEntry.Short30,5}  {effectEntry.Short32,5}  {effectEntry.Short34,5}  {effectEntry.Short36,5}  {effectEntry.Short38,5}  {effectEntry.Int3C,10}");
-    
+
     Console.WriteLine();
 }
 

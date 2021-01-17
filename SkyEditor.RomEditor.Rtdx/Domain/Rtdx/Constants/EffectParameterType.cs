@@ -7,7 +7,7 @@
         CriticalHitRatio = 2,
         // 3 is unused
         RecoilPercentOfMaxHP = 4,
-        DamagePercentOfCurrentHP = 5,
+        HPPercent = 5,
         // TODO: investigate 6  (related to warping teammates around a target, seen with values 0 or 1)
         ChanceToApplyFurtherEffects = 7,
         MinDamageLevelFactor = 8,

@@ -204,8 +204,8 @@
   <data name="EqualizeHP" xml:space="preserve">
     <value>Reduce target's HP to user's HP if the user has less HP than the target</value>
   </data>
-  <data name="DamagePercentageMaxHP" xml:space="preserve">
-    <value>Deal damage equal to a percentage of target's max HP</value>
+  <data name="DealDamageEqualToLostHP" xml:space="preserve">
+    <value>Deal damage equal to the amount of HP that would be lost to reach the target value</value>
   </data>
   <data name="DamageBasedOnAttackersLevel" xml:space="preserve">
     <value>Deal damage based on the attacker's level</value>
@@ -235,7 +235,7 @@
     <value>Deal random damage with multiplier based on the number of positive stat changes of the attacker or target</value>
   </data>
   <data name="ChargedMove" xml:space="preserve">
-    <value>Charged move</value>
+    <value>Initiate charged move</value>
   </data>
   <data name="DealStoredDamage" xml:space="preserve">
     <value>Deal damage stored by Bide/Revenge/Avalanche</value>
@@ -274,7 +274,7 @@
     <value>Apply stat changes; double if under specified weather</value>
   </data>
   <data name="ModifyStats" xml:space="preserve">
-    <value>Modify attack/defense stats</value>
+    <value>Modify stats</value>
   </data>
   <data name="ReverseStatChanges" xml:space="preserve">
     <value>Reverse stat changes</value>
@@ -285,8 +285,8 @@
   <data name="CopyTargetStatChanges" xml:space="preserve">
     <value>Copy target's stat changes</value>
   </data>
-  <data name="RaiseRandomStat" xml:space="preserve">
-    <value>Raise a random stat by two stages</value>
+  <data name="ApplyRandomStatChange" xml:space="preserve">
+    <value>Apply a random stat change</value>
   </data>
   <data name="ReduceBellyAndMaximizeAttack" xml:space="preserve">
     <value>Lower belly to the specified value and maximize Attack modifier</value>
@@ -403,7 +403,7 @@
     <value>(unconfirmed) Select only targets that have the Plus or Minus ability</value>
   </data>
   <data name="FinishMagneticFlux" xml:space="preserve">
-    <value>(unconfirmed) Final effect Magnetic Flux</value>
+    <value>(unconfirmed) Final effect of Magnetic Flux</value>
   </data>
   <data name="TypeSelect" xml:space="preserve">
     <value>(unconfirmed) Select only targets of the specified type</value>
@@ -528,8 +528,8 @@
   <data name="SetTargetHPToPercentageOfMaximum" xml:space="preserve">
     <value>Set target's HP to a percentage of max HP</value>
   </data>
-  <data name="WarpAndSetHPToOne" xml:space="preserve">
-    <value>Warp user and set user's HP to one</value>
+  <data name="WarpAndSetHPToPercentOfCurrentHP" xml:space="preserve">
+    <value>Warp user and set user's HP to a percentage of current HP</value>
   </data>
   <data name="ReplaceUserAbility" xml:space="preserve">
     <value>Replace user's Ability with target's Ability</value>
