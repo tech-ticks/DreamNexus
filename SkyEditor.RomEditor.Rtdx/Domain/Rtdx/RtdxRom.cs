@@ -89,6 +89,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IChargedMoves GetChargedMoves();
 
         IExtraLargeMoves GetExtraLargeMoves();
+
+        IStatusDataInfo GetStatusDataInfo();
         #endregion
 
         #region StreamingAssets/native_data
@@ -433,6 +435,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private ExtraLargeMoves? extraLargeMoves;
         protected static string GetExtraLargeMovesPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/act_xlwaza.bin");
+
+        public IStatusDataInfo GetStatusDataInfo()
+        {
+            if (statusDataInfo == null)
+            {
+                statusDataInfo = new StatusDataInfo(FileSystem.ReadAllBytes(GetStatusDataInfoPath(this.RomDirectory)));
+            }
+            return statusDataInfo;
+        }
+        private StatusDataInfo? statusDataInfo;
+        protected static string GetStatusDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/status_data_info.bin");
         #endregion
 
         #region StreamingAssets/native_data
