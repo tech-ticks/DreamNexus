@@ -159,47 +159,64 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
         public string UnicodeDecode(string text)
         {
             var sb = new StringBuilder();
-            var textBytes = Encoding.Unicode.GetBytes(text);
-            for (int i = 0; i < textBytes.Length; i += 2)
+            for (int i = 0; i < text.Length; i++)
             {
-                ushort shortCharacter = BitConverter.ToUInt16(textBytes, i);
+                ushort shortCharacter = text[i];
+
+                bool specialCode = false;
+                uint encodedValue = 0;
                 if (EntriesByUnicode.TryGetValue(shortCharacter, out var entry))
                 {
                     // A direct match for the character was found
-                    sb.Append($"[{entry.CodeString}]");
+                    specialCode = true;
+                    encodedValue = 0;
                 }
                 else if (EntriesByUnicode.TryGetValue((ushort)(shortCharacter & 0xFF00), out entry))
                 {
-                    // A match for the low bytes was found, which means that it encodes some other value.
-                    // The amount of words to decode is found in the Length.
-                    uint encodedValue = shortCharacter & 0xFFu;
-                    if (entry.Length > 0)
-                    {
-                        encodedValue = 0;
-                        for (int j = 0; j < entry.Length; j++)
-                        {
-                            i += (j + 1) * 2;
+                    // A match for the most significant byte was found
+                    specialCode = true;
+                    encodedValue = shortCharacter & 0xFFu;
+                }
 
-                            uint partialValue = BitConverter.ToUInt16(textBytes, i);
-                            encodedValue |= partialValue << (j * 2);
-                        }
-                        encodedValue--;
-                    }
-
+                if (specialCode)
+                {
                     string encodedValueString;
-                    if (ConstantReplacementTable.TryGetValue(entry.CodeString, out var enumType))
+                    if (entry.Flags != 0)
                     {
-                        encodedValueString = Enum.GetName(enumType, encodedValue) ?? encodedValue.ToString();
+                        // Any special code that has any flag set contains an encoded value
+                        // TODO: handle flags appropriately
+                        // - GenHero has two strings following the special code for choosing the text to display according to the hero's gender
+                        //     <0x02>He<0x03>She
+                        if (entry.Length > 0)
+                        {
+                            // The low byte of the original character is discarded
+                            encodedValue = 0;
+                            for (int j = 0; j < entry.Length; j++)
+                            {
+                                i++;
+                                if (i >= text.Length) break;
+                                encodedValue |= ((uint)text[i] - 1) << (j * 16);
+                            }
+                        }
+
+                        if (ConstantReplacementTable.TryGetValue(entry.CodeString, out var enumType))
+                        {
+                            encodedValueString = Enum.GetName(enumType, encodedValue) ?? encodedValue.ToString();
+                        }
+                        else
+                        {
+                            encodedValueString = encodedValue.ToString();
+                        }
                     }
                     else
                     {
-                        encodedValueString = encodedValue.ToString();
+                        encodedValueString = "";
                     }
                     sb.Append($"[{entry.CodeString}{encodedValueString}]");
                 }
                 else
                 {
-                    sb.Append(Encoding.Unicode.GetString(textBytes, i, 2));
+                    sb.Append(text[i]);
                 }
             }
             return sb.ToString();

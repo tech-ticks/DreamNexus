@@ -1222,6 +1222,9 @@
     <None Update="Scripts\Queries\Rtdx\PrintStatuses.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Scripts\Queries\Rtdx\PrintMessages.csx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Scripts\Queries\Rtdx\PrintSymbolLists.csx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

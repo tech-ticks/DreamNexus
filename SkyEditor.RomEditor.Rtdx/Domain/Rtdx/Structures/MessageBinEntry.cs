@@ -35,7 +35,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 var hash = sir0.Data.ReadInt32(entryOffset + 8);
                 var unknown = sir0.Data.ReadInt32(entryOffset + 0xC);
 
-                var value = sir0.Data.ReadNullTerminatedUnicodeString(stringOffset);
+                // Read the string manually since ReadNullTerminatedUnicodeString automatically converts invalid Unicode characters to 0xFFFD
+                var sb = new StringBuilder();
+                var strOffset = stringOffset;
+                ushort ch;
+                while ((ch = sir0.Data.ReadUInt16(strOffset)) != 0) {
+                    sb.Append((char)ch);
+                    strOffset += 2;
+                }
+                var value = sb.ToString();
+                
+                //var value = sir0.Data.ReadNullTerminatedUnicodeString(stringOffset);
                 if (codeTable != null)
                 {
                     value = codeTable.UnicodeDecode(value);
