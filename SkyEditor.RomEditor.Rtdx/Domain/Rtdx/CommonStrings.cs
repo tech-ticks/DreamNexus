@@ -4,6 +4,7 @@ using SkyEditor.RomEditor.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx
 {
@@ -71,116 +72,145 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
             this.common = common ?? throw new ArgumentNullException(nameof(common));
 
-            Pokemon = new Dictionary<CreatureIndex, string>();
-            var creatures = Enum.GetValues(typeof(CreatureIndex)).Cast<CreatureIndex>().ToArray();
-            foreach (CreatureIndex creature in creatures)
-            {
-                if (creature == default)
-                {
-                    continue;
-                }
+            // Load strings in parallel for a slight speed boost
+            var tasks = new List<Task>();
 
-                var name = GetPokemonNameByInternalName(creature.ToString("f"));
-                Pokemon.Add(creature, name ?? "");
-            }
+            Pokemon = new Dictionary<CreatureIndex, string>();
+            tasks.Add(Task.Run(() =>
+            {
+                var creatures = Enum.GetValues(typeof(CreatureIndex)).Cast<CreatureIndex>().ToArray();
+                foreach (CreatureIndex creature in creatures)
+                {
+                    if (creature == default)
+                    {
+                        continue;
+                    }
+
+                    var name = GetPokemonNameByInternalName(creature.ToString("f"));
+                    Pokemon.Add(creature, name ?? "");
+                }
+            }));
 
             Moves = new Dictionary<WazaIndex, string>();
-            var moves = Enum.GetValues(typeof(WazaIndex)).Cast<WazaIndex>().ToArray();
-            foreach (WazaIndex waza in moves)
+            tasks.Add(Task.Run(() =>
             {
-                if (waza == default)
+                var moves = Enum.GetValues(typeof(WazaIndex)).Cast<WazaIndex>().ToArray();
+                foreach (WazaIndex waza in moves)
                 {
-                    continue;
-                }
+                    if (waza == default)
+                    {
+                        continue;
+                    }
 
-                var nameHash = TextIdValues.GetValueOrDefault("WAZA_NAME__WAZA_" + waza.ToString("f"));
-                var name = common.GetStringByHash(nameHash);
-                Moves.Add(waza, name ?? "");
-            }
+                    var nameHash = TextIdValues.GetValueOrDefault("WAZA_NAME__WAZA_" + waza.ToString("f"));
+                    var name = common.GetStringByHash(nameHash);
+                    Moves.Add(waza, name ?? "");
+                }
+            }));
 
             RareQualities = new Dictionary<SugowazaIndex, string>();
-            var rareQualities = Enum.GetValues(typeof(SugowazaIndex)).Cast<SugowazaIndex>().ToArray();
-            foreach (SugowazaIndex sugowaza in rareQualities)
+            tasks.Add(Task.Run(() =>
             {
-                if (sugowaza == default)
+                var rareQualities = Enum.GetValues(typeof(SugowazaIndex)).Cast<SugowazaIndex>().ToArray();
+                foreach (SugowazaIndex sugowaza in rareQualities)
                 {
-                    continue;
-                }
+                    if (sugowaza == default)
+                    {
+                        continue;
+                    }
 
-                var nameHash = TextIdValues.GetValueOrDefault("SUGOWAZA_NAME__" + sugowaza.ToString("f"));
-                var name = common.GetStringByHash(nameHash);
-                RareQualities.Add(sugowaza, name ?? "");
-            }
+                    var nameHash = TextIdValues.GetValueOrDefault("SUGOWAZA_NAME__" + sugowaza.ToString("f"));
+                    var name = common.GetStringByHash(nameHash);
+                    RareQualities.Add(sugowaza, name ?? "");
+                }
+            }));
 
             Dungeons = new Dictionary<DungeonIndex, string>();
-            var dungeons = Enum.GetValues(typeof(DungeonIndex)).Cast<DungeonIndex>().ToArray();
-            foreach (DungeonIndex dungeon in dungeons)
+            tasks.Add(Task.Run(() =>
             {
-                if (dungeon == default)
+                var dungeons = Enum.GetValues(typeof(DungeonIndex)).Cast<DungeonIndex>().ToArray();
+                foreach (DungeonIndex dungeon in dungeons)
                 {
-                    continue;
-                }
+                    if (dungeon == default)
+                    {
+                        continue;
+                    }
 
-                var name = GetDungeonNameByInternalName(dungeon.ToString("f"));
-                Dungeons.Add(dungeon, name ?? "");
-            }
+                    var name = GetDungeonNameByInternalName(dungeon.ToString("f"));
+                    Dungeons.Add(dungeon, name ?? "");
+                }
+            }));
 
             // We need to handle items in a convoluted way since there are multiple entries with the same value
             // e.g. ARROW_MIN and ARROW_WOOD are the same
             Items = new Dictionary<ItemIndex, string>();
-            var itemNames = Enum.GetNames(typeof(ItemIndex));
-            var items = Enum.GetValues(typeof(ItemIndex)).Cast<ItemIndex>().ToArray();
-            for (int i = 0; i < items.Length; i++)
+            tasks.Add(Task.Run(() =>
             {
-                string itemName = itemNames[i];
-                var item = items[i];
-                if (item == default || itemName.EndsWith("_MIN") || itemName.EndsWith("_MAX"))
+                var itemNames = Enum.GetNames(typeof(ItemIndex));
+                var items = Enum.GetValues(typeof(ItemIndex)).Cast<ItemIndex>().ToArray();
+                for (int i = 0; i < items.Length; i++)
                 {
-                    continue;
-                }
+                    string itemName = itemNames[i];
+                    var item = items[i];
+                    if (item == default || itemName.EndsWith("_MIN") || itemName.EndsWith("_MAX"))
+                    {
+                        continue;
+                    }
 
-                var name = GetItemNameByInternalName(itemName);
-                Items.Add(item, name ?? "");
-            }
+                    var name = GetItemNameByInternalName(itemName);
+                    Items.Add(item, name ?? "");
+                }
+            }));
 
             DungeonStatuses = new Dictionary<DungeonStatusIndex, string>();
-            var dungeonStatuses = Enum.GetValues(typeof(DungeonStatusIndex)).Cast<DungeonStatusIndex>().ToArray();
-            foreach (DungeonStatusIndex status in dungeonStatuses)
+            tasks.Add(Task.Run(() =>
             {
-                if (status == default)
+                var dungeonStatuses = Enum.GetValues(typeof(DungeonStatusIndex)).Cast<DungeonStatusIndex>().ToArray();
+                foreach (DungeonStatusIndex status in dungeonStatuses)
                 {
-                    continue;
-                }
+                    if (status == default)
+                    {
+                        continue;
+                    }
 
-                var name = GetDungeonStatusNameByInternalName(status.ToString("f"));
-                DungeonStatuses.Add(status, name ?? "");
-            }
+                    var name = GetDungeonStatusNameByInternalName(status.ToString("f"));
+                    DungeonStatuses.Add(status, name ?? "");
+                }
+            }));
 
             Statuses = new Dictionary<StatusIndex, string>();
-            var statuses = Enum.GetValues(typeof(StatusIndex)).Cast<StatusIndex>().ToArray();
-            foreach (StatusIndex status in statuses)
+            tasks.Add(Task.Run(() =>
             {
-                if (status == default)
+                var statuses = Enum.GetValues(typeof(StatusIndex)).Cast<StatusIndex>().ToArray();
+                foreach (StatusIndex status in statuses)
                 {
-                    continue;
-                }
+                    if (status == default)
+                    {
+                        continue;
+                    }
 
-                var name = GetStatusNameByInternalName(status.ToString("f"));
-                Statuses.Add(status, name ?? "");
-            }
+                    var name = GetStatusNameByInternalName(status.ToString("f"));
+                    Statuses.Add(status, name ?? "");
+                }
+            }));
 
             PokemonTypes = new Dictionary<PokemonType, string>();
-            var pokemonTypes = Enum.GetValues(typeof(PokemonType)).Cast<PokemonType>().ToArray();
-            foreach (PokemonType pokemonType in pokemonTypes)
+            tasks.Add(Task.Run(() =>
             {
-                if (pokemonType == default)
+                var pokemonTypes = Enum.GetValues(typeof(PokemonType)).Cast<PokemonType>().ToArray();
+                foreach (PokemonType pokemonType in pokemonTypes)
                 {
-                    continue;
-                }
+                    if (pokemonType == default)
+                    {
+                        continue;
+                    }
 
-                var name = GetPokemonTypeNameByInternalName(pokemonType.ToString("f"));
-                PokemonTypes.Add(pokemonType, name ?? "");
-            }
+                    var name = GetPokemonTypeNameByInternalName(pokemonType.ToString("f"));
+                    PokemonTypes.Add(pokemonType, name ?? "");
+                }
+            }));
+
+            Task.WhenAll(tasks).Wait();
         }
 
         private readonly MessageBinEntry common;
