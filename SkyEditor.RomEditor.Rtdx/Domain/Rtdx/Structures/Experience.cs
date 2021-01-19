@@ -17,6 +17,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
     {
         public IReadOnlyList<ExperienceEntry> Entries { get; }
 
+        public Experience(byte[] data, byte[] entryList) : this(new BinaryFile(data), new BinaryFile(entryList))
+        {
+
+        }
+
         public Experience(IReadOnlyBinaryDataAccessor data, IReadOnlyBinaryDataAccessor entryList)
         {
             var entryCount = checked((int)entryList.Length / sizeof(int));

@@ -16,6 +16,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
         public List<PokemonDataInfoEntry> Entries { get; }
 
+        public PokemonDataInfo(byte[] data) : this(new BinaryFile(data))
+        {
+
+        }
+
         public PokemonDataInfo(IReadOnlyBinaryDataAccessor data)
         {
             var entryCount = checked((int)data.Length / EntrySize);

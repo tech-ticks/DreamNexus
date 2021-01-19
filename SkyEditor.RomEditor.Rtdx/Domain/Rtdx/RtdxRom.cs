@@ -224,7 +224,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
             if (pokemonDataInfo == null)
             {
-                pokemonDataInfo = new PokemonDataInfo(new BinaryFile(FileSystem.ReadAllBytes(GetPokemonDataInfoPath(this.RomDirectory))));
+                pokemonDataInfo = new PokemonDataInfo(FileSystem.ReadAllBytes(GetPokemonDataInfoPath(this.RomDirectory)));
             }
             return pokemonDataInfo;
         }
@@ -235,7 +235,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
             if (experience == null)
             {
-                experience = new Experience(new BinaryFile(GetExperiencePath(this.RomDirectory) + ".bin"), new BinaryFile(GetExperiencePath(this.RomDirectory) + ".ent"));
+                experience = new Experience(FileSystem.ReadAllBytes(GetExperiencePath(this.RomDirectory) + ".bin"), FileSystem.ReadAllBytes(GetExperiencePath(this.RomDirectory) + ".ent"));
             }
             return experience;
         }
@@ -354,7 +354,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
             if (randomParts == null)
             {
-                randomParts = new RandomParts(new BinaryFile(GetRandomPartsPath(this.RomDirectory) + ".bin"), new BinaryFile(GetRandomPartsPath(this.RomDirectory) + ".ent"));
+                randomParts = new RandomParts(FileSystem.ReadAllBytes(GetRandomPartsPath(this.RomDirectory) + ".bin"), FileSystem.ReadAllBytes(GetRandomPartsPath(this.RomDirectory) + ".ent"));
             }
             return randomParts;
         }
