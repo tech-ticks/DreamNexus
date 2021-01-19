@@ -26,8 +26,6 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation
             this.Globals = new ScriptContext<TTarget>(rom, mod);
             this.LuaState = new NLua.Lua();
             this.CSharpScriptImports = new List<string>();
-
-            InitLuaState();
         }
 
         private ScriptContext<TTarget> Globals { get; }
@@ -37,8 +35,15 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation
 
         public List<string> CSharpScriptImports { get; set; }
 
+        private bool luaStateInitialized = false;
+
         private void InitLuaState()
         {
+            if (luaStateInitialized)
+            {
+                return;
+            }
+
             this.LuaState.LoadCLRPackage();
 
             // Load constants
@@ -112,10 +117,13 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation
             this.LuaState.DoString(@"
 		        import = function () end
 	        ");
+
+            luaStateInitialized = true;
         }
 
         public void ExecuteLua(string luaScript)
         {
+            InitLuaState();
             LuaState.DoString(luaScript);
         }
 
@@ -125,7 +133,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation
             var scriptWithoutPreprocessorDirectives = CSharpPreprocessorRegex.Replace(cSharpScript, "");
 
             await CSharpScript
-                .RunAsync(string.Join(Environment.NewLine, CSharpScriptImports) + scriptWithoutPreprocessorDirectives,                
+                .RunAsync(string.Join(Environment.NewLine, CSharpScriptImports) + scriptWithoutPreprocessorDirectives,
                 ScriptOptions.Default
                 .WithReferences(typeof(ScriptHost<>).Assembly)
                 .WithImports(
