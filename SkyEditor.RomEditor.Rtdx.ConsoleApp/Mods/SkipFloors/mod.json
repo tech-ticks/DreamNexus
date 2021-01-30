@@ -1,0 +1,10 @@
+{
+  "Id": "SkyEditor.SkipFloors",
+  "Version": "1.0.0",
+  "Target": "RTDX",
+  "Name": "Skip Floors",
+  "Description": "Allows skipping to the next floor by pressing ZL+ZR for testing purposes.",
+  "Scripts": [
+    "SkipFloors.csx"
+  ]
+}

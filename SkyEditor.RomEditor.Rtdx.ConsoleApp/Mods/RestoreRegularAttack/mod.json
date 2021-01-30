@@ -1,9 +1,9 @@
 {
   "Id": "SkyEditor.RestoreRegularAttack",
-  "Version": "1.0.0",
+  "Version": "2.0.0",
   "Target": "RTDX",
   "Name": "Restore Regular Attack",
-  "Description": "This mod restores the regular attack from previous PMD games. You can use it by pressing ZL+ZR.",
+  "Description": "This mod restores the regular attack from previous PMD games. You can use it by pressing R+A.",
   "Scripts": [
     "RegularAttack.csx"
   ]

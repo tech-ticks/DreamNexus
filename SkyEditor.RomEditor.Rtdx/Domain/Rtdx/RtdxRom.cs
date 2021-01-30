@@ -747,6 +747,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 fileSystem.WriteAllBytes(path + ".bin", binData);
                 fileSystem.WriteAllBytes(path + ".ent", entData);
             }
+            if (wazaDataInfo != null)
+            {
+                var path = GetWazaDataInfoPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, wazaDataInfo.ToByteArray());
+            }
 
             // To-do: save commonStrings when implemented
 
@@ -770,6 +776,69 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 fileSystem.WriteAllBytes(path + ".bin", binData);
                 fileSystem.WriteAllBytes(path + ".ent", entData);
             }
+            if (fixedItem != null)
+            {
+                var path = GetFixedItemPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, fixedItem.ToByteArray());
+            }
+            if (randomParts != null)
+            {
+                var path = GetRandomPartsPath(directory);
+                EnsureDirectoryExists(path);
+                var (binData, entData) = randomParts.Build();
+                fileSystem.WriteAllBytes(path + ".bin", binData);
+                fileSystem.WriteAllBytes(path + ".ent", entData);
+            }
+            if (actDataInfo != null)
+            {
+                var path = GetActDataInfoPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, actDataInfo.ToByteArray());
+            }
+            if (actEffectDataInfo != null)
+            {
+                var path = GetActEffectDataInfoPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, actEffectDataInfo.ToByteArray());
+            }
+            if (actHitCountTableDataInfo != null)
+            {
+                var path = GetActHitCountTableDataInfoPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, actHitCountTableDataInfo.Build());
+            }
+            if (actParamDataInfo != null)
+            {
+                var path = GetActParamDataInfoPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, actParamDataInfo.Build());
+            }
+            if (actStatusTableDataInfo != null)
+            {
+                var path = GetActStatusTableDataInfoPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, actStatusTableDataInfo.Build());
+            }
+            if (chargedMoves != null)
+            {
+                var path = GetChargedMovesPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, chargedMoves.ToByteArray());
+            }
+            if (extraLargeMoves != null)
+            {
+                var path = GetExtraLargeMovesPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, extraLargeMoves.ToByteArray());
+            }
+            if (statusDataInfo != null)
+            {
+                var path = GetStatusDataInfoPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, statusDataInfo.ToByteArray());
+            }
+
             if (dungeonBalance != null)
             {
                 var path = GetDungeonBalancePath(directory);

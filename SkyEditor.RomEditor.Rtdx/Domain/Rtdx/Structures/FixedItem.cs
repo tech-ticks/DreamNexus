@@ -73,6 +73,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             return sir0.Build();
         }
+        
+        public byte[] ToByteArray() => Build().Data.ReadArray();
 
         public class Entry
         {
