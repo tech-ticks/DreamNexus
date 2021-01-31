@@ -77,8 +77,9 @@ foreach (var dungeon in dungeons)
     var extra = dungeon.Extra;
     var balance = dungeon.Balance;
     var floorInfos = balance.FloorInfos;
+    var items = dungeon.ItemArrange;
     var wildPokemon = balance.WildPokemon;
-    var data3 = balance.Data3;
+    var trapWeights = balance.TrapWeights;
     var data4 = balance.Data4;
 
     // Print basic dungeon info
@@ -95,6 +96,8 @@ foreach (var dungeon in dungeons)
         + $"{data.Short08,3}    {data.Short0A,3}      {data.DungeonBalanceIndex,3}       {data.Byte13,3}    {data.Byte17,3}    {data.Byte18,3}    {data.Byte19,3}");
 
     // Print floor infos
+    Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"S02",5}  {"S24",5}  {"S26",5}  {"S28",5}  {"MapDat",6}  {"B2C",3}  "
+            + $"{"B2D",3}  {"B2E",3}  {"B2F",3}  {"B20",5}  {"B32",5}  {"B34",3}  {"B35",3}  {"B36",3}  ");
     foreach (var info in floorInfos)
     {
         Console.WriteLine($"   {info.Index,5}  "
@@ -103,7 +106,7 @@ foreach (var dungeon in dungeons)
             + $"{info.Short24,5}  "
             + $"{info.Short26,5}  "
             + $"{info.Short28,5}  "
-            + $"{info.DungeonMapDataInfoIndex,5}  "
+            + $"{info.DungeonMapDataInfoIndex,6}  "
             + $"{info.Byte2C,3}  "
             + $"{info.Byte2D,3}  "
             + $"{info.Byte2E,3}  "
@@ -115,6 +118,28 @@ foreach (var dungeon in dungeons)
             + $"{info.Byte36,3}  "
             + $"{string.Join(",", info.Bytes37to53)}  "
             + $"{string.Join(",", info.Bytes55to61)}");
+
+        // Print floor items
+        /*Console.WriteLine($"   Floor {info.Index} items:");
+        Console.Write("     ");
+        int i = 0;
+        foreach (var itemWeight in items.ItemSets[info.Byte36].ItemWeights)
+        {
+            var itemName = strings.GetItemName(itemWeight.Index);
+            if (string.IsNullOrEmpty(itemName))
+            {
+                itemName = itemWeight.Index.ToString();
+            }
+            Console.Write($"{itemName} ({itemWeight.Weight}), ");
+            if (i == 8)
+            {
+                Console.WriteLine();
+                Console.Write("     ");
+                i = 0;
+            }
+            i++;
+        }
+        Console.WriteLine();*/
     }
 
     // Print fainted Pokemon
@@ -185,31 +210,52 @@ foreach (var dungeon in dungeons)
         }
     }*/
 
-    // Print unknown data from the third SIR0 file in dungeon_balance.bin
-    /*if (data3 != null)
+    // Print trap weights
+    if (trapWeights != null)
     {
-        var records = data3.Records;
+        var records = trapWeights.Records;
         int prevIndex = -1;
-        var prevShort02s = new List<short>();
+        var prevWeights = new List<short>();
         var len = dungeon.Extra.Floors; // records.Length - 1
         for (int j = 0; j < len; j++)
         {
             var record = records[j];
-            var short02s = new List<short>();
+            var weights = new List<short>();
             
             foreach (var entry in record.Entries)
             {
-                short02s.Add(entry.Short02);
+                weights.Add(entry.Weight);
             }
 
-            if (prevShort02s.Count == 0 || !prevShort02s.SequenceEqual(short02s))
+            if (prevWeights.Count == 0 || !prevWeights.SequenceEqual(weights))
             {
-                prevShort02s = short02s;
+                prevWeights = weights;
                 if (prevIndex != -1 && prevIndex != j)
                 {
                     Console.WriteLine($"..{FormatFloor(dungeon, len)}: *");
                 }
-                Console.WriteLine($"  {FormatFloor(dungeon, j + 1)}: {string.Join("  ", short02s)}");
+                Console.Write($"  {FormatFloor(dungeon, j + 1)}: ");
+
+                int totalWeight = weights.Where(weight => weight >= 0).Sum(weight => weight);
+                for (int i = 0; i < weights.Count - 1; i++)
+                {
+                    int weight = weights[i];
+                    if (weight == 0)
+                    {
+                        continue;
+                    }
+
+                    var itemIndex = ItemIndex.TRAP_MIN + i;
+                    string trapName = strings.GetItemName(itemIndex);
+                    if (string.IsNullOrEmpty(trapName))
+                    {
+                        trapName = itemIndex.ToString();
+                    }
+                    float probability = ((float) weight / totalWeight) * 100f;
+                    Console.Write($"{trapName} ({weight}, {probability:0.00}%), ");
+                }
+                Console.WriteLine();
+
                 prevIndex = j + 1;
             }
 
@@ -217,7 +263,7 @@ foreach (var dungeon in dungeons)
         if (prevIndex != -1 && prevIndex != len) {
             Console.WriteLine($"..{FormatFloor(dungeon, len)}: *");
         }
-    }*/
+    }
 
     // Print unknown (and mostly uninteresting) data from the fourth SIR0 file in dungeon_balance.bin
     /*if (data4 != null)

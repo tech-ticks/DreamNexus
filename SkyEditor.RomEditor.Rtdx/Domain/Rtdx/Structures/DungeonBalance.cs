@@ -101,7 +101,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 var offset4 = sir0.SubHeader.ReadInt64(0x18);
                 var lenHeader = offsetWildPokemon - offsetHeader;
                 var lenWildPokemon = offset3 - offsetWildPokemon;
-                var len3 = offset4 - offset3;
+                var lenTrapWeights = offset4 - offset3;
                 var len4 = sir0.SubHeaderOffset - offset4;
 
                 var headerEntrySize = FloorInfoEntry.Size;
@@ -113,7 +113,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
 
                 if (lenWildPokemon > 0) WildPokemon = new WildPokemonInfo(sir0.Data.Slice(offsetWildPokemon, lenWildPokemon));
-                if (len3 > 0) Data3 = new DungeonBalanceDataEntry3(sir0.Data.Slice(offset3, len3));
+                if (lenTrapWeights > 0) TrapWeights = new TrapWeights(sir0.Data.Slice(offset3, lenTrapWeights));
                 if (len4 > 0) Data4 = new DungeonBalanceDataEntry4(sir0.Data.Slice(offset4, len4));
             }
 
@@ -144,10 +144,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
 
                 align(16);
-                var data3Pointer = sir0.Length;
-                if (Data3 != null)
+                var trapWeightsPointer = sir0.Length;
+                if (TrapWeights != null)
                 {
-                    sir0.Write(sir0.Length, Data3.ToSir0().Data.ReadArray());
+                    sir0.Write(sir0.Length, TrapWeights.ToSir0().Data.ReadArray());
                 }
 
                 align(16);
@@ -162,14 +162,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 sir0.SubHeaderOffset = sir0.Length;
                 sir0.WritePointer(sir0.Length, floorInfoPointer);
                 sir0.WritePointer(sir0.Length, wildPokemonPointer);
-                sir0.WritePointer(sir0.Length, data3Pointer);
+                sir0.WritePointer(sir0.Length, trapWeightsPointer);
                 sir0.WritePointer(sir0.Length, data4Pointer);
                 return sir0.Build();
             }
 
             public FloorInfoEntry[] FloorInfos { get; set; }
             public WildPokemonInfo? WildPokemon { get; set; }
-            public DungeonBalanceDataEntry3? Data3 { get; set; }
+            public TrapWeights? TrapWeights { get; set; }
             public DungeonBalanceDataEntry4? Data4 { get; set; }
         }
 
@@ -242,7 +242,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public string Event { get; set; }
             public short Short24 { get; set; }   // possibly the max number of turns?
             public short Short26 { get; set; }
-            public short Short28 { get; set; }
+            public short Short28 { get; set; } // Max money stack size?
             public short DungeonMapDataInfoIndex { get; set; }
             public byte Byte2C { get; set; }
             public byte Byte2D { get; set; }
@@ -252,7 +252,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public short Short32 { get; set; }
             public byte Byte34 { get; set; }
             public byte Byte35 { get; set; }
-            public byte Byte36 { get; set; }
+            public byte Byte36 { get; set; } // Index into ItemArrange?
             public byte InvitationIndex { get; set; }
             public byte[] Bytes37to53 { get; set; }
             public byte[] Bytes55to61 { get; set; }
@@ -462,9 +462,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public FloorInfo[] Floors { get; set; }
         }
 
-        public class DungeonBalanceDataEntry3
+        /// <summary>
+        /// Trap weights, starting at ItemIndex.TRAP_MIN
+        /// </summary>
+        public class TrapWeights
         {
-            public DungeonBalanceDataEntry3(IReadOnlyBinaryDataAccessor accessor)
+            public TrapWeights(IReadOnlyBinaryDataAccessor accessor)
             {
                 var sir0 = new Sir0(accessor);
                 int count = sir0.SubHeader.ReadInt32(0x00);
@@ -480,7 +483,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
             }
 
-            public DungeonBalanceDataEntry3()
+            public TrapWeights()
             {
                 Records = new Record[99];
                 for (int i = 0; i < 99; i++)
@@ -541,13 +544,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     return data;
                 }
 
-                [DebuggerDisplay("{Index} : {Short02}|{Int04}")]
+                [DebuggerDisplay("{Index} : {Weight}|{Int04}")]
                 public class Entry
                 {
                     public Entry(IReadOnlyBinaryDataAccessor accessor)
                     {
                         Index = accessor.ReadInt16(0x00);
-                        Short02 = accessor.ReadInt16(0x02);
+                        Weight = accessor.ReadInt16(0x02);
                         Int04 = accessor.ReadInt16(0x04);
                     }
 
@@ -557,13 +560,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     {
                         var data = new byte[8];
                         BitConverter.GetBytes(Index).CopyTo(data, 0x00);
-                        BitConverter.GetBytes(Short02).CopyTo(data, 0x02);
+                        BitConverter.GetBytes(Weight).CopyTo(data, 0x02);
                         BitConverter.GetBytes(Int04).CopyTo(data, 0x04);
                         return data;
                     }
 
                     public short Index { get; set; }
-                    public short Short02 { get; set; }
+                    public short Weight { get; set; }
                     public int Int04 { get; set; }  // all 0s
                 }
 
