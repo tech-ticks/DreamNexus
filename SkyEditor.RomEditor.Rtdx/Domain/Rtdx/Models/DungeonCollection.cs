@@ -36,11 +36,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             var dungeonData = rom.GetDungeonDataInfo();
             var dungeonExtra = rom.GetDungeonExtra();
             var dungeonBalance = rom.GetDungeonBalance();
+            var itemArrange = rom.GetItemArrange();
 
             var dungeons = new List<DungeonModel>();
             foreach (var dungeon in dungeonData.Entries)
             {
-                dungeons.Add(new DungeonModel(commonStrings, dungeon.Value)
+                dungeons.Add(new DungeonModel(commonStrings, dungeon.Value, itemArrange.Entries[(int) dungeon.Key])
                 {
                     Id = dungeon.Key,
                     Extra = dungeonExtra.Entries.GetValueOrDefault(dungeon.Key),

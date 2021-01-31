@@ -56,6 +56,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>EffectType.resx</DependentUpon>
     </Compile>
+    <Compile Update="Resources\Strings\ItemKind.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ItemKind.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
@@ -77,6 +82,10 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Strings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Strings\ItemKind.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ItemKind.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 

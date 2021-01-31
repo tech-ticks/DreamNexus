@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<root>
+    <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+        <xsd:element name="root" msdata:IsDataSet="true">
+            
+        </xsd:element>
+    </xsd:schema>
+    <resheader name="resmimetype">
+        <value>text/microsoft-resx</value>
+    </resheader>
+    <resheader name="version">
+        <value>1.3</value>
+    </resheader>
+    <resheader name="reader">
+        <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <resheader name="writer">
+        <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    </resheader>
+    <data name="None" xml:space="preserve">
+        <value>No category</value>
+    </data>
+    <data name="Arrow" xml:space="preserve">
+        <value>Throwables (Piercing)</value>
+    </data>
+    <data name="Stone" xml:space="preserve">
+        <value>Throwables (Rocks)</value>
+    </data>
+    <data name="Equip" xml:space="preserve">
+        <value>Equipables</value>
+    </data>
+    <data name="Food" xml:space="preserve">
+        <value>Food</value>
+    </data>
+    <data name="Seed" xml:space="preserve">
+        <value>Healing Items (Seeds and Berries)</value>
+    </data>
+    <data name="PP" xml:space="preserve">
+        <value>PP Restoration</value>
+    </data>
+    <data name="Parameter" xml:space="preserve">
+        <value>Stat-increase items</value>
+    </data>
+    <data name="Orb" xml:space="preserve">
+        <value>Orbs</value>
+    </data>
+    <data name="Wand" xml:space="preserve">
+        <value>Wands</value>
+    </data>
+    <data name="Evolution" xml:space="preserve">
+        <value>Evolution</value>
+    </data>
+    <data name="Other" xml:space="preserve">
+        <value>Other</value>
+    </data>
+    <data name="Money" xml:space="preserve">
+        <value>Poké (Money)</value>
+    </data>
+    <data name="Box" xml:space="preserve">
+        <value>Link Boxes</value>
+    </data>
+    <data name="Chest" xml:space="preserve">
+        <value>Treasure Boxes</value>
+    </data>
+    <data name="Wazamachine" xml:space="preserve">
+        <value>TMs</value>
+    </data>
+    <data name="Brokenmachine" xml:space="preserve">
+        <value>"Broken Machines" (?)</value>
+    </data>
+    <data name="Trap" xml:space="preserve">
+        <value>Traps</value>
+    </data>
+    <data name="Max" xml:space="preserve">
+        <value>(MAX)</value>
+    </data>
+</root>

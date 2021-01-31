@@ -31,15 +31,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
         }
 
-        /*public ItemArrange()
+        public ItemArrange()
         {
             Entries = new Entry[(int)DungeonIndex.END];
             for (int i = 0; i < (int)DungeonIndex.END; i++)
             {
                 Entries[i] = new Entry();
             }
-        }*/
-
+        }
+        
         public (byte[] bin, byte[] ent) Build()
         {
             MemoryStream bin = new MemoryStream();
@@ -80,24 +80,86 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
         public class Entry
         {
+            public const int ItemEntrySize = 8;
+
+            public List<ItemSet> ItemSets { get; set; } = new List<ItemSet>();
+
+            public Entry()
+            {
+            }
+
             public Entry(IReadOnlyBinaryDataAccessor accessor)
             {
                 var buffer = Gyu0.Decompress(accessor);
-                Sir0 sir0 = new Sir0(buffer);
+                var sir0 = new Sir0(buffer);
 
-                Data = sir0.Data.ReadArray();
+                long itemSetCount = sir0.SubHeader.ReadInt64(0x0);
+                
+                for (long i = 0; i < itemSetCount; i++)
+                {
+                    long itemSetPointer = sir0.SubHeader.ReadInt64((i+1) * 8);
+                    ushort[] itemKindWeights = new ushort[(int) ItemKind.MAX];
+                    for (int j = 0; j < itemKindWeights.Length; j++)
+                    {
+                        itemKindWeights[j] = sir0.Data.ReadUInt16(itemSetPointer + j*2);
+                    }
 
-                // TODO: decode this
+                    var itemWeights = new List<ItemWeightEntry>();
+                    for (int j = 0;; j++)
+                    {
+                        long itemOffset = itemSetPointer + 0x24 + ItemEntrySize * j;
+                        var weightEntry = new ItemWeightEntry
+                        {
+                            Index = (ItemIndex) sir0.Data.ReadUInt16(itemOffset + 0),
+                            Weight = sir0.Data.ReadUInt16(itemOffset + 2),
+                            Short04 = sir0.Data.ReadUInt16(itemOffset + 4),
+                            Short06 = sir0.Data.ReadUInt16(itemOffset + 6),
+                        };
+                        
+                        if ((ushort) weightEntry.Index == 0xFFFF) // Marks the end of the list
+                        {
+                            break;
+                        }
+                        
+                        itemWeights.Add(weightEntry);
+                    }
+                    
+                    ItemSets.Add(new ItemSet(itemKindWeights, itemWeights));
+                }
             }
 
             public Sir0 ToSir0()
             {
-                throw new System.NotImplementedException();
-                //var sir0 = new Sir0Builder(8);
-                //return sir0.Build();
+                throw new NotImplementedException();
             }
 
-            public byte[]? Data { get; set; }
+            public class ItemSet
+            {
+                /// <summary>
+                /// Item category weights indexed by ItemKind
+                /// </summary>
+                public ushort[] ItemKindWeights { get; set; }
+
+                /// <summary>
+                /// Weights of the individual items
+                /// </summary>
+                public List<ItemWeightEntry> ItemWeights { get; set; }
+
+                public ItemSet(ushort[] itemKindWeights, List<ItemWeightEntry> itemWeights)
+                {
+                    ItemKindWeights = itemKindWeights;
+                    ItemWeights = itemWeights;
+                }
+            }
+            
+            public class ItemWeightEntry
+            {
+                public ItemIndex Index { get; set; }
+                public ushort Weight { get; set; }
+                public ushort Short04 { get; set; } // Always zero
+                public ushort Short06 { get; set; } // Always zero
+            }
+            
         }
     }
 }

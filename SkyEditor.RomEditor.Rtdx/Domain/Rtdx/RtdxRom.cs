@@ -847,14 +847,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 fileSystem.WriteAllBytes(path + ".bin", binData);
                 fileSystem.WriteAllBytes(path + ".ent", entData);
             }
-            /*if (itemArrange != null)
+            if (itemArrange != null)
             {
                 var path = GetItemArrangePath(directory);
                 EnsureDirectoryExists(path);
                 var (binData, entData) = itemArrange.Build();
                 fileSystem.WriteAllBytes(path + ".bin", binData);
                 fileSystem.WriteAllBytes(path + ".ent", entData);
-            }*/
+            }
             if (dungeonMapDataInfo != null)
             {
                 var path = GetDungeonMapDataInfoPath(directory);

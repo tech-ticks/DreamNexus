@@ -8,5 +8,6 @@ int i = 0;
 foreach (var entry in Rom.GetItemArrange().Entries)
 {
   File.WriteAllBytes($"item_arrange_{i}.bin", entry.Data);
+
   i++;
 }
