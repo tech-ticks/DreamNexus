@@ -41,11 +41,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             var dungeons = new List<DungeonModel>();
             foreach (var dungeon in dungeonData.Entries)
             {
-                dungeons.Add(new DungeonModel(commonStrings, dungeon.Value, itemArrange.Entries[(int) dungeon.Key])
+                dungeons.Add(new DungeonModel(commonStrings, dungeon.Value)
                 {
                     Id = dungeon.Key,
                     Extra = dungeonExtra.Entries.GetValueOrDefault(dungeon.Key),
-                    Balance = dungeonBalance.Entries[dungeon.Value.DungeonBalanceIndex]
+                    Balance = dungeonBalance.Entries[dungeon.Value.DungeonBalanceIndex],
+                    ItemArrange = dungeon.Key > DungeonIndex.NONE ? itemArrange.Entries[((int) dungeon.Key) - 1] : null,
                 });
             }
             dungeons.Sort((d1, d2) => d1.Data.SortKey.CompareTo(d2.Data.SortKey));

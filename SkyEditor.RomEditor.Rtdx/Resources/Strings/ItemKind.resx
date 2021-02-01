@@ -34,7 +34,7 @@
         <value>Food</value>
     </data>
     <data name="Seed" xml:space="preserve">
-        <value>Healing Items (Seeds and Berries)</value>
+        <value>Seeds and Berries</value>
     </data>
     <data name="PP" xml:space="preserve">
         <value>PP Restoration</value>
@@ -64,10 +64,10 @@
         <value>Treasure Boxes</value>
     </data>
     <data name="Wazamachine" xml:space="preserve">
-        <value>TMs</value>
+        <value>TMs (Unused?)</value>
     </data>
     <data name="Brokenmachine" xml:space="preserve">
-        <value>"Broken Machines" (?)</value>
+        <value>TMs</value>
     </data>
     <data name="Trap" xml:space="preserve">
         <value>Traps</value>
