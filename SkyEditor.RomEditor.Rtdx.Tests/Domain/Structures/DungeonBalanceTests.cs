@@ -84,13 +84,13 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             d001Floor1.Entries[(int)CreatureIndex.HITOKAGE].RecruitmentLevel = 5;
             d001Floor1.Entries[(int)CreatureIndex.HITOKAGE].Byte0B = 0;
 
-            var d001Data3 = d001.Data3 = new DungeonBalance.DungeonBalanceDataEntry3();
-            d001Data3.Records[0].Entries[0].Index = 0;
-            d001Data3.Records[0].Entries[0].Short02 = 0x02;
-            d001Data3.Records[0].Entries[0].Int04 = 0x04;
-            d001Data3.Records[1].Entries[1].Index = 1;
-            d001Data3.Records[1].Entries[1].Short02 = 0x102;
-            d001Data3.Records[1].Entries[1].Int04 = 0x104;
+            var trapWeights = d001.TrapWeights = new DungeonBalance.TrapWeights();
+            trapWeights.Records[0].Entries[0].Index = 0;
+            trapWeights.Records[0].Entries[0].Weight = 0x02;
+            trapWeights.Records[0].Entries[0].Int04 = 0x04;
+            trapWeights.Records[1].Entries[1].Index = 1;
+            trapWeights.Records[1].Entries[1].Weight = 0x102;
+            trapWeights.Records[1].Entries[1].Int04 = 0x104;
 
             var d001Data4 = d001.Data4 = new DungeonBalance.DungeonBalanceDataEntry4();
             d001Data4.Records[0].Entries[0].Short00 = 0x00;
@@ -182,16 +182,16 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
                 rebuiltD001Floor1.Entries[(int)CreatureIndex.HITOKAGE].Byte0B.Should().Be(0);
             }
 
-            var rebuiltD001Data3 = rebuiltD001.Data3;
-            rebuiltD001Data3.Should().NotBeNull();
-            if (rebuiltD001Data3 != null)
+            var rebuiltD001TrapWeights = rebuiltD001.TrapWeights;
+            rebuiltD001TrapWeights.Should().NotBeNull();
+            if (rebuiltD001TrapWeights != null)
             {
-                rebuiltD001Data3.Records[0].Entries[0].Index.Should().Be(0);
-                rebuiltD001Data3.Records[0].Entries[0].Short02.Should().Be(0x02);
-                rebuiltD001Data3.Records[0].Entries[0].Int04.Should().Be(0x04);
-                rebuiltD001Data3.Records[1].Entries[1].Index.Should().Be(1);
-                rebuiltD001Data3.Records[1].Entries[1].Short02.Should().Be(0x102);
-                rebuiltD001Data3.Records[1].Entries[1].Int04.Should().Be(0x104);
+                rebuiltD001TrapWeights.Records[0].Entries[0].Index.Should().Be(0);
+                rebuiltD001TrapWeights.Records[0].Entries[0].Weight.Should().Be(0x02);
+                rebuiltD001TrapWeights.Records[0].Entries[0].Int04.Should().Be(0x04);
+                rebuiltD001TrapWeights.Records[1].Entries[1].Index.Should().Be(1);
+                rebuiltD001TrapWeights.Records[1].Entries[1].Weight.Should().Be(0x102);
+                rebuiltD001TrapWeights.Records[1].Entries[1].Int04.Should().Be(0x104);
             }
 
             var rebuiltD001Data4 = rebuiltD001.Data4;
