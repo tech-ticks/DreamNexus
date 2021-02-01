@@ -3,7 +3,7 @@ name: Build and test
 on: [push, pull_request]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-18.04
     
     steps:
@@ -16,7 +16,10 @@ jobs:
         dotnet-version: 3.1.x
  
     - name: Install dependencies
-      run: dotnet restore
+      run: |
+        # SkyEditor nuget feed is required to resolve dependencies
+        dotnet nuget add source "https://pkgs.dev.azure.com/project-pokemon/4a5da2d7-09b8-4354-9450-562116aac7b5/_packaging/skyeditor/nuget/v3/index.json" -n "skyeditor"
+        dotnet restore
 
     - name: Build
       run: dotnet build --no-restore
