@@ -45,7 +45,7 @@ if (!File.Exists(cacheFile))
   // Write to a cache since it would be too slow to read this every time 
   // TODO: this still takes a while, see if we can make it faster
   var executable = Rom.GetMainExecutable();
-  ulong textOffset = executable.SectionOffsets[".text"];
+  ulong textOffset = executable.CodeSectionOffset;
 
   var allMethods = executable.IlAppModel.TypeModel.Types.SelectMany(type => 
     type.GetAllMethods().Cast<MethodBase>().Concat(type.DeclaredConstructors));

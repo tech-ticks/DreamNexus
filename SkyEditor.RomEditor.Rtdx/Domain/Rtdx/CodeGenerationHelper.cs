@@ -14,10 +14,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
     private ulong sectionOffset = 0;
 
-    public CodeGenerationHelper(IMainExecutable executable, string codeSectionName = ".text")
+    public CodeGenerationHelper(IMainExecutable executable)
     {
       Executable = executable;
-      sectionOffset = executable.SectionOffsets[codeSectionName];
+      sectionOffset = executable.CodeSectionOffset;
       Data = executable.Data;
     }
 

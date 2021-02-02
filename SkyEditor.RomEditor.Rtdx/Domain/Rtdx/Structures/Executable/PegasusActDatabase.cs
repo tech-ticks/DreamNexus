@@ -16,7 +16,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
             this.executable = executable;
 
 #if !NETSTANDARD2_0
-            firstCreatureIdOffset = executable.SectionOffsets[".text"]
+            firstCreatureIdOffset = executable.CodeSectionOffset
                 + executable.GetIlConstructorOffset("PegasusActDatabase", new string[] {})
                 + RelativeFirstCreatureIdOffset;
 
