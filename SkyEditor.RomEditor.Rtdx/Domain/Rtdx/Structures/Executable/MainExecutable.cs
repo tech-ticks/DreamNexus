@@ -11,6 +11,7 @@ using BindingFlags = System.Reflection.BindingFlags;
 using Il2CppInspector;
 using Il2CppInspector.Reflection;
 using Il2CppInspector.Model;
+using NoisyCowStudios.Bin2Object;
 #endif
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
@@ -27,7 +28,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 
 #if !NETSTANDARD2_0
     public AppModel IlAppModel { get; }
-    public Dictionary<string, ulong> SectionOffsets { get; }
+    public ulong CodeSectionOffset { get; }
 
     /// <summary>Retrieve the offset of a method relative to the start of the code ELF segment.</summary>
     ulong GetIlMethodOffset(string fullTypeName, string methodName, string[] paramTypeNames);
@@ -145,17 +146,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
     }
 
 #if !NETSTANDARD2_0
-    private Dictionary<string, ulong>? sectionOffsets;
+    private ulong? codeSectionOffset;
 
-    public Dictionary<string, ulong> SectionOffsets
+    public ulong CodeSectionOffset
     {
       get
       {
-        if (sectionOffsets == null)
+        if (codeSectionOffset == null)
         {
           LoadIlAppModel();
         }
-        return sectionOffsets!;
+        return codeSectionOffset!.Value;
       }
     }
 
@@ -177,8 +178,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 
     private void LoadIlAppModel()
     {
-      // Lazily create an Il2CppInspector model. Copying the ELF data array is required since the library
-      // seems to mess with the data, which crashes the game.
+      // Lazily create an Il2CppInspector model.
       // TODO: Consider caching the result in a file. This is horribly slow.
       var binaryStream = new MemoryStream(Data.ToArray());
       var metadataStream = new MemoryStream(Il2CppMetadata);
@@ -186,20 +186,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
       var oldOut = Console.Out;
       // Disable Console.WriteLine() since Il2CppInspector logs text
       Console.SetOut(TextWriter.Null);
-
       try
       {
-        // The internal class Il2CppInspector.ElfReader64 can be used to retrieve the offsets of sections
-        // in the ELF file. These are relevant since Il2CppInspector saves symbol offsets relative to the
-        // code section of the ELF so this offset needs to be considered when editing the ELF.
-        var elfReader = CreateAndInitElfReader(binaryStream);
-        ReadSectionOffsets(elfReader);
+        // Disable the plugin manager since it would crash due to a missing "plugins" folder
+        PluginManager.Enabled = false;
 
-        // Create the inspector manually instead of using Il2CppInspector.LoadFromStream to avoid
-        // reading the ELF a second time.
-        var metadata = new Metadata(metadataStream);
-        var binary = Il2CppBinary.Load(elfReader, metadata);
-        var inspector = new Il2CppInspector.Il2CppInspector(binary, metadata);
+        var inspector = Il2CppInspector.Il2CppInspector
+          .LoadFromStream(binaryStream, metadataStream, silent: true).FirstOrDefault();
 
         if (inspector == null)
         {
@@ -207,6 +200,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
         }
 
         ilAppModel = new AppModel(new TypeModel(inspector));
+        codeSectionOffset = inspector.BinaryImage.GetSections()
+          .First(section => section.IsExec).ImageStart;
       }
       finally
       {
@@ -218,54 +213,26 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
     {
       var methodInfos = GetIlType(fullTypeName).GetMethods(methodName);
       var overloadMethodInfo = FindMethodOverload(methodInfos, paramTypeNames);
-      if (overloadMethodInfo == null)
+      if (overloadMethodInfo == null || !overloadMethodInfo.VirtualAddress.HasValue)
       {
         throw new ArgumentException("The method doesn't exist.");
       }
-      return IlAppModel.Methods[overloadMethodInfo].MethodCodeAddress;
+      return overloadMethodInfo.VirtualAddress.Value.Start;
     }
 
     public ulong GetIlConstructorOffset(string fullTypeName, string[] paramTypeNames)
     {
       var methodInfos = GetIlType(fullTypeName).DeclaredConstructors.ToArray();
       var overloadMethodInfo = FindMethodOverload(methodInfos, paramTypeNames);
-      if (overloadMethodInfo == null)
+      if (overloadMethodInfo == null || !overloadMethodInfo.VirtualAddress.HasValue)
       {
         throw new ArgumentException("The constructor doesn't exist.");
       }
-      return IlAppModel.Methods[overloadMethodInfo].MethodCodeAddress;
-    }
-
-    private IFileFormatReader CreateAndInitElfReader(Stream binaryStream)
-    {
-      var elfReaderType = typeof(Il2CppInspector.Il2CppInspector).Assembly.GetType("Il2CppInspector.ElfReader64");
-      var elfReader = (IFileFormatReader)Activator.CreateInstance(elfReaderType, binaryStream);
-      elfReaderType.BaseType.GetMethod("Init", BindingFlags.Instance | BindingFlags.NonPublic)
-        .Invoke(elfReader, new object[] { });
-      return elfReader;
-    }
-
-    private void ReadSectionOffsets(IFileFormatReader elfReader)
-    {
-      var sectionByName = (IDictionary)elfReader.GetType().BaseType.GetField("sectionByName", BindingFlags.Instance
-        | BindingFlags.NonPublic).GetValue(elfReader);
-
-      sectionOffsets = new Dictionary<string, ulong>();
-      foreach (DictionaryEntry sectionKeyValue in sectionByName)
-      {
-        var value = sectionKeyValue.Value;
-        ulong offset = (ulong)value.GetType().GetField("sh_offset").GetValue(value);
-        sectionOffsets.Add((string)sectionKeyValue.Key, offset);
-      }
+      return overloadMethodInfo.VirtualAddress.Value.Start;
     }
 
     private TypeInfo GetIlType(string fullTypeName)
     {
-      if (!fullTypeName.Contains("."))
-      {
-        // Types without a namespace should still start with "."
-        fullTypeName = '.' + fullTypeName;
-      }
       return IlAppModel.TypeModel.GetType(fullTypeName);
     }
 
