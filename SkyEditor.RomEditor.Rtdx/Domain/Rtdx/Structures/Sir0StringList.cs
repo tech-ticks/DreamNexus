@@ -48,15 +48,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         {
             var sir0 = new Sir0Builder(8);
             
-            void align(int length)
-            {
-                var paddingLength = length - (sir0.Length % length);
-                if (paddingLength != length)
-                {
-                    sir0.WritePadding(sir0.Length, paddingLength);
-                }
-            }
-            
             var pointers = new List<int>();
             
             var entriesSectionStart = sir0.Length;
@@ -69,7 +60,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
 
             // Write the pointers
-            align(8);
+            sir0.Align(8);
             sir0.SubHeaderOffset = sir0.Length;
             sir0.WriteInt64(sir0.Length, Entries.Count);
             foreach (int pointer in pointers)

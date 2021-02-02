@@ -121,36 +121,27 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 var sir0 = new Sir0Builder(8);
 
-                void align(int length)
-                {
-                    var paddingLength = length - (sir0.Length % length);
-                    if (paddingLength != length)
-                    {
-                        sir0.WritePadding(sir0.Length, paddingLength);
-                    }
-                }
-
                 var floorInfoPointer = sir0.Length;
                 foreach (var floor in FloorInfos)
                 {
                     sir0.Write(sir0.Length, floor.ToByteArray());
                 }
 
-                align(16);
+                sir0.Align(16);
                 var wildPokemonPointer = sir0.Length;
                 if (WildPokemon != null)
                 {
                     sir0.Write(sir0.Length, WildPokemon.ToSir0().Data.ReadArray());
                 }
 
-                align(16);
+                sir0.Align(16);
                 var trapWeightsPointer = sir0.Length;
                 if (TrapWeights != null)
                 {
                     sir0.Write(sir0.Length, TrapWeights.ToSir0().Data.ReadArray());
                 }
 
-                align(16);
+                sir0.Align(16);
                 var data4Pointer = sir0.Length;
                 if (Data4 != null)
                 {
@@ -158,7 +149,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
 
                 // Write the content header
-                align(16);
+                sir0.Align(16);
                 sir0.SubHeaderOffset = sir0.Length;
                 sir0.WritePointer(sir0.Length, floorInfoPointer);
                 sir0.WritePointer(sir0.Length, wildPokemonPointer);
@@ -305,16 +296,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 var sir0 = new Sir0Builder(8);
                 
-                void align(int length)
-                {
-                    var paddingLength = length - (sir0.Length % length);
-                    if (paddingLength != length)
-                    {
-                        sir0.WritePadding(sir0.Length, paddingLength);
-                    }
-                }
-
-                // Write the stats
+                                // Write the stats
                 foreach (var stats in Stats)
                 {
                     stats.Pointer = sir0.Length;
@@ -340,7 +322,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
 
                 // Write the content header
-                align(16);
+                sir0.Align(16);
                 sir0.SubHeaderOffset = sir0.Length;
                 sir0.WriteInt64(sir0.Length, Stats.Length);
                 sir0.WritePointer(sir0.Length, statsPointer);
@@ -496,16 +478,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 var sir0 = new Sir0Builder(8);
 
-                void align(int length)
-                {
-                    var paddingLength = length - (sir0.Length % length);
-                    if (paddingLength != length)
-                    {
-                        sir0.WritePadding(sir0.Length, paddingLength);
-                    }
-                }
-
-                // Write the records
+                                // Write the records
                 foreach (var record in Records)
                 {
                     record.Pointer = sir0.Length;
@@ -513,7 +486,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
 
                 // Write the content header
-                align(16);
+                sir0.Align(16);
                 sir0.SubHeaderOffset = sir0.Length;
                 sir0.WriteInt64(sir0.Length, Records.Length);
                 foreach (var record in Records)
@@ -609,16 +582,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 var sir0 = new Sir0Builder(8);
 
-                void align(int length)
-                {
-                    var paddingLength = length - (sir0.Length % length);
-                    if (paddingLength != length)
-                    {
-                        sir0.WritePadding(sir0.Length, paddingLength);
-                    }
-                }
-
-                // Write the records
+                                // Write the records
                 foreach (var record in Records)
                 {
                     record.Pointer = sir0.Length;
@@ -626,7 +590,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
 
                 // Write the content header
-                align(16);
+                sir0.Align(16);
                 sir0.SubHeaderOffset = sir0.Length;
                 sir0.WriteInt64(sir0.Length, Records.Length);
                 foreach (var record in Records)

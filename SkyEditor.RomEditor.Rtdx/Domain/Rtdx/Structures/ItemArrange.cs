@@ -130,7 +130,43 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public Sir0 ToSir0()
             {
-                throw new NotImplementedException();
+                var sir0 = new Sir0Builder(8);
+                var pointers = new List<long>();
+
+                foreach (var itemSet in ItemSets)
+                {
+                    pointers.Add(sir0.Length);
+                    foreach (var kindWeight in itemSet.ItemKindWeights)
+                    {
+                        sir0.WriteUInt16(sir0.Length, kindWeight);
+                    }
+
+                    foreach (var itemWeight in itemSet.ItemWeights)
+                    {
+                        sir0.WriteUInt16(sir0.Length, (ushort) itemWeight.Index);
+                        sir0.WriteUInt16(sir0.Length, itemWeight.Weight);
+                        sir0.WriteUInt16(sir0.Length, itemWeight.Short04);
+                        sir0.WriteUInt16(sir0.Length, itemWeight.Short06);
+                    }
+
+                    // The last entry marks the end (all 0xFFFF)
+                    sir0.WriteUInt16(sir0.Length, (ushort) 0xFFFFu);
+                    sir0.WriteUInt16(sir0.Length, (ushort) 0xFFFFu);
+                    sir0.WriteUInt16(sir0.Length, (ushort) 0xFFFFu);
+                    sir0.WriteUInt16(sir0.Length, (ushort) 0xFFFFu);
+                }
+
+                sir0.Align(16);
+
+                sir0.SubHeaderOffset = sir0.Length;
+
+                sir0.WriteInt64(sir0.Length, pointers.Count);
+                foreach (var pointer in pointers)
+                {
+                    sir0.WritePointer(sir0.Length, pointer);
+                }
+
+                return sir0.Build(alignFooter: false);
             }
 
             public class ItemSet

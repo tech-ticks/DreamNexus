@@ -99,15 +99,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         {
             var sir0 = new Sir0Builder(8);
 
-            void align(int length) 
-            {
-                var paddingLength = length - (sir0.Length % length);
-                if (paddingLength != length)
-                {
-                    sir0.WritePadding(sir0.Length, paddingLength);
-                }
-            }
-
             var allStringValues = Strings.Values.SelectMany(strList => strList).ToArray();
 
             // Ensure that the order in the generated message.bin matches the original if possible
@@ -117,7 +108,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 entry.StringOffset = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.Value);
             }
-            align(8);
+            sir0.Align(8);
 
             int entriesOffset = sir0.Length;
 

@@ -108,21 +108,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 var sir0 = new Sir0Builder(8);
 
-                void align(int length)
-                {
-                    var paddingLength = length - (sir0.Length % length);
-                    if (paddingLength != length)
-                    {
-                        sir0.WritePadding(sir0.Length, paddingLength);
-                    }
-                }
-
                 var entryPointers = new List<int>();
                 foreach (var entry in Entries)
                 {
                     entryPointers.Add(sir0.Length);
                     sir0.Write(sir0.Length, entry.ToByteArray());
-                    align(16);
+                    sir0.Align(16);
                 }
 
                 var pointerTablePos = sir0.Length;

@@ -52,6 +52,15 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             this.Length = length;
         }
 
+        public void Align(int length)
+        {
+            var paddingLength = length - (Length % length);
+            if (paddingLength != length)
+            {
+                WritePadding(Length, paddingLength);
+            }
+        }
+
         private void EnsureLengthIsLargeEnough(int length)
         {
             if (length > this.Length)
@@ -219,14 +228,11 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             }
             this.Write(footerOffset++, 0); // Marks the end of the pointers
 
-            if (alignFooter)
+            // Align to 16 bytes
+            var paddingLength = 0x10 - (this.Length % 0x10);
+            if (paddingLength != 0x10)
             {
-                // Align to 16 bytes
-                var paddingLength = 0x10 - (this.Length % 0x10);
-                if (paddingLength != 0x10)
-                {
-                    this.WritePadding(footerOffset, paddingLength);
-                }
+                this.WritePadding(footerOffset, paddingLength);
             }
         }
 

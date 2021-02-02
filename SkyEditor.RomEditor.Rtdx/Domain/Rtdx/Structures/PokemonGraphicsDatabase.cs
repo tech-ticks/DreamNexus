@@ -36,45 +36,36 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         {
             var sir0 = new Sir0Builder(8);
 
-            void align(int length) 
-            {
-                var paddingLength = length - (sir0.Length % length);
-                if (paddingLength != length)
-                {
-                    sir0.WritePadding(sir0.Length, paddingLength);
-                }
-            }
-
             // Write the strings
             foreach (var entry in Entries)
             {
-                align(8);
+                sir0.Align(8);
                 entry.ModelNamePointer = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.ModelName);
 
-                align(8);
+                sir0.Align(8);
                 entry.AnimationNamePointer = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.AnimationName);
 
-                align(8);
+                sir0.Align(8);
                 entry.BaseFormModelNamePointer = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.BaseFormModelName);
 
-                align(8);
+                sir0.Align(8);
                 entry.PortraitSheetNamePointer = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.PortraitSheetName);
 
-                align(8);
+                sir0.Align(8);
                 entry.RescueCampSheetNamePointer = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.RescueCampSheetName);
 
-                align(8);
+                sir0.Align(8);
                 entry.RescueCampSheetReverseNamePointer = sir0.Length;
                 sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.RescueCampSheetReverseName);
             }
 
             // Write the data
-            align(8);
+            sir0.Align(8);
             var entriesSectionStart = sir0.Length;
             foreach (var entry in Entries)
             {
@@ -93,7 +84,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             // Write the content header
             sir0.SubHeaderOffset = sir0.Length;
             sir0.WriteString(sir0.Length, Encoding.ASCII, "PGDB");
-            align(8);
+            sir0.Align(8);
             sir0.WritePointer(sir0.Length, entriesSectionStart);
             sir0.WriteInt64(sir0.Length, Entries.Count);
             return sir0.Build();

@@ -49,21 +49,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         {
             var sir0 = new Sir0Builder(8);
 
-            void align(int length)
-            {
-                var paddingLength = length - (sir0.Length % length);
-                if (paddingLength != length)
-                {
-                    sir0.WritePadding(sir0.Length, paddingLength);
-                }
-            }
-
             var sortedEntries = Entries.ToImmutableSortedDictionary();
 
             // Write the strings
             foreach (var entry in sortedEntries.Values)
             {
-                align(8);
+                sir0.Align(8);
                 foreach (var evt in entry.DungeonEvents)
                 {
                     evt.NamePointer = sir0.Length;
@@ -72,21 +63,21 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
 
             // Write the events
-            align(8);
+            sir0.Align(8);
             foreach (var entry in sortedEntries.Values)
             {
                 entry.DungeonEventsPointer = sir0.Length;
                 foreach (var evt in entry.DungeonEvents)
                 {
                     sir0.WriteInt32(sir0.Length, evt.Floor);
-                    align(8);
+                    sir0.Align(8);
                     sir0.MarkPointer(sir0.Length);
                     sir0.WriteInt64(sir0.Length, evt.NamePointer);
                 }
             }
 
             // Write the entries
-            align(8);
+            sir0.Align(8);
             var entryListOffset = sir0.Length;
             foreach (var entry in sortedEntries.Values)
             {

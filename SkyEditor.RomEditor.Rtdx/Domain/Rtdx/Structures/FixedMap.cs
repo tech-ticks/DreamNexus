@@ -170,17 +170,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
 
                 var sir0 = new Sir0Builder(8);
-
-                void align(int length)
-                {
-                    // Everything must be aligned inside the entire file, not just the subentry SIR0
-                    var paddingLength = length - (sir0.Length % length);
-                    if (paddingLength != length)
-                    {
-                        sir0.WritePadding(sir0.Length, paddingLength);
-                    }
-                }
-
+                
                 int layoutPointer = sir0.Length;
                 foreach (var tile in Tiles)
                 {
@@ -190,7 +180,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     sir0.Write(sir0.Length, 0);
                 }
 
-                align(16);
+                sir0.Align(16);
 
                 int creaturesPointer = sir0.Length;
                 foreach (var creature in Creatures)
@@ -205,7 +195,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     sir0.Write(sir0.Length, creature.Byte07);
                 }
 
-                align(16);
+                sir0.Align(16);
                 int itemsPointer = sir0.Length;
                 foreach (var item in Items)
                 {
@@ -218,7 +208,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     sir0.Write(sir0.Length, item.Byte07);
                 }
 
-                align(16);
+                sir0.Align(16);
 
                 int subHeaderPointer = sir0.Length;
 
@@ -227,7 +217,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 sir0.WriteUInt16(sir0.Length, (ushort)Creatures.Count);
                 sir0.WriteUInt16(sir0.Length, (ushort)Items.Count);
 
-                align(16);
+                sir0.Align(16);
 
                 sir0.SubHeaderOffset = subHeaderPointer;
                 sir0.WritePointer(sir0.Length, layoutPointer);
