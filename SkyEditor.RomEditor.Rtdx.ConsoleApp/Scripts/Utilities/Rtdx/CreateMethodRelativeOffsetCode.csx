@@ -1,4 +1,4 @@
-#load "../../Stubs/Rtdx.csx"
+#load "../../../Stubs/Rtdx.csx"
 
 // This script helps create binary patches that are resilient against changes between versions by
 // generating code that uses offsets relative to the start of the current function. Call it with

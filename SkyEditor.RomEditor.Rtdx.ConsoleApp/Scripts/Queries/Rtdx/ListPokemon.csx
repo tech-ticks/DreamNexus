@@ -2,10 +2,12 @@
 
 using System;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 
 var pokemonInfo = Rom.GetPokemonDataInfo();
 var experience = Rom.GetExperience();
 var strings = Rom.GetCommonStrings();
+var evolutions = Rom.GetPokemonEvolution();
 
 // CSV header for base Pokémon data
 //Console.WriteLine("Pokedex Num,Pokemon Name,Pokemon Index,Type 1,Type 2,Ability 1,Ability 2,Hidden Ability,Base HP,Base Atk,Base Def,Base SpA,Base SpD,Base Spe");
@@ -151,4 +153,35 @@ foreach (var pokemon in pokemonInfo.Entries)
     }*/
 
     Console.WriteLine();
+
+    // Print evolutions
+    var evolutionData = evolutions.Entries[pokemon.Id];
+
+    if (evolutionData.Branches.Count > 0)
+    {
+        Console.WriteLine("  Evolution branches: ");
+        foreach (var branch in evolutionData.Branches)
+        {
+            Console.Write($"    {strings.Pokemon[branch.Evolution]}: ");
+            if (branch.RequiresItem)
+            {
+                Console.Write($"{branch.ItemsRequired}x {strings.Items[branch.EvolutionItem]} ");
+            }
+            if (branch.HasMinimumLevel)
+            {
+                Console.Write($"Level {branch.MinimumLevel}");
+            }
+            Console.WriteLine();
+        }
+    }
+
+    var (mega1, mega2) = evolutionData.MegaEvos;
+    if (mega1 != CreatureIndex.NONE)
+    {
+        Console.WriteLine($"  Mega evolution 1: {strings.Pokemon[mega1]} ({mega1})");
+    }
+    if (mega2 != CreatureIndex.NONE)
+    {
+        Console.WriteLine($"  Mega evolution 2: {strings.Pokemon[mega2]} ({mega2})");
+    }
 }

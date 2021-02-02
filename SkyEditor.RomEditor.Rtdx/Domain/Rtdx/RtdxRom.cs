@@ -109,6 +109,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         Sir0StringList GetEffectSymbol();
         ICodeTable GetCodeTable();
         IItemDataInfo GetItemDataInfo();
+        Camp GetCamps();
+        CampHabitat GetCampHabitat();
+        PokemonEvolution GetPokemonEvolution();
+        Rank GetRanks();
         #endregion
 
         #region Models
@@ -641,6 +645,51 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private IItemDataInfo? itemDataInfo;
         protected static string GetItemDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/item_data_info.bin");
+
+        public Camp GetCamps()
+        {
+            if (camps == null)
+            {
+                camps = new Camp(FileSystem.ReadAllBytes(GetCampPath(this.RomDirectory)));
+            }
+            return camps;
+        }
+        private Camp? camps;
+        protected static string GetCampPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/camp/camp.bin");
+
+        public CampHabitat GetCampHabitat()
+        {
+            if (campHabitat == null)
+            {
+                campHabitat = new CampHabitat(FileSystem.ReadAllBytes(GetCampHabitatPath(this.RomDirectory)));
+            }
+            return campHabitat;
+        }
+        private CampHabitat? campHabitat;
+        protected static string GetCampHabitatPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/camp/camp_habitat.bin");
+
+        public PokemonEvolution GetPokemonEvolution()
+        {
+            if (pokemonEvolution == null)
+            {
+                pokemonEvolution = new PokemonEvolution(FileSystem.ReadAllBytes(GetPokemonEvolutionPath(this.RomDirectory)));
+            }
+            return pokemonEvolution;
+        }
+        private PokemonEvolution? pokemonEvolution;
+        protected static string GetPokemonEvolutionPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/pokemon_evolution.bin");
+
+        public Rank GetRanks()
+        {
+            if (ranks == null)
+            {
+                ranks = new Rank(FileSystem.ReadAllBytes(GetRankPath(this.RomDirectory)));
+            }
+            return ranks;
+        }
+        private Rank? ranks;
+        protected static string GetRankPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/rank.bin");
+
         #endregion
 
         #region Models

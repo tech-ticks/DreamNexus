@@ -18,6 +18,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         Dictionary<DungeonStatusIndex, string> DungeonStatuses { get; }
         Dictionary<StatusIndex, string> Statuses { get; }
         Dictionary<PokemonType, string> PokemonTypes { get; }
+        Dictionary<CampIndex, string> Camps { get; }
+        Dictionary<RankIndex, string> Ranks { get; }
 
         /// <summary>
         /// Gets the name of a Pokemon by the internal Japanese name.
@@ -62,6 +64,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         string? GetPokemonTypeNameByInternalName(string internalName);
 
         string? GetPokemonTypeName(PokemonType pokemonTypeIndex);
+
+        string? GetCampNameByInternalName(string internalName);
+
+        string? GetCampName(CampIndex campIndex);
+
+        string? GetRankNameByInternalName(string internalName);
+
+        string? GetRankName(RankIndex rankIndex);
     }
 
     public class CommonStrings : ICommonStrings
@@ -210,6 +220,28 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 }
             }));
 
+            Camps = new Dictionary<CampIndex, string>();
+            tasks.Add(Task.Run(() =>
+            {
+                var camps = Enum.GetValues(typeof(CampIndex)).Cast<CampIndex>().ToArray();
+                foreach (CampIndex camp in camps)
+                {
+                    var name = GetCampNameByInternalName(camp.ToString("f"));
+                    Camps.Add(camp, name ?? "");
+                }
+            }));
+
+            Ranks = new Dictionary<RankIndex, string>();
+            tasks.Add(Task.Run(() =>
+            {
+                var ranks = Enum.GetValues(typeof(RankIndex)).Cast<RankIndex>().ToArray();
+                foreach (RankIndex rank in ranks)
+                {
+                    var name = GetRankNameByInternalName(rank.ToString("f"));
+                    Ranks.Add(rank, name ?? "");
+                }
+            }));
+
             Task.WhenAll(tasks).Wait();
         }
 
@@ -223,6 +255,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public Dictionary<DungeonStatusIndex, string> DungeonStatuses { get; }
         public Dictionary<StatusIndex, string> Statuses { get; }
         public Dictionary<PokemonType, string> PokemonTypes { get; }
+        public Dictionary<CampIndex, string> Camps { get; }
+        public Dictionary<RankIndex, string> Ranks { get; }
 
         /// <summary>
         /// Gets the name of a Pokemon by the internal Japanese name.
@@ -331,6 +365,28 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public string? GetPokemonTypeName(PokemonType pokemonType)
         {
             return GetPokemonTypeNameByInternalName(pokemonType.ToString("f"));
+        }
+
+        public string? GetCampNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("CAMP_NAME__CAMP_" + internalName.ToUpper());
+            return common.GetStringByHash(nameHash);
+        }
+
+        public string? GetCampName(CampIndex campIndex)
+        {
+            return GetCampNameByInternalName(campIndex.ToString("f"));
+        }
+
+        public string? GetRankNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault(internalName.ToUpper().Replace("RANK_POINT_RANK_", "RANK__POINT_RANK_"));
+            return common.GetStringByHash(nameHash);
+        }
+
+        public string? GetRankName(RankIndex rankIndex)
+        {
+            return GetRankNameByInternalName(rankIndex.ToString("f"));
         }
     }
 }
