@@ -197,7 +197,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 
         // Create the inspector manually instead of using Il2CppInspector.LoadFromStream to avoid
         // reading the ELF a second time.
-        var metadata = Metadata.FromStream(metadataStream);
+        var metadata = new Metadata(metadataStream);
         var binary = Il2CppBinary.Load(elfReader, metadata);
         var inspector = new Il2CppInspector.Il2CppInspector(binary, metadata);
 
@@ -236,25 +236,25 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
       return IlAppModel.Methods[overloadMethodInfo].MethodCodeAddress;
     }
 
-    private IFileFormatStream CreateAndInitElfReader(Stream binaryStream)
+    private IFileFormatReader CreateAndInitElfReader(Stream binaryStream)
     {
-      var elfReaderType = typeof(Il2CppInspector.Il2CppInspector).Assembly.GetType("Il2CppInspector.ElfReader64")!;
-      var elfReader = (IFileFormatStream) Activator.CreateInstance(elfReaderType, binaryStream)!;
-      elfReaderType.BaseType!.GetMethod("Init", BindingFlags.Instance | BindingFlags.NonPublic)!
+      var elfReaderType = typeof(Il2CppInspector.Il2CppInspector).Assembly.GetType("Il2CppInspector.ElfReader64");
+      var elfReader = (IFileFormatReader)Activator.CreateInstance(elfReaderType, binaryStream);
+      elfReaderType.BaseType.GetMethod("Init", BindingFlags.Instance | BindingFlags.NonPublic)
         .Invoke(elfReader, new object[] { });
       return elfReader;
     }
 
-    private void ReadSectionOffsets(IFileFormatStream elfReader)
+    private void ReadSectionOffsets(IFileFormatReader elfReader)
     {
-      var sectionByName = (IDictionary) elfReader.GetType().BaseType!.GetField("sectionByName", BindingFlags.Instance
-        | BindingFlags.NonPublic)!.GetValue(elfReader)!;
+      var sectionByName = (IDictionary)elfReader.GetType().BaseType.GetField("sectionByName", BindingFlags.Instance
+        | BindingFlags.NonPublic).GetValue(elfReader);
 
       sectionOffsets = new Dictionary<string, ulong>();
       foreach (DictionaryEntry sectionKeyValue in sectionByName)
       {
-        var value = sectionKeyValue.Value!;
-        ulong offset = (ulong) value.GetType().GetField("sh_offset")!.GetValue(value)!;
+        var value = sectionKeyValue.Value;
+        ulong offset = (ulong)value.GetType().GetField("sh_offset").GetValue(value);
         sectionOffsets.Add((string)sectionKeyValue.Key, offset);
       }
     }
