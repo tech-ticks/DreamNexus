@@ -17,7 +17,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         {
             var entryCount = checked((int)data.Length / sizeof(int));
             for (int i = 0; i < entryCount; i++)
+            {
                 Entries.Add((CreatureIndex)i, (CampIndex)data.ReadInt32(i * sizeof(int)));
+            }
+        }
+
+        public byte[] ToByteArray()
+        {
+            var data = new BinaryFile(new byte[Entries.Count * sizeof(int)]);
+            for (int i = 0; i < Entries.Count; i++)
+            {
+                data.WriteInt32(i * sizeof(int), (int)Entries[(CreatureIndex)i]);
+            }
+            return data.ReadArray();
         }
     }
 }

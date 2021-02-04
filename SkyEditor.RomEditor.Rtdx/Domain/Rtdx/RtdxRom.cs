@@ -940,6 +940,36 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, dungeonBgmSymbol.ToByteArray());
             }
+            if (dungeonSeSymbol != null)
+            {
+                var path = GetDungeonSeSymbolPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, dungeonSeSymbol.ToByteArray());
+            }
+            if (effectSymbol != null)
+            {
+                var path = GetEffectSymbolPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, effectSymbol.ToByteArray());
+            }
+            if (itemDataInfo != null)
+            {
+                var path = GetItemDataInfoPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, itemDataInfo.ToByteArray());
+            }
+            if (camps != null)
+            {
+                var path = GetCampPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, camps.ToByteArray());
+            }
+            if (campHabitat != null)
+            {
+                var path = GetCampHabitatPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, campHabitat.ToByteArray());
+            }
 
             foreach (var (relativePath, data) in filesToWrite)
             {
