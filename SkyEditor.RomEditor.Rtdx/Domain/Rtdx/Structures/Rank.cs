@@ -55,7 +55,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             sir0.WritePointer(sir0.Length, entriesOffset);
             sir0.WriteInt64(sir0.Length, Entries.Count);
 
-            return sir0.Build(paddingBeforeFooter: false);
+            return sir0.Build();
         }
 
         public byte[] ToByteArray() => ToSir0().Data.ReadArray();

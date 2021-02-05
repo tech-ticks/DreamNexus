@@ -172,12 +172,12 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             await this.WriteAsync(index, paddingLength, padding);
         }
 
-        public byte[] ToByteArray(bool paddingBeforeFooter = true)
+        public byte[] ToByteArray()
         {
             this.WriteString(0, Encoding.ASCII, Magic);
             this.WritePointer(8, SubHeaderOffset);
             var footerOffset = this.Length;
-            if (paddingBeforeFooter)
+            if (this.Length % 0x10 != 0)
             {
                 footerOffset += 0x10 - (this.Length % 0x10);
             }
@@ -189,9 +189,9 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             return newData;
         }
 
-        public Sir0 Build(bool paddingBeforeFooter = true)
+        public Sir0 Build()
         {            
-            return new Sir0(ToByteArray(paddingBeforeFooter));
+            return new Sir0(ToByteArray());
         }
 
         private void WriteFooter(int footerOffset)

@@ -166,7 +166,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     sir0.WritePointer(sir0.Length, pointer);
                 }
 
-                return sir0.Build(paddingBeforeFooter: false);
+                return sir0.Build();
             }
 
             public class ItemSet
