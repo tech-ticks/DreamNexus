@@ -10,6 +10,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
     {
         // Credit to AntyMew
         private const int EntrySize = 0x10;
+        private const int BranchEntrySize = 0x14;
 
         public IDictionary<CreatureIndex, Entry> Entries { get; } = new Dictionary<CreatureIndex, Entry>();
 
@@ -19,8 +20,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             var indexOffset = checked((int)sir0.SubHeader.ReadInt64(0));
             var entryCount = sir0.SubHeader.ReadInt32(8);
             for (int i = 0; i < entryCount; i++)
+            {
                 Entries.Add((CreatureIndex)i, new Entry(sir0, sir0.Data.Slice(indexOffset + i * EntrySize, EntrySize)));
+            }
         }
+
+        public byte[] ToByteArray() => throw new NotImplementedException();
 
         public class Entry
         {
@@ -29,11 +34,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public Entry(Sir0 sir0, IReadOnlyBinaryDataAccessor data)
             {
-                int branchOffset = checked((int)data.ReadInt64(0));
-                int branchCount = data.ReadInt32(8);
+                int branchOffset = checked((int)data.ReadInt64(0x0));
+                int branchCount = data.ReadInt32(0x8);
                 var branches = new List<PokemonEvolutionBranch>(branchCount);
                 for (int i = 0; i < branchCount; i++)
-                    branches.Add(new PokemonEvolutionBranch(sir0.Data.Slice(branchOffset + i * 0x14, 0x14)));
+                    branches.Add(new PokemonEvolutionBranch(sir0.Data.Slice(branchOffset + i * BranchEntrySize, BranchEntrySize)));
                 this.Branches = branches;
                 MegaEvos = (
                     (CreatureIndex)data.ReadInt16(0xC),

@@ -970,6 +970,18 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, campHabitat.ToByteArray());
             }
+            if (pokemonEvolution != null)
+            {
+                var path = GetPokemonEvolutionPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, pokemonEvolution.ToByteArray());
+            }
+            if (ranks != null)
+            {
+                var path = GetRankPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, ranks.ToByteArray());
+            }
 
             foreach (var (relativePath, data) in filesToWrite)
             {
