@@ -225,7 +225,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 sir0.WritePointer(sir0.Length, creaturesPointer);
                 sir0.WritePointer(sir0.Length, itemsPointer);
 
-                return sir0.Build(alignFooter: false); // There shouldn't be any padding before the footer
+                return sir0.Build(paddingBeforeFooter: false); // There shouldn't be any padding before the footer
             }
 
             public FixedMapTile GetTile(int x, int y)

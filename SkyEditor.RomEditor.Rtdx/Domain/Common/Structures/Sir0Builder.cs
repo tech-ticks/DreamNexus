@@ -172,29 +172,29 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             await this.WriteAsync(index, paddingLength, padding);
         }
 
-        public byte[] ToByteArray(bool alignFooter = true)
+        public byte[] ToByteArray(bool paddingBeforeFooter = true)
         {
             this.WriteString(0, Encoding.ASCII, Magic);
             this.WritePointer(8, SubHeaderOffset);
             var footerOffset = this.Length;
-            if (alignFooter)
+            if (paddingBeforeFooter)
             {
                 footerOffset += 0x10 - (this.Length % 0x10);
             }
             this.WritePointer(16, footerOffset);
-            WriteFooter(footerOffset, alignFooter);
+            WriteFooter(footerOffset);
 
             var newData = new byte[this.Length];
             Array.Copy(Data.ReadArray(), newData, this.Length);
             return newData;
         }
 
-        public Sir0 Build(bool alignFooter = true)
+        public Sir0 Build(bool paddingBeforeFooter = true)
         {            
-            return new Sir0(ToByteArray(alignFooter));
+            return new Sir0(ToByteArray(paddingBeforeFooter));
         }
 
-        private void WriteFooter(int footerOffset, bool alignFooter)
+        private void WriteFooter(int footerOffset)
         {
             long lastPointer = 0;
             PointerOffsets.Sort();
