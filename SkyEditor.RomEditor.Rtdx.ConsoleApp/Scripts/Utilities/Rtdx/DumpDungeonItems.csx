@@ -17,7 +17,7 @@ var itemDataInfo = Rom.GetItemDataInfo();
 (short[] validFloors, short[] invalidFloors) GetItemSetFloors(int itemSetIndex, IDungeonModel dungeon)
 {
   var allFloors =  dungeon.Balance.FloorInfos
-    .Where(floorInfo => floorInfo.Byte36 == itemSetIndex) // All floors with the item set index
+    .Where(floorInfo => floorInfo.ItemSetIndex == itemSetIndex) // All floors with the item set index
     .Select(floorInfo => floorInfo.Index);
 
   var validFloors = allFloors.Where(index => index > 0) // Floors 0 and -1 are invalid

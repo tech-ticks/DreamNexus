@@ -62,7 +62,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Index = index;
                 Short00 = MemoryMarshal.Read<ushort>(data.Slice(0x00, sizeof(ushort)));
                 Short02 = MemoryMarshal.Read<ushort>(data.Slice(0x02, sizeof(ushort)));
-                Short04 = MemoryMarshal.Read<ushort>(data.Slice(0x04, sizeof(ushort)));
+                Flags = (ItemFlags)MemoryMarshal.Read<ushort>(data.Slice(0x04, sizeof(ushort)));
                 BuyPrice = MemoryMarshal.Read<ushort>(data.Slice(0x06, sizeof(ushort)));
                 SellPrice = MemoryMarshal.Read<ushort>(data.Slice(0x08, sizeof(ushort)));
                 TaughtMove = (WazaIndex)MemoryMarshal.Read<ushort>(data.Slice(0x0A, sizeof(ushort)));
@@ -79,7 +79,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Byte1B = data[0x1B];
                 Byte1C = data[0x1C];
                 Byte1D = data[0x1D];
-                Byte1E = data[0x1E];
+                IconIndex = data[0x1E];
                 Byte1F = data[0x1F];
                 Byte20 = data[0x20];
                 Byte21 = data[0x21];
@@ -92,7 +92,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 data.WriteUInt16(0x00, Short00);
                 data.WriteUInt16(0x00, Short00);
                 data.WriteUInt16(0x02, Short02);
-                data.WriteUInt16(0x04, Short04);
+                data.WriteUInt16(0x04, (ushort)Flags);
                 data.WriteUInt16(0x06, BuyPrice);
                 data.WriteUInt16(0x08, SellPrice);
                 data.WriteUInt16(0x0A, (ushort)TaughtMove);
@@ -109,7 +109,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 data.Write(0x1B, Byte1B);
                 data.Write(0x1C, Byte1C);
                 data.Write(0x1D, Byte1D);
-                data.Write(0x1E, Byte1E);
+                data.Write(0x1E, IconIndex);
                 data.Write(0x1F, Byte1F);
                 data.Write(0x20, Byte20);
                 data.Write(0x21, Byte21);
@@ -120,7 +120,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public ItemIndex Index { get; }
             public ushort Short00 { get; set; }
             public ushort Short02 { get; set; }
-            public ushort Short04 { get; set; }
+            public ItemFlags Flags { get; set; }
             public ushort BuyPrice { get; set; }
             public ushort SellPrice { get; set; }
             public WazaIndex TaughtMove { get; set; }
@@ -137,7 +137,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte Byte1B { get; set; }
             public byte Byte1C { get; set; }
             public byte Byte1D { get; set; }
-            public byte Byte1E { get; set; }
+
+            // Some kind of index into the "icon" texture in sharedassets0.assets. Seems to generate a string that is 
+            // used as a prefix for the item name since invalid values result in a move name followed by the item name.
+            public byte IconIndex { get; set; }
             public byte Byte1F { get; set; }
             public byte Byte20 { get; set; }
             public byte Byte21 { get; set; }

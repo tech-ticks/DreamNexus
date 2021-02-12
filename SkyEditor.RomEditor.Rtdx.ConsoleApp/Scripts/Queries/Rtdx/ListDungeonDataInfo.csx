@@ -96,12 +96,19 @@ foreach (var dungeon in dungeons)
         + $"{data.Short08,3}    {data.Short0A,3}      {data.DungeonBalanceIndex,3}       {data.Byte13,3}    {data.Byte17,3}    {data.Byte18,3}    {data.Byte19,3}");
 
     // Print floor infos
-    Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"S02",5}  {"S24",5}  {"S26",5}  {"S28",5}  {"MapDat",6}  {"B2C",3}  "
-            + $"{"B2D",3}  {"B2E",3}  {"B2F",3}  {"B20",5}  {"B32",5}  {"B34",3}  {"B35",3}  {"B36",3}  ");
+    Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"Weather",-9} {"S02",5}  {"S24",5}  {"S26",5}  {"S28",5}  {"MapDat",6}  {"B2C",3}  "
+            + $"{"B2D",3}  {"B2E",3}  {"B2F",3}  {"B20",5}  {"B32",5}  {"B34",3}  {"B35",3}  {"ItemSet",7}  {"B35",5}  {"B56",3}  {"B57",3}  {"B58",3}");
     foreach (var info in floorInfos)
     {
+        string weather = info.Weather != DungeonStatusIndex.NONE ? strings.DungeonStatuses[info.Weather] : "(none)";
+        if (string.IsNullOrWhiteSpace(weather))
+        {
+            weather = $"(\"{info.Weather}\")";
+        }
+
         Console.WriteLine($"   {info.Index,5}  "
             + $"{info.InvitationIndex,5}  "
+            + $"{weather,-9} "
             + $"{info.Short02,5}  "
             + $"{info.Short24,5}  "
             + $"{info.Short26,5}  "
@@ -115,15 +122,19 @@ foreach (var dungeon in dungeons)
             + $"{info.Short32,5}  "
             + $"{info.Byte34,3}  "
             + $"{info.Byte35,3}  "
-            + $"{info.Byte36,3}  "
+            + $"{info.ItemSetIndex,7}  "
+            + $"{info.Byte55,3}  "
+            + $"{info.Byte56,3}  "
+            + $"{info.Byte57,3}  "
+            + $"{info.Byte58,3}  "
             + $"{string.Join(",", info.Bytes37to53)}  "
-            + $"{string.Join(",", info.Bytes55to61)}");
+            + $"{string.Join(",", info.Bytes5Ato61)}");
 
         // Print floor items
         /*Console.WriteLine($"   Floor {info.Index} items:");
         Console.Write("     ");
         int i = 0;
-        foreach (var itemWeight in items.ItemSets[info.Byte36].ItemWeights)
+        foreach (var itemWeight in items.ItemSets[info.ItemSetIndex].ItemWeights)
         {
             var itemName = strings.GetItemName(itemWeight.Index);
             if (string.IsNullOrEmpty(itemName))

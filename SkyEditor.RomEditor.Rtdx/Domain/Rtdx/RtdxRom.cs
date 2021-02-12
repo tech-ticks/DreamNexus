@@ -107,6 +107,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         Sir0StringList GetDungeonBgmSymbol();
         Sir0StringList GetDungeonSeSymbol();
         Sir0StringList GetEffectSymbol();
+        MapRandomGraphics GetMapRandomGraphics();
+        ItemGraphics GetItemGraphics();
         ICodeTable GetCodeTable();
         IItemDataInfo GetItemDataInfo();
         Camp GetCamps();
@@ -624,6 +626,28 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private Sir0StringList? effectSymbol;
         protected static string GetEffectSymbolPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/effect_symbol.bin");
 
+        public MapRandomGraphics GetMapRandomGraphics()
+        {
+            if (mapRandomGraphics == null)
+            {
+                mapRandomGraphics = new MapRandomGraphics(FileSystem.ReadAllBytes(GetMapRandomGraphicsPath(this.RomDirectory)));
+            }
+            return mapRandomGraphics;
+        }
+        private MapRandomGraphics? mapRandomGraphics;
+        protected static string GetMapRandomGraphicsPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/map_random_graphics.bin");
+
+        public ItemGraphics GetItemGraphics()
+        {
+            if (itemGraphics == null)
+            {
+                itemGraphics = new ItemGraphics(FileSystem.ReadAllBytes(GetItemGraphicsPath(this.RomDirectory)));
+            }
+            return itemGraphics;
+        }
+        private ItemGraphics? itemGraphics;
+        protected static string GetItemGraphicsPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/item_graphics.bin");
+
         public ICodeTable GetCodeTable()
         {
             if (codeTable == null)
@@ -951,6 +975,18 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 var path = GetEffectSymbolPath(directory);
                 EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, effectSymbol.ToByteArray());
+            }
+            if (mapRandomGraphics != null)
+            {
+                var path = GetMapRandomGraphicsPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, mapRandomGraphics.ToByteArray());
+            }
+            if (itemGraphics != null)
+            {
+                var path = GetItemGraphicsPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, itemGraphics.ToByteArray());
             }
             if (itemDataInfo != null)
             {

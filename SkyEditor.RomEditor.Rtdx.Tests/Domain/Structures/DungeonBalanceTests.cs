@@ -28,7 +28,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             d001.FloorInfos[0].Short32 = 0x32;
             d001.FloorInfos[0].Byte34 = 0x34;
             d001.FloorInfos[0].Byte35 = 0x35;
-            d001.FloorInfos[0].Byte36 = 0x36;
+            d001.FloorInfos[0].ItemSetIndex = 0x36;
             d001.FloorInfos[0].InvitationIndex = 0x54;
 
             d001.FloorInfos[1].Short02 = 0x202;
@@ -45,7 +45,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             d001.FloorInfos[1].Short32 = 0x232;
             d001.FloorInfos[1].Byte34 = 0x44;
             d001.FloorInfos[1].Byte35 = 0x45;
-            d001.FloorInfos[1].Byte36 = 0x46;
+            d001.FloorInfos[1].ItemSetIndex = 0x46;
             d001.FloorInfos[1].InvitationIndex = 0x64;
 
             d001.WildPokemon = new DungeonBalance.WildPokemonInfo();
@@ -115,7 +115,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             d002.FloorInfos[0].Short32 = 0x332;
             d002.FloorInfos[0].Byte34 = 0x54;
             d002.FloorInfos[0].Byte35 = 0x55;
-            d002.FloorInfos[0].Byte36 = 0x56;
+            d002.FloorInfos[0].ItemSetIndex = 0x56;
             d002.FloorInfos[0].InvitationIndex = 0x74;
 
             // Act
@@ -140,7 +140,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             rebuiltD001.FloorInfos[0].Short32.Should().Be(0x32);
             rebuiltD001.FloorInfos[0].Byte34.Should().Be(0x34);
             rebuiltD001.FloorInfos[0].Byte35.Should().Be(0x35);
-            rebuiltD001.FloorInfos[0].Byte36.Should().Be(0x36);
+            rebuiltD001.FloorInfos[0].ItemSetIndex.Should().Be(0x36);
             rebuiltD001.FloorInfos[0].InvitationIndex.Should().Be(0x54);
 
             rebuiltD001.WildPokemon.Should().NotBeNull();
@@ -222,7 +222,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             rebuiltD002.FloorInfos[0].Short32.Should().Be(0x332);
             rebuiltD002.FloorInfos[0].Byte34.Should().Be(0x54);
             rebuiltD002.FloorInfos[0].Byte35.Should().Be(0x55);
-            rebuiltD002.FloorInfos[0].Byte36.Should().Be(0x56);
+            rebuiltD002.FloorInfos[0].ItemSetIndex.Should().Be(0x56);
             rebuiltD002.FloorInfos[0].InvitationIndex.Should().Be(0x74);
         }
     }

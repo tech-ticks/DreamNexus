@@ -174,7 +174,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Index = index;
                 Event = "";
                 Bytes37to53 = new byte[0x53 - 0x37 + 1];
-                Bytes55to61 = new byte[0x61 - 0x55 + 1];
+                Bytes5Ato61 = new byte[0x61 - 0x5A + 1];
             }
 
             public FloorInfoEntry(IReadOnlyBinaryDataAccessor data)
@@ -194,10 +194,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Short32 = data.ReadInt16(0x32);
                 Byte34 = data.ReadByte(0x34);
                 Byte35 = data.ReadByte(0x35);
-                Byte36 = data.ReadByte(0x36);
+                ItemSetIndex = data.ReadByte(0x36);
                 InvitationIndex = data.ReadByte(0x54);
+                Byte55 = data.ReadByte(0x55);
+                Byte56 = data.ReadByte(0x56);
+                Byte57 = data.ReadByte(0x57);
+                Byte58 = data.ReadByte(0x58);
+                Weather = (DungeonStatusIndex) data.ReadByte(0x59);
                 Bytes37to53 = data.ReadArray(0x37, 0x53 - 0x37 + 1);
-                Bytes55to61 = data.ReadArray(0x55, 0x61 - 0x55 + 1);
+                Bytes5Ato61 = data.ReadArray(0x5A, 0x61 - 0x5A + 1);
             }
 
             public byte[] ToByteArray()
@@ -220,10 +225,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 accessor.WriteInt16(0x32, Short32);
                 accessor.Write(0x34, Byte34);
                 accessor.Write(0x35, Byte35);
-                accessor.Write(0x36, Byte36);
+                accessor.Write(0x36, ItemSetIndex);
                 accessor.Write(0x37, Bytes37to53);
                 accessor.Write(0x54, InvitationIndex);
-                accessor.Write(0x55, Bytes55to61);
+                accessor.Write(0x55, Byte55);
+                accessor.Write(0x56, Byte56);
+                accessor.Write(0x57, Byte57);
+                accessor.Write(0x58, Byte58);
+                accessor.Write(0x59, (byte) Weather);
+                accessor.Write(0x5A, Bytes5Ato61);
 
                 return data;
             }
@@ -243,10 +253,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public short Short32 { get; set; }
             public byte Byte34 { get; set; }
             public byte Byte35 { get; set; }
-            public byte Byte36 { get; set; } // Index into ItemArrange?
+
+            // An index into a ItemArrange subentry. What exactly this is used for is unknown.
+            // TODO: there has to be more to this (Kecleon shops, monster house items etc.)
+            public byte ItemSetIndex { get; set; }
             public byte InvitationIndex { get; set; }
+            public byte Byte55 { get; set; }
+            public byte Byte56 { get; set; }
+            public byte Byte57 { get; set; }
+            public byte Byte58 { get; set; }
+            public DungeonStatusIndex Weather { get; set; }
             public byte[] Bytes37to53 { get; set; }
-            public byte[] Bytes55to61 { get; set; }
+            public byte[] Bytes5Ato61 { get; set; }
+
         }
 
         public class WildPokemonInfo

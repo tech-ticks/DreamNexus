@@ -117,7 +117,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Constants
         /// <summary>
         /// 
         /// </summary>
-        RDM = 16,
+        RDM = 16, // Also rain? (used in Sky Tower)
 
         /// <summary>
         /// Heavy Rain
