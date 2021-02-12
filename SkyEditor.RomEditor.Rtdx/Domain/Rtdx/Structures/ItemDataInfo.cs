@@ -60,8 +60,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public Entry(ItemIndex index, Span<byte> data)
             {
                 Index = index;
-                Short00 = MemoryMarshal.Read<ushort>(data.Slice(0x00, sizeof(ushort)));
-                Short02 = MemoryMarshal.Read<ushort>(data.Slice(0x02, sizeof(ushort)));
+                ItemGraphicsKey = MemoryMarshal.Read<int>(data.Slice(0x00, sizeof(int)));
                 Flags = (ItemFlags)MemoryMarshal.Read<ushort>(data.Slice(0x04, sizeof(ushort)));
                 BuyPrice = MemoryMarshal.Read<ushort>(data.Slice(0x06, sizeof(ushort)));
                 SellPrice = MemoryMarshal.Read<ushort>(data.Slice(0x08, sizeof(ushort)));
@@ -89,9 +88,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public ReadOnlySpan<byte> ToBytes()
             {
                 IBinaryDataAccessor data = new BinaryFile(new byte[EntrySize]);
-                data.WriteUInt16(0x00, Short00);
-                data.WriteUInt16(0x00, Short00);
-                data.WriteUInt16(0x02, Short02);
+                data.WriteInt32(0x00, ItemGraphicsKey);
                 data.WriteUInt16(0x04, (ushort)Flags);
                 data.WriteUInt16(0x06, BuyPrice);
                 data.WriteUInt16(0x08, SellPrice);
@@ -118,8 +115,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
 
             public ItemIndex Index { get; }
-            public ushort Short00 { get; set; }
-            public ushort Short02 { get; set; }
+            public int ItemGraphicsKey { get; set; }
             public ItemFlags Flags { get; set; }
             public ushort BuyPrice { get; set; }
             public ushort SellPrice { get; set; }
@@ -144,6 +140,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte Byte1F { get; set; }
             public byte Byte20 { get; set; }
             public byte Byte21 { get; set; }
+
+            // Determines which large item image is displayed in the bag menu (item_image_[symbol].ab)
             public string Symbol { get; set; }
         }
     }

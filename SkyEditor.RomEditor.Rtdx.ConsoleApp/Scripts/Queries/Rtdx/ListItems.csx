@@ -11,10 +11,11 @@ public string FormatBits(ushort b)
 }
 
 var itemDataInfo = Rom.GetItemDataInfo().Entries;
+var itemGraphics = Rom.GetItemGraphics().Entries;
 var strings = Rom.GetCommonStrings();
 var i = 0;
 
-Console.WriteLine("#;Kind;Symbol;Name;Short00;Short02;Flags;Buy Price;Sell Price;TM Move;Short0C;Primary Action Index;Revive Action Index;Throw Action Index;Byte17;Byte18;Byte19;Byte1A;Byte1B;Byte1C;Byte1D;IconIndex;Byte1F;Byte20");
+Console.WriteLine("#;Kind;Symbol;Name;ItemGraphicsKey;Flags;Buy Price;Sell Price;TM Move;Short0C;Primary Action Index;Revive Action Index;Throw Action Index;Byte17;Byte18;Byte19;Byte1A;Byte1B;Byte1C;Byte1D;IconIndex;Byte1F;Byte20;ModelName");
 foreach (var item in itemDataInfo)
 {
     var itemName = strings.Items.ContainsKey((ItemIndex)i) ? strings.Items[(ItemIndex)i] : "(none)";
@@ -25,8 +26,7 @@ foreach (var item in itemDataInfo)
     Console.Write($"{item.ItemKind};");
     Console.Write($"{item.Symbol};");
     Console.Write($"{itemName};");
-    Console.Write($"{item.Short00};");
-    Console.Write($"{item.Short02};");
+    Console.Write($"{item.ItemGraphicsKey};");
     Console.Write($"{FormatBits((ushort) item.Flags)};");
     Console.Write($"{item.BuyPrice};");
     Console.Write($"{item.SellPrice};");
@@ -44,12 +44,15 @@ foreach (var item in itemDataInfo)
     Console.Write($"{item.Byte1D};");
     Console.Write($"{item.IconIndex};");
     Console.Write($"{item.Byte1F};");
-    Console.Write($"{item.Byte20}");
+    Console.Write($"{item.Byte20};");
+    if (itemGraphics.ContainsKey(item.ItemGraphicsKey))
+    {
+        Console.Write($"{itemGraphics[item.ItemGraphicsKey].ModelName}");
+    }
     Console.WriteLine();
     /*Console.Write($"{i,3}:");
     Console.Write($" {desc,-40} ");
-    Console.Write($" {item.Short00,5} ");
-    Console.Write($" {item.Short02,5} ");
+    Console.Write($" {item.ItemGraphicsKey,5} ");
     Console.Write($" {FormatBits(item.Short04)} ");
     Console.Write($" {item.BuyPrice,5} ");
     Console.Write($" {item.SellPrice,5} ");
