@@ -1969,11 +1969,11 @@ namespace SkyEditor.RomEditor.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Unknown effect 238.
+        ///   Looks up a localized string similar to Teleport all teammates to the user.
         /// </summary>
-        public static string Unknown238 {
+        public static string SurroundUser {
             get {
-                return ResourceManager.GetString("Unknown238", resourceCulture);
+                return ResourceManager.GetString("SurroundUser", resourceCulture);
             }
         }
         

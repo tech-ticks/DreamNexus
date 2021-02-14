@@ -600,8 +600,8 @@
   <data name="Unknown237" xml:space="preserve">
     <value>Unknown effect 237</value>
   </data>
-  <data name="Unknown238" xml:space="preserve">
-    <value>Unknown effect 238</value>
+  <data name="SurroundUser" xml:space="preserve">
+    <value>Teleport all teammates to the user</value>
   </data>
   <data name="ApplyStatusEffectWithChance2" xml:space="preserve">
     <value>Chance to apply status effect</value>

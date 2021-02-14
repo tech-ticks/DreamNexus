@@ -15,7 +15,7 @@ var itemGraphics = Rom.GetItemGraphics().Entries;
 var strings = Rom.GetCommonStrings();
 var i = 0;
 
-Console.WriteLine("#;Kind;Symbol;Name;ItemGraphicsKey;Flags;Buy Price;Sell Price;TM Move;Short0C;Primary Action Index;Revive Action Index;Throw Action Index;Byte17;Byte18;Byte19;Byte1A;Byte1B;Byte1C;Byte1D;IconIndex;Byte1F;Byte20;ModelName");
+Console.WriteLine("#;Kind;Symbol;Name;ItemGraphicsKey;Flags;Buy Price;Sell Price;TM Move;Short0C;Primary Action Index;Revive Action Index;Throw Action Index;Byte17;Byte18;CommandType;Byte1A;Byte1B;Byte1C;Byte1D;IconIndex;Byte1F;Byte20;ModelName");
 foreach (var item in itemDataInfo)
 {
     var itemName = strings.Items.ContainsKey((ItemIndex)i) ? strings.Items[(ItemIndex)i] : "(none)";
@@ -37,7 +37,7 @@ foreach (var item in itemDataInfo)
     Console.Write($"{item.ThrowActIndex};");
     Console.Write($"{item.Byte17};");
     Console.Write($"{item.Byte18};");
-    Console.Write($"{item.Byte19};");
+    Console.Write($"{item.CommandType};");
     Console.Write($"{item.Byte1A};");
     Console.Write($"{item.Byte1B};");
     Console.Write($"{item.Byte1C};");
@@ -64,7 +64,7 @@ foreach (var item in itemDataInfo)
     Console.Write($" {item.ThrowActIndex,5} ");
     Console.Write($" {item.Byte17,3} ");
     Console.Write($" {item.Byte18,3} ");
-    Console.Write($" {item.Byte19,3} ");
+    Console.Write($" {item.CommandType,3} ");
     Console.Write($" {item.Byte1A,3} ");
     Console.Write($" {item.Byte1B,3} ");
     Console.Write($" {item.Byte1C,3} ");

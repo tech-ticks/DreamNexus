@@ -93,7 +93,7 @@ foreach (var dungeon in dungeons)
         + $"{FormatFeature(data.Features, DungeonFeature.WildPokemonRecruitable),3}       "
         + $"{FormatFeatures(data.Features),-30} "
         + $"{FormatFeaturesBits(data.Features)}    "
-        + $"{data.Short08,3}    {data.Short0A,3}      {data.DungeonBalanceIndex,3}       {data.Byte13,3}    {data.Byte17,3}    {data.Byte18,3}    {data.Byte19,3}");
+        + $"{data.Short08,3}    {data.Short0A,3}      {data.DungeonBalanceIndex,3}       {data.Byte13,3}    {data.Byte17,3}    {data.Byte18,3}    {data.CommandType,3}");
 
     // Print floor infos
     Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"Weather",-9} {"S02",5}  {"S24",5}  {"S26",5}  {"S28",5}  {"MapDat",6}  {"B2C",3}  "

@@ -895,8 +895,11 @@
         // TODO: investigate -- used by Pounce Wand (237 81 237 238)
         Unknown237 = 237,
 
-        // TODO: investigate -- used by Switcher Wand and Pounce Wand
-        Unknown238 = 238,
+        // Teleport all teammates to the user
+        //   Params[1] = (integer) Unknown purpose, always zero
+        //   Params[2] = (integer) Unknown purpose, always zero
+        //   Params[3] = (integer) Unknown purpose, always zero
+        SurroundUser = 238,
 
         // TODO: investigate 239 -- used by dummied out item (action 890)
 

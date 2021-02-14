@@ -73,7 +73,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 ItemKind = (ItemKind)data[0x16];
                 Byte17 = data[0x17];
                 Byte18 = data[0x18];
-                Byte19 = data[0x19];
+                CommandType = (ItemCommandType)data[0x19];
                 Byte1A = data[0x1A];
                 Byte1B = data[0x1B];
                 Byte1C = data[0x1C];
@@ -101,7 +101,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 data.Write(0x16, (byte)ItemKind);
                 data.Write(0x17, Byte17);
                 data.Write(0x18, Byte18);
-                data.Write(0x19, Byte19);
+                data.Write(0x19, (byte)CommandType);
                 data.Write(0x1A, Byte1A);
                 data.Write(0x1B, Byte1B);
                 data.Write(0x1C, Byte1C);
@@ -128,7 +128,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public ItemKind ItemKind { get; set; }
             public byte Byte17 { get; set; }
             public byte Byte18 { get; set; }
-            public byte Byte19 { get; set; }
+            public ItemCommandType CommandType { get; set; }
             public byte Byte1A { get; set; }
             public byte Byte1B { get; set; }
             public byte Byte1C { get; set; }
