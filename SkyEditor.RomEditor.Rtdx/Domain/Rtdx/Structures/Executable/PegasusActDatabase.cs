@@ -99,8 +99,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 }
             }
 
-            file.WriteUInt32(file.Position, (uint) ActorDataList.Count);
-            foreach (var actorData in ActorDataList)
+            // The dummy entry at the beginning is usually ignored, but must be included here.
+            var actorList = ActorDataList.Prepend(new ActorData {
+                WarehouseId = PokemonFixedWarehouseId.NULL,
+                SymbolName = "",
+                DebugName = ""
+            }).ToList();
+
+            file.WriteUInt32(file.Position, (uint) actorList.Count);
+            foreach (var actorData in actorList)
             {
                 WriteFixedLengthString(actorData.SymbolName, 64);
                 WriteFixedLengthString(actorData.DebugName ?? "", 64);
