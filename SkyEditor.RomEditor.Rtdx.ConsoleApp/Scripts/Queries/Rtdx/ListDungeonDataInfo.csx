@@ -93,7 +93,7 @@ foreach (var dungeon in dungeons)
         + $"{FormatFeature(data.Features, DungeonFeature.WildPokemonRecruitable),3}       "
         + $"{FormatFeatures(data.Features),-30} "
         + $"{FormatFeaturesBits(data.Features)}    "
-        + $"{data.Short08,3}    {data.Short0A,3}      {data.DungeonBalanceIndex,3}       {data.Byte13,3}    {data.Byte17,3}    {data.Byte18,3}    {data.CommandType,3}");
+        + $"{data.Short08,3}    {data.Short0A,3}      {data.DungeonBalanceIndex,3}       {data.Byte13,3}    {data.Byte17,3}    {data.Byte18,3}    {data.Byte19,3}");
 
     // Print floor infos
     Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"Weather",-9} {"S02",5}  {"S24",5}  {"S26",5}  {"S28",5}  {"MapDat",6}  {"B2C",3}  "
@@ -181,7 +181,7 @@ foreach (var dungeon in dungeons)
     }*/
 
     // Print wild Pokemon
-   /*if (wildPokemon != null)
+   if (wildPokemon != null)
     {
         Console.WriteLine("      #   Pokemon         Lvl    HP   Atk   Def   SpA   SpD   Spe    XP Yield");
         Console.WriteLine("             Spawn  Recruit");
@@ -193,8 +193,7 @@ foreach (var dungeon in dungeons)
         {
             var index = stat.Index + 1;
             var name = GetPokemonName(stat.CreatureIndex);
-            if (stat.XPYield != 0 || stat.HitPoints != 0 || stat.Attack != 0 || stat.Defense != 0 ||
-                stat.SpecialAttack != 0 || stat.SpecialDefense != 0 || stat.Speed != 0 || stat.Level != 0)
+            if (true)
             {
                 var strongFoe = (stat.StrongFoe != 0) ? "Strong Foe" : "";
                 Console.WriteLine($"   {index,4}   "
@@ -219,7 +218,7 @@ foreach (var dungeon in dungeons)
                 }
             }
         }
-    }*/
+    }
 
     // Print trap weights
     if (trapWeights != null)

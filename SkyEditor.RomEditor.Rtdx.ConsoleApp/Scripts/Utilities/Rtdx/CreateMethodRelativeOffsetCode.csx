@@ -70,7 +70,7 @@ else
 }
 
 var closestMethod = transformedMethodData
-  .Where(m => m.Offset < offset)
+  .Where(m => m.Offset <= offset)
   .OrderByDescending(m => m.Offset)
   .First();
 

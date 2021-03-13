@@ -102,7 +102,7 @@ for (int i = 0; i < maps.Count; i++)
             {
                 Console.Write($"{fixedItem.Quantity}x ");
             }
-            Console.WriteLine($"{itemName}, {fixedItem.Short04}, {fixedItem.Byte06}");
+            Console.WriteLine($"{itemName}, {item.FixedItemIndex} {fixedItem.Short04}, {fixedItem.Byte06}");
         }
         else
         {

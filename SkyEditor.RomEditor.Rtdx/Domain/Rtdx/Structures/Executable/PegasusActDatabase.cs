@@ -1,6 +1,9 @@
-﻿using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+﻿using SkyEditor.IO.Binary;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System;
+using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 {
@@ -77,6 +80,39 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 BitConverter.GetBytes(instruction.RawInstruction).CopyTo(executable.Data,
                     (int) AbsolutePokemonIndexOffset(actorData));
             }
+        }
+
+        public void WriteToBinaryFile(string path)
+        {
+            using var file = new BinaryFile(new MemoryStream());
+
+            void WriteFixedLengthString(string str, int length)
+            {
+                int byteCount = Encoding.Unicode.GetByteCount(str);
+                if (byteCount + 1 > length)
+                {
+                    throw new Exception($"Input string '{str}' too long, must be shorter than {length}");
+                }
+                file!.WriteNullTerminatedString(file.Position, Encoding.Unicode, str);
+                for (int i = byteCount + 2; i < length; i++) {
+                    file.Write(file.Position, 0);
+                }
+            }
+
+            file.WriteUInt32(file.Position, (uint) ActorDataList.Count);
+            foreach (var actorData in ActorDataList)
+            {
+                WriteFixedLengthString(actorData.SymbolName, 64);
+                WriteFixedLengthString(actorData.DebugName ?? "", 64);
+                file.WriteUInt16(file.Position, (ushort) actorData.PokemonIndex);
+                file.WriteUInt16(file.Position, (ushort) actorData.FormType);
+                file.Write(file.Position, actorData.IsFemale ? (byte) 1 : (byte) 0);
+                file.Write(file.Position, (byte) actorData.PartyId);
+                file.WriteUInt16(file.Position, (ushort) actorData.WarehouseId);
+                file.WriteInt32(file.Position, (int) actorData.SpecialName);
+            }
+
+            File.WriteAllBytes(path, file.ReadArray());
         }
 
         private ulong AbsolutePokemonIndexOffset(ActorData actorData)
