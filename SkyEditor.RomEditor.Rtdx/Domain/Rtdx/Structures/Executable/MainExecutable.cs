@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.IO;
 using BindingFlags = System.Reflection.BindingFlags;
+using SkyEditor.IO.Binary;
 #if !NETSTANDARD2_0
 using Il2CppInspector;
 using Il2CppInspector.Reflection;
@@ -25,6 +26,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 
     byte[] ToElf();
     byte[] ToNso(INsoElfConverter? nsoElfConverter = null);
+
+    public void WriteStartersToBinaryFile(string path);
 
 #if !NETSTANDARD2_0
     public AppModel IlAppModel { get; }
@@ -124,6 +127,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
     {
       nsoElfConverter ??= NsoElfConverter.Instance;
       return nsoElfConverter.ConvertElfToNso(ToElf());
+    }
+
+    public void WriteStartersToBinaryFile(string path)
+    {
+      using var file = new BinaryFile(new MemoryStream());
+
+      foreach (var starter in StarterFixedPokemonMaps)
+      {
+        file.WriteInt32(file.Length, (int) starter.PokemonId);
+        file.WriteInt32(file.Length, (int) starter.FixedPokemonId);
+      }
+
+      File.WriteAllBytes(path, file.ReadArray());
     }
 
     public byte[] Data { get; set; }

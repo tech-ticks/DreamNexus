@@ -5,3 +5,4 @@ using SkyEditor.RomEditor.Domain.Rtdx;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable;
 
 Rom.GetMainExecutable().ActorDatabase.WriteToBinaryFile("actor_database.bin");
+Rom.GetMainExecutable().WriteStartersToBinaryFile("starters.bin");
