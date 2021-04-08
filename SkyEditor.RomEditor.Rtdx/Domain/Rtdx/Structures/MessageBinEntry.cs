@@ -121,8 +121,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
 
             sir0.SubHeaderOffset = sir0.Length;
-            sir0.WriteInt32(sir0.Length, Strings.Count);
-            sir0.WriteInt32(sir0.Length, Strings.Count);
+            sir0.WriteInt32(sir0.Length, allStringValues.Length);
+            sir0.WriteInt32(sir0.Length, allStringValues.Length);
 
             sir0.MarkPointer(sir0.Length);
             sir0.WriteInt64(sir0.Length, entriesOffset);
