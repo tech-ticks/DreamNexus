@@ -32,10 +32,10 @@ var itemDataInfo = Rom.GetItemDataInfo();
 void PrintItemSet(StringBuilder sb, int itemSetIndex, ItemArrange.Entry.ItemSet itemSet, IDungeonModel dungeon)
 {
   var (validFloors, invalidFloors) = GetItemSetFloors(itemSetIndex, dungeon);
-  if (validFloors.Length == 0 && invalidFloors.Length == 0) {
-    // Don't include unused item sets
-    return;
-  }
+  // if (validFloors.Length == 0 && invalidFloors.Length == 0) {
+  //   // Don't include unused item sets
+  //   return;
+  // }
 
   sb.AppendLine();
   sb.AppendLine($"Item set;{itemSetIndex}");
@@ -67,6 +67,25 @@ void PrintItemSet(StringBuilder sb, int itemSetIndex, ItemArrange.Entry.ItemSet 
     ushort groupWeight = itemSet.ItemKindWeights[(int) itemKind];
     float groupProbability = (float) groupWeight / itemKindWeightSum;
     float totalProbability = probabilityInGroup * groupProbability * 100f;
+
+    if (itemKind == ItemKind.SEED) {
+    if (itemSetIndex == 0) {
+    entry.Index = ItemIndex.SEED_PURE;
+    } else if (itemSetIndex == 1) {
+      entry.Index = ItemIndex.SEED_OREN;
+    } else if (itemSetIndex == 2) {
+      entry.Index = ItemIndex.SEED_FUKKATSU;
+    } else if (itemSetIndex == 3) {
+      entry.Index = ItemIndex.SEED_HEAL;
+    } else if (itemSetIndex == 4) {
+      entry.Index = ItemIndex.SEED_BLAST;
+    }
+    }
+    if (itemSetIndex > -1 && itemSetIndex < 5) {
+      for (int j = 0; j < itemSet.ItemKindWeights.Length; j++) {
+        itemSet.ItemKindWeights[j] = (ushort) (j == (int) ItemKind.SEED ? 500 : 0);
+      }
+    }
 
     if (totalProbability == 0f)
     {

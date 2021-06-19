@@ -53,7 +53,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             return file.ReadArray();
         }
 
-        [DebuggerDisplay("DungeonDataInfoEntry: {Index}|{Features}|{Short08}|{Short0A}|{SortKey}|{DungeonBalanceIndex}|{Byte13}|{MaxItems}|{MaxTeammates}|{Byte17}|{Byte18}|{Byte19}")]
+        [DebuggerDisplay("DungeonDataInfoEntry: {Index}|{Features}|{NameID}|{Short0A}|{SortKey}|{DungeonBalanceIndex}|{Byte13}|{MaxItems}|{MaxTeammates}|{Byte17}|{Byte18}|{Byte19}")]
         public class Entry
         {
             public Entry()
@@ -63,7 +63,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 Features = (Feature)data.ReadInt32(0x00);
                 Index = data.ReadInt32(0x04);
-                Short08 = data.ReadInt16(0x08);
+                NameID = data.ReadInt16(0x08);
                 Short0A = data.ReadInt16(0x0A);
                 SortKey = data.ReadInt32(0x0C);
                 DungeonBalanceIndex = data.ReadByte(0x12);
@@ -80,7 +80,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 data.WriteInt32(0x00, (int)Features);
                 data.WriteInt32(0x04, Index);
-                data.WriteInt16(0x08, Short08);
+                data.WriteInt16(0x08, NameID);
                 data.WriteInt16(0x0A, Short0A);
                 data.WriteInt32(0x0C, SortKey);
                 data.Write(0x12, DungeonBalanceIndex);
@@ -125,7 +125,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public Feature Features { get; set; }
             public int Index { get; set; }
-            public short Short08 { get; set; }
+            public short NameID { get; set; }
             public short Short0A { get; set; }
             public int SortKey { get; set; }
             public byte DungeonBalanceIndex { get; set; }

@@ -91,6 +91,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IExtraLargeMoves GetExtraLargeMoves();
 
         IStatusDataInfo GetStatusDataInfo();
+
+        RequestLevel GetRequestLevel();
         #endregion
 
         #region StreamingAssets/native_data
@@ -454,6 +456,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         private StatusDataInfo? statusDataInfo;
         protected static string GetStatusDataInfoPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/status_data_info.bin");
+
+        public RequestLevel GetRequestLevel()
+        {
+            if (requestLevel == null)
+            {
+                requestLevel = new RequestLevel(FileSystem.ReadAllBytes(GetRequestLevel(this.RomDirectory)));
+            }
+            return requestLevel;
+        }
+        private RequestLevel? requestLevel;
+        protected static string GetRequestLevel(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/dungeon/request_level.bin");
         #endregion
 
         #region StreamingAssets/native_data
@@ -939,6 +952,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 var path = GetDungeonExtraPath(directory);
                 EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, dungeonExtra.ToByteArray());
+            }
+            if (requestLevel != null)
+            {
+                var path = GetRequestLevel(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, requestLevel.ToByteArray());
             }
             if (pokemonFormDatabase != null)
             {

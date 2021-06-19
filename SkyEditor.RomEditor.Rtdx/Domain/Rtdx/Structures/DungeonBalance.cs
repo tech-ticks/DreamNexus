@@ -186,7 +186,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Short26 = data.ReadInt16(0x26);
                 Short28 = data.ReadInt16(0x28);
                 DungeonMapDataInfoIndex = data.ReadInt16(0x2A);
-                Byte2C = data.ReadByte(0x2C);
+                NameID = data.ReadByte(0x2C);
                 Byte2D = data.ReadByte(0x2D);
                 Byte2E = data.ReadByte(0x2E);
                 Byte2F = data.ReadByte(0x2F);
@@ -217,7 +217,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 accessor.WriteInt16(0x26, Short26);
                 accessor.WriteInt16(0x28, Short28);
                 accessor.WriteInt16(0x2A, DungeonMapDataInfoIndex);
-                accessor.Write(0x2C, Byte2C);
+                accessor.Write(0x2C, NameID);
                 accessor.Write(0x2D, Byte2D);
                 accessor.Write(0x2E, Byte2E);
                 accessor.Write(0x2F, Byte2F);
@@ -245,7 +245,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public short Short26 { get; set; }
             public short Short28 { get; set; } // Max money stack size?
             public short DungeonMapDataInfoIndex { get; set; }
-            public byte Byte2C { get; set; }
+
+            // Index of the hash in the list at 0x4BAADE0 in the v1.0.2 executable
+            // Might also be the list at 0x4BAAFEC, 0x4BAB1F8 or 0x4BAB404.
+            public byte NameID { get; set; }
             public byte Byte2D { get; set; }
             public byte Byte2E { get; set; }
             public byte Byte2F { get; set; }

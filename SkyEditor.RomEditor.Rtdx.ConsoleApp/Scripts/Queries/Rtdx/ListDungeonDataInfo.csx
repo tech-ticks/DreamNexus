@@ -65,7 +65,7 @@ public string FormatFeaturesBits(DungeonFeature features)
 // -----------------------------------------------
 
 //Console.WriteLine("#    Index   Dungeon                    Floors");
-Console.WriteLine("#    Index   Dungeon                    Floors   Teammates   Items   Level reset   Recruitable   Features                       210FEDCBA9876543210   0x08   0x0A   d_balance   0x13   0x17   0x18   0x19");
+Console.WriteLine("#    Index   Dungeon                    Floors   Teammates   Items   Level reset   Recruitable   Features                       210FEDCBA9876543210   NameID 0x0A   d_balance   0x13   0x17   0x18   0x19");
 foreach (var dungeon in dungeons)
 {
     if (dungeon.Id == default)
@@ -93,10 +93,10 @@ foreach (var dungeon in dungeons)
         + $"{FormatFeature(data.Features, DungeonFeature.WildPokemonRecruitable),3}       "
         + $"{FormatFeatures(data.Features),-30} "
         + $"{FormatFeaturesBits(data.Features)}    "
-        + $"{data.Short08,3}    {data.Short0A,3}      {data.DungeonBalanceIndex,3}       {data.Byte13,3}    {data.Byte17,3}    {data.Byte18,3}    {data.Byte19,3}");
+        + $"{data.NameID,3}    {data.Short0A,3}      {data.DungeonBalanceIndex,3}       {data.Byte13,3}    {data.Byte17,3}    {data.Byte18,3}    {data.Byte19,3}");
 
     // Print floor infos
-    Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"Weather",-9} {"S02",5}  {"S24",5}  {"S26",5}  {"S28",5}  {"MapDat",6}  {"B2C",3}  "
+    Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"Weather",-9} {"S02",5}  {"S24",5}  {"S26",5}  {"S28",5}  {"MapDat",6}  {"NameID",7}  "
             + $"{"B2D",3}  {"B2E",3}  {"B2F",3}  {"B20",5}  {"B32",5}  {"B34",3}  {"B35",3}  {"ItemSet",7}  {"B35",5}  {"B56",3}  {"B57",3}  {"B58",3}");
     foreach (var info in floorInfos)
     {
@@ -114,7 +114,7 @@ foreach (var dungeon in dungeons)
             + $"{info.Short26,5}  "
             + $"{info.Short28,5}  "
             + $"{info.DungeonMapDataInfoIndex,6}  "
-            + $"{info.Byte2C,3}  "
+            + $"{info.NameID,7}  "
             + $"{info.Byte2D,3}  "
             + $"{info.Byte2E,3}  "
             + $"{info.Byte2F,3}  "
@@ -181,7 +181,7 @@ foreach (var dungeon in dungeons)
     }*/
 
     // Print wild Pokemon
-   if (wildPokemon != null)
+    /*if (wildPokemon != null)
     {
         Console.WriteLine("      #   Pokemon         Lvl    HP   Atk   Def   SpA   SpD   Spe    XP Yield");
         Console.WriteLine("             Spawn  Recruit");
@@ -218,10 +218,10 @@ foreach (var dungeon in dungeons)
                 }
             }
         }
-    }
+    }*/
 
     // Print trap weights
-    if (trapWeights != null)
+    /*if (trapWeights != null)
     {
         var records = trapWeights.Records;
         int prevIndex = -1;
@@ -273,7 +273,7 @@ foreach (var dungeon in dungeons)
         if (prevIndex != -1 && prevIndex != len) {
             Console.WriteLine($"..{FormatFloor(dungeon, len)}: *");
         }
-    }
+    }*/
 
     // Print unknown (and mostly uninteresting) data from the fourth SIR0 file in dungeon_balance.bin
     /*if (data4 != null)
