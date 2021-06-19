@@ -38,7 +38,10 @@ namespace SkyEditor.RomEditor.ConsoleApp
             Console.WriteLine("LuaGen [Output.lua] - Creates a Lua change script to automate supported unsaved edits");
             Console.WriteLine("UnFARC <File.bin> <OutputDirectory> - Extracts a FARC archive file to the given directory");
             Console.WriteLine("ReFARC <InputDirectory> <File.bin> - Creates a new FARC archive file from files in the given directory");
-
+            Console.WriteLine();
+            Console.WriteLine("Additional options:");
+            Console.WriteLine("--enable-custom-files: Prefer custom file formats over editing the ROM's binary directly (experimental).");
+            Console.WriteLine("                       Download a build from https://github.com/tech-ticks/hyperbeam to use custom file formats.");
         }
 
         static async Task Main(string[] args)
@@ -111,6 +114,12 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     }
 
                     var rom = await RomLoader.LoadRom(libraryItem.FullPath, fileSystem) ?? throw new ArgumentException($"Unable to determine the type of ROM located at {arg}");
+                    
+                    if (rom is IRtdxRom rtdxRom)
+                    {
+                        rtdxRom.EnableCustomFiles = args.Contains("--enable-custom-files");
+                    }
+
                     context.Rom = rom;
                     context.RomPath = libraryItem.FullPath;
                     if (context.VerboseLogging) Console.WriteLine($"Loaded {arg}");

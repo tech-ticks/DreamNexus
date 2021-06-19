@@ -82,7 +82,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
             }
         }
 
-        public void WriteToBinaryFile(string path)
+        private ulong AbsolutePokemonIndexOffset(ActorData actorData)
+        {
+            return firstCreatureIdOffset + actorData.PokemonIndexOffset;
+        }
+
+#else
+        public void Write()
+        {
+            throw new Exception("Not supported on .NET Standard 2.0");
+        }
+#endif
+
+        public byte[] ToByteArray()
         {
             using var file = new BinaryFile(new MemoryStream());
 
@@ -119,20 +131,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 file.WriteInt32(file.Position, (int) actorData.SpecialName);
             }
 
-            File.WriteAllBytes(path, file.ReadArray());
+            return file.ReadArray();
         }
-
-        private ulong AbsolutePokemonIndexOffset(ActorData actorData)
-        {
-            return firstCreatureIdOffset + actorData.PokemonIndexOffset;
-        }
-
-#else
-        public void Write()
-        {
-            throw new Exception("Not supported on .NET Standard 2.0");
-        }
-#endif
 
     }
 }

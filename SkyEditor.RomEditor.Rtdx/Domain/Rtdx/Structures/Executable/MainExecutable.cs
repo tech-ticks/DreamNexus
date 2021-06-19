@@ -27,7 +27,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
     byte[] ToElf();
     byte[] ToNso(INsoElfConverter? nsoElfConverter = null);
 
-    public void WriteStartersToBinaryFile(string path);
+    byte[] StartersToByteArray();
 
 #if !NETSTANDARD2_0
     public AppModel IlAppModel { get; }
@@ -129,7 +129,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
       return nsoElfConverter.ConvertElfToNso(ToElf());
     }
 
-    public void WriteStartersToBinaryFile(string path)
+    public byte[] StartersToByteArray()
     {
       using var file = new BinaryFile(new MemoryStream());
 
@@ -138,8 +138,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
         file.WriteInt32(file.Length, (int) starter.PokemonId);
         file.WriteInt32(file.Length, (int) starter.FixedPokemonId);
       }
-
-      File.WriteAllBytes(path, file.ReadArray());
+      
+      return file.ReadArray();
     }
 
     public byte[] Data { get; set; }

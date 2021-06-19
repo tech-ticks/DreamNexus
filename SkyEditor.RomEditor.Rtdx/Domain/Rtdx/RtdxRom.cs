@@ -1,7 +1,6 @@
 ﻿using AssetStudio;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using SkyEditor.IO.Binary;
 using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Infrastructure.Automation.CSharp;
 using SkyEditor.RomEditor.Infrastructure.Automation.Lua;
@@ -24,6 +23,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
     public interface IRtdxRom : IModTarget, ISaveable, ISaveableToDirectory, ICSharpChangeScriptGenerator, ILuaChangeScriptGenerator
     {
         string RomDirectory { get; }
+        
+        /// <summary>
+        /// Whether custom files that can be used with code injection projects should be preferred over
+        /// directly editing the ROM's binary. This setting is experimental but required for some functionality.
+        /// You need to download a build from https://github.com/tech-ticks/hyperbeam to use these
+        /// custom file formats.
+        /// </summary>
+        bool EnableCustomFiles { get; set; }
 
         #region Exefs
         /// <summary>
@@ -152,6 +159,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         private readonly List<(string relativePath, byte[] data)> filesToWrite;
 
         public string RomDirectory { get; }
+        public bool EnableCustomFiles { get; set; }
         protected IFileSystem FileSystem { get; }
 
         protected IServiceProvider GetServiceProvider()
@@ -729,6 +737,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         #endregion
 
+        #region StreamingAssets/custom_data
+
+        protected static string GetStartersBinPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/custom_data/starters.bin");
+        protected static string GetActorDatabasePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/custom_data/actor_database.bin");
+
+        #endregion
+
         #region Models
         public IStarterCollection GetStarters()
         {
@@ -801,12 +816,27 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
 
             // Save the files themselves
-            if (mainExecutable != null)
+            if (EnableCustomFiles)
             {
+                // Write custom files. actor_database.bin must exist even if
+                // the actor database was not modified.
+                GetMainExecutable();
+                var startersPath = GetStartersBinPath(directory);
+                EnsureDirectoryExists(startersPath);
+                fileSystem.WriteAllBytes(startersPath, mainExecutable!.StartersToByteArray());
+
+                var actorDatabasePath = GetActorDatabasePath(directory);
+                EnsureDirectoryExists(actorDatabasePath);
+                fileSystem.WriteAllBytes(actorDatabasePath, mainExecutable.ActorDatabase.ToByteArray());
+            }
+            else if (mainExecutable != null)
+            {
+                // Edit the executable instead
                 var path = GetNsoPath(directory);
                 EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, mainExecutable.ToNso());
+                fileSystem.WriteAllBytes(path, mainExecutable!.ToNso());
             }
+
             if (natureDiagnosis != null)
             {
                 var path = GetNatureDiagnosisPath(directory);

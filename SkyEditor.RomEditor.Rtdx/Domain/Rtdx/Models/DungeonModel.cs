@@ -33,6 +33,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public DungeonBalance.Entry? Balance { get; set; }
         public ItemArrange.Entry? ItemArrange { get; set; }
         public RequestLevel.Entry? RequestLevel { get; set; }
-        public string DungeonName => commonStrings.Dungeons.ContainsKey(Id) ? commonStrings.Dungeons[Id] :  $"(Unknown: {Id})";
+        public string DungeonName => commonStrings.Dungeons.ContainsKey(Id) ? commonStrings.Dungeons[Id] : $"(Unknown: {Id})";
     }
 }
