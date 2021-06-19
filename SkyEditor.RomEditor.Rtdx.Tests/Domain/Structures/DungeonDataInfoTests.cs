@@ -18,7 +18,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             {
                 Features = 0,
                 Index = 2,
-                Short08 = 0x28,
+                NameID = 0x28,
                 Short0A = 0x2A,
                 SortKey = 2,
                 DungeonBalanceIndex = 1,
@@ -33,7 +33,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             {
                 Features = DungeonDataInfo.Entry.Feature.Radar | DungeonDataInfo.Entry.Feature.Scanning,
                 Index = 1,
-                Short08 = 0x08,
+                NameID = 0x08,
                 Short0A = 0x0A,
                 SortKey = 1,
                 DungeonBalanceIndex = 2,
@@ -56,7 +56,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             // Check modified entries
             rebuiltDb.Entries[DungeonIndex.D001].Features.Should().Be(DungeonDataInfo.Entry.Feature.Radar | DungeonDataInfo.Entry.Feature.Scanning);
             rebuiltDb.Entries[DungeonIndex.D001].Index.Should().Be(1);
-            rebuiltDb.Entries[DungeonIndex.D001].Short08.Should().Be(0x08);
+            rebuiltDb.Entries[DungeonIndex.D001].NameID.Should().Be(0x08);
             rebuiltDb.Entries[DungeonIndex.D001].Short0A.Should().Be(0x0A);
             rebuiltDb.Entries[DungeonIndex.D001].SortKey.Should().Be(1);
             rebuiltDb.Entries[DungeonIndex.D001].DungeonBalanceIndex.Should().Be(2);
@@ -69,7 +69,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
 
             rebuiltDb.Entries[DungeonIndex.D022].Features.Should().Be(0);
             rebuiltDb.Entries[DungeonIndex.D022].Index.Should().Be(2);
-            rebuiltDb.Entries[DungeonIndex.D022].Short08.Should().Be(0x28);
+            rebuiltDb.Entries[DungeonIndex.D022].NameID.Should().Be(0x28);
             rebuiltDb.Entries[DungeonIndex.D022].Short0A.Should().Be(0x2A);
             rebuiltDb.Entries[DungeonIndex.D022].SortKey.Should().Be(2);
             rebuiltDb.Entries[DungeonIndex.D022].DungeonBalanceIndex.Should().Be(1);
@@ -83,7 +83,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             // Check unmodified entries
             rebuiltDb.Entries[DungeonIndex.NONE].Features.Should().Be(0);
             rebuiltDb.Entries[DungeonIndex.NONE].Index.Should().Be(0);
-            rebuiltDb.Entries[DungeonIndex.NONE].Short08.Should().Be(0);
+            rebuiltDb.Entries[DungeonIndex.NONE].NameID.Should().Be(0);
             rebuiltDb.Entries[DungeonIndex.NONE].Short0A.Should().Be(0);
             rebuiltDb.Entries[DungeonIndex.NONE].SortKey.Should().Be(0);
             rebuiltDb.Entries[DungeonIndex.NONE].DungeonBalanceIndex.Should().Be(0);
@@ -96,7 +96,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
 
             rebuiltDb.Entries[DungeonIndex.D002].Features.Should().Be(0);
             rebuiltDb.Entries[DungeonIndex.D002].Index.Should().Be(0);
-            rebuiltDb.Entries[DungeonIndex.D002].Short08.Should().Be(0);
+            rebuiltDb.Entries[DungeonIndex.D002].NameID.Should().Be(0);
             rebuiltDb.Entries[DungeonIndex.D002].Short0A.Should().Be(0);
             rebuiltDb.Entries[DungeonIndex.D002].SortKey.Should().Be(0);
             rebuiltDb.Entries[DungeonIndex.D002].DungeonBalanceIndex.Should().Be(0);

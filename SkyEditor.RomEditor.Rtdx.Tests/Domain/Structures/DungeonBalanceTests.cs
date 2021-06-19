@@ -20,7 +20,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             d001.FloorInfos[0].Short26 = 0x26;
             d001.FloorInfos[0].Short28 = 0x28;
             d001.FloorInfos[0].DungeonMapDataInfoIndex = 0x2A;
-            d001.FloorInfos[0].Byte2C = 0x2C;
+            d001.FloorInfos[0].NameID = 0x2C;
             d001.FloorInfos[0].Byte2D = 0x2D;
             d001.FloorInfos[0].Byte2E = 0x2E;
             d001.FloorInfos[0].Byte2F = 0x2F;
@@ -37,7 +37,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             d001.FloorInfos[1].Short26 = 0x226;
             d001.FloorInfos[1].Short28 = 0x228;
             d001.FloorInfos[1].DungeonMapDataInfoIndex = 0x22A;
-            d001.FloorInfos[1].Byte2C = 0x3C;
+            d001.FloorInfos[1].NameID = 0x3C;
             d001.FloorInfos[1].Byte2D = 0x3D;
             d001.FloorInfos[1].Byte2E = 0x3E;
             d001.FloorInfos[1].Byte2F = 0x3F;
@@ -107,7 +107,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             d002.FloorInfos[0].Short26 = 0x326;
             d002.FloorInfos[0].Short28 = 0x328;
             d002.FloorInfos[0].DungeonMapDataInfoIndex = 0x32A;
-            d002.FloorInfos[0].Byte2C = 0x4C;
+            d002.FloorInfos[0].NameID = 0x4C;
             d002.FloorInfos[0].Byte2D = 0x4D;
             d002.FloorInfos[0].Byte2E = 0x4E;
             d002.FloorInfos[0].Byte2F = 0x4F;
@@ -132,7 +132,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             rebuiltD001.FloorInfos[0].Short26.Should().Be(0x26);
             rebuiltD001.FloorInfos[0].Short28.Should().Be(0x28);
             rebuiltD001.FloorInfos[0].DungeonMapDataInfoIndex.Should().Be(0x2A);
-            rebuiltD001.FloorInfos[0].Byte2C.Should().Be(0x2C);
+            rebuiltD001.FloorInfos[0].NameID.Should().Be(0x2C);
             rebuiltD001.FloorInfos[0].Byte2D.Should().Be(0x2D);
             rebuiltD001.FloorInfos[0].Byte2E.Should().Be(0x2E);
             rebuiltD001.FloorInfos[0].Byte2F.Should().Be(0x2F);
@@ -214,7 +214,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             rebuiltD002.FloorInfos[0].Short26.Should().Be(0x326);
             rebuiltD002.FloorInfos[0].Short28.Should().Be(0x328);
             rebuiltD002.FloorInfos[0].DungeonMapDataInfoIndex.Should().Be(0x32A);
-            rebuiltD002.FloorInfos[0].Byte2C.Should().Be(0x4C);
+            rebuiltD002.FloorInfos[0].NameID.Should().Be(0x4C);
             rebuiltD002.FloorInfos[0].Byte2D.Should().Be(0x4D);
             rebuiltD002.FloorInfos[0].Byte2E.Should().Be(0x4E);
             rebuiltD002.FloorInfos[0].Byte2F.Should().Be(0x4F);
