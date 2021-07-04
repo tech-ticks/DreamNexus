@@ -16,9 +16,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyEditor.RomEditor.Console
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssetStudio", "AssetStudio\AssetStudio.csproj", "{E1E955DC-F2DA-40A3-966B-176D7F700EB3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyEditor.RomEditor.Avalonia", "SkyEditor.RomEditor.Rtdx.Avalonia\SkyEditor.RomEditor.Avalonia.csproj", "{17CC49E7-15F2-4F3B-8A33-E0F41F7CFE45}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyEditor.RomEditor.Rtdx.Reverse", "SkyEditor.RomEditor.Rtdx.Reverse\SkyEditor.RomEditor.Rtdx.Reverse.csproj", "{FEA5D961-1213-4501-AA47-A76DC57824FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyEditor.UI", "SkyEditor.UI\SkyEditor.UI.csproj", "{624E7733-CB0A-4BC8-A03D-1E92B77E9114}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +50,10 @@ Global
 		{FEA5D961-1213-4501-AA47-A76DC57824FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEA5D961-1213-4501-AA47-A76DC57824FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEA5D961-1213-4501-AA47-A76DC57824FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{624E7733-CB0A-4BC8-A03D-1E92B77E9114}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{624E7733-CB0A-4BC8-A03D-1E92B77E9114}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{624E7733-CB0A-4BC8-A03D-1E92B77E9114}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{624E7733-CB0A-4BC8-A03D-1E92B77E9114}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

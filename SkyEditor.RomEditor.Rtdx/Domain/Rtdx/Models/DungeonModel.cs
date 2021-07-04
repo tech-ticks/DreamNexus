@@ -1,7 +1,6 @@
 ﻿using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Models
@@ -13,6 +12,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         DungeonExtra.Entry? Extra { get; }
         DungeonBalance.Entry? Balance { get; }
         ItemArrange.Entry? ItemArrange { get; }
+        RequestLevel.Entry? RequestLevel { get; }
         string DungeonName { get; }
     }
 

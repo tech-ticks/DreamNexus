@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 {
     public class ModpackMetadata
     {
+        public const string DefaultCodeInjectionRepository = "tech-ticks/hyperbeam";
+
         /// <summary>
         /// ID of the modpack. This should remain unchanged across versions, and is required to be unique across all modpacks.
         /// </summary>
@@ -40,5 +40,26 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         /// Mods within the modpack
         /// </summary>
         public List<ModMetadata>? Mods { get; set; }
+
+        /// <summary>
+        /// Whether to enable code injection and generate custom file formats for the mod.
+        /// This is only used in the GUI. On the CLI, pass the --enable-custom-files flag instead.
+        /// </summary>
+        public bool EnableCodeInjection { get; set; }
+
+        /// <summary>
+        /// The GitHub repository that should be used to download code injection binaries from
+        /// </summary>
+        public string? CodeInjectionRepository { get; set; } = DefaultCodeInjectionRepository;
+
+        /// <summary>
+        /// The version of the code injection binary
+        /// </summary>
+        public string? CodeInjectionVersion { get; set; }
+
+        /// <summary>
+        /// "debug" or "release"
+        /// </summary>
+        public string? CodeInjectionReleaseType { get; set; } = "debug";
     }
 }

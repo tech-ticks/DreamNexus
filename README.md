@@ -4,6 +4,11 @@ A work-in-progress ROM editor for Pokémon Mystery Dungeon: Rescue Team DX.
 
 To use this, you need a decrypted and extracted copy of the game. If your console has the update installed, you'll need the updated executable.
 
+## Licensing
+
+The UI project (`SkyEditor.UI`) is based on [SkyTemple](https://github.com/SkyTemple/skytemple) and licensed under GPLv3.
+All other all components including the core library and CLI are licensed under the MIT license.
+
 ## Building
 
 This is in the early stages of development, so you'll need to import the [skyeditor NuGet feed](https://dev.azure.com/project-pokemon/Sky%20Editor/_packaging?_a=feed&feed=skyeditor%40Local):
@@ -15,11 +20,9 @@ https://pkgs.dev.azure.com/project-pokemon/4a5da2d7-09b8-4354-9450-562116aac7b5/
 
 ### UI
 
-Run `SkyEditor.RomEditor.Rtdx.Avalonia.exe` or your platform-specific variant. 
-Alternatively run `SkyEditor.RomEditor.Rtdx.Avalonia.exe` if Avalonia supports your platform and no platform-specific option has been provided.
-
+Run `SkyEditor.UI.exe` or your platform-specific variant.
 The UI should be self-explanatory, and a tutorial is planned once more progress has been made. 
-In the mean time, feel free to open a [GitHub Issue](https://github.com/evandixon/SkyEditor.RomEditor.Rtdx/issues) if you have any questions.
+In the mean time, feel free to open a [GitHub Issue](https://github.com/tech-ticks/SkyEditor.RomEditor.Rtdx/issues) if you have any questions.
 
 ### Console App
 

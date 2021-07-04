@@ -1,0 +1,115 @@
+/*
+ * Copyright 2020 Parakoopa
+ *
+ * This file is part of SkyTemple.
+ *
+ * SkyTemple is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SkyTemple is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SkyTemple.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+* {
+  -GtkComboBox-appears-as-list: true;
+}
+
+#skytemple_main_label {
+  font-size: 2.5em;
+}
+.skytemple-view-main-label {
+  font-size: 1.5em;
+}
+
+.skytemple-dialog-large {
+  font-size: 1.25em;
+}
+
+.open_doc_tree:hover {
+  background-color: alpha(@theme_fg_color, 0.10);
+}
+
+.open_doc_tree:hover:selected {
+  background-color: @theme_selected_bg_color;
+}
+
+.no_bg, .no_bg text {
+ background: transparent;
+}
+
+.back_illust {
+  background-repeat: no-repeat;
+  background-size: auto 80%;
+  background-position: bottom left;
+}
+
+.back_illust.fixed_rooms {
+  background-image: url("data/back_illust/fixed_rooms.png");
+}
+
+.back_illust.dungeon_tileset {
+  background-image: url("data/back_illust/dungeon_tileset.png");
+}
+
+.back_illust.background {
+  background-image: url("data/back_illust/background.png");
+}
+
+.back_illust.misc_graphics {
+  background-image: url("data/back_illust/misc_graphics.png");
+}
+
+.back_illust.music {
+  background-image: url("data/back_illust/music.png");
+}
+
+.back_illust.script {
+  background-image: url("data/back_illust/script.png");
+}
+
+.back_illust.scenes {
+  background-image: url("data/back_illust/scenes.png");
+}
+
+.back_illust.rom {
+  background-image: url("data/back_illust/rom.png");
+}
+
+.back_illust.patch {
+  background-image: url("data/back_illust/patch.png");
+}
+
+.back_illust.text {
+  background-image: url("data/back_illust/text.png");
+}
+
+.back_illust.monsters {
+  background-image: url("data/back_illust/monsters.png");
+}
+
+.back_illust.items {
+  background-image: url("data/back_illust/items.png");
+}
+
+.back_illust.moves {
+  background-image: url("data/back_illust/moves.png");
+}
+
+.back_illust.dungeons {
+  background-image: url("data/back_illust/dungeons.png");
+}
+
+.back_illust.map {
+  background-image: url("data/back_illust/map.png");
+}
+
+.back_illust.bboard {
+ background-image: url("data/back_illust/bboard.png");
+}

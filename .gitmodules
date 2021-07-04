@@ -1,0 +1,3 @@
+[submodule "SkyEditor.UI/Assets/External/skytemple-icons"]
+	path = SkyEditor.UI/Assets/External/skytemple-icons
+	url = https://github.com/SkyTemple/skytemple-icons

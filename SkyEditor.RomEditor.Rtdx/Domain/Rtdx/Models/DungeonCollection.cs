@@ -1,5 +1,4 @@
 ﻿using SkyEditor.RomEditor.Domain.Rtdx.Constants;
-using SkyEditor.RomEditor.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +36,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             var dungeonExtra = rom.GetDungeonExtra();
             var dungeonBalance = rom.GetDungeonBalance();
             var itemArrange = rom.GetItemArrange();
+            var requestLevel = rom.GetRequestLevel();
 
             var dungeons = new List<DungeonModel>();
             foreach (var dungeon in dungeonData.Entries)
@@ -47,6 +47,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     Extra = dungeonExtra.Entries.GetValueOrDefault(dungeon.Key),
                     Balance = dungeonBalance.Entries[dungeon.Value.DungeonBalanceIndex],
                     ItemArrange = dungeon.Key > DungeonIndex.NONE ? itemArrange.Entries[((int) dungeon.Key) - 1] : null,
+                    RequestLevel = requestLevel.Entries.GetValueOrDefault(dungeon.Key),
                 });
             }
             dungeons.Sort((d1, d2) => d1.Data.SortKey.CompareTo(d2.Data.SortKey));

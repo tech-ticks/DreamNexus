@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <LangVersion>8</LangVersion>
+    <Nullable>enable</Nullable>
+    <NoWarn>0649</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="**\*.glade" />
+    <None Remove="**\*.css" />
+    <EmbeddedResource Include="**\*.glade">
+      <LogicalName>%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="**\*.css">
+      <LogicalName>%(Filename)%(Extension)</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SkyEditor.RomEditor.Rtdx\SkyEditor.RomEditor.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GtkSharp" Version="3.24.24.*" />
+    <PackageReference Include="SkyEditor.IO" Version="5.1.16" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.2 -->
+<interface>
+  <requires lib="gtk+" version="3.22"/>
+  <object class="GtkListStore" id="codeInjectionVersionsStore">
+    <columns>
+      <!-- column-name version -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">-</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkTextBuffer" id="descriptionBuffer">
+    <signal name="changed" handler="OnDescriptionChanged" swapped="no"/>
+  </object>
+  <object class="GtkBox" id="main">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="orientation">vertical</property>
+    <child>
+      <object class="GtkStack" id="stack">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="transition_duration">100</property>
+        <property name="transition_type">crossfade</property>
+        <child>
+          <object class="GtkAlignment" id="mainView">
+            <property name="name">mainView</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="xscale">0.80000001192092896</property>
+            <property name="yscale">0.80000001192092896</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pixel_size">124</property>
+                    <property name="icon_name">skytemple</property>
+                    <property name="icon_size">3</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="file_name">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_top">20</property>
+                    <property name="margin_bottom">20</property>
+                    <property name="label" translatable="yes">Modpack Settings</property>
+                    <style>
+                      <class name="skytemple-view-main-label"/>
+                    </style>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="valign">start</property>
+                    <property name="margin_start">5</property>
+                    <property name="margin_end">5</property>
+                    <property name="margin_top">5</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="row_spacing">5</property>
+                    <property name="column_spacing">8</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">The modpack ID must be unique across all modpacks
+and use the format: authorname.modpackname
+Only lowercase letters, digits and "." are allowed.</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">ID:</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Name:</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Version:</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Description:</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Author:</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="valign">end</property>
+                        <property name="label" translatable="yes">Metadata</property>
+                        <property name="justify">right</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="nameEntry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <signal name="changed" handler="OnNameChanged" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">2</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <object class="GtkTextView" id="descriptionEntry">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="buffer">descriptionBuffer</property>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">5</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="authorEntry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <signal name="changed" handler="OnAuthorChanged" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">3</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="versionEntry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <signal name="changed" handler="OnVersionChanged" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">4</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="idEntry">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="tooltip_text" translatable="yes">The modpack ID must be unique across all modpacks
+and use the format: authorname.modpackname
+Only lowercase letters, digits and "." are allowed.</property>
+                        <property name="hexpand">True</property>
+                        <signal name="focus-out-event" handler="OnIdFocusOut" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">1</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkGrid">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="valign">start</property>
+                    <property name="margin_left">5</property>
+                    <property name="margin_right">5</property>
+                    <property name="margin_start">5</property>
+                    <property name="margin_end">5</property>
+                    <property name="margin_top">10</property>
+                    <property name="margin_bottom">5</property>
+                    <property name="row_spacing">5</property>
+                    <property name="column_spacing">8</property>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Enable code injection:</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Code injection project version:</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="valign">end</property>
+                        <property name="label" translatable="yes">Code injection settings</property>
+                        <property name="justify">right</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">0</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBox" id="codeInjectionVersionsComboBox">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
+                        <property name="hexpand">False</property>
+                        <property name="model">codeInjectionVersionsStore</property>
+                        <child>
+                          <object class="GtkCellRendererText"/>
+                          <attributes>
+                            <attribute name="text">0</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="label" translatable="yes">Enable code injection to edit additional data like town NPCs, fixed teams and more (experimental). Code injection only works with game version 1.0.2. You can specify a version of the code injection project ("hyperbeam") in the dropdown below (please use an up-to-date version of SkyEditor.UI to ensure compatibility). Visit the &lt;a href="https://github.com/tech-ticks/hyperbeam/releases"&gt;releases page on GitHub&lt;/a&gt; for changelogs.</property>
+                        <property name="use_markup">True</property>
+                        <property name="wrap">True</property>
+                        <property name="width_chars">50</property>
+                        <property name="max_width_chars">150</property>
+                      </object>
+                      <packing>
+                        <property name="left_attach">0</property>
+                        <property name="top_attach">1</property>
+                        <property name="width">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="updateCodeInjectionButton">
+                        <property name="label" translatable="yes">Update code injection binaries</property>
+                        <property name="width_request">300</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="OnRedownloadInjectionBinariesClicked" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">4</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBoxText" id="releaseTypeComboBox">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">False</property>
+                        <property name="active">0</property>
+                        <property name="active_id">0</property>
+                        <items>
+                          <item id="0" translatable="yes">Debug</item>
+                          <item id="1" translatable="yes">Release</item>
+                        </items>
+                      </object>
+                      <packing>
+                        <property name="left_attach">2</property>
+                        <property name="top_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSwitch" id="enableCodeInjectionSwitch">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="halign">start</property>
+                        <signal name="state-set" handler="OnEnableCodeInjectionStateSet" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left_attach">1</property>
+                        <property name="top_attach">2</property>
+                        <property name="width">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">False</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="name">page0</property>
+            <property name="title" translatable="yes">page0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkAlignment" id="downloadingView">
+            <property name="name">downloadingView</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="valign">center</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">10</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Downloading code injection binaries...</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSpinner">
+                    <property name="height_request">30</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="active">True</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="name">page1</property>
+            <property name="title" translatable="yes">page1</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+    <style>
+      <class name="back_illust"/>
+      <class name="bboard"/>
+    </style>
+  </object>
+</interface>

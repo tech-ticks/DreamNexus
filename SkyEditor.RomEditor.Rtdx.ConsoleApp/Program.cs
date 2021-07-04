@@ -176,14 +176,15 @@ namespace SkyEditor.RomEditor.ConsoleApp
                 throw new InvalidOperationException("Mod argument must follow a ROM argument");
             }
 
-            using var modpack = new Modpack(modPath, context.FileSystem);
             if (context.Rom is IRtdxRom rtdx)
             {
+                using var modpack = new RtdxModpack(modPath, context.FileSystem);
                 await modpack.Apply<IRtdxRom>(rtdx);
             }
             else if (context.Rom is IPsmdRom psmd)
             {
-                await modpack.Apply<IPsmdRom>(psmd);
+                // TODO: re-introduce support
+                // await modpack.Apply<IPsmdRom>(psmd);
             }
             else
             {
@@ -335,7 +336,8 @@ namespace SkyEditor.RomEditor.ConsoleApp
                         enabled = false;
                     }
 
-                    var modpack = new Modpack(arg, context.FileSystem);
+                    // TODO: PSMD support
+                    var modpack = new RtdxModpack(arg, context.FileSystem);
                     foreach (var mod in modpack.Mods ?? Enumerable.Empty<Mod>())
                     {
                         builder.AddMod(mod, enabled);

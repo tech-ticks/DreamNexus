@@ -128,6 +128,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         #region Models
         IStarterCollection GetStarters();
+        void SetStarters(IStarterCollection collection);
+        bool StartersModified { get; }
 
         IDungeonCollection GetDungeons();
         #endregion
@@ -756,7 +758,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
             return starterCollection;
         }
-        private StarterCollection? starterCollection;
+        public void SetStarters(IStarterCollection collection)
+        {
+            this.starterCollection = collection;
+        }
+        public bool StartersModified => starterCollection != null;
+        private IStarterCollection? starterCollection;
 
         public IDungeonCollection GetDungeons()
         {
@@ -812,7 +819,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             // Save wrappers around files
             if (starterCollection != null)
             {
-                starterCollection.Flush();
+                starterCollection.Flush(this);
             }
 
             // Save the files themselves
@@ -1091,28 +1098,18 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             return Task.CompletedTask;
         }
 
+        [Obsolete]
         public string GenerateLuaChangeScript(int indentLevel = 0)
         {
-            var script = new StringBuilder();
-            script.Append(LuaSnippets.RequireSkyEditor);
-            script.AppendLine();
-            if (starterCollection != null)
-            {
-                script.Append(starterCollection.GenerateLuaChangeScript(indentLevel));
-            }
-            return script.ToString();
+            // TODO: remove
+            throw new InvalidOperationException("Change scripts are no longer supported");
         }
 
+        [Obsolete]
         public string GenerateCSharpChangeScript(int indentLevel = 0)
         {
-            var script = new StringBuilder();
-            script.Append(CSharpSnippets.RequireSkyEditor);
-            script.AppendLine();
-            if (starterCollection != null)
-            {
-                script.Append(starterCollection.GenerateCSharpChangeScript(indentLevel));
-            }
-            return script.ToString();
+            // TODO: remove
+            throw new InvalidOperationException("Change scripts are no longer supported");
         }
     }
 }

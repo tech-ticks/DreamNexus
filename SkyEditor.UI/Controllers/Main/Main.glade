@@ -1,0 +1,1539 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.2 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <object class="GtkTextBuffer" id="es_error_text_buffer"/>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-execute</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">network-transmit</property>
+  </object>
+  <object class="GtkAssistant" id="intro_dialog">
+    <property name="can_focus">False</property>
+    <property name="modal">True</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="skip_pager_hint">True</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="spacing">20</property>
+        <child>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixel_size">127</property>
+            <property name="icon_name">skytemple</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkLabel">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="halign">start</property>
+            <property name="label" translatable="yes">&lt;span size="large"&gt;Welcome to SkyTemple!&lt;/span&gt;
+
+With this tool you can edit various things in ROMs 
+of Pokémon Mystery Dungeon Rescue Team DX.
+
+Please note the following:
+- This is still very early software, please make backups of your
+  ROM. Things &lt;i&gt;will&lt;/i&gt; break.
+- Please report any issues.</property>
+            <property name="use_markup">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="page_type">intro</property>
+        <property name="complete">True</property>
+        <property name="has_padding">False</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="margin_top">10</property>
+        <property name="margin_bottom">10</property>
+        <property name="spacing">20</property>
+        <child>
+          <object class="GtkImage">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixel_size">127</property>
+            <property name="icon_name">skytemple</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">Can we add a "Created with SkyTemple" message
+ to the logos, that appear when starting the game?
+
+This message will be placed on Layer 2 of map
+background S05P01A. If you don't like it, you can
+easily remove it or customize it.
+
+If you want to do it later, or for another project, 
+you can reopen this dialog, using the menu on 
+the top-right of the main window.</property>
+                <property name="use_markup">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="intro_dialog_created_with">
+                <property name="label" translatable="yes">Add "Created with SkyTemple"</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">start</property>
+                <property name="margin_top">10</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="page_type">confirm</property>
+        <property name="complete">True</property>
+        <property name="has_padding">False</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkTreeStore" id="itemStore">
+    <columns>
+      <!-- column-name icon -->
+      <column type="gchararray"/>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name controller_class -->
+      <column type="GtkSharpValue"/>
+      <!-- column-name item_id -->
+      <column type="gint"/>
+      <!-- column-name modified -->
+      <column type="gboolean"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="recentModpacksStore">
+    <columns>
+      <!-- column-name displayName -->
+      <column type="gchararray"/>
+      <!-- column-name path -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkPopoverMenu" id="open_menu">
+    <property name="name">open_menu</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="margin_left">10</property>
+        <property name="margin_right">10</property>
+        <property name="margin_top">10</property>
+        <property name="margin_bottom">10</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkScrolledWindow" id="open_tree_sw">
+            <property name="width_request">230</property>
+            <property name="height_request">100</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkTreeView" id="open_tree">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="model">recentModpacksStore</property>
+                <property name="headers_visible">False</property>
+                <property name="enable_search">False</property>
+                <property name="show_expanders">False</property>
+                <property name="tooltip_column">1</property>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection">
+                    <signal name="changed" handler="OnRecentModpackSelectionChanged" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn">
+                    <property name="title" translatable="yes">column</property>
+                    <child>
+                      <object class="GtkCellRendererText"/>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <style>
+                  <class name="open_doc_tree"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">5</property>
+            <child>
+              <object class="GtkButton" id="createModpackTopButton">
+                <property name="label" translatable="yes">New Modpack...</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="margin_top">10</property>
+                <signal name="clicked" handler="OnCreateModpackClicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="open_more">
+                <property name="label" translatable="yes">Open Modpack...</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="margin_top">10</property>
+                <signal name="clicked" handler="OnOpenModpackClicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="submenu">main</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkPopoverMenu" id="settings_menu">
+    <property name="name">test_menu</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkModelButton" id="settings_open_settings">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="text" translatable="yes">Settings</property>
+            <signal name="clicked" handler="OnOpenSettingsClicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkModelButton" id="settings_dir">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="text" translatable="yes">Open configuration directory</property>
+            <signal name="clicked" handler="OnOpenSettingsDirectoryClicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkModelButton" id="settings_modpack_dir">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="text" translatable="yes">Open modpack directory in file browser</property>
+            <signal name="clicked" handler="OnOpenModpackDirectoryClicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkModelButton" id="settings_modpack_vscode">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="text" translatable="yes">Open modpack in VS Code</property>
+            <signal name="clicked" handler="OnOpenModpackInVSCodeClicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkModelButton" id="settings_about">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="text" translatable="yes">About</property>
+            <signal name="clicked" handler="OnOpenAboutDialogClicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">4</property>
+          </packing>
+        </child>
+      </object>
+      <packing>
+        <property name="submenu">submenu0</property>
+        <property name="position">1</property>
+      </packing>
+    </child>
+  </object>
+  <object class="GtkWindow" id="main_window">
+    <property name="can_focus">False</property>
+    <property name="icon_name">skytemple</property>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="title" translatable="yes">SkyEditor.UI</property>
+        <property name="show_close_button">True</property>
+        <child>
+          <object class="GtkMenuButton" id="open_button">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="popover">open_menu</property>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="margin_right">4</property>
+                    <property name="label" translatable="yes">Open</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="icon_name">pan-down-symbolic</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkMenuButton" id="settings_button">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="popover">settings_menu</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">open-menu-symbolic</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="saveButton">
+            <property name="label">gtk-save</property>
+            <property name="visible">True</property>
+            <property name="sensitive">False</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Save Project</property>
+            <property name="use_stock">True</property>
+            <signal name="clicked" handler="OnSaveClicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="deployButton">
+            <property name="visible">True</property>
+            <property name="sensitive">False</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Build and send ROM files to a Switch console</property>
+            <property name="image">image2</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="OnDeployClicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="buildButton">
+            <property name="visible">True</property>
+            <property name="sensitive">False</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Build ROM files to a directory</property>
+            <property name="image">image1</property>
+            <property name="always_show_image">True</property>
+            <signal name="clicked" handler="OnBuildClicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="main_box">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkPaned" id="main_paned">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="wide_handle">True</property>
+            <child>
+              <object class="GtkPaned" id="left_pane">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkBox" id="item_main">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <object class="GtkSearchEntry" id="mainItemListSearch">
+                        <property name="visible">True</property>
+                        <property name="sensitive">False</property>
+                        <property name="can_focus">True</property>
+                        <property name="primary_icon_name">skytemple-edit-find-symbolic</property>
+                        <property name="primary_icon_activatable">False</property>
+                        <property name="primary_icon_sensitive">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScrolledWindow">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="hscrollbar_policy">never</property>
+                        <property name="shadow_type">in</property>
+                        <child>
+                          <object class="GtkTreeView" id="mainItemList">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="model">itemStore</property>
+                            <property name="headers_visible">False</property>
+                            <property name="rules_hint">True</property>
+                            <property name="search_column">1</property>
+                            <property name="enable_tree_lines">True</property>
+                            <signal name="button-press-event" handler="OnMainItemListButtonPressed" swapped="no"/>
+                            <child internal-child="selection">
+                              <object class="GtkTreeSelection"/>
+                            </child>
+                          </object>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="resize">True</property>
+                    <property name="shrink">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="todo">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="resize">False</property>
+                    <property name="shrink">False</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="resize">False</property>
+                <property name="shrink">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox" id="right_pane">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <child>
+                  <object class="GtkStack" id="editorStack">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkBox" id="es_welcome">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_top">64</property>
+                            <property name="pixel_size">127</property>
+                            <property name="icon_name">skytemple</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="skytemple_main_label">
+                            <property name="name">skytemple_main_label</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_bottom">16</property>
+                            <property name="label" translatable="yes">SkyEditor.UI</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox" id="updateInfo">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">center</property>
+                            <property name="margin_bottom">5</property>
+                            <property name="spacing">5</property>
+                            <child>
+                              <object class="GtkImage">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="icon_name">skytemple-dialog-error-symbolic</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">A new version of SkyEditor.UI is available: </property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkLabel" id="update_new_version">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label">XXX</property>
+                                <attributes>
+                                  <attribute name="weight" value="bold"/>
+                                </attributes>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">2</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="update_button">
+                                <property name="label" translatable="yes">Update now!</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">3</property>
+                              </packing>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkAlignment" id="recent_file_main_alignment">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="xscale">0.30000001192092896</property>
+                            <child>
+                              <object class="GtkBox">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <object class="GtkLabel" id="recent_files_main_label">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="margin_bottom">5</property>
+                                    <property name="label" translatable="yes">Recent Modpacks:</property>
+                                    <attributes>
+                                      <attribute name="weight" value="bold"/>
+                                    </attributes>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkScrolledWindow" id="open_tree_main_sw">
+                                    <property name="width_request">350</property>
+                                    <property name="height_request">70</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="shadow_type">in</property>
+                                    <child>
+                                      <object class="GtkTreeView" id="recentModpacksList">
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="model">recentModpacksStore</property>
+                                        <property name="headers_visible">False</property>
+                                        <property name="enable_search">False</property>
+                                        <property name="show_expanders">False</property>
+                                        <property name="tooltip_column">1</property>
+                                        <child internal-child="selection">
+                                          <object class="GtkTreeSelection" id="recentModpackSelection">
+                                            <signal name="changed" handler="OnRecentModpackSelectionChanged" swapped="no"/>
+                                          </object>
+                                        </child>
+                                        <child>
+                                          <object class="GtkTreeViewColumn">
+                                            <property name="title" translatable="yes">column</property>
+                                            <child>
+                                              <object class="GtkCellRendererText"/>
+                                              <attributes>
+                                                <attribute name="text">0</attribute>
+                                              </attributes>
+                                            </child>
+                                          </object>
+                                        </child>
+                                        <style>
+                                          <class name="open_doc_tree"/>
+                                        </style>
+                                      </object>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkBox">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="spacing">5</property>
+                                    <child>
+                                      <object class="GtkButton" id="createModpackButton">
+                                        <property name="label" translatable="yes">New Modpack...</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="margin_top">5</property>
+                                        <signal name="clicked" handler="OnCreateModpackClicked" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">True</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkButton" id="openModpackButton">
+                                        <property name="label" translatable="yes">Open Modpack...</property>
+                                        <property name="visible">True</property>
+                                        <property name="can_focus">True</property>
+                                        <property name="receives_default">True</property>
+                                        <property name="margin_top">5</property>
+                                        <signal name="clicked" handler="OnOpenModpackClicked" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="expand">True</property>
+                                        <property name="fill">True</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">2</property>
+                                  </packing>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEventBox" id="banner_info">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">center</property>
+                            <property name="margin_top">20</property>
+                            <property name="margin_bottom">20</property>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">5</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="name">page0</property>
+                        <property name="title" translatable="yes">page0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="esLoading">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkSpinner">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_top">150</property>
+                            <property name="active">True</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="name">page1</property>
+                        <property name="title" translatable="yes">page1</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox" id="es_error">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkImage">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="margin_top">64</property>
+                            <property name="pixel_size">110</property>
+                            <property name="icon_name">skytemple-dialog-error-symbolic</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">Oops!</property>
+                            <style>
+                              <class name="skytemple-view-main-label"/>
+                            </style>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="label" translatable="yes">An error happened while trying to load this view. Sorry!</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkAlignment">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="xscale">0.80000001192092896</property>
+                            <child>
+                              <object class="GtkScrolledWindow" id="es_error_text_sw">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="margin_top">20</property>
+                                <property name="margin_bottom">20</property>
+                                <property name="shadow_type">in</property>
+                                <child>
+                                  <object class="GtkTextView">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="editable">False</property>
+                                    <property name="buffer">es_error_text_buffer</property>
+                                    <property name="monospace">True</property>
+                                  </object>
+                                </child>
+                              </object>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">3</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="name">page2</property>
+                        <property name="title" translatable="yes">page2</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="resize">True</property>
+                <property name="shrink">False</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAboutDialog" id="aboutDialog">
+    <property name="name">SkyTemple</property>
+    <property name="can_focus">False</property>
+    <property name="modal">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="transient_for">main_window</property>
+    <property name="attached_to">main_window</property>
+    <property name="program_name">SkyEditor.UI</property>
+    <property name="comments" translatable="yes">Application to edit the ROM of Pokémon Mystery Dungeon Rescue Team DX.</property>
+    <property name="website">https://github.com/tech-ticks/SkyEditor.RomEditor.Rtdx</property>
+    <property name="website_label" translatable="yes">https://github.com/tech-ticks/SkyEditor.RomEditor.Rtdx
+</property>
+    <property name="authors">SkyEditor.UI Developers:
+evandixon https://github.com/evandixon
+StrikerX3 https://github.com/StrikerX3
+techticks https://github.com/tech-ticks
+
+SkyTemple Project Lead:
+Marco "Parakoopa" Köpcke http://github.com/parakoopa
+
+Rescue Team DX Researchers:
+AntyMew https://github.com/AntyMew
+Blue587 https://projectpokemon.org/home/profile/57019-blue587/
+
+SkyTemple Contributors:
+irdkwia https://github.com/irdkwia
+Audino (Sprites) https://github.com/audinowho
+Aikku93 (via tilequant) http://github.com/aikku93
+marius851000 (via skytemple-rust) http://github.com/marius851000
+
+EoS Lead Hackers:
+psy_commando http://github.com/psyCommando
+End45 http://github.com/End45
+
+EoS Hackers:
+evandixon http://github.com/evandixon
+MegaMinerd
+Nerketur
+UsernameFodder http://reddit.com/u/UsernameFodder
+
+EoS Documentation:
+frostibirb
+MaxSchersey
+
+SkyTemple Testing:
+DiST (MAN-K)
+Jester
+KingPriceman
+Maestroke
+MandL27
+NeroIntruder
+Scyrous
+yakkomon
+
+Artwork:
+Charburst (Logo and Illustrations) https://twitter.com/Charburst_
+Aviivix (UI Icons) https://twitter.com/aviivix
+Edael (Duskako Sprites) https://twitter.com/Exodus_Drake
+DasK (Poochyena Portraits) https://www.reddit.com/user/thedask
+
+Special Thanks:
+Audino https://github.com/audinowho
+Fireally https://www.youtube.com/channel/UCslMDS9pAH-ay6qqKlyyJzw
+Soniclink137
+DasK https://www.reddit.com/user/thedask
+Apuapua
+TheGoldCrow https://www.youtube.com/thegoldcrow
+DrGlutamate
+ケLV https://clv.carrd.co
+Quilavabom
+MrStrouder</property>
+    <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
+    <property name="logo_icon_name">skytemple</property>
+    <property name="license_type">gpl-3-0</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkDialog" id="loadingDialog">
+    <property name="can_focus">False</property>
+    <property name="resizable">False</property>
+    <property name="modal">True</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="type_hint">dialog</property>
+    <property name="skip_taskbar_hint">True</property>
+    <property name="deletable">False</property>
+    <property name="transient_for">main_window</property>
+    <property name="attached_to">main_window</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_left">15</property>
+            <property name="margin_right">15</property>
+            <property name="margin_top">15</property>
+            <property name="margin_bottom">15</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkLabel" id="openFileDialogLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Loading ROM "NAME"...</property>
+                <style>
+                  <class name="skytemple-dialog-large"/>
+                </style>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinner">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="margin_top">15</property>
+                <property name="active">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkDialog" id="suppot_us_dialog">
+    <property name="can_focus">False</property>
+    <property name="type_hint">dialog</property>
+    <child type="titlebar">
+      <placeholder/>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="button4">
+                <property name="label">gtk-close</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="margin_start">10</property>
+            <property name="margin_end">10</property>
+            <property name="margin_top">10</property>
+            <property name="margin_bottom">10</property>
+            <property name="orientation">vertical</property>
+            <property name="spacing">30</property>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="halign">start</property>
+                <property name="label" translatable="yes">You want to support SkyTemple and PMD2 ROM hacking?
+Thank you! You can support us...</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">5</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">... by testing new features!</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Join our Discord server and become a "Beta Tester", to get
+access to new features. Your feedback will directly help
+to improve SkyTemple and you can also suggest new features!</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEventBox" id="suppot_us_discord_container">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">5</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">... by joining development or reverse engineering the game!</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">We are always looking for people to help develop SkyTemple
+or who help hacking the game. If you are interested in reverse
+engineering or implementing new features for SkyTemple,
+you can find the project on Github! 
+You can also join the Discord server if you have any questions.</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkEventBox" id="suppot_us_github_container">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">5</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">... by helping to translate SkyTemple!</property>
+                    <attributes>
+                      <attribute name="weight" value="bold"/>
+                    </attributes>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">Do you want to help translating SkyTemple to your native
+language? Join our Discord for more information.</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">vertical</property>
+                <property name="spacing">5</property>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkImage">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="margin_end">10</property>
+                        <property name="icon_name">skytemple-support-symbolic</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="halign">start</property>
+                        <property name="label" translatable="yes">... by buying us a coffee!</property>
+                        <attributes>
+                          <attribute name="weight" value="bold"/>
+                        </attributes>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">True</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="halign">start</property>
+                    <property name="label" translatable="yes">If you like SkyTemple or other PMD2 hacking tools, you can
+support us with a small donation.</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="spacing">5</property>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">5</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Parakoopa</property>
+                            <attributes>
+                              <attribute name="weight" value="bold"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="height_request">65</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Developer of SkyTemple and 
+creator of ExplorerScript.
+</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">5</property>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">psy_commando</property>
+                            <attributes>
+                              <attribute name="weight" value="bold"/>
+                            </attributes>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel">
+                            <property name="height_request">65</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="halign">start</property>
+                            <property name="label" translatable="yes">Figured out most things about 
+how this game works!
+Developer of ppmdu.</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">True</property>
+                        <property name="fill">True</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">4</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="-7">button4</action-widget>
+    </action-widgets>
+  </object>
+</interface>

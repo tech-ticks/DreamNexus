@@ -95,6 +95,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
         }
 
+        public void SetString(int hash, string value)
+        {
+            if (Strings.ContainsKey(hash))
+            {
+                Strings[hash].First().Value = value;
+            }
+        }
+
         public Sir0 ToSir0()
         {
             var sir0 = new Sir0Builder(8);
