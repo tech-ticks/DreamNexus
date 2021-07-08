@@ -360,7 +360,7 @@ Please don't enter a password you use elsewhere since it's stored in clear text.
                             <property name="can_focus">False</property>
                             <property name="hexpand">True</property>
                             <items>
-                              <item id="0" translatable="yes">Atmosphére</item>
+                              <item id="0" translatable="yes">Atmosphère</item>
                               <item id="1" translatable="yes">Yuzu emulator</item>
                             </items>
                           </object>

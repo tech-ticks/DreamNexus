@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
@@ -33,9 +35,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
       }
 
       ensureDirectoryExists(basePath);
-      ensureDirectoryExists(Path.Combine(basePath, "Assets"));
-      ensureDirectoryExists(Path.Combine(basePath, "Data"));
-      ensureDirectoryExists(Path.Combine(basePath, "Scripts"));
 
       SaveMetadata(metadata, basePath, fileSystem).Wait();
 
@@ -45,10 +44,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
     protected async override Task ApplyModels(IModTarget target)
     {
       var rom = (IRtdxRom) target;
-
-      if (ModelExists("starters.yaml"))
+      foreach (var mod in Mods ?? Enumerable.Empty<Mod>())
       {
-        rom.SetStarters(await LoadModel<StarterCollection>("starters.yaml"));
+        // TODO: create derived RtdxMod class and move this stuff there
+        if (mod.ModelExists("starters.yaml"))
+        {
+          rom.SetStarters(await mod.LoadModel<StarterCollection>("starters.yaml"));
+        }
       }
     }
 
@@ -56,9 +58,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
     {
       var rom = (IRtdxRom) target;
 
-      if (rom.StartersModified)
+      // Models can only be automatically applied to the first mod
+      var mod = Mods?.FirstOrDefault();
+      if (mod != null)
       {
-        await SaveModel(rom.GetStarters(), "starters.yaml");
+        var tasks = new List<Task>();
+
+        // TODO: create derived RtdxMod class and move this stuff there
+        if (rom.StartersModified)
+        {
+          tasks.Add(mod.SaveModel(rom.GetStarters(), "starters.yaml"));
+        }
+
+        await Task.WhenAll(tasks);
       }
     }
   }

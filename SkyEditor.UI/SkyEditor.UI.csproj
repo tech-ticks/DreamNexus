@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="GtkSharp" Version="3.24.24.*" />
+    <PackageReference Include="GtkSourceSharp" Version="3.24.24.*" />
     <PackageReference Include="SkyEditor.IO" Version="5.1.16" />
   </ItemGroup>
 

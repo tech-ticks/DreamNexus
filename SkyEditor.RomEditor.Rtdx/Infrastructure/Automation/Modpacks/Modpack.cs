@@ -84,7 +84,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         protected static async Task SaveMetadata(ModpackMetadata metadata, string directory, IFileSystem fileSystem)
         {
             await fileSystem.WriteAllTextAsync(Path.Combine(directory, "modpack.yaml"),
-                yamlSerializer.Serialize(metadata));
+                YamlSerializer.Serialize(metadata));
             
             var modpackJson = Path.Combine(directory, "modpack.json");
             if (fileSystem.FileExists(modpackJson))
@@ -101,7 +101,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             var modFilename = Path.Combine(directory, "mod.json");
             if (fileSystem.FileExists(modpackYamlFilename))
             {
-                metadata = yamlDeserializer.Deserialize<ModpackMetadata>(fileSystem.ReadAllText(modpackYamlFilename));
+                metadata = YamlDeserializer.Deserialize<ModpackMetadata>(fileSystem.ReadAllText(modpackYamlFilename));
                 readOnly = false;
             }
             else if (fileSystem.FileExists(modpackJsonFilename))
@@ -154,12 +154,12 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 
         private static readonly Regex idRegex = new Regex("^[a-z0-9]+\\.[a-z0-9]+[a-z0-9.]*$");
 
-        private static IYamlSerializer yamlSerializer = new YamlSerializerBuilder()
+        public static IYamlSerializer YamlSerializer { get; } = new YamlSerializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .ConfigureDefaultValuesHandling(YamlDotNet.Serialization.DefaultValuesHandling.OmitNull)
             .Build();
 
-         private static IYamlDeserializer yamlDeserializer = new YamlDeserializerBuilder()
+        public static IYamlDeserializer YamlDeserializer { get; } = new YamlDeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
 
@@ -200,8 +200,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             }
 
             // TODO: save to temp directory, then copy to avoid data corruption
-            await SaveModels(target);
-            await SaveMetadata(metadata, directory, fileSystem);
+            await Task.WhenAll(SaveModels(target), SaveMetadata(metadata, directory, fileSystem));
         }
 
         public async Task SaveTo(IModTarget target, string directory)
@@ -221,32 +220,6 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         {
             zipArchive?.Dispose();
             zipStream?.Dispose();
-        }
-
-        protected async Task SaveModel(object model, string relativePath)
-        {
-            var fullPath = Path.Combine(directory!, "Data", relativePath);
-            var directoryPath = Path.GetDirectoryName(fullPath);
-            if (!fileSystem.DirectoryExists(directoryPath!))
-            {
-                fileSystem.CreateDirectory(directoryPath!);
-            }
-
-            var yaml = yamlSerializer.Serialize(model);
-            await fileSystem.WriteAllTextAsync(fullPath, yaml);
-        }
-
-        protected async Task<TModel> LoadModel<TModel>(string relativePath)
-        {
-            var fullPath = Path.Combine(directory!, "Data", relativePath);
-            var text = await fileSystem.ReadAllTextAsync(fullPath);
-            return yamlDeserializer.Deserialize<TModel>(text);
-        }
-
-        protected bool ModelExists(string relativePath)
-        {
-            var fullPath = Path.Combine(directory!, "Data", relativePath);
-            return fileSystem.FileExists(fullPath);
         }
 
         protected abstract Task ApplyModels(IModTarget target);

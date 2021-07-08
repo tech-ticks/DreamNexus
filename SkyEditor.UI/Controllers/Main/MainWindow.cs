@@ -39,6 +39,7 @@ namespace SkyEditorUI.Controllers
         private Widget? currentController;
         private IRtdxRom? rom;
         private Modpack? modpack;
+        private List<SourceFile> sourceFiles = new List<SourceFile>();
 
         public MainWindow() : this(new Builder("Main.glade")) { }
 
@@ -87,6 +88,7 @@ namespace SkyEditorUI.Controllers
             {
                 var createWizard = new CreateModpackWizard();
                 var response = (ResponseType) createWizard.Run();
+                createWizard.Destroy();
 
                 if (response == ResponseType.Accept)
                 {
@@ -108,7 +110,9 @@ namespace SkyEditorUI.Controllers
                             {
                                 new ModMetadata
                                 {
-                                    Name = "Scripts",
+                                    Id = $"{createWizard.ModpackId}.default",
+                                    Name = "Default",
+                                    Target = "RTDX",
                                     Enabled = true,
                                     Scripts = new List<string>(),
                                 }
@@ -123,8 +127,6 @@ namespace SkyEditorUI.Controllers
 
                     dialog.Destroy();
                 }
-
-                createWizard.Destroy();
             });
         }
 
@@ -202,7 +204,7 @@ namespace SkyEditorUI.Controllers
         {
             CheckRomAndModpackLoaded();
 
-            Task? task = null;
+            string? directory = null;
             if (modpack!.ReadOnly)
             {
                 UIUtils.ShowErrorDialog(this, "Read-only mod",
@@ -213,24 +215,14 @@ namespace SkyEditorUI.Controllers
 
                 if (response == ResponseType.Accept && Directory.Exists(dialog.Filename))
                 {
-                    var dir = IOPath.Combine(dialog.Filename, modpack.Metadata.Id ?? "modpack");
-                    if (!Directory.Exists(dir))
+                    directory = IOPath.Combine(dialog.Filename, modpack.Metadata.Id ?? "modpack");
+                    if (!Directory.Exists(directory))
                     {
-                        Directory.CreateDirectory(dir);
+                        Directory.CreateDirectory(directory);
                     }
-                    task = modpack.SaveTo(rom!, dir);
                     AddModpackToRecents();
                 }
                 dialog.Dispose();
-            }
-            else
-            {
-                task = modpack.Save(rom!);
-            }
-
-            if (task == null)
-            {
-                return;
             }
 
             SetTopButtonsEnabled(false);
@@ -243,7 +235,7 @@ namespace SkyEditorUI.Controllers
                 Exception? exception = null;
                 try
                 {
-                    await task;
+                    await SaveModpack(directory);
                 }
                 catch (Exception e)
                 {
@@ -268,6 +260,27 @@ namespace SkyEditorUI.Controllers
             loadingDialog!.Show();
         }
 
+        private async Task SaveModpack(string? directory = null)
+        {
+            if (rom == null || modpack == null)
+            {
+                throw new InvalidOperationException("ROM or modpack is not loaded");
+            }
+
+            var saveModpackTask = directory != null ? modpack.SaveTo(rom, directory) : modpack.Save(rom);
+            
+            Console.WriteLine($"Saving models and source files.");
+            await Task.WhenAll(saveModpackTask, SaveSourceFiles());
+        }
+
+        private async Task SaveSourceFiles()
+        {
+            var tasks = sourceFiles
+                .Where(file => file.InProject && file.IsDirty)
+                .Select(file => file.Save());
+            await Task.WhenAll(tasks);
+        }
+
         private void OnBuildClicked(object sender, EventArgs args)
         {
             CheckRomAndModpackLoaded();
@@ -278,7 +291,7 @@ namespace SkyEditorUI.Controllers
             if (modpack?.Metadata.Id == null)
             {
                 UIUtils.ShowErrorDialog(this, "Missing ID",
-                            "Please set a modpack ID in the modpack settings.");
+                            "Please set a modpack ID in modpack settings.");
             }
 
             if (response == ResponseType.Accept)
@@ -310,12 +323,13 @@ namespace SkyEditorUI.Controllers
                         if (codeInjectionDirectory == null)
                         {
                             throw new Exception($"The code injection version is not available."
-                                + "Click \"Update code injection binaries\" in Modpack settings to fix this.");
+                                + "Click \"Update code injection binaries\" in modpack settings to fix this.");
                         }
                     }
 
                     rom!.EnableCustomFiles = modpack.Metadata.EnableCodeInjection;
 
+                    await SaveSourceFiles();
                     if (structure == BuildFileStructureType.Atmosphere)
                     {
                         var paths = BuildHelpers.CreateAtmosphereFolderStructure(Settings.Load(), folder, fileSystem);
@@ -471,9 +485,9 @@ namespace SkyEditorUI.Controllers
                     var controllerType = model.GetValue(iter, 2) as Type;
                     if (controllerType != null)
                     {
-                        var itemId = (int) model.GetValue(iter, 3);
+                        var context = (ControllerContext) model.GetValue(iter, 3);
 
-                        LoadView(controllerType, itemId);
+                        LoadView(controllerType, context);
                 
                         var path = model.GetPath(iter);
                         mainItemList.ExpandToPath(path); // Expand the node
@@ -486,37 +500,42 @@ namespace SkyEditorUI.Controllers
             }
         }
 
-        private void LoadView(Type type, int itemId)
+        private void LoadView(Type type, ControllerContext context)
         {
             editorStack!.VisibleChild = esLoading;
 
             SetTopButtonsEnabled(false);
             UIUtils.ConsumePendingEvents();
 
-            new Thread(() =>
+            //new Thread(() =>
             {
                 Exception? exception = null;
                 try
                 {
-                    if (type.GetConstructor(new [] { typeof(IRtdxRom), typeof(Modpack), typeof(int) }) != null)
+                    if (type.GetConstructor(new [] { typeof(IRtdxRom), typeof(Modpack), typeof(ControllerContext) }) != null)
                     {
-                        // Constructor with ROM, modpack and itemId
-                        currentController = Activator.CreateInstance(type, rom, modpack, itemId) as Widget;
+                        // Constructor with ROM, modpack and context
+                        currentController = Activator.CreateInstance(type, rom, modpack, context) as Widget;
                     }
                     else if (type.GetConstructor(new [] { typeof(IRtdxRom), typeof(Modpack) }) != null)
                     {
                         // Constructor with ROM and modpack
                         currentController = Activator.CreateInstance(type, rom, modpack) as Widget;
                     }
-                    else if (type.GetConstructor(new [] { typeof(IRtdxRom), typeof(int) }) != null)
+                    else if (type.GetConstructor(new [] { typeof(IRtdxRom), typeof(ControllerContext) }) != null)
                     {
-                        // Constructor with ROM and itemId
-                        currentController = Activator.CreateInstance(type, rom, itemId) as Widget;
+                        // Constructor with ROM and context
+                        currentController = Activator.CreateInstance(type, rom, context) as Widget;
                     }
                     else if (type.GetConstructor(new [] { typeof(IRtdxRom)} ) != null)
                     {
                         // Constructor with only the ROM
                         currentController = Activator.CreateInstance(type, rom) as Widget;
+                    }
+                    else if (type.GetConstructor(new [] { typeof(ControllerContext)} ) != null)
+                    {
+                        // Constructor with only the context
+                        currentController = Activator.CreateInstance(type, context) as Widget;
                     }
                     else
                     {
@@ -535,7 +554,7 @@ namespace SkyEditorUI.Controllers
                     OnViewLoaded(exception);
                     return false;
                 });
-            }).Start();
+            }//).Start();
         }
 
         private void OnViewLoaded(Exception? exception)
@@ -549,6 +568,7 @@ namespace SkyEditorUI.Controllers
 
             if (currentController == null)
             {
+                Console.WriteLine("currentController is null!");
                 return;
             }
 
@@ -561,6 +581,7 @@ namespace SkyEditorUI.Controllers
 
             editorStack.AddNamed(currentController, "es__loaded_view");
             editorStack.VisibleChild = currentController;
+            Console.WriteLine("Loaded view.");
         }
 
         private void LoadRtdxRom(System.Action onLoaded)
@@ -640,7 +661,7 @@ namespace SkyEditorUI.Controllers
 
             AddModpackToRecents();
             
-            LoadView(typeof(ModpackSettingsController), -1);
+            LoadView(typeof(ModpackSettingsController), ControllerContext.Null);
             InitMainList();
             SetTopButtonsEnabled(true);
         }
@@ -654,7 +675,74 @@ namespace SkyEditorUI.Controllers
             var root = AddMainListItem<ModpackSettingsController>(displayName ?? "Unknown modpack", "skytemple-e-rom-symbolic");
             AddMainListItem<StartersController>(root, "Starters", "skytemple-e-monster-symbolic");
 
+            var gameScriptsIter = AddMainListItem(root, "Game Scripts", "skytemple-e-variable-symbolic");
+            AddGameScripts(gameScriptsIter);
+
+            var automationScriptsIter = AddMainListItem(root, "Modpack Automation Scripts", "skytemple-e-variable-symbolic");
+            AddModScripts(automationScriptsIter);
+
             mainItemList!.ExpandToPath(mainItemList.Model.GetPath(root));
+        }
+
+        private void AddModScripts(TreeIter parent)
+        {
+            if (modpack == null) 
+            {
+                return;
+            }
+
+            var mods = modpack.Mods ?? Enumerable.Empty<Mod>();
+            bool singleMod = modpack.Mods?.Count == 1;
+            foreach (var mod in mods)
+            {
+                TreeIter? modIter = null;
+                if (!singleMod)
+                {
+                    // No need to nest scripts under mods if there's only one mod
+                    string formattedName = mod.Metadata.Name ?? mod.Metadata.Id ?? "Unknown mod";
+                    modIter = AddMainListItem(parent, $"{formattedName}{(mod.Enabled ? "" : " (disabled)")}", "skytemple-e-variable-symbolic");
+                }
+                foreach (var script in mod.Scripts)
+                {
+                    var path = IOPath.Combine(modpack.Directory!, mod.GetBaseDirectory(), script.RelativePath);
+                    var sourceFile = new SourceFile(path, false);
+                    sourceFiles.Add(sourceFile);
+
+                    AddMainListItem<SourceFileController>(modIter ?? parent, IOPath.GetFileName(path), "skytemple-e-variable-symbolic",
+                        new SourceFileControllerContext(sourceFile));
+                }
+            }
+        }
+
+        private void AddGameScripts(TreeIter parent)
+        {
+            if (rom == null || modpack == null)
+            {
+                return;
+            }
+
+            var scriptsRoot = IOPath.Combine(rom.RomDirectory, "romfs", "Data", "StreamingAssets", "native_data", "script");
+            AddGameScripts(parent, new DirectoryInfo(scriptsRoot));
+        }
+
+        private void AddGameScripts(TreeIter parent, DirectoryInfo currentDir)
+        {
+            foreach (var item in currentDir.EnumerateFileSystemInfos().OrderBy(info => info.Name))
+            {
+                if (item is FileInfo file && file.Extension != ".bin" && !file.Name.StartsWith("."))
+                {
+                    var sourceFile = new SourceFile(file.FullName, true);
+                    sourceFile.OverrideFromModpackIfExists(rom!, modpack!);
+                    sourceFiles.Add(sourceFile);
+                    AddMainListItem<SourceFileController>(parent, file.Name, "skytemple-e-variable-symbolic",
+                        new SourceFileControllerContext(sourceFile));
+                }
+                else if (item is DirectoryInfo directory && !item.Name.StartsWith("."))
+                {
+                    var directoryIter = AddMainListItem(parent, directory.Name, "skytemple-e-variable-symbolic");
+                    AddGameScripts(directoryIter, directory);
+                }
+            }
         }
 
         public void SetTopButtonsEnabled(bool enabled)
@@ -701,24 +789,25 @@ namespace SkyEditorUI.Controllers
             }
         }
 
-        public TreeIter AddMainListItem<T>(string name, string icon, int itemId = -1) where T : Widget
+        public TreeIter AddMainListItem<T>(string name, string icon, ControllerContext? context = null) where T : Widget
         {
-            return itemStore!.AppendValues(icon, name, typeof(T), itemId, false);
+            return itemStore!.AppendValues(icon, name, typeof(T), context ?? ControllerContext.Null, false);
         }
 
-        public TreeIter AddMainListItem<T>(TreeIter parent, string name, string icon, int itemId = -1) where T : Widget
+        public TreeIter AddMainListItem<T>(TreeIter parent, string name, string icon, ControllerContext? context = null)
+            where T : Widget
         {
-            return itemStore!.AppendValues(parent, icon, name, typeof(T), itemId, false);
+            return itemStore!.AppendValues(parent, icon, name, typeof(T), context ?? ControllerContext.Null, false);
         }
 
-        public TreeIter AddMainListItem(string name, string icon, int itemId = -1)
+        public TreeIter AddMainListItem(string name, string icon, ControllerContext? context = null)
         {
-            return itemStore!.AppendValues(icon, name, null, itemId, false);
+            return itemStore!.AppendValues(icon, name, null, context ?? ControllerContext.Null, false);
         }
 
-        public TreeIter AddMainListItem(TreeIter parent, string name, string icon, int itemId = -1)
+        public TreeIter AddMainListItem(TreeIter parent, string name, string icon, ControllerContext? context = null)
         {
-            return itemStore!.AppendValues(parent, icon, name, null, itemId, false);
+            return itemStore!.AppendValues(parent, icon, name, null, context ?? ControllerContext.Null, false);
         }
     }
 }

@@ -17,13 +17,12 @@ using System.IO;
 using System.Text;
 using SkyEditor.RomEditor.Infrastructure.Interfaces;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx
 {
     public interface IRtdxRom : IModTarget, ISaveable, ISaveableToDirectory, ICSharpChangeScriptGenerator, ILuaChangeScriptGenerator
-    {
-        string RomDirectory { get; }
-        
+    {        
         /// <summary>
         /// Whether custom files that can be used with code injection projects should be preferred over
         /// directly editing the ROM's binary. This setting is experimental but required for some functionality.
@@ -137,8 +136,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         #region Helpers
         PokemonGraphicsDatabase.PokemonGraphicsDatabaseEntry? FindGraphicsDatabaseEntryByCreature(CreatureIndex creatureIndex, PokemonFormType formIndex);
         #endregion
-
-        void WriteFile(string relativePath, byte[] data);
     }
 
     public class RtdxRom : IRtdxRom
@@ -763,7 +760,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             this.starterCollection = collection;
         }
         public bool StartersModified => starterCollection != null;
-        private IStarterCollection? starterCollection;
+
+    private IStarterCollection? starterCollection;
 
         public IDungeonCollection GetDungeons()
         {
@@ -800,7 +798,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// <param name="data">Data to write</param>
         public void WriteFile(string relativePath, byte[] data)
         {
-            filesToWrite.Add((relativePath, data));
+            var file = filesToWrite.FirstOrDefault(file => file.relativePath == relativePath);
+            if (file.relativePath != null)
+            {
+                file.data = data;
+            }
+            else
+            {
+                filesToWrite.Add((relativePath, data));
+            }
         }
 
         /// <summary>
@@ -1085,6 +1091,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 }
                 fileSystem.WriteAllBytes(path, data);
             }
+            filesToWrite.Clear();
 
             return Task.CompletedTask;
         }

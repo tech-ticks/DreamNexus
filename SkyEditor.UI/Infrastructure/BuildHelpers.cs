@@ -31,7 +31,7 @@ namespace SkyEditorUI.Infrastructure
       return new AtmospherePaths
       {
         ContentRoot = contentRoot,
-        ExeFsPatches = Path.Combine("atmosphere", "exefs_patches"),
+        ExeFsPatches = Path.Combine(buildPath, "atmosphere", "exefs_patches"),
       };
     }
 
@@ -52,6 +52,9 @@ namespace SkyEditorUI.Infrastructure
     {
       Directory.CreateDirectory(exefsPath);
       Directory.CreateDirectory(patchTargetPath);
+
+      System.Console.WriteLine(exefsPath);
+      System.Console.WriteLine(patchTargetPath);
 
       var subsdk1Source = Path.Combine(codeInjectionDirectory, "subsdk1");
       File.Copy(subsdk1Source, Path.Combine(exefsPath, "subsdk1"));

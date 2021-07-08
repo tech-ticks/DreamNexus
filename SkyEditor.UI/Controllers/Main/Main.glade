@@ -152,8 +152,8 @@ the top-right of the main window.</property>
       <column type="gchararray"/>
       <!-- column-name controller_class -->
       <column type="GtkSharpValue"/>
-      <!-- column-name item_id -->
-      <column type="gint"/>
+      <!-- column-name controller_context -->
+      <column type="GtkSharpValue"/>
       <!-- column-name modified -->
       <column type="gboolean"/>
     </columns>
@@ -424,28 +424,12 @@ the top-right of the main window.</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="saveButton">
-            <property name="label">gtk-save</property>
-            <property name="visible">True</property>
-            <property name="sensitive">False</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Save Project</property>
-            <property name="use_stock">True</property>
-            <signal name="clicked" handler="OnSaveClicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="pack_type">end</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkButton" id="deployButton">
             <property name="visible">True</property>
             <property name="sensitive">False</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Build and send ROM files to a Switch console</property>
+            <property name="tooltip_text" translatable="yes">Build and send ROM files to Switch console</property>
             <property name="image">image2</property>
             <property name="always_show_image">True</property>
             <signal name="clicked" handler="OnDeployClicked" swapped="no"/>
@@ -469,6 +453,22 @@ the top-right of the main window.</property>
           <packing>
             <property name="pack_type">end</property>
             <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="saveButton">
+            <property name="label">gtk-save</property>
+            <property name="visible">True</property>
+            <property name="sensitive">False</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Save the current Modpack</property>
+            <property name="use_stock">True</property>
+            <signal name="clicked" handler="OnSaveClicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>

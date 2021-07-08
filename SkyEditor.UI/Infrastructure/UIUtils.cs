@@ -25,7 +25,7 @@ namespace SkyEditorUI.Infrastructure
       });
     }
 
-    public static void OpenInVSCode(string path, Window parent)
+    public static void OpenInVSCode(string path, Window parent, string? gotoFile = null, int line = 0, int column = 0)
     {
       try
       {
@@ -36,11 +36,16 @@ namespace SkyEditorUI.Infrastructure
         };
         startInfo.ArgumentList.Add(path);
 
+        if (gotoFile != null)
+        {
+          startInfo.ArgumentList.Add("--goto");
+          startInfo.ArgumentList.Add($"{gotoFile}:{line}:{column}");
+        }
+
         Process.Start(startInfo);
       }
       catch
       {
-        System.Console.WriteLine("???????????????????");
         ShowErrorDialog(parent, "Error",
           "Couldn't open path in VS Code. Please ensure that VS Code is installed and added to the PATH environment variable.");
       }

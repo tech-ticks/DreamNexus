@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Gtk;
+using GtkSource;
 using Settings = Gtk.Settings;
 using SkyEditorUI.Controllers;
 using SkyEditorUI.Infrastructure;

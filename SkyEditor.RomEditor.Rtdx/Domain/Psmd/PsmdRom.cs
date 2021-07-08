@@ -142,6 +142,11 @@ namespace SkyEditor.RomEditor.Domain.Psmd
 
             return graphics.Entries[graphics0Index];
         }
-        #endregion
+
+    public void WriteFile(string relativePath, byte[] data)
+    {
+      throw new NotImplementedException();
     }
+    #endregion
+  }
 }

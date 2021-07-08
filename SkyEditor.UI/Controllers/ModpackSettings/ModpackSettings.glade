@@ -24,8 +24,7 @@
       <object class="GtkStack" id="stack">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="transition_duration">100</property>
-        <property name="transition_type">crossfade</property>
+        <property name="transition_duration">0</property>
         <child>
           <object class="GtkAlignment" id="mainView">
             <property name="name">mainView</property>

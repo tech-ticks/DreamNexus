@@ -113,3 +113,10 @@
 .back_illust.bboard {
  background-image: url("data/back_illust/bboard.png");
 }
+
+.warning {
+  background-color: rgb(255, 255, 191);
+  border-radius: 4px;
+  border: 1px solid rgb(158, 158, 0);
+  padding: 4px;
+}

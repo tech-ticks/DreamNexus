@@ -180,6 +180,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
             {
                 using var modpack = new RtdxModpack(modPath, context.FileSystem);
                 await modpack.Apply<IRtdxRom>(rtdx);
+                // TODO: copy assets. How do we want to do that? We don't have a path here
             }
             else if (context.Rom is IPsmdRom psmd)
             {

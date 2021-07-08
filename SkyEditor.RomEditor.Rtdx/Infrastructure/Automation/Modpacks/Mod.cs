@@ -35,7 +35,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
                     throw new UnsupportedScriptTypeException(extension);
                 }
 
-                scripts.Add(new Script(scriptType, ReadResourceText(scriptRelativePath)));
+                scripts.Add(new Script(scriptType, scriptRelativePath, ReadResourceText(scriptRelativePath)));
             }
 
             this.Scripts = scripts;
@@ -48,9 +48,12 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         public IReadOnlyList<Script> Scripts { get; }
 
         public bool Enabled { get; set; }
+        public bool ReadOnly => !(fileSystem is IFileSystem);
 
         public async Task Apply(IScriptHost context)
         {
+            await WriteAssets(context);
+
             foreach (var script in Scripts)
             {
                 switch (script.Type) 
@@ -65,6 +68,68 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
                         throw new InvalidOperationException("Unsupported script type: " + script.Type.ToString("f"));
                 }
             }
+        }
+
+        public async Task WriteAssets(IScriptHost context)
+        {
+            // TODO: Directly copy the files instead of loading all assets in RAM
+            var assetsDir = GetAssetsDirectory();
+            var tasks = new List<Task>();
+            foreach (var assetPath in fileSystem.GetFiles(assetsDir, "*", false))
+            {
+                var relativePath = Path.GetRelativePath(assetsDir, assetPath);
+                var targetPath = Path.Combine("romfs", "Data", "StreamingAssets", relativePath);
+                tasks.Add(WriteAsset(context.Target, assetPath, targetPath));
+            }
+
+            await Task.WhenAll(tasks);
+        }
+
+        private async Task WriteAsset(IModTarget target, string assetPath, string targetPath)
+        {
+            target.WriteFile(targetPath, await File.ReadAllBytesAsync(assetPath));
+        }
+
+        public async Task CopyFileAsync(string sourcePath, string targetPath)
+        {
+            using var sourceStream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, 
+                FileOptions.Asynchronous | FileOptions.SequentialScan);
+            using var destStream = new FileStream(targetPath, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096,
+                FileOptions.Asynchronous | FileOptions.SequentialScan);
+;
+            await sourceStream.CopyToAsync(destStream);
+        }
+
+        public async Task SaveModel(object model, string relativePath)
+        {
+            var fs = fileSystem as IFileSystem;
+            if (fs == null)
+            {
+                throw new Exception("Attempted to save a read-only mod");
+            }
+
+            var fullPath = Path.Combine(GetDataDirectory(), relativePath);
+            var directoryPath = Path.GetDirectoryName(fullPath);
+            if (!fs.DirectoryExists(directoryPath!))
+            {
+                fs.CreateDirectory(directoryPath!);
+            }
+
+            var yaml = Modpack.YamlSerializer.Serialize(model);
+            await fs.WriteAllTextAsync(fullPath, yaml);
+        }
+
+        public async Task<TModel> LoadModel<TModel>(string relativePath)
+        {
+            var fullPath = Path.Combine(GetDataDirectory(), relativePath);
+            var text = await fileSystem.ReadAllTextAsync(fullPath);
+            return Modpack.YamlDeserializer.Deserialize<TModel>(text);
+        }
+
+        public bool ModelExists(string relativePath)
+        {
+            var fullPath = Path.Combine(GetDataDirectory(), relativePath);
+            return fileSystem.FileExists(fullPath);
         }
 
         /// <summary>
@@ -89,7 +154,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             }
         }
 
-        private string GetBaseDirectory()
+        public string GetBaseDirectory()
         {
             if (!string.IsNullOrEmpty(Metadata.BaseDirectory))
             {
@@ -100,6 +165,9 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
                 return directory;
             }
         }
+
+        public string GetDataDirectory() => Path.Combine(GetBaseDirectory(), "Data");
+        public string GetAssetsDirectory() => Path.Combine(GetBaseDirectory(), "Assets");
 
         /// <summary>
         /// Reads a file from the mod
