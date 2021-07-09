@@ -3,6 +3,7 @@
   "Version": "2.0.0",
   "Target": "RTDX",
   "Name": "Restore Regular Attack",
+  "Author": "techticks",
   "Description": "This mod restores the regular attack from previous PMD games. You can use it by pressing R+A.",
   "Scripts": [
     "RegularAttack.csx"

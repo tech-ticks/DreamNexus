@@ -54,7 +54,7 @@ namespace SkyEditorUI.Controllers
       {
         UIUtils.ShowErrorDialog(this, "Malformed modpack ID",
           "Modpack IDs must use the format: authorname.modpackname\n"
-          + "Only lowercase letters, digits and \".\" are allowed.");
+          + "Only alphanumeric characters and \".\" are allowed.");
       }
     }
   }

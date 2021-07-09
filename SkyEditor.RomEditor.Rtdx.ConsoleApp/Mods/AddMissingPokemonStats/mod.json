@@ -3,6 +3,7 @@
   "Version": "1.0.0",
   "Target": "RTDX",
   "Name": "Add Missing Pokémon Stats",
+  "Author": "evandixon",
   "Description": "RTDX contains placeholder entries for all Pokemon that appear in PSMD. This mod replaces those placeholder stats entries with data from PSMD.",
   "Scripts": [
     "AddPokemonDataInfo.csx"

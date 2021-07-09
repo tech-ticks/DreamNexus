@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
+using System.Linq;
 using System.Text;
 
 namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
@@ -51,5 +52,21 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         /// Ordered list of paths of scripts to run, relative to the modpack.json file
         /// </summary>
         public List<string>? Scripts { get; set; }
+
+        public ModMetadata Clone()
+        {
+            return new ModMetadata
+            {
+                Id = this.Id,
+                Version = this.Version,
+                Target = this.Target,
+                Name = this.Name,
+                Description = this.Description,
+                Author = this.Author,
+                Enabled = this.Enabled,
+                BaseDirectory = this.BaseDirectory,
+                Scripts = (this.Scripts ?? Enumerable.Empty<string>()).ToList(),
+            };
+        }
     }
 }

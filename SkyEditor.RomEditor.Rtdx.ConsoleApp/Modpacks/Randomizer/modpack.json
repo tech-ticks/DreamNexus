@@ -1,8 +1,10 @@
 ﻿{
+  "Id": "SkyEditor.Randomizer",
   "Name": "Randomizer",
   "Description": "Are you bored of Pokémon Mystery Dungeon always being too predicatable, despite dungeons being randomly generated? Wouldn't it be great if even MORE things were random? This modpack is for you!",
   "Mods": [
     {
+      "Id": "SkyEditor.RandomizeStarters",
       "Name": "Randomize Starters",
       "Description": "Randomizes the Pokémon you and your partner can be at the start of the game.",
       "Enabled": true,

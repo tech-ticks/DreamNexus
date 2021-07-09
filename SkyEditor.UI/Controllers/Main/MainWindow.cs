@@ -207,22 +207,23 @@ namespace SkyEditorUI.Controllers
             string? directory = null;
             if (modpack!.ReadOnly)
             {
-                UIUtils.ShowErrorDialog(this, "Read-only mod",
+                UIUtils.ShowInfoDialog(this, "Read-only mod",
                             "This mod is read-only. Please select another directory to create a new modpack based on this mod.");
 
                 var dialog = new FileChooserNative("Save modpack", this, FileChooserAction.Save | FileChooserAction.SelectFolder, null, null);
                 var response = (ResponseType) dialog.Run();
+                string path = dialog.Filename;
+                dialog.Dispose();
 
-                if (response == ResponseType.Accept && Directory.Exists(dialog.Filename))
+                if (response == ResponseType.Accept && Directory.Exists(path))
                 {
-                    directory = IOPath.Combine(dialog.Filename, modpack.Metadata.Id ?? "modpack");
+                    directory = IOPath.Combine(path, modpack.Metadata.Id ?? "modpack");
                     if (!Directory.Exists(directory))
                     {
                         Directory.CreateDirectory(directory);
                     }
                     AddModpackToRecents();
                 }
-                dialog.Dispose();
             }
 
             SetTopButtonsEnabled(false);
@@ -666,25 +667,28 @@ namespace SkyEditorUI.Controllers
             SetTopButtonsEnabled(true);
         }
 
-        private void InitMainList()
+        public void InitMainList()
         {
             itemStore!.Clear();
 
             string? displayName = !string.IsNullOrEmpty(modpack?.Metadata.Name)
                 ? modpack?.Metadata.Name : modpack?.Metadata.Id;
             var root = AddMainListItem<ModpackSettingsController>(displayName ?? "Unknown modpack", "skytemple-e-rom-symbolic");
+            var modsIter = AddMainListItem<ModsController>(root, "Mods", "skytemple-e-patch-symbolic");
+            AddAllModScripts(modsIter);
+
             AddMainListItem<StartersController>(root, "Starters", "skytemple-e-monster-symbolic");
 
             var gameScriptsIter = AddMainListItem(root, "Game Scripts", "skytemple-e-variable-symbolic");
             AddGameScripts(gameScriptsIter);
 
             var automationScriptsIter = AddMainListItem(root, "Modpack Automation Scripts", "skytemple-e-variable-symbolic");
-            AddModScripts(automationScriptsIter);
+            AddDefaultModScripts(automationScriptsIter);
 
             mainItemList!.ExpandToPath(mainItemList.Model.GetPath(root));
         }
 
-        private void AddModScripts(TreeIter parent)
+        private void AddAllModScripts(TreeIter parent)
         {
             if (modpack == null) 
             {
@@ -692,25 +696,57 @@ namespace SkyEditorUI.Controllers
             }
 
             var mods = modpack.Mods ?? Enumerable.Empty<Mod>();
-            bool singleMod = modpack.Mods?.Count == 1;
+            var defaultMod = GetDefaultMod();
             foreach (var mod in mods)
             {
-                TreeIter? modIter = null;
-                if (!singleMod)
+                if (mod != defaultMod)
                 {
-                    // No need to nest scripts under mods if there's only one mod
                     string formattedName = mod.Metadata.Name ?? mod.Metadata.Id ?? "Unknown mod";
-                    modIter = AddMainListItem(parent, $"{formattedName}{(mod.Enabled ? "" : " (disabled)")}", "skytemple-e-variable-symbolic");
+                    var modIter = AddMainListItem(parent, $"{formattedName}{(mod.Enabled ? "" : " (disabled)")}",
+                        "skytemple-e-variable-symbolic");
+                    AddModScripts(modIter, mod);
                 }
-                foreach (var script in mod.Scripts)
-                {
-                    var path = IOPath.Combine(modpack.Directory!, mod.GetBaseDirectory(), script.RelativePath);
-                    var sourceFile = new SourceFile(path, false);
-                    sourceFiles.Add(sourceFile);
+            }
+        }
 
-                    AddMainListItem<SourceFileController>(modIter ?? parent, IOPath.GetFileName(path), "skytemple-e-variable-symbolic",
-                        new SourceFileControllerContext(sourceFile));
-                }
+        private void AddDefaultModScripts(TreeIter parent)
+        {
+           var defaultMod = GetDefaultMod();
+           if (defaultMod == null)
+           {
+               return;
+           }
+
+           AddModScripts(parent, defaultMod);
+        }
+
+        private Mod? GetDefaultMod()
+        {
+            if (modpack == null || modpack.Mods == null) 
+            {
+                return null;
+            }
+
+            var defaultMod = modpack.Mods
+                .FirstOrDefault(mod => mod.Metadata.Id == $"{modpack.Metadata.Id}.default");
+            if (defaultMod == null && modpack.Mods.Count == 1)
+            {
+                defaultMod = modpack.Mods.FirstOrDefault();
+            }
+
+            return defaultMod;
+        }
+
+        private void AddModScripts(TreeIter parent, Mod mod)
+        {
+            foreach (var script in mod.Scripts)
+            {
+                var path = IOPath.Combine(mod.GetBaseDirectory(), script.RelativePath);
+                var sourceFile = new SourceFile(path, false);
+                sourceFiles.Add(sourceFile);
+
+                AddMainListItem<SourceFileController>(parent, IOPath.GetFileName(path), "skytemple-e-variable-symbolic",
+                    new SourceFileControllerContext(sourceFile));
             }
         }
 

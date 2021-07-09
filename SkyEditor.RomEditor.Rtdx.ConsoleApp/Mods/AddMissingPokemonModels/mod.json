@@ -3,6 +3,7 @@
   "Version": "1.0.0",
   "Target": "RTDX",
   "Name": "Add Pokémon Models",
+  "Author": "evandixon",
   "Description": "RTDX contains placeholder entries for all Pokemon that appear in PSMD. This mod adds Pokémon models so that they are usable.",
   "Scripts": [
     "AddModels.csx"

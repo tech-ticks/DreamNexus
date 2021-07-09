@@ -12,7 +12,6 @@ using IYamlDeserializer = YamlDotNet.Serialization.IDeserializer;
 using YamlSerializerBuilder = YamlDotNet.Serialization.SerializerBuilder;
 using YamlDeserializerBuilder = YamlDotNet.Serialization.DeserializerBuilder;
 using YamlDotNet.Serialization.NamingConventions;
-using YamlDotNet.Serialization.Utilities;
 using System.Text.RegularExpressions;
 
 namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
@@ -117,6 +116,8 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
                 {
                     Name = modMetadata.Name,
                     Description = modMetadata.Description,
+                    Author = modMetadata.Author,
+                    Version = modMetadata.Version,
                     Mods = new List<ModMetadata>
                     {
                         modMetadata
@@ -152,7 +153,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         private bool readOnly;
         private IFileSystem fileSystem = PhysicalFileSystem.Instance;
 
-        private static readonly Regex idRegex = new Regex("^[a-z0-9]+\\.[a-z0-9]+[a-z0-9.]*$");
+        private static readonly Regex idRegex = new Regex("^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+[a-zA-Z0-9.]*$");
 
         public static IYamlSerializer YamlSerializer { get; } = new YamlSerializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -168,6 +169,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         public bool ReadOnly => readOnly;
 
         public List<Mod>? Mods => this.mods;
+        public string ModsDirectory => Path.Combine(this.directory!, "Mods");
 
         public async Task Apply<TTarget>(TTarget target) where TTarget : IModTarget
         {
@@ -220,6 +222,90 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         {
             zipArchive?.Dispose();
             zipStream?.Dispose();
+        }
+
+        public async Task AddMod(Mod mod)
+        {
+            if (readOnly)
+            {
+                throw new InvalidOperationException("The modpack is read-only. Please save it to another directory first.");
+            }
+            if (mod == null)
+            {
+                throw new ArgumentNullException(nameof(mod));
+            }
+            if (string.IsNullOrWhiteSpace(mod.Metadata.Id))
+            {
+                throw new ArgumentException("Mod must have an ID in the metadata", nameof(mod));
+            }
+            if (mods.Any(m => string.Equals(m.Metadata.Id, mod.Metadata.Id, StringComparison.OrdinalIgnoreCase)))
+            {
+                throw new ArgumentException($"Mod with the ID '{Metadata.Id}' is already present in the modpack", nameof(mod));
+            }
+
+            if (mods == null)
+            {
+                mods = new List<Mod>();
+            }
+
+            var modDirectory = Path.Combine(ModsDirectory, mod.Metadata.Id);
+            fileSystem.CreateDirectory(modDirectory);
+
+            await mod.CopyToDirectory(modDirectory, fileSystem);
+            var newMod = mod.Clone(modDirectory, fileSystem);
+            if (metadata.Mods == null)
+            {
+                metadata.Mods = new List<ModMetadata>();
+            }
+
+            metadata.Mods.Add(newMod.Metadata);
+
+            mods.Add(newMod);
+        }
+
+        public void RemoveMod(string id)
+        {
+            var mod = (mods ?? Enumerable.Empty<Mod>()).FirstOrDefault(mod => mod.Metadata.Id == id);
+            if (mod == null)
+            {
+                throw new ArgumentException($"Modpack doesn't contain a mod with id {id}", nameof(id));
+            }
+            RemoveMod(mod);
+        }
+
+        private void RemoveMod(Mod mod)
+        {
+            if (readOnly)
+            {
+                throw new InvalidOperationException("The modpack is read-only. Please save it to another directory first.");
+            }
+            if (mod == null)
+            {
+                throw new ArgumentNullException(nameof(mod));
+            }
+            if (mods == null)
+            {
+                return;
+            }
+
+            var modMetadata = metadata.Mods?.Find(modMeta => modMeta.Id == mod.Metadata.Id);
+            if (modMetadata == null)
+            {
+                throw new InvalidOperationException("Couldn't remove mod because internal mod list and metadata are out of sync.");
+            }
+            metadata.Mods?.Remove(modMetadata);
+            mods.Remove(mod);
+
+            var baseDir = mod.GetBaseDirectory();
+            if (baseDir == directory)
+            {
+                throw new InvalidOperationException("Cannot remove mods with base directory in the modpack's root directory.");
+            }
+
+            if (fileSystem.DirectoryExists(baseDir))
+            {
+                fileSystem.DeleteDirectory(baseDir);
+            }
         }
 
         protected abstract Task ApplyModels(IModTarget target);

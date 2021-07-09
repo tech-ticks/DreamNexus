@@ -5,14 +5,30 @@ namespace SkyEditorUI.Infrastructure
 {
   public static class UIUtils
   {
-    public static void ShowErrorDialog(Window? parent, string title, string text)
+    public static ResponseType ShowErrorDialog(Window? parent, string title, string text)
     {
-      var dialog = new MessageDialog(parent, DialogFlags.Modal, MessageType.Error,
-        ButtonsType.Ok, false, text);
+      return ShowDialog(parent, title, text, MessageType.Error);
+    }
+
+    public static ResponseType ShowWarningDialog(Window? parent, string title, string text)
+    {
+      return ShowDialog(parent, title, text, MessageType.Warning);
+    }
+
+    public static ResponseType ShowInfoDialog(Window? parent, string title, string text)
+    {
+      return ShowDialog(parent, title, text, MessageType.Info);
+    }
+
+    public static ResponseType ShowDialog(Window? parent, string title, string text, MessageType type)
+    {
+       var dialog = new MessageDialog(parent, DialogFlags.Modal, type, ButtonsType.Ok, false, text);
 
       dialog.Title = title;
-      dialog.Run();
+      var response = (ResponseType) dialog.Run();
       dialog.Destroy();
+
+      return response;
     }
 
     public static void OpenInFileBrowser(string path)

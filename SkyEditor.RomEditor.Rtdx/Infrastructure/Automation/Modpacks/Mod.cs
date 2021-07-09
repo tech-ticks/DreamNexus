@@ -18,7 +18,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             this.Enabled = metadata.Enabled;
 
             var scripts = new List<Script>();
-            foreach (var scriptRelativePath in metadata.Scripts ?? Enumerable.Empty<string>())
+            foreach (var scriptRelativePath in Metadata.Scripts ?? Enumerable.Empty<string>())
             {
                 ScriptType scriptType;
                 var extension = Path.GetExtension(scriptRelativePath);
@@ -45,7 +45,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         private readonly IReadOnlyFileSystem fileSystem;
 
         public ModMetadata Metadata { get; }
-        public IReadOnlyList<Script> Scripts { get; }
+        public IReadOnlyList<Script> Scripts { get; private set; } = new List<Script>();
 
         public bool Enabled { get; set; }
         public bool ReadOnly => !(fileSystem is IFileSystem);
@@ -74,6 +74,11 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         {
             // TODO: Directly copy the files instead of loading all assets in RAM
             var assetsDir = GetAssetsDirectory();
+            if (!fileSystem.DirectoryExists(assetsDir))
+            {
+                return;
+            }
+
             var tasks = new List<Task>();
             foreach (var assetPath in fileSystem.GetFiles(assetsDir, "*", false))
             {
@@ -88,16 +93,6 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         private async Task WriteAsset(IModTarget target, string assetPath, string targetPath)
         {
             target.WriteFile(targetPath, await File.ReadAllBytesAsync(assetPath));
-        }
-
-        public async Task CopyFileAsync(string sourcePath, string targetPath)
-        {
-            using var sourceStream = new FileStream(sourcePath, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, 
-                FileOptions.Asynchronous | FileOptions.SequentialScan);
-            using var destStream = new FileStream(targetPath, FileMode.CreateNew, FileAccess.Write, FileShare.None, 4096,
-                FileOptions.Asynchronous | FileOptions.SequentialScan);
-;
-            await sourceStream.CopyToAsync(destStream);
         }
 
         public async Task SaveModel(object model, string relativePath)
@@ -200,6 +195,11 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         {
             var absolutePath = Path.Combine(GetBaseDirectory(), resourcePath);
             return fileSystem.ReadAllText(absolutePath);
+        }
+
+        public Mod Clone(string newDirectory, IFileSystem fileSystem)
+        {
+            return new Mod(Metadata.Clone(), newDirectory, fileSystem);
         }
     }
 }
