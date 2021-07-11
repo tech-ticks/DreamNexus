@@ -131,6 +131,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         bool StartersModified { get; }
 
         IDungeonCollection GetDungeons();
+        bool DungeonsModified { get; }
         #endregion
 
         #region Helpers
@@ -761,7 +762,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         public bool StartersModified => starterCollection != null;
 
-    private IStarterCollection? starterCollection;
+        private IStarterCollection? starterCollection;
 
         public IDungeonCollection GetDungeons()
         {
@@ -771,7 +772,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
             return dungeonCollection;
         }
-        private DungeonCollection? dungeonCollection;
+
+        public bool DungeonsModified => dungeonCollection != null;
+
+        private IDungeonCollection? dungeonCollection;
         #endregion
 
         #region Helpers

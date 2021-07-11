@@ -42,9 +42,11 @@ namespace SkyEditorUI.Infrastructure
     {
       var match = idReferenceRegex.Match(text);
       var idString = match.Groups.Count > 1 ? match.Groups[1].Value : null;
-      if (idString != null && int.TryParse(idString, out int result)) {
+      if (idString != null && int.TryParse(idString, out int result))
+      {
         var index = (CreatureIndex) result;
-        if (index >= CreatureIndex.NONE && index < CreatureIndex.END) {
+        if (index >= CreatureIndex.NONE && index < CreatureIndex.END)
+        {
           return index;
         }
       }
@@ -83,9 +85,54 @@ namespace SkyEditorUI.Infrastructure
     {
       var match = idReferenceRegex.Match(text);
       var idString = match.Groups.Count > 1 ? match.Groups[1].Value : null;
-      if (idString != null && int.TryParse(idString, out int result)) {
+      if (idString != null && int.TryParse(idString, out int result))
+      {
         var index = (WazaIndex) result;
-        if (index >= WazaIndex.NONE && index < WazaIndex.END) {
+        if (index >= WazaIndex.NONE && index < WazaIndex.END)
+        {
+          return index;
+        }
+      }
+
+      return null;
+    }
+
+    public static IEnumerable<string> GetItems(IRtdxRom rom)
+    {
+      return Enumerable.Range((int) ItemIndex.NONE, (int) ItemIndex.END - 1)
+        .Select(id => FormatItem(rom, (ItemIndex) id));
+    }
+
+    public static string FormatItem(IRtdxRom rom, ItemIndex itemId)
+    {
+      var itemStrings = rom.GetCommonStrings().Items;
+      string formattedId = $"#{((int) itemId).ToString("000")}";
+      if (itemStrings.TryGetValue(itemId, out string? name))
+      {
+        if (!string.IsNullOrEmpty(name.Trim()))
+        {
+          return $"{name} ({formattedId})";
+        }
+      }
+
+      var enumString = itemId.ToString();
+      if (enumString != string.Empty)
+      {
+        return $"{enumString} ({formattedId})";
+      }
+      
+      return $"<unknown item> ({formattedId})";
+    }
+
+    public static ItemIndex? ExtractItem(string text)
+    {
+      var match = idReferenceRegex.Match(text);
+      var idString = match.Groups.Count > 1 ? match.Groups[1].Value : null;
+      if (idString != null && int.TryParse(idString, out int result))
+      {
+        var index = (ItemIndex) result;
+        if (index >= ItemIndex.NONE && index < ItemIndex.END)
+        {
           return index;
         }
       }

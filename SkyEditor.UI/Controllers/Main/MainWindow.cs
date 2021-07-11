@@ -13,6 +13,7 @@ using SkyEditor.RomEditor.Domain.Rtdx;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 
 namespace SkyEditorUI.Controllers
 {
@@ -679,6 +680,9 @@ namespace SkyEditorUI.Controllers
 
             AddMainListItem<StartersController>(root, "Starters", "skytemple-e-monster-symbolic");
 
+            var dungeonsIter = AddMainListItem(root, "Dungeons", "skytemple-e-dungeon-symbolic");
+            AddDungeons(dungeonsIter);
+
             var gameScriptsIter = AddMainListItem(root, "Game Scripts", "skytemple-e-variable-symbolic");
             AddGameScripts(gameScriptsIter);
 
@@ -747,6 +751,29 @@ namespace SkyEditorUI.Controllers
 
                 AddMainListItem<SourceFileController>(parent, IOPath.GetFileName(path), "skytemple-e-variable-symbolic",
                     new SourceFileControllerContext(sourceFile));
+            }
+        }
+
+        private void AddDungeons(TreeIter parent)
+        {
+            if (rom == null)
+            {
+                return;
+            }
+
+            var dungeons = rom.GetDungeons();
+            for (int i = 1; i <= (int) DungeonIndex.D100; i++)
+            {
+                var dungeon = dungeons.GetDungeonById((DungeonIndex) i, false);
+                var dungeonIter = AddMainListItem<DungeonController>(parent, $"{dungeon!.Id}: {dungeon.DungeonName}",
+                    "skytemple-e-dungeon-symbolic", new DungeonControllerContext((DungeonIndex) i));
+
+                foreach (var floor in dungeon.Floors)
+                {
+                    bool unused = floor.Index <= 0 || floor.Index > dungeon.AccessibleFloorCount;
+                    AddMainListItem(dungeonIter, $"Floor {floor.Index}{(unused ? " (unused)" : "")}", 
+                        "skytemple-e-dungeon-floor-symbolic");
+                }
             }
         }
 

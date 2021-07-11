@@ -14,7 +14,7 @@ var commonStrings = Rom.GetCommonStrings();
 var dungeons = Rom.GetDungeons();
 var itemDataInfo = Rom.GetItemDataInfo();
 
-(short[] validFloors, short[] invalidFloors) GetItemSetFloors(int itemSetIndex, IDungeonModel dungeon)
+(short[] validFloors, short[] invalidFloors) GetItemSetFloors(int itemSetIndex, DungeonModel dungeon)
 {
   var allFloors =  dungeon.Balance.FloorInfos
     .Where(floorInfo => floorInfo.ItemSetIndex == itemSetIndex) // All floors with the item set index
@@ -29,7 +29,7 @@ var itemDataInfo = Rom.GetItemDataInfo();
   return (validFloors, invalidFloors);
 }
 
-void PrintItemSet(StringBuilder sb, int itemSetIndex, ItemArrange.Entry.ItemSet itemSet, IDungeonModel dungeon)
+void PrintItemSet(StringBuilder sb, int itemSetIndex, ItemArrange.Entry.ItemSet itemSet, DungeonModel dungeon)
 {
   var (validFloors, invalidFloors) = GetItemSetFloors(itemSetIndex, dungeon);
   // if (validFloors.Length == 0 && invalidFloors.Length == 0) {

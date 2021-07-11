@@ -5,13 +5,12 @@ using System.Collections.Generic;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
-using DungeonFeature = SkyEditor.RomEditor.Domain.Rtdx.Structures.DungeonDataInfo.Entry.Feature;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
 var strings = Rom.GetCommonStrings();
 var fixedPokemon = Rom.GetFixedPokemon().Entries;
-var dungeons = Rom.GetDungeons().Dungeons;
+var dungeons = Rom.GetDungeons().LoadAllDungeons();
 
 // -- Formatters ---------------------------------
 
@@ -20,13 +19,13 @@ public string GetPokemonName(CreatureIndex id)
     return strings.Pokemon.ContainsKey(id) ? strings.Pokemon[id] : "(Unknown :" + (int)id + ")";
 }
 
-public string FormatFloor(IDungeonModel dungeon, int floor)
+public string FormatFloor(DungeonModel dungeon, int floor)
 {
-    string prefix = (dungeon.Data.Features.HasFlag(DungeonFeature.FloorDirection)) ? "" : "B";
+    string prefix = (dungeon.Data.Features.HasFlag(DungeonFeature.FloorDirectionUp)) ? "" : "B";
     return prefix + floor + "F";
 }
 
-public string FormatFloors(IDungeonModel dungeon)
+public string FormatFloors(DungeonModel dungeon)
 {
     if (dungeon.Extra == null) return "--";
     return FormatFloor(dungeon, dungeon.Extra.Floors);
@@ -51,7 +50,7 @@ public string FormatFeatures(DungeonFeature features)
 {
     var featureNames = new List<string>();
     if (!features.HasFlag(DungeonFeature.AutoRevive)) featureNames.Add("Auto-revive");
-    if (features.HasFlag(DungeonFeature.Scanning)) featureNames.Add("Scanning");
+    if (features.HasFlag(DungeonFeature.Scanner)) featureNames.Add("Scanner");
     if (features.HasFlag(DungeonFeature.Radar)) featureNames.Add("Radar");
     return string.Join(", ", featureNames);
 }
@@ -222,7 +221,7 @@ foreach (var dungeon in dungeons)
     }*/
 
     // Print trap weights
-    /*if (trapWeights != null)
+    if (trapWeights != null)
     {
         var records = trapWeights.Records;
         int prevIndex = -1;
@@ -274,7 +273,7 @@ foreach (var dungeon in dungeons)
         if (prevIndex != -1 && prevIndex != len) {
             Console.WriteLine($"..{FormatFloor(dungeon, len)}: *");
         }
-    }*/
+    }
 
     // Print unknown (and mostly uninteresting) data from the fourth SIR0 file in dungeon_balance.bin
     /*if (data4 != null)

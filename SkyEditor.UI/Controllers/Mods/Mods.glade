@@ -152,7 +152,6 @@
                     <child>
                       <object class="GtkButton" id="btn_open_patch_dir">
                         <property name="label" translatable="yes">Open Mod Directory...</property>
-                        <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <signal name="clicked" handler="OnOpenModDirectoryClicked" swapped="no"/>
@@ -165,7 +164,6 @@
                     </child>
                     <child>
                       <object class="GtkButton" id="btn_refresh">
-                        <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
                         <property name="tooltip_text" translatable="yes">Reload</property>

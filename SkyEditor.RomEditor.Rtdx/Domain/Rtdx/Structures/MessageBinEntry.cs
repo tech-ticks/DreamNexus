@@ -95,6 +95,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
         }
 
+        public void SetString(string key, string value)
+        {
+            SetString((int) Crc32Hasher.Crc32Hash(key), value);
+        }
+
         public void SetString(int hash, string value)
         {
             if (Strings.ContainsKey(hash))

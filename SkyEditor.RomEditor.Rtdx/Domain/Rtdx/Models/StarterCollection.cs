@@ -20,7 +20,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         string TeamName { get; set; }
     }
 
-    [Serializable]
     public class StarterCollection : IStarterCollection
     {
         public StarterCollection()

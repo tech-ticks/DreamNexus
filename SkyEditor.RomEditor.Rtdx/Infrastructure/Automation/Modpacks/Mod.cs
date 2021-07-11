@@ -127,6 +127,16 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             return fileSystem.FileExists(fullPath);
         }
 
+        public string[] GetModelFilesInDirectory(string relativePath)
+        {
+            var fullPath = Path.Combine(GetDataDirectory(), relativePath);
+            if (!fileSystem.DirectoryExists(fullPath))
+            {
+                return new string[0];
+            }
+            return fileSystem.GetFiles(fullPath, "*", true);
+        }
+
         /// <summary>
         /// Copies the contents of the mod to the given directory on the target fileSystem
         /// </summary>

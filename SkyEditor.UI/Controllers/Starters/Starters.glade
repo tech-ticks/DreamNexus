@@ -455,7 +455,7 @@
                                     <child>
                                       <object class="GtkTreeViewColumn">
                                         <property name="resizable">True</property>
-                                        <property name="title" translatable="yes">Pokemon</property>
+                                        <property name="title" translatable="yes">Pokémon</property>
                                         <child>
                                           <object class="GtkCellRendererText" id="starterNameLabel">
                                             <property name="editable">True</property>

@@ -188,7 +188,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
             }
             
-            public class ItemWeightEntry
+            public struct ItemWeightEntry
             {
                 public ItemIndex Index { get; set; }
                 public ushort Weight { get; set; }
