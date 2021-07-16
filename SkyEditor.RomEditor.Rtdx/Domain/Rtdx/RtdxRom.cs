@@ -132,6 +132,18 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         IDungeonCollection GetDungeons();
         bool DungeonsModified { get; }
+
+        IActorCollection GetActors();
+        void SetActors(IActorCollection collection);
+        bool ActorsModified { get; }
+
+        IDungeonMapCollection GetDungeonMaps();
+        void SetDungeonMaps(IDungeonMapCollection collection);
+        bool DungeonMapsModified { get; }
+
+        IDungeonMusicCollection GetDungeonMusic();
+        void SetDungeonMusic(IDungeonMusicCollection collection);
+        bool DungeonMusicModified { get; }
         #endregion
 
         #region Helpers
@@ -776,6 +788,54 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public bool DungeonsModified => dungeonCollection != null;
 
         private IDungeonCollection? dungeonCollection;
+
+        public IActorCollection GetActors()
+        {
+            if (actorCollection == null)
+            {
+                actorCollection = new ActorCollection(this);
+            }
+            return actorCollection;
+        }
+        public void SetActors(IActorCollection collection)
+        {
+            this.actorCollection = collection;
+        }
+        public bool ActorsModified => actorCollection != null;
+
+        private IActorCollection? actorCollection;
+
+        public IDungeonMapCollection GetDungeonMaps()
+        {
+            if (dungeonMapCollection == null)
+            {
+                dungeonMapCollection = new DungeonMapCollection(this);
+            }
+            return dungeonMapCollection;
+        }
+        public void SetDungeonMaps(IDungeonMapCollection collection)
+        {
+            this.dungeonMapCollection = collection;
+        }
+        public bool DungeonMapsModified => dungeonMapCollection != null;
+
+        private IDungeonMapCollection? dungeonMapCollection;
+
+        public IDungeonMusicCollection GetDungeonMusic()
+        {
+            if (dungeonMusicCollection == null)
+            {
+                dungeonMusicCollection = new DungeonMusicCollection(this);
+            }
+            return dungeonMusicCollection;
+        }
+        public void SetDungeonMusic(IDungeonMusicCollection collection)
+        {
+            this.dungeonMusicCollection = collection;
+        }
+        public bool DungeonMusicModified => dungeonMusicCollection != null;
+
+        private IDungeonMusicCollection? dungeonMusicCollection;
         #endregion
 
         #region Helpers
@@ -827,10 +887,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
 
             // Save wrappers around files
-            if (starterCollection != null)
-            {
-                starterCollection.Flush(this);
-            }
+            starterCollection?.Flush(this);
+            actorCollection?.Flush(this);
+            dungeonCollection?.Flush(this);
+            dungeonMapCollection?.Flush(this);
+            dungeonMusicCollection?.Flush(this);
 
             // Save the files themselves
             if (EnableCustomFiles)

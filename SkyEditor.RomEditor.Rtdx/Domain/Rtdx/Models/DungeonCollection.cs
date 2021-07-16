@@ -15,6 +15,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         void SetDungeon(DungeonIndex id, DungeonModel model);
         bool IsDungeonDirty(DungeonIndex id);
         DungeonModel? GetDungeonById(DungeonIndex id, bool markAsDirty = true);
+        void Flush(IRtdxRom rom);
     }
 
     public class DungeonCollection : IDungeonCollection
@@ -229,7 +230,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         {
             return data.Entries.Where(entry => entry.SpawnRate > 0).Select(entry => new DungeonPokemonSpawnModel
             {
-                StatsIndex = entry.PokemonIndex,
+                StatsIndex = (CreatureIndex) entry.PokemonIndex,
                 SpawnRate = entry.SpawnRate,
                 RecruitmentLevel = entry.RecruitmentLevel,
                 Byte0B = entry.Byte0B,
@@ -429,9 +430,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             var modelsDict = models.ToDictionary(model => model.StatsIndex);
             foreach (var entry in data.Entries)
             {
-                if (modelsDict.ContainsKey(entry.PokemonIndex))
+                if (modelsDict.ContainsKey((CreatureIndex) entry.PokemonIndex))
                 {
-                    var model = modelsDict[entry.PokemonIndex];
+                    var model = modelsDict[(CreatureIndex) entry.PokemonIndex];
                     entry.SpawnRate = model.SpawnRate;
                     entry.RecruitmentLevel = model.RecruitmentLevel;
                     entry.Byte0B = model.Byte0B;

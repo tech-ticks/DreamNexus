@@ -1,4 +1,5 @@
 ﻿using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using YamlDotNet.Serialization;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 {
@@ -14,7 +15,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
             public PokemonFixedWarehouseId WarehouseId { get; set; } = default!;
             public TextIDHash SpecialName { get; set; } = default!;
             public string? DebugName { get; set; }
+
+            [YamlIgnore]
             public ulong PokemonIndexOffset { get; set; }
+
+            [YamlIgnore]
             public bool PokemonIndexEditable { get; set; }
         }
     }

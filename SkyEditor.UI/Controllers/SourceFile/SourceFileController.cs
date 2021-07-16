@@ -19,11 +19,13 @@ namespace SkyEditorUI.Controllers
         [UI] private Box? addToModpackContainer;
         [UI] private Box? removeFromModpackContainer;
         [UI] private Label? fileNameLabel;
+        [UI] private Button? openInVSCodeButton;
 
         private SourceView sourceView;
 
         public SourceFileController(IRtdxRom rom, Modpack modpack, ControllerContext context)
-            : this(new Builder("SourceFile.glade"), rom, modpack, context) {
+            : this(new Builder("SourceFile.glade"), rom, modpack, context)
+        {
         }
 
         private SourceFileController(Builder builder, IRtdxRom rom, Modpack modpack, ControllerContext context) 
@@ -43,6 +45,7 @@ namespace SkyEditorUI.Controllers
 
             addToModpackContainer!.Visible = file.External && !file.InProject;
             removeFromModpackContainer!.Visible = file.External && file.InProject;
+            openInVSCodeButton!.Visible = file.InProject;
             RefreshPath();
         }
 
@@ -76,6 +79,7 @@ namespace SkyEditorUI.Controllers
             addToModpackContainer!.Visible = false;
             removeFromModpackContainer!.Visible = true;
             sourceView.Editable = true;
+            openInVSCodeButton!.Visible = true;
             RefreshPath();
         }
 
@@ -97,6 +101,7 @@ namespace SkyEditorUI.Controllers
             file.RemoveFromModpack(modpack);
             addToModpackContainer!.Visible = true;
             removeFromModpackContainer!.Visible = false;
+            openInVSCodeButton!.Visible = false;
 
             sourceView.Buffer.Text = file.Contents;
             sourceView.Editable = false;

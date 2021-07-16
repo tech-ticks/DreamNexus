@@ -89,6 +89,9 @@ namespace SkyEditorUI.Controllers
             {
                 var createWizard = new CreateModpackWizard();
                 var response = (ResponseType) createWizard.Run();
+                var modpackId = createWizard.ModpackId;
+                var modpackName = createWizard.ModpackName;
+                var modpackAuthor = createWizard.ModpackAuthor;
                 createWizard.Destroy();
 
                 if (response == ResponseType.Accept)
@@ -102,16 +105,16 @@ namespace SkyEditorUI.Controllers
 
                         var metadata = new ModpackMetadata
                         {
-                            Id = createWizard.ModpackId,
-                            Name = createWizard.ModpackName,
-                            Author = createWizard.ModpackAuthor,
+                            Id = modpackId,
+                            Name = modpackName,
+                            Author = modpackAuthor,
                             Target = "RTDX",
                             Version = "0.0.1",
                             Mods = new List<ModMetadata>
                             {
                                 new ModMetadata
                                 {
-                                    Id = $"{createWizard.ModpackId}.default",
+                                    Id = $"{modpackId}.default",
                                     Name = "Default",
                                     Target = "RTDX",
                                     Enabled = true,
@@ -679,14 +682,18 @@ namespace SkyEditorUI.Controllers
             AddAllModScripts(modsIter);
 
             AddMainListItem<StartersController>(root, "Starters", "skytemple-e-monster-symbolic");
+            AddMainListItem<ActorListController>(root, "Actors", "skytemple-e-actor-symbolic");
 
             var dungeonsIter = AddMainListItem(root, "Dungeons", "skytemple-e-dungeon-symbolic");
+            AddMainListItem<DungeonMapsController>(dungeonsIter, "Dungeon Maps", "skytemple-e-worldmap-symbolic");
+            AddMainListItem<DungeonMusicController>(dungeonsIter, "Dungeon Music", "skytemple-e-music-symbolic");
             AddDungeons(dungeonsIter);
 
-            var gameScriptsIter = AddMainListItem(root, "Game Scripts", "skytemple-e-variable-symbolic");
+            var gameScriptsIter = AddMainListItem(root, "Game Scripts", "skytemple-e-script-symbolic");
             AddGameScripts(gameScriptsIter);
 
-            var automationScriptsIter = AddMainListItem(root, "Modpack Automation Scripts", "skytemple-e-variable-symbolic");
+            var automationScriptsIter = AddMainListItem<ModpackScriptsController>(root, "Modpack Automation Scripts",
+                "skytemple-e-local-variable-symbolic");
             AddDefaultModScripts(automationScriptsIter);
 
             mainItemList!.ExpandToPath(mainItemList.Model.GetPath(root));
@@ -700,14 +707,14 @@ namespace SkyEditorUI.Controllers
             }
 
             var mods = modpack.Mods ?? Enumerable.Empty<Mod>();
-            var defaultMod = GetDefaultMod();
+            var defaultMod = modpack.GetDefaultMod();
             foreach (var mod in mods)
             {
                 if (mod != defaultMod)
                 {
                     string formattedName = mod.Metadata.Name ?? mod.Metadata.Id ?? "Unknown mod";
                     var modIter = AddMainListItem(parent, $"{formattedName}{(mod.Enabled ? "" : " (disabled)")}",
-                        "skytemple-e-variable-symbolic");
+                        "skytemple-folder-symbolic");
                     AddModScripts(modIter, mod);
                 }
             }
@@ -715,30 +722,13 @@ namespace SkyEditorUI.Controllers
 
         private void AddDefaultModScripts(TreeIter parent)
         {
-           var defaultMod = GetDefaultMod();
+           var defaultMod = modpack!.GetDefaultMod();
            if (defaultMod == null)
            {
                return;
            }
 
            AddModScripts(parent, defaultMod);
-        }
-
-        private Mod? GetDefaultMod()
-        {
-            if (modpack == null || modpack.Mods == null) 
-            {
-                return null;
-            }
-
-            var defaultMod = modpack.Mods
-                .FirstOrDefault(mod => mod.Metadata.Id == $"{modpack.Metadata.Id}.default");
-            if (defaultMod == null && modpack.Mods.Count == 1)
-            {
-                defaultMod = modpack.Mods.FirstOrDefault();
-            }
-
-            return defaultMod;
         }
 
         private void AddModScripts(TreeIter parent, Mod mod)
@@ -749,7 +739,7 @@ namespace SkyEditorUI.Controllers
                 var sourceFile = new SourceFile(path, false);
                 sourceFiles.Add(sourceFile);
 
-                AddMainListItem<SourceFileController>(parent, IOPath.GetFileName(path), "skytemple-e-variable-symbolic",
+                AddMainListItem<SourceFileController>(parent, IOPath.GetFileName(path), "skytemple-e-script-symbolic",
                     new SourceFileControllerContext(sourceFile));
             }
         }
@@ -771,8 +761,9 @@ namespace SkyEditorUI.Controllers
                 foreach (var floor in dungeon.Floors)
                 {
                     bool unused = floor.Index <= 0 || floor.Index > dungeon.AccessibleFloorCount;
-                    AddMainListItem(dungeonIter, $"Floor {floor.Index}{(unused ? " (unused)" : "")}", 
-                        "skytemple-e-dungeon-floor-symbolic");
+                    AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor {floor.Index}{(unused ? " (unused)" : "")}", 
+                        "skytemple-e-dungeon-floor-symbolic",
+                        new DungeonFloorControllerContext((DungeonIndex) i, floor.Index));
                 }
             }
         }
@@ -797,12 +788,12 @@ namespace SkyEditorUI.Controllers
                     var sourceFile = new SourceFile(file.FullName, true);
                     sourceFile.OverrideFromModpackIfExists(rom!, modpack!);
                     sourceFiles.Add(sourceFile);
-                    AddMainListItem<SourceFileController>(parent, file.Name, "skytemple-e-variable-symbolic",
+                    AddMainListItem<SourceFileController>(parent, file.Name, "skytemple-e-script-symbolic",
                         new SourceFileControllerContext(sourceFile));
                 }
                 else if (item is DirectoryInfo directory && !item.Name.StartsWith("."))
                 {
-                    var directoryIter = AddMainListItem(parent, directory.Name, "skytemple-e-variable-symbolic");
+                    var directoryIter = AddMainListItem(parent, directory.Name, "skytemple-folder-symbolic");
                     AddGameScripts(directoryIter, directory);
                 }
             }

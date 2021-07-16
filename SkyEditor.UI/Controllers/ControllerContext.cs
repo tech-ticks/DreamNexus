@@ -31,4 +31,16 @@ namespace SkyEditorUI.Controllers
             Index = index;
         }
     }
+
+    public class DungeonFloorControllerContext : ControllerContext
+    {
+        public DungeonIndex DungeonIndex { get; }
+        public int FloorIndex { get; set; }
+
+        public DungeonFloorControllerContext(DungeonIndex dungeonIndex, int floorNum)
+        {
+            DungeonIndex = dungeonIndex;
+            FloorIndex = floorNum;
+        }
+    }
 }

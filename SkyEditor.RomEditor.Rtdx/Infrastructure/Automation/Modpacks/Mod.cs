@@ -17,6 +17,11 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             this.Metadata = metadata ?? throw new ArgumentNullException(nameof(metadata));
             this.Enabled = metadata.Enabled;
 
+            LoadScripts();
+        }
+
+        private void LoadScripts()
+        {
             var scripts = new List<Script>();
             foreach (var scriptRelativePath in Metadata.Scripts ?? Enumerable.Empty<string>())
             {
@@ -39,6 +44,17 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             }
 
             this.Scripts = scripts;
+        }
+
+        public void AddScript(string path)
+        {
+            if (!(fileSystem is IFileSystem rwFileSystem))
+            {
+                throw new InvalidOperationException("Cannot add script to read-only mod.");
+            }
+            rwFileSystem.WriteAllText(Path.Join(GetBaseDirectory(), path), "");
+            Metadata?.Scripts?.Add(path);
+            LoadScripts();
         }
 
         private readonly string directory;

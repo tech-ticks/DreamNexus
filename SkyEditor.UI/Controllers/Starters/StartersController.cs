@@ -29,7 +29,8 @@ namespace SkyEditorUI.Controllers
         private const int Move3Column = 6;
         private const int Move4Column = 7;
 
-        public StartersController(IRtdxRom rom) : this(new Builder("Starters.glade"), rom) {
+        public StartersController(IRtdxRom rom) : this(new Builder("Starters.glade"), rom)
+        {
         }
 
         private StartersController(Builder builder, IRtdxRom rom) : base(builder.GetRawOwnedObject("main"))

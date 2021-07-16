@@ -28,7 +28,8 @@ namespace SkyEditorUI.Controllers
         private bool addingMod;
 
         public ModsController(IRtdxRom rom, Modpack modpack)
-            : this(new Builder("Mods.glade"), rom, modpack) {
+            : this(new Builder("Mods.glade"), rom, modpack)
+        {
         }
 
         private ModsController(Builder builder, IRtdxRom rom, Modpack modpack) 

@@ -36,6 +36,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
       }
 
       ensureDirectoryExists(basePath);
+      ensureDirectoryExists(Path.Combine(basePath, "Scripts"));
 
       SaveMetadata(metadata, basePath, fileSystem).Wait();
 
@@ -48,6 +49,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
       foreach (var mod in Mods ?? Enumerable.Empty<Mod>())
       {
         // TODO: create derived RtdxMod class and move this stuff there
+        if (mod.ModelExists("actors.yaml"))
+        {
+          rom.SetActors(await mod.LoadModel<ActorCollection>("actors.yaml"));
+        }
+
         if (mod.ModelExists("starters.yaml"))
         {
           rom.SetStarters(await mod.LoadModel<StarterCollection>("starters.yaml"));
@@ -57,6 +63,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         for (int i = 1; i < (int) DungeonIndex.END; i++)
         {
           await LoadDungeon(mod, rom, (DungeonIndex) i, dungeons);
+        }
+
+        if (mod.ModelExists("dungeon_maps.yaml"))
+        {
+          rom.SetDungeonMaps(await mod.LoadModel<DungeonMapCollection>("dungeon_maps.yaml"));
+        }
+        if (mod.ModelExists("dungeon_music.yaml"))
+        {
+          rom.SetDungeonMusic(await mod.LoadModel<DungeonMusicCollection>("dungeonmusic.yaml"));
         }
       }
     }
@@ -81,10 +96,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         foreach (var path in mod.GetModelFilesInDirectory(floorsPath))
         {
           var model = await mod.LoadModel<DungeonFloorModel>(path);
-          if (model.Index > 0)
-          {
-            floorModels.Add(model);
-          }
+          floorModels.Add(model);
         }
 
         var sortedFloorModels = floorModels
@@ -109,6 +121,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         var tasks = new List<Task>();
 
         // TODO: create derived RtdxMod class and move this stuff there
+        if (rom.ActorsModified)
+        {
+          tasks.Add(mod.SaveModel(rom.GetActors(), "actors.yaml"));
+        }
+
         if (rom.StartersModified)
         {
           tasks.Add(mod.SaveModel(rom.GetStarters(), "starters.yaml"));
@@ -136,6 +153,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
               tasks.Add(mod.SaveModel(floor, path));
             }
           }
+        }
+
+        if (rom.DungeonMapsModified)
+        {
+          tasks.Add(mod.SaveModel(rom.GetDungeonMaps(), "dungeon_maps.yaml"));
+        }
+
+        if (rom.DungeonMusicModified)
+        {
+          tasks.Add(mod.SaveModel(rom.GetDungeonMusic(), "dungeon_music.yaml"));
         }
 
         await Task.WhenAll(tasks);

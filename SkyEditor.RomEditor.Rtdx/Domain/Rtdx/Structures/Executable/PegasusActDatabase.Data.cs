@@ -5,7 +5,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 {
     public partial class PegasusActDatabase
     {
-        public List<ActorData> ActorDataList { get; } = new List<ActorData>
+        public List<ActorData> ActorDataList { get; set; } = new List<ActorData>
         {
             new ActorData {
                 SymbolName = "HERO",
