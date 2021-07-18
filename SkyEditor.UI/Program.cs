@@ -78,7 +78,7 @@ namespace SkyEditorUI
 
                     if (proc == null)
                     {
-                        return true;
+                        return false;
                     }
 
                     var theme = proc.StandardOutput.ReadToEnd();
@@ -91,7 +91,7 @@ namespace SkyEditorUI
                 Console.WriteLine("Failed to get system theme: " + e);
             }
 
-            return true;
+            return false;
         }
     }
 }

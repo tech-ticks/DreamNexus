@@ -9,6 +9,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2.3.4
+      with:
+        submodules: true
 
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1.8.0
@@ -21,8 +23,60 @@ jobs:
         dotnet nuget add source "https://pkgs.dev.azure.com/project-pokemon/4a5da2d7-09b8-4354-9450-562116aac7b5/_packaging/skyeditor/nuget/v3/index.json" -n "skyeditor"
         dotnet restore
 
+    - name: Copy mods folder
+      run: cp -r SkyEditor.RomEditor.Rtdx.ConsoleApp/Mods SkyEditor.UI/Mods
+
     - name: Build
       run: dotnet build --no-restore
 
     - name: Run tests
       run: dotnet test
+
+    - name: Publish UI for Windows
+      run: cd SkyEditor.UI && dotnet publish -c Release -r win-x64
+
+    - name: Publish UI for Mac
+      run: cd SkyEditor.UI && dotnet publish -c Release -r osx-x64
+
+    - name: Publish UI for Linux
+      run: cd SkyEditor.UI && dotnet publish -c Release -r linux-x64
+
+    - name: Post-process builds, copy themes
+      run: |
+        curl https://skytemple.org/build_deps/Arc.zip -O
+        unzip Arc.zip
+
+        mkdir -p SkyEditor.UI/bin/Release/net5.0/win-x64/publish/themes/
+        mkdir -p SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/themes/
+        mkdir -p SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/themes/
+
+        cp -r Arc SkyEditor.UI/bin/Release/net5.0/win-x64/publish/themes/
+        cp -r Arc SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/themes/
+        cp -r Arc SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/themes/
+        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/win-x64/publish/themes/
+        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/themes/
+        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/themes/
+
+        chmod +x SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/SkyEditor.UI
+        chmod +x SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/SkyEditor.UI
+    
+    - name: Upload Windows build
+      uses: actions/upload-artifact@v2
+      with:
+        name: windows-app
+        path: |
+          SkyEditor.UI/bin/Release/net5.0/win-x64/publish/
+
+    - name: Upload Mac build
+      uses: actions/upload-artifact@v2
+      with:
+        name: mac-app
+        path: |
+          SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/
+
+    - name: Upload Linux build
+      uses: actions/upload-artifact@v2
+      with:
+        name: linux-app
+        path: |
+          SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/
