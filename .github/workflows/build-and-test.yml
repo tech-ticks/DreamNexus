@@ -46,16 +46,16 @@ jobs:
         curl https://skytemple.org/build_deps/Arc.zip -O
         unzip Arc.zip
 
-        mkdir -p SkyEditor.UI/bin/Release/net5.0/win-x64/publish/themes/
-        mkdir -p SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/themes/
-        mkdir -p SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/themes/
+        mkdir -p SkyEditor.UI/bin/Release/net5.0/win-x64/publish/share/themes/
+        mkdir -p SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/share/themes/
+        mkdir -p SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/share/themes/
 
-        cp -r Arc SkyEditor.UI/bin/Release/net5.0/win-x64/publish/themes/
-        cp -r Arc SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/themes/
-        cp -r Arc SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/themes/
-        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/win-x64/publish/themes/
-        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/themes/
-        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/themes/
+        cp -r Arc SkyEditor.UI/bin/Release/net5.0/win-x64/publish/share/themes/
+        cp -r Arc SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/share/themes/
+        cp -r Arc SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/share/themes/
+        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/win-x64/publish/share/themes/
+        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/share/themes/
+        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/share/themes/
 
         chmod +x SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/SkyEditor.UI
         chmod +x SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/SkyEditor.UI
