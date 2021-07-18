@@ -178,12 +178,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                     encodedValue = shortCharacter & 0xFFu;
                 }
 
-                if (entry == null)
-                {
-                    throw new InvalidOperationException($"No entry found in code table for character {shortCharacter}");
-                }
-
-                if (specialCode)
+                if (entry != null && specialCode)
                 {
                     string encodedValueString;
                     if (entry.Flags != 0)
