@@ -107,7 +107,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Lua
                 if (converterAttribute != null)
                 {
                     var generatorType = converterAttribute.Generator;
-                    var converter = (ILuaExpressionGenerator)serviceProvider.GetService(generatorType);
+                    var converter = (ILuaExpressionGenerator)serviceProvider.GetService(generatorType)!;
                     return converter.Generate(value);
                 }
             }

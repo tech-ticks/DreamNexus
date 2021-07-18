@@ -72,7 +72,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         public Dictionary<long, List<MessageBinString>> Strings { get; }
         public IReadOnlyList<int> OrderedHashes { get; }
 
-        public string GetStringByHash(int hash) => Strings.ContainsKey(hash) ? Strings[hash].FirstOrDefault().Value : "";
+        public string GetStringByHash(int hash) => Strings.ContainsKey(hash) ? Strings[hash].FirstOrDefault()!.Value : "";
 
         public void AddString(string key, string value)
         {

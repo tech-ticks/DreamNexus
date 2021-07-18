@@ -885,7 +885,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             {
                 if (!Directory.Exists(Path.GetDirectoryName(path)))
                 {
-                    Directory.CreateDirectory(Path.GetDirectoryName(path));
+                    var dir = Path.GetDirectoryName(path) ?? throw new IOException("Couldn't get directory name.");
+                    Directory.CreateDirectory(dir);
                 }
             }
 

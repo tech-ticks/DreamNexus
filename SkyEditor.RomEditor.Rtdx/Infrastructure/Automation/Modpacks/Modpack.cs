@@ -240,14 +240,15 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             {
                 throw new ArgumentException("Mod must have an ID in the metadata", nameof(mod));
             }
-            if (mods.Any(m => string.Equals(m.Metadata.Id, mod.Metadata.Id, StringComparison.OrdinalIgnoreCase)))
-            {
-                throw new ArgumentException($"Mod with the ID '{Metadata.Id}' is already present in the modpack", nameof(mod));
-            }
 
             if (mods == null)
             {
                 mods = new List<Mod>();
+            }
+            
+            if (mods.Any(m => string.Equals(m.Metadata.Id, mod.Metadata.Id, StringComparison.OrdinalIgnoreCase)))
+            {
+                throw new ArgumentException($"Mod with the ID '{Metadata.Id}' is already present in the modpack", nameof(mod));
             }
 
             var modDirectory = Path.Combine(ModsDirectory, mod.Metadata.Id);

@@ -283,9 +283,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 var sir0 = new Sir0Builder(8);
                 var sortedEntries = Entries.OrderBy(e => e.Hash).ToList();
+                Span<byte> entry = stackalloc byte[16];
                 for (int i = 0; i < sortedEntries.Count; i++)
                 {
-                    Span<byte> entry = stackalloc byte[16];
+                    entry.Clear();
                     sortedEntries[i].Write(entry);
                     sir0.Write(sir0.Length, entry);
                 }

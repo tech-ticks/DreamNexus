@@ -12,9 +12,9 @@ namespace SkyEditor.RomEditor.Infrastructure
             return (T)serviceProvider.GetRequiredService(typeof(T));
         }
 
-        public static T GetService<T>(this IServiceProvider serviceProvider)
+        public static T? GetService<T>(this IServiceProvider serviceProvider) where T: class
         {
-            return (T)serviceProvider.GetService(typeof(T));
+            return (T?)serviceProvider.GetService(typeof(T));
         }
     }
 }
