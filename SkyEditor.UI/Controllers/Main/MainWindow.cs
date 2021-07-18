@@ -30,7 +30,6 @@ namespace SkyEditorUI.Controllers
         [UI] private Button? saveButton;
         [UI] private Button? buildButton;
         [UI] private Button? deployButton;
-        [UI] private SearchEntry? mainItemListSearch;
         [UI] private TreeView? mainItemList;
         [UI] private Box? esLoading;
         [UI] private TreeView? recentModpacksList;

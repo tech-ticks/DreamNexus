@@ -194,7 +194,7 @@ namespace SkyEditor.RomEditor.Domain.Psmd.Structures
 
             public override string ToString()
             {
-                return Name ?? base.ToString();
+                return Name ?? base.ToString() ?? "null";
             }
         }
         #endregion

@@ -105,12 +105,14 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             }
             else if (fileSystem.FileExists(modpackJsonFilename))
             {
-                metadata = JsonConvert.DeserializeObject<ModpackMetadata>(fileSystem.ReadAllText(modpackJsonFilename));
+                metadata = JsonConvert.DeserializeObject<ModpackMetadata>(fileSystem.ReadAllText(modpackJsonFilename))
+                    ?? throw new NoNullAllowedException("Failed to load Modpack metadata");
                 readOnly = false;
             }
             else if (fileSystem.FileExists(modFilename))
             {
-                var modMetadata = JsonConvert.DeserializeObject<ModMetadata>(fileSystem.ReadAllText(modFilename));
+                var modMetadata = JsonConvert.DeserializeObject<ModMetadata>(fileSystem.ReadAllText(modFilename))
+                    ?? throw new NoNullAllowedException("Failed to load Modpack metadata");
                 modMetadata.Enabled = true;
                 metadata = new ModpackMetadata
                 {

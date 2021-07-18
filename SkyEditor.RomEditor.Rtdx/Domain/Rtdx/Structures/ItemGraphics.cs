@@ -40,7 +40,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         public class Entry
         {
             // Name of the model prefab in item.ab or trap.ab (with prefix "item_" or "trap_")
-            public string ModelName { get; set; }
+            public string ModelName { get; set; } = "";
             public byte Byte00 { get; set; }
             public byte Byte01 { get; set; }
             public byte Byte02 { get; set; }

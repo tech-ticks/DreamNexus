@@ -51,7 +51,14 @@ namespace SkyEditorUI.Infrastructure
       }
 
       var settingsJson = File.ReadAllText(SettingsFilePath);
-      return JsonConvert.DeserializeObject<Settings>(settingsJson);
+      var deserializedSettings = JsonConvert.DeserializeObject<Settings>(settingsJson);
+      if (deserializedSettings == null)
+      {
+        Console.Error.WriteLine("Deserialized settings were null, this should never happen! Creating new Settings.");
+        return new Settings();
+      }
+
+      return deserializedSettings;
     }
 
     public void Save()

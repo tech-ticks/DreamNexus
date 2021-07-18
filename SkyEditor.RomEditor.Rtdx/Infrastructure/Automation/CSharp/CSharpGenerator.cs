@@ -44,7 +44,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.CSharp
 
                 var sourceValue = property.GetValue(source);
                 var targetValue = property.GetValue(modified);
-                if (sourceValue.Equals(targetValue))
+                if (sourceValue != null && sourceValue.Equals(targetValue))
                 {
                     continue;
                 }
@@ -124,10 +124,10 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.CSharp
                 var type = value.GetType();
                 if (type.IsGenericType && type.GetGenericTypeDefinition() == NullableType)
                 {
-                    var hasValue = (bool)type.GetProperty("HasValue").GetValue(value);
+                    var hasValue = (bool) (type.GetProperty("HasValue")?.GetValue(value) ?? false);
                     if (hasValue)
                     {
-                        return GenerateExpression(type.GetProperty("Value").GetValue(value));
+                        return GenerateExpression(type.GetProperty("Value")?.GetValue(value));
                     }
                     else
                     {

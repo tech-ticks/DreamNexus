@@ -65,6 +65,11 @@ namespace SkyEditorUI.Infrastructure
 
       foreach (var release in releases.Select(release => release.Value<JObject>()))
       {
+        if (release == null)
+        {
+          Console.WriteLine("GitHub API returned a null release!");
+          continue;
+        }
         var tagName = release["tag_name"]?.Value<string>();
         var assetsArray = release["assets"]?.Value<JArray>();
 

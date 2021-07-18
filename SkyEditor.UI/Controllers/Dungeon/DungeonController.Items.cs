@@ -20,7 +20,6 @@ namespace SkyEditorUI.Controllers
         private const int ItemWeightColumn = 3;
         private const int ItemChanceColumn = 4;
 
-        [UI] private TreeView? itemCategoriesTree;
         [UI] private ListStore? itemCategoriesStore;
         [UI] private ComboBoxText? cbSelectedItemSet;
         [UI] private EntryCompletion? itemsCompletion;

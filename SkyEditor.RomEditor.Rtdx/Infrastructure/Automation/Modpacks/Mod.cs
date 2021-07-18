@@ -52,7 +52,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             {
                 throw new InvalidOperationException("Cannot add script to read-only mod.");
             }
-            rwFileSystem.WriteAllText(Path.Join(GetBaseDirectory(), path), "");
+            rwFileSystem.WriteAllText(Path.Combine(GetBaseDirectory(), path), "");
             Metadata?.Scripts?.Add(path);
             LoadScripts();
         }
@@ -98,7 +98,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             var tasks = new List<Task>();
             foreach (var assetPath in fileSystem.GetFiles(assetsDir, "*", false))
             {
-                var relativePath = Path.GetRelativePath(assetsDir, assetPath);
+                var relativePath = FileSystemExtensions.GetRelativePath(assetsDir, assetPath);
                 var targetPath = Path.Combine("romfs", "Data", "StreamingAssets", relativePath);
                 tasks.Add(WriteAsset(context.Target, assetPath, targetPath));
             }
@@ -106,10 +106,16 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             await Task.WhenAll(tasks);
         }
 
+#pragma warning disable CS1998
         private async Task WriteAsset(IModTarget target, string assetPath, string targetPath)
         {
+#if !NETSTANDARD2_0
             target.WriteFile(targetPath, await File.ReadAllBytesAsync(assetPath));
+#else
+            target.WriteFile(targetPath, File.ReadAllBytes(assetPath));
+#endif
         }
+#pragma warning restore CS1998
 
         public async Task SaveModel(object model, string relativePath)
         {

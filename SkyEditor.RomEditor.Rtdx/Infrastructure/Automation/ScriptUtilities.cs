@@ -9,7 +9,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation
             return JsonConvert.SerializeObject(obj);
         }
 
-        public T DeserializeJson<T>(string json)
+        public T? DeserializeJson<T>(string json) where T: class
         {
             return JsonConvert.DeserializeObject<T>(json);
         }

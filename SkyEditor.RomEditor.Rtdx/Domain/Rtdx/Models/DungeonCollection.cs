@@ -1,7 +1,9 @@
 ﻿using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
+#if NETSTANDARD2_0
+using SkyEditor.RomEditor.Infrastructure;
+#endif
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -63,6 +65,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             return LoadedDungeons.Values.OrderBy(dungeon => dungeon.SortKey).ToList();
         }
 
+#pragma warning disable CS0612
         private DungeonModel LoadDungeon(DungeonIndex index)
         {
             var commonStrings = rom.GetCommonStrings();
@@ -97,8 +100,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 DataInfoByte18 = data.Byte18,
                 DataInfoByte19 = data.Byte19,
                 AccessibleFloorCount = (short) accessibleFloorCount,
-                UnknownFloorCount = requestLevel?.MainEntry.Unk1 ?? -1,
-                TotalFloorCount = requestLevel?.MainEntry.TotalFloorCount ?? -1,
+                UnknownFloorCount = requestLevel?.MainEntry?.Unk1 ?? -1,
+                TotalFloorCount = requestLevel?.MainEntry?.TotalFloorCount ?? -1,
 
                 ItemSets = LoadItemSets(itemArrangeEntry),
                 PokemonStats = balance.WildPokemon != null ? LoadPokemonStats(balance.WildPokemon) : null,
@@ -110,6 +113,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 RequestLevel = requestLevel,
             };
         }
+#pragma warning restore CS0612
 
         private List<DungeonPokemonStatsModel> LoadPokemonStats(DungeonBalance.WildPokemonInfo data)
         {

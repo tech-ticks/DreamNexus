@@ -18,6 +18,7 @@ using System.Text;
 using SkyEditor.RomEditor.Infrastructure.Interfaces;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Data;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx
 {
@@ -214,7 +215,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
             if (natureDiagnosis == null)
             {
-                natureDiagnosis = JsonConvert.DeserializeObject<NatureDiagnosisConfiguration>(FileSystem.ReadAllText(GetNatureDiagnosisPath(this.RomDirectory)));
+                natureDiagnosis = JsonConvert.DeserializeObject<NatureDiagnosisConfiguration>(FileSystem.ReadAllText(
+                    GetNatureDiagnosisPath(this.RomDirectory)))
+                        ?? throw new NoNullAllowedException("Failed to load nature_diagnosis.json");
             }
             return natureDiagnosis;
         }

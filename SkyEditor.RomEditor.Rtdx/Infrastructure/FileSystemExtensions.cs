@@ -26,7 +26,7 @@ namespace SkyEditor.RomEditor.Infrastructure
                 var dest = Path.Combine(targetDirectory, GetRelativePath(sourceDirectory, file));
 
                 var destDirectory = Path.GetDirectoryName(dest);
-                if (!targetFileSystem.DirectoryExists(destDirectory))
+                if (destDirectory != null && !targetFileSystem.DirectoryExists(destDirectory))
                 {
                     targetFileSystem.CreateDirectory(destDirectory);
                 }
@@ -56,7 +56,7 @@ namespace SkyEditor.RomEditor.Infrastructure
                     var dest = Path.Combine(targetDirectory, GetRelativePath(sourceDirectory, file));
 
                     var destDirectory = Path.GetDirectoryName(dest);
-                    if (!targetFileSystem.DirectoryExists(destDirectory))
+                    if (destDirectory != null && !targetFileSystem.DirectoryExists(destDirectory))
                     {
                         await directoryLock.WaitAsync().ConfigureAwait(false);
                         if (!targetFileSystem.DirectoryExists(destDirectory))

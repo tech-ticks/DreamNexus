@@ -43,7 +43,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Lua
 
                 var sourceValue = property.GetValue(source);
                 var targetValue = property.GetValue(modified);
-                if (sourceValue.Equals(targetValue))
+                if (sourceValue != null && sourceValue.Equals(targetValue))
                 {
                     continue;
                 }
@@ -86,17 +86,17 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Lua
                 || value is float
                 || value is double)
             {
-                return value.ToString();
+                return value.ToString()!;
             }
             else
             {
                 var type = value.GetType();
                 if (type.IsGenericType && type.GetGenericTypeDefinition() == NullableType)
                 {
-                    var hasValue = (bool)type.GetProperty("HasValue").GetValue(value);
+                    var hasValue = (bool) (type.GetProperty("HasValue")?.GetValue(value) ?? false);
                     if (hasValue)
                     {
-                        return GenerateExpression(type.GetProperty("Value").GetValue(value));
+                        return GenerateExpression(type.GetProperty("Value")?.GetValue(value));
                     }
                     else
                     {

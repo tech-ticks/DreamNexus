@@ -31,7 +31,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             };
             db.Entries[DungeonIndex.D001] = new DungeonDataInfo.Entry
             {
-                Features = DungeonDataInfo.Entry.Feature.Radar | DungeonDataInfo.Entry.Feature.Scanning,
+                Features = DungeonFeature.Radar | DungeonFeature.Scanner,
                 Index = 1,
                 NameID = 0x08,
                 Short0A = 0x0A,
@@ -54,7 +54,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             var rebuiltDb = new DungeonDataInfo(data);
             
             // Check modified entries
-            rebuiltDb.Entries[DungeonIndex.D001].Features.Should().Be(DungeonDataInfo.Entry.Feature.Radar | DungeonDataInfo.Entry.Feature.Scanning);
+            rebuiltDb.Entries[DungeonIndex.D001].Features.Should().Be(DungeonFeature.Radar | DungeonFeature.Scanner);
             rebuiltDb.Entries[DungeonIndex.D001].Index.Should().Be(1);
             rebuiltDb.Entries[DungeonIndex.D001].NameID.Should().Be(0x08);
             rebuiltDb.Entries[DungeonIndex.D001].Short0A.Should().Be(0x0A);
