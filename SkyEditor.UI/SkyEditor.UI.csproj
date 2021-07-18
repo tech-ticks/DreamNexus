@@ -20,6 +20,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Assets\**\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Mods\**\*.*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SkyEditor.RomEditor.Rtdx\SkyEditor.RomEditor.csproj" />
   </ItemGroup>
 
