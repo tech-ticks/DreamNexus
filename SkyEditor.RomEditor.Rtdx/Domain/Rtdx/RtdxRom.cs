@@ -32,6 +32,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// </summary>
         bool EnableCustomFiles { get; set; }
 
+        bool Modified { get; }
+
         #region Exefs
         /// <summary>
         /// Gets the main executable, loading it if needed
@@ -129,22 +131,22 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         #region Models
         IStarterCollection GetStarters();
         void SetStarters(IStarterCollection collection);
-        bool StartersModified { get; }
+        bool StartersModified { get; set; }
 
         IDungeonCollection GetDungeons();
-        bool DungeonsModified { get; }
+        bool DungeonsModified { get; set; }
 
         IActorCollection GetActors();
         void SetActors(IActorCollection collection);
-        bool ActorsModified { get; }
+        bool ActorsModified { get; set;}
 
         IDungeonMapCollection GetDungeonMaps();
         void SetDungeonMaps(IDungeonMapCollection collection);
-        bool DungeonMapsModified { get; }
+        bool DungeonMapsModified { get; set; }
 
         IDungeonMusicCollection GetDungeonMusic();
         void SetDungeonMusic(IDungeonMusicCollection collection);
-        bool DungeonMusicModified { get; }
+        bool DungeonMusicModified { get; set; }
         #endregion
 
         #region Helpers
@@ -769,13 +771,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     sp.GetRequiredService<ILuaGenerator>(),
                     sp.GetRequiredService<ICSharpGenerator>());
             }
+            StartersModified = true;
             return starterCollection;
         }
         public void SetStarters(IStarterCollection collection)
         {
             this.starterCollection = collection;
         }
-        public bool StartersModified => starterCollection != null;
+        public bool StartersModified { get; set; }
 
         private IStarterCollection? starterCollection;
 
@@ -785,10 +788,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             {
                 dungeonCollection = new DungeonCollection(this);
             }
+            DungeonsModified = true;
             return dungeonCollection;
         }
 
-        public bool DungeonsModified => dungeonCollection != null;
+        public bool DungeonsModified { get; set; }
 
         private IDungeonCollection? dungeonCollection;
 
@@ -798,13 +802,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             {
                 actorCollection = new ActorCollection(this);
             }
+            ActorsModified = true;
             return actorCollection;
         }
         public void SetActors(IActorCollection collection)
         {
             this.actorCollection = collection;
         }
-        public bool ActorsModified => actorCollection != null;
+        public bool ActorsModified  { get; set; }
 
         private IActorCollection? actorCollection;
 
@@ -814,13 +819,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             {
                 dungeonMapCollection = new DungeonMapCollection(this);
             }
+            DungeonMapsModified = true;
             return dungeonMapCollection;
         }
         public void SetDungeonMaps(IDungeonMapCollection collection)
         {
             this.dungeonMapCollection = collection;
         }
-        public bool DungeonMapsModified => dungeonMapCollection != null;
+        public bool DungeonMapsModified  { get; set; }
 
         private IDungeonMapCollection? dungeonMapCollection;
 
@@ -830,15 +836,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             {
                 dungeonMusicCollection = new DungeonMusicCollection(this);
             }
+            DungeonMusicModified = true;
             return dungeonMusicCollection;
         }
         public void SetDungeonMusic(IDungeonMusicCollection collection)
         {
             this.dungeonMusicCollection = collection;
         }
-        public bool DungeonMusicModified => dungeonMusicCollection != null;
+        public bool DungeonMusicModified { get; set; }
 
         private IDungeonMusicCollection? dungeonMusicCollection;
+
+        public bool Modified => StartersModified || DungeonsModified || ActorsModified
+            || DungeonMapsModified || DungeonMusicModified;
+
         #endregion
 
         #region Helpers

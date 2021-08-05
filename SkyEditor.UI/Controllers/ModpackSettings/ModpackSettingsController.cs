@@ -24,6 +24,7 @@ namespace SkyEditorUI.Controllers
         [UI] private Switch? enableCodeInjectionSwitch;
         [UI] private ListStore? codeInjectionVersionsStore;
         [UI] private ComboBox? codeInjectionVersionsComboBox;
+        [UI] private ComboBoxText? codeInjectionReleaseTypeComboBox;
 
         private Modpack modpack;
 
@@ -105,6 +106,7 @@ namespace SkyEditorUI.Controllers
             if (!args.State)
             {
                 codeInjectionVersionsComboBox!.Sensitive = false;
+                codeInjectionReleaseTypeComboBox!.Sensitive = false;
                 modpack.Metadata.EnableCodeInjection = false;
             }
 
@@ -127,10 +129,25 @@ namespace SkyEditorUI.Controllers
         private void OnEnableCodeInjection()
         {
             codeInjectionVersionsComboBox!.Sensitive = true;
+            codeInjectionReleaseTypeComboBox!.Sensitive = true;
             modpack.Metadata.EnableCodeInjection = true;
             var versions = CodeInjectionHelpers.GetAvailableVersions(Settings.DataPath);
             AddVersionsToStore(versions);
             modpack.Metadata.CodeInjectionVersion = versions[codeInjectionVersionsComboBox!.Active];
+            modpack.Metadata.CodeInjectionReleaseType = codeInjectionReleaseTypeComboBox.Active != 0
+                ? "release" : "debug";
+        }
+
+        private void OnCodeInjectionVersionChanged(object sender, EventArgs args)
+        {
+            var versions = CodeInjectionHelpers.GetAvailableVersions(Settings.DataPath);
+            modpack.Metadata.CodeInjectionVersion = versions[codeInjectionVersionsComboBox!.Active];
+        }
+
+        private void OnCodeInjectionReleaseTypeChanged(object sender, EventArgs args)
+        {
+            modpack.Metadata.CodeInjectionReleaseType = codeInjectionReleaseTypeComboBox!.Active != 0
+                ? "release" : "debug";
         }
 
         private void OnRedownloadInjectionBinariesClicked(object sender, EventArgs args)

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using System.Runtime.ExceptionServices;
 
 namespace SkyEditorUI.Controllers
 {
@@ -35,11 +36,13 @@ namespace SkyEditorUI.Controllers
         [UI] private TreeView? recentModpacksList;
         [UI] private ListStore? recentModpacksStore;
         [UI] private AboutDialog? aboutDialog;
+        [UI] private PopoverMenu? openMenu;
 
         private Widget? currentController;
         private IRtdxRom? rom;
         private Modpack? modpack;
         private List<SourceFile> sourceFiles = new List<SourceFile>();
+        private bool preventLoadingRecent;
 
         public MainWindow() : this(new Builder("Main.glade")) { }
 
@@ -48,7 +51,7 @@ namespace SkyEditorUI.Controllers
             Instance = this;
 
             builder.Autoconnect(this);
-            DeleteEvent += Window_DeleteEvent;
+            DeleteEvent += OnWindowDelete;
 
             updateInfo?.Hide();
 
@@ -77,8 +80,40 @@ namespace SkyEditorUI.Controllers
             }
         }
 
-        private void Window_DeleteEvent(object sender, DeleteEventArgs a)
+        private void OnWindowDelete(object sender, DeleteEventArgs args)
         {
+            if (rom != null && modpack != null && rom.Modified)
+            {
+                var dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Warning, ButtonsType.None, true,
+                    $"<b>Do you want to save changes to {IOPath.GetFileName(modpack.Directory)}?</b>\n\n"
+                    + "If you don't save, your changes will be lost.");
+
+                dialog.Title = "Unsaved changes";
+                
+                var dontSaveButton = dialog.AddButton("Don't Save", ResponseType.No);
+                dontSaveButton.StyleContext.AddClass("destructive-action");
+
+                dialog.AddButton("Cancel", ResponseType.Cancel);
+                dialog.AddButton("Save", ResponseType.Yes);
+
+                var response = (ResponseType) dialog.Run();
+                dialog.Destroy();
+
+                if (response == ResponseType.Yes)
+                {
+                    TrySaveModpack(() =>
+                    {
+                        Close();
+                    });
+                    args.RetVal = true;
+                    return;
+                }
+                else if (response == ResponseType.Cancel)
+                {
+                    args.RetVal = true;
+                    return;
+                }
+            }
             Application.Quit();
         }
 
@@ -147,10 +182,9 @@ namespace SkyEditorUI.Controllers
 
         private void OnRecentModpackSelectionChanged(object sender, EventArgs args)
         {
-            if (modpack != null)
+            if (preventLoadingRecent)
             {
-                // TODO: workaround since it keeps selecting other items after loading a modpack.
-                // this is a workaround to stop it from happening, but it prevents loading any other modpacks from the recent list
+                // Workaround since it keeps selecting other items after loading a modpack.
                 return;
             }
 
@@ -160,12 +194,21 @@ namespace SkyEditorUI.Controllers
                 var path = model.GetValue(iter, 1) as string;
                 if (path != null)
                 {
-                    LoadModpack(path);
+                    selection.UnselectAll();
+                    openMenu!.Hide();
+                    preventLoadingRecent = true;
+                    LoadModpack(path, (e) =>
+                    {
+                        if (e != null)
+                        {
+                            preventLoadingRecent = false;
+                        }
+                    });
                 }
             }
         }
 
-        private void LoadModpack(string path)
+        private void LoadModpack(string path, System.Action<Exception?>? onFinished = null)
         {
             LoadRtdxRom(() =>
             {
@@ -179,6 +222,7 @@ namespace SkyEditorUI.Controllers
                     try
                     {
                         modpack?.Dispose();
+                        Console.WriteLine($"Loading modpack {path}");
                         modpack = new RtdxModpack(path, PhysicalFileSystem.Instance);
 
                         await modpack.Apply(rom!).ConfigureAwait(false);
@@ -194,6 +238,10 @@ namespace SkyEditorUI.Controllers
                         loadingDialog!.Hide();
                         SetTopButtonsEnabled(true);
                         OnModpackLoaded(exception);
+                        if (onFinished != null)
+                        {
+                            onFinished(exception);
+                        }
                         return false;
                     });
                 }).Start();
@@ -204,6 +252,11 @@ namespace SkyEditorUI.Controllers
         }
 
         private void OnSaveClicked(object sender, EventArgs args)
+        {
+            TrySaveModpack();
+        }
+
+        private void TrySaveModpack(System.Action? onFinished = null)
         {
             CheckRomAndModpackLoaded();
 
@@ -254,7 +307,11 @@ namespace SkyEditorUI.Controllers
 
                     if (exception != null)
                     {
-                        throw exception;
+                        ExceptionDispatchInfo.Capture(exception).Throw();
+                    }
+                    if (onFinished != null)
+                    {
+                        onFinished();
                     }
                     return false;
                 });
@@ -367,7 +424,7 @@ namespace SkyEditorUI.Controllers
                     SetTopButtonsEnabled(true);
                     if (exception != null)
                     {
-                        throw exception;
+                        ExceptionDispatchInfo.Capture(exception).Throw();
                     }
                     if (onFinished != null)
                     {
@@ -422,7 +479,7 @@ namespace SkyEditorUI.Controllers
                         loadingDialog!.Hide();
                         if (exception != null)
                         {
-                            throw exception;
+                            ExceptionDispatchInfo.Capture(exception).Throw();
                         }
                         return false;
                     });
@@ -477,7 +534,6 @@ namespace SkyEditorUI.Controllers
         private void OnOpenAboutDialogClicked(object sender, EventArgs args)
         {
             aboutDialog!.Run();
-            aboutDialog.Destroy();
         }
 
         private void OnMainItemListButtonPressed(object sender, ButtonPressEventArgs args)
@@ -492,6 +548,7 @@ namespace SkyEditorUI.Controllers
                         var context = (ControllerContext) model.GetValue(iter, 3);
 
                         LoadView(controllerType, context);
+                        UpdateBreadcrumbs(iter, model);
                 
                         var path = model.GetPath(iter);
                         mainItemList.ExpandToPath(path); // Expand the node
@@ -502,6 +559,11 @@ namespace SkyEditorUI.Controllers
                     }
                 }
             }
+        }
+
+        private void OnOpenMenuToggled(object sender, EventArgs args)
+        {
+            preventLoadingRecent = false;
         }
 
         private void LoadView(Type type, ControllerContext context)
@@ -567,7 +629,7 @@ namespace SkyEditorUI.Controllers
 
             if (exception != null)
             {
-                throw exception;
+                ExceptionDispatchInfo.Capture(exception).Throw();
             }
 
             if (currentController == null)
@@ -643,7 +705,7 @@ namespace SkyEditorUI.Controllers
 
                     if (exception != null)
                     {
-                        throw exception;
+                        ExceptionDispatchInfo.Capture(exception).Throw();
                     }
                     onLoaded();
                     return false;
@@ -658,7 +720,7 @@ namespace SkyEditorUI.Controllers
         {
             if (exception != null)
             {
-                throw exception;
+                ExceptionDispatchInfo.Capture(exception).Throw();
             }
 
             Console.WriteLine("Loaded modpack.");
@@ -667,7 +729,13 @@ namespace SkyEditorUI.Controllers
             
             LoadView(typeof(ModpackSettingsController), ControllerContext.Null);
             InitMainList();
+
+            // HACK: dungeons were marked as modified after loading the left side list,
+            // mark them as unmodified again. this is horrible
+            rom!.DungeonsModified = false;
             SetTopButtonsEnabled(true);
+
+            Title = $"{modpack!.Metadata.Name ?? modpack.Metadata.Id} (SkyEditor.UI)";
         }
 
         public void InitMainList()
@@ -840,6 +908,22 @@ namespace SkyEditorUI.Controllers
             {
                 recentModpacksStore.AppendValues($"{recentModpack.nameOrId} ({recentModpack.path})", recentModpack.path);
             }
+        }
+
+        private void UpdateBreadcrumbs(TreeIter iter, ITreeModel model)
+        {
+            var items = new List<string>();
+            TreeIter current = iter;
+            bool hasParent = true;
+
+            while (hasParent)
+            {
+                items.Add(model.GetValue(current, 1) as string ?? "");
+                hasParent = model.IterParent(out current, current);
+            }
+
+            var breadcrumbs = string.Join(" > ", items.Reverse<string>());
+            ((HeaderBar) Titlebar).Subtitle = breadcrumbs;
         }
 
         public TreeIter AddMainListItem<T>(string name, string icon, ControllerContext? context = null) where T : Widget

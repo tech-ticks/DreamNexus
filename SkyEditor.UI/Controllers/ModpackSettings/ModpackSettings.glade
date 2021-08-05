@@ -344,7 +344,7 @@ Only lowercase letters, digits and "." are allowed.</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkComboBoxText" id="releaseTypeComboBox">
+                      <object class="GtkComboBoxText" id="codeInjectionReleaseTypeComboBox">
                         <property name="visible">True</property>
                         <property name="sensitive">False</property>
                         <property name="can_focus">False</property>
@@ -354,6 +354,7 @@ Only lowercase letters, digits and "." are allowed.</property>
                           <item id="0" translatable="yes">Debug</item>
                           <item id="1" translatable="yes">Release</item>
                         </items>
+                        <signal name="changed" handler="OnCodeInjectionReleaseTypeChanged" swapped="no"/>
                       </object>
                       <packing>
                         <property name="left_attach">2</property>

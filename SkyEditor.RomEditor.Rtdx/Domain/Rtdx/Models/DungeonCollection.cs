@@ -408,12 +408,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     requestLevelEntry.IsBossFloor = model.IsBossFloor ? (short) 1 : (short) 0;
                 }
 
-                if (model.TrapWeights != null && balance.TrapWeights != null)
+                if (model.TrapWeights != null && balance.TrapWeights != null && balance.TrapWeights.Records.Length > i)
                 {
                     FlushTrapWeights(model, balance.TrapWeights.Records[i]);
                 }
 
-                if (model.Spawns != null && balance.WildPokemon != null)
+                if (model.Spawns != null && balance.WildPokemon != null  && balance.WildPokemon.Floors.Length > i)
                 {
                     FlushSpawns(model.Spawns, balance.WildPokemon.Floors[i]);
                 }
@@ -424,8 +424,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         {
             foreach (var entry in data.Entries.SkipLast(1))
             {
-                var modelWeight = model.TrapWeights![entry.Index + ItemIndex.TRAP_MIN];
-                entry.Weight = modelWeight;
+                if (model.TrapWeights!.TryGetValue(entry.Index + ItemIndex.TRAP_MIN, out short modelWeight))
+                {
+                    entry.Weight = modelWeight;
+                }
             }
         }
 
@@ -434,9 +436,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             var modelsDict = models.ToDictionary(model => model.StatsIndex);
             foreach (var entry in data.Entries)
             {
-                if (modelsDict.ContainsKey((CreatureIndex) entry.PokemonIndex))
+                if (modelsDict.TryGetValue((CreatureIndex) entry.PokemonIndex, out var model))
                 {
-                    var model = modelsDict[(CreatureIndex) entry.PokemonIndex];
                     entry.SpawnRate = model.SpawnRate;
                     entry.RecruitmentLevel = model.RecruitmentLevel;
                     entry.Byte0B = model.Byte0B;

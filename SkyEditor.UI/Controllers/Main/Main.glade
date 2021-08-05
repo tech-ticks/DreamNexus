@@ -166,8 +166,7 @@ the top-right of the main window.</property>
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkPopoverMenu" id="open_menu">
-    <property name="name">open_menu</property>
+  <object class="GtkPopoverMenu" id="openMenu">
     <property name="can_focus">False</property>
     <child>
       <object class="GtkBox">
@@ -370,7 +369,7 @@ the top-right of the main window.</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <property name="popover">open_menu</property>
+            <property name="popover">openMenu</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
@@ -424,6 +423,22 @@ the top-right of the main window.</property>
           </packing>
         </child>
         <child>
+          <object class="GtkButton" id="saveButton">
+            <property name="label">gtk-save</property>
+            <property name="visible">True</property>
+            <property name="sensitive">False</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Save the current Modpack</property>
+            <property name="use_stock">True</property>
+            <signal name="clicked" handler="OnSaveClicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkButton" id="deployButton">
             <property name="visible">True</property>
             <property name="sensitive">False</property>
@@ -453,22 +468,6 @@ the top-right of the main window.</property>
           <packing>
             <property name="pack_type">end</property>
             <property name="position">3</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="saveButton">
-            <property name="label">gtk-save</property>
-            <property name="visible">True</property>
-            <property name="sensitive">False</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Save the current Modpack</property>
-            <property name="use_stock">True</property>
-            <signal name="clicked" handler="OnSaveClicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="pack_type">end</property>
-            <property name="position">2</property>
           </packing>
         </child>
       </object>

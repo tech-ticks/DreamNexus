@@ -166,6 +166,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
 
         await Task.WhenAll(tasks);
+
+        // Mark all models as unmodified after saving
+        rom.StartersModified = false;
+        rom.DungeonsModified = false;
+        rom.ActorsModified = false;
+        rom.DungeonMapsModified = false;
+        rom.DungeonMusicModified = false;
       }
     }
   }
