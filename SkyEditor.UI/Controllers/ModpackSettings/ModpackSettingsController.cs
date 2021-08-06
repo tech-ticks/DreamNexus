@@ -141,7 +141,11 @@ namespace SkyEditorUI.Controllers
         private void OnCodeInjectionVersionChanged(object sender, EventArgs args)
         {
             var versions = CodeInjectionHelpers.GetAvailableVersions(Settings.DataPath);
-            modpack.Metadata.CodeInjectionVersion = versions[codeInjectionVersionsComboBox!.Active];
+            int active = codeInjectionVersionsComboBox!.Active;
+            if (active >= 0 && active < versions.Length)
+            {
+                modpack.Metadata.CodeInjectionVersion = versions[active];
+            }
         }
 
         private void OnCodeInjectionReleaseTypeChanged(object sender, EventArgs args)

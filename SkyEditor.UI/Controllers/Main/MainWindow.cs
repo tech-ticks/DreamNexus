@@ -82,7 +82,7 @@ namespace SkyEditorUI.Controllers
 
         private void OnWindowDelete(object sender, DeleteEventArgs args)
         {
-            if (rom != null && modpack != null && rom.Modified)
+            if (rom != null && modpack != null && (rom.Modified || sourceFiles.Any(file => file.IsDirty)))
             {
                 var dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Warning, ButtonsType.None, true,
                     $"<b>Do you want to save changes to {IOPath.GetFileName(modpack.Directory)}?</b>\n\n"
