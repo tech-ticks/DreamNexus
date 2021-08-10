@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text;
 using Method = System.Net.WebRequestMethods.Ftp;
 
 namespace SkyEditorUI.Infrastructure
@@ -57,7 +56,7 @@ namespace SkyEditorUI.Infrastructure
       }
       using (var response = (FtpWebResponse) request.GetResponse())
       {
-        Console.WriteLine($"Uploaded {fileName} ({response.StatusDescription})");
+        Console.WriteLine($"Uploaded {fileName} ({response.StatusDescription?.Replace("\r\n", "")})");
       }
     }
 
@@ -66,14 +65,14 @@ namespace SkyEditorUI.Infrastructure
       var request = CreateRequest(settings, path, Method.MakeDirectory);
       using (var response = (FtpWebResponse) request.GetResponse())
       {
-        Console.WriteLine($"Created directory {path} ({response.StatusDescription})");
+        Console.WriteLine($"Created directory {path} ({response.StatusDescription?.Replace("\r\n", "")})");
       }
     }
 
     public static string[] ListDirectory(Settings settings, string path)
     {
       var request = CreateRequest(settings, path, Method.ListDirectory);
-      using (var response = request.GetResponse())
+      using (var response = (FtpWebResponse) request.GetResponse())
       {
         var responseStream = response.GetResponseStream();
         using (var reader = new StreamReader(responseStream))

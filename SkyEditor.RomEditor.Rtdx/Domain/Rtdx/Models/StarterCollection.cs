@@ -15,7 +15,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         string GenerateLuaChangeScript(int indentLevel = 0);
         void Flush(IRtdxRom rom);
 
+        CreatureIndex HeroCreature { get; set; }
+        PokemonGenderType HeroGender { get; set; }
         string HeroName { get; set; }
+        CreatureIndex PartnerCreature { get; set; }
+        PokemonGenderType PartnerGender { get; set; }
         string PartnerName { get; set; }
         string TeamName { get; set; }
     }
@@ -34,6 +38,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 throw new ArgumentNullException(nameof(rom));
             }
 
+            var defaultStarters = rom.GetDefaultStarters();
+            HeroCreature = defaultStarters.HeroCreature;
+            HeroGender = defaultStarters.HeroGender;
+            PartnerCreature = defaultStarters.PartnerCreature;
+            PartnerGender = defaultStarters.PartnerGender;
+
             this.Starters = LoadStarters(rom);
 
             var commonBin = rom.GetUSMessageBin().GetFile("common.bin");
@@ -42,11 +52,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 var usCommonStrings = new MessageBinEntry(commonBin);
                 this.HeroName = usCommonStrings.GetStringByHash((int) TextIDHash.DEBUG_MENU__DEBUG_HERO_NAME);
                 this.PartnerName = usCommonStrings.GetStringByHash((int) TextIDHash.DEBUG_MENU__DEBUG_PARTNER_NAME);
-                this.TeamName = usCommonStrings.GetStringByHash((int) TextIDHash.DEBUG_MENU__DEBUG_TEAM_NAME);
+                this.TeamName = usCommonStrings.GetStringByHash((int) TextIDHash.GAME_MENU__DEFAULT_TEAM_NAME);
             }
         }
 
+        public CreatureIndex HeroCreature { get; set; }
+        public PokemonGenderType HeroGender { get; set; }
         public string HeroName { get; set; } = "";
+        public CreatureIndex PartnerCreature { get; set; }
+        public PokemonGenderType PartnerGender { get; set; }
         public string PartnerName { get; set; } = "";
         public string TeamName { get; set; } = "";
 
@@ -152,10 +166,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
                 usCommonStrings.SetString((int) TextIDHash.DEBUG_MENU__DEBUG_HERO_NAME, HeroName);
                 usCommonStrings.SetString((int) TextIDHash.DEBUG_MENU__DEBUG_PARTNER_NAME, PartnerName);
-                usCommonStrings.SetString((int) TextIDHash.DEBUG_MENU__DEBUG_TEAM_NAME, TeamName);
+                usCommonStrings.SetString((int) TextIDHash.GAME_MENU__DEFAULT_TEAM_NAME, TeamName);
 
                 rom.GetUSMessageBin().SetFile("common.bin", usCommonStrings.ToByteArray());
             }
+
+            var defaultStarters = rom.GetDefaultStarters();
+            defaultStarters.HeroCreature = HeroCreature;
+            defaultStarters.HeroGender = HeroGender;
+            defaultStarters.PartnerCreature = PartnerCreature;
+            defaultStarters.PartnerGender = PartnerGender;
         }
 
         public StarterModel? GetStarterById(CreatureIndex id)

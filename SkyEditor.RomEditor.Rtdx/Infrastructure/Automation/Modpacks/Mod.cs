@@ -133,6 +133,10 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             }
 
             var yaml = Modpack.YamlSerializer.Serialize(model);
+            if (fs.FileExists(fullPath))
+            {
+                fs.DeleteFile(fullPath);
+            }
             await fs.WriteAllTextAsync(fullPath, yaml);
         }
 

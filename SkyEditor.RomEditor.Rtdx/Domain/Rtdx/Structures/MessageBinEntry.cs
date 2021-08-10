@@ -13,6 +13,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         public const int UnknownValue = 0x3020003;
         public const int EntryLength = 0x10;
 
+        private ICodeTable? codeTable;
+
         public MessageBinEntry()
         {
             Strings = new Dictionary<long, List<MessageBinString>>();
@@ -21,6 +23,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
         public MessageBinEntry(IReadOnlyBinaryDataAccessor data, ICodeTable? codeTable = null): this()
         {
+            this.codeTable = codeTable;
+
             var sir0 = new Sir0(data);
             var entryCount1 = sir0.SubHeader.ReadInt32(0);
             var entryCount2 = sir0.SubHeader.ReadInt32(4);
@@ -119,7 +123,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             foreach (var entry in orderedStrings)
             {
                 entry.StringOffset = sir0.Length;
-                sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, entry.Value);
+                var value = codeTable != null ? codeTable.UnicodeEncode(entry.Value) : entry.Value;
+                sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, value);
             }
             sir0.Align(8);
 

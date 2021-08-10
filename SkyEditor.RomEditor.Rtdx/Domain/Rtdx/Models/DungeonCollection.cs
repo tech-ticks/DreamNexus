@@ -244,7 +244,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public void Flush(IRtdxRom rom)
         {
             var commonStrings = rom.GetCommonStrings();
-            var commonStringsEntry = new MessageBinEntry(rom.GetUSMessageBin().GetFile("common.bin")!, rom.GetCodeTable());
+            var commonStringsEntry = new MessageBinEntry(rom.GetUSMessageBin().GetFile("common.bin")!);
             var dungeonData = rom.GetDungeonDataInfo();
             var dungeonExtra = rom.GetDungeonExtra();
             var dungeonBalance = rom.GetDungeonBalance();
@@ -413,7 +413,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     FlushTrapWeights(model, balance.TrapWeights.Records[i]);
                 }
 
-                if (model.Spawns != null && balance.WildPokemon != null  && balance.WildPokemon.Floors.Length > i)
+                if (model.Spawns != null && balance.WildPokemon != null && balance.WildPokemon.Floors.Length > i)
                 {
                     FlushSpawns(model.Spawns, balance.WildPokemon.Floors[i]);
                 }

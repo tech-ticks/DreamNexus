@@ -8,7 +8,7 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkEntryCompletion" id="completion_entities2">
+  <object class="GtkEntryCompletion" id="creaturesCompletion">
     <property name="model">creaturesStore</property>
     <property name="text_column">0</property>
     <child>
@@ -18,8 +18,24 @@
       </attributes>
     </child>
   </object>
-  <object class="GtkEntryCompletion" id="creaturesCompletion">
-    <property name="model">creaturesStore</property>
+  <object class="GtkListStore" id="defaultStartersStore">
+    <columns>
+      <!-- column-name nameLabel -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkEntryCompletion" id="creaturesCompletionPartner">
+    <property name="model">defaultStartersStore</property>
+    <property name="text_column">0</property>
+    <child>
+      <object class="GtkCellRendererText"/>
+      <attributes>
+        <attribute name="text">0</attribute>
+      </attributes>
+    </child>
+  </object>
+  <object class="GtkEntryCompletion" id="creaturesCompletionPlayer">
+    <property name="model">defaultStartersStore</property>
     <property name="text_column">0</property>
     <child>
       <object class="GtkCellRendererText"/>
@@ -164,10 +180,9 @@
                                         <child>
                                           <object class="GtkEntry" id="defaultPlayerSpecies">
                                             <property name="visible">True</property>
-                                            <property name="sensitive">False</property>
                                             <property name="can_focus">True</property>
                                             <property name="width_chars">10</property>
-                                            <property name="completion">movesCompletion</property>
+                                            <property name="completion">creaturesCompletionPlayer</property>
                                             <signal name="changed" handler="OnDefaultPlayerSpeciesChanged" swapped="no"/>
                                           </object>
                                           <packing>
@@ -179,7 +194,6 @@
                                         <child>
                                           <object class="GtkComboBox" id="defaultPlayerGender">
                                             <property name="visible">True</property>
-                                            <property name="sensitive">False</property>
                                             <property name="can_focus">False</property>
                                             <property name="model">genderTypeStore</property>
                                             <property name="active">1</property>
@@ -249,10 +263,9 @@
                                         <child>
                                           <object class="GtkEntry" id="defaultPartnerSpecies">
                                             <property name="visible">True</property>
-                                            <property name="sensitive">False</property>
                                             <property name="can_focus">True</property>
                                             <property name="width_chars">10</property>
-                                            <property name="completion">completion_entities2</property>
+                                            <property name="completion">creaturesCompletionPartner</property>
                                             <signal name="changed" handler="OnDefaultPartnerSpeciesChanged" swapped="no"/>
                                           </object>
                                           <packing>
@@ -264,7 +277,6 @@
                                         <child>
                                           <object class="GtkComboBox" id="defaultPartnerGender">
                                             <property name="visible">True</property>
-                                            <property name="sensitive">False</property>
                                             <property name="can_focus">False</property>
                                             <property name="model">genderTypeStore</property>
                                             <property name="active">1</property>
@@ -375,7 +387,8 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="halign">start</property>
-                            <property name="label" translatable="yes">The default team is only applied if you bypass the personality quiz (remove the call to &lt;tt&gt;SpecialFunc&lt;/tt&gt; with &lt;tt&gt;specialFuncType&lt;/tt&gt; 300 in script/event/seikaku/01_seikakushindan/seikakushindan.lua). </property>
+                            <property name="label" translatable="yes">The default team is only applied if you bypass the personality quiz (remove the call to &lt;tt&gt;SpecialFunc&lt;/tt&gt; with &lt;tt&gt;specialFuncType&lt;/tt&gt; 300 in script/event/seikaku/01_seikakushindan/seikakushindan.lua). 
+Default starter species and name can only be changed when code injection is enabled. &lt;b&gt;If you changed one of the entries in the list below, enter the original species from before it was changed as the default partner and player species.&lt;/b&gt;</property>
                             <property name="use_markup">True</property>
                             <property name="wrap">True</property>
                           </object>

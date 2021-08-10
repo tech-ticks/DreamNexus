@@ -55,6 +55,7 @@ namespace SkyEditorUI.Controllers
             }
 
             enableCodeInjectionSwitch!.Active = modpack.Metadata.EnableCodeInjection;
+            codeInjectionReleaseTypeComboBox!.Active = modpack.Metadata.CodeInjectionReleaseType == "release" ? 1 : 0;
 
             if (modpack.Metadata.EnableCodeInjection && !versionInstalled)
             {
@@ -134,8 +135,6 @@ namespace SkyEditorUI.Controllers
             var versions = CodeInjectionHelpers.GetAvailableVersions(Settings.DataPath);
             AddVersionsToStore(versions);
             modpack.Metadata.CodeInjectionVersion = versions[codeInjectionVersionsComboBox!.Active];
-            modpack.Metadata.CodeInjectionReleaseType = codeInjectionReleaseTypeComboBox.Active != 0
-                ? "release" : "debug";
         }
 
         private void OnCodeInjectionVersionChanged(object sender, EventArgs args)

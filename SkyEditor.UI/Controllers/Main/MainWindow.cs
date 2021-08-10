@@ -160,7 +160,7 @@ namespace SkyEditorUI.Controllers
                         modpack = RtdxModpack.CreateInDirectory(metadata, folder, PhysicalFileSystem.Instance);
 
                         await modpack.Apply(rom!).ConfigureAwait(false);
-                        OnModpackLoaded(null);
+                        OnModpackLoaded();
                     }
 
                     dialog.Destroy();
@@ -231,17 +231,22 @@ namespace SkyEditorUI.Controllers
                     {
                         // Save the exception and throw it on the main thread to show the correct exception handler
                         exception = e;
+                        modpack = null;
                     }
 
                     GLib.Idle.Add(() =>
                     {
                         loadingDialog!.Hide();
-                        SetTopButtonsEnabled(true);
-                        OnModpackLoaded(exception);
+                        SetTopButtonsEnabled(exception == null);
                         if (onFinished != null)
                         {
                             onFinished(exception);
                         }
+                        if (exception != null)
+                        {
+                            ExceptionDispatchInfo.Capture(exception).Throw();
+                        }
+                        OnModpackLoaded();
                         return false;
                     });
                 }).Start();
@@ -697,6 +702,7 @@ namespace SkyEditorUI.Controllers
                 {
                     // Save the exception and throw it on the main thread to show the correct exception handler
                     exception = e;
+                    rom = null;
                 }
 
                 GLib.Idle.Add(() =>
@@ -716,13 +722,8 @@ namespace SkyEditorUI.Controllers
             loadingDialog!.Show();
         }
 
-        private void OnModpackLoaded(Exception? exception)
+        private void OnModpackLoaded()
         {
-            if (exception != null)
-            {
-                ExceptionDispatchInfo.Capture(exception).Throw();
-            }
-
             Console.WriteLine("Loaded modpack.");
 
             AddModpackToRecents();
@@ -828,7 +829,7 @@ namespace SkyEditorUI.Controllers
                 foreach (var floor in dungeon.Floors)
                 {
                     bool unused = floor.Index <= 0 || floor.Index > dungeon.AccessibleFloorCount;
-                    AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor {floor.Index}{(unused ? " (unused)" : "")}", 
+                    AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor {floor.FriendlyIndex}{(unused ? " (unused)" : "")}", 
                         "skytemple-e-dungeon-floor-symbolic",
                         new DungeonFloorControllerContext((DungeonIndex) i, floor.Index));
                 }
@@ -904,6 +905,7 @@ namespace SkyEditorUI.Controllers
         {
             recentModpacksStore!.Clear();
             foreach (var recentModpack in settings?.RecentModpacks?.Take(20)
+                ?.Where(modpack => Directory.Exists(modpack.path))
                 ?? Enumerable.Empty<(string nameOrId, string path)>())
             {
                 recentModpacksStore.AppendValues($"{recentModpack.nameOrId} ({recentModpack.path})", recentModpack.path);

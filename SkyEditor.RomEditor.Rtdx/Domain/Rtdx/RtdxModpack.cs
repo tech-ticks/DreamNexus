@@ -71,7 +71,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         }
         if (mod.ModelExists("dungeon_music.yaml"))
         {
-          rom.SetDungeonMusic(await mod.LoadModel<DungeonMusicCollection>("dungeonmusic.yaml"));
+          rom.SetDungeonMusic(await mod.LoadModel<DungeonMusicCollection>("dungeon_music.yaml"));
         }
       }
     }

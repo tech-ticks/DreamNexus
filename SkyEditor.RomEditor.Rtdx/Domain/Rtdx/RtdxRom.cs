@@ -19,6 +19,7 @@ using SkyEditor.RomEditor.Infrastructure.Interfaces;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Data;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures.Custom;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx
 {
@@ -126,6 +127,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         CampHabitat GetCampHabitat();
         PokemonEvolution GetPokemonEvolution();
         Rank GetRanks();
+        #endregion
+
+        #region StreamingAssets/native_data
+        DefaultStarters GetDefaultStarters();
         #endregion
 
         #region Models
@@ -759,6 +764,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         protected static string GetStartersBinPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/custom_data/starters.bin");
         protected static string GetActorDatabasePath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/custom_data/actor_database.bin");
 
+        public DefaultStarters GetDefaultStarters()
+        {
+            if (defaultStarters == null)
+            {
+                var file = GetDefaultStartersPath(this.RomDirectory);
+                defaultStarters = FileSystem.FileExists(file)
+                    ? new DefaultStarters(FileSystem.ReadAllBytes(file)) : new DefaultStarters();
+            }
+            return defaultStarters;
+        }
+        private DefaultStarters? defaultStarters;
+        protected static string GetDefaultStartersPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/custom_data/default_starters.bin");
+
         #endregion
 
         #region Models
@@ -1159,6 +1177,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 var path = GetRankPath(directory);
                 EnsureDirectoryExists(path);
                 fileSystem.WriteAllBytes(path, ranks.ToByteArray());
+            }
+            if (defaultStarters != null && EnableCustomFiles)
+            {
+                var path = GetDefaultStartersPath(directory);
+                EnsureDirectoryExists(path);
+                fileSystem.WriteAllBytes(path, defaultStarters.ToByteArray());
             }
 
             foreach (var (relativePath, data) in filesToWrite)

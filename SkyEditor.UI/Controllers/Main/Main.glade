@@ -370,6 +370,7 @@ the top-right of the main window.</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
             <property name="popover">openMenu</property>
+            <signal name="toggled" handler="OnOpenMenuToggled" swapped="no"/>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>

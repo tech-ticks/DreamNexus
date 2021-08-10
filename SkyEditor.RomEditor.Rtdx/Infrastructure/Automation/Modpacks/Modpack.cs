@@ -82,8 +82,12 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 
         protected static async Task SaveMetadata(ModpackMetadata metadata, string directory, IFileSystem fileSystem)
         {
-            await fileSystem.WriteAllTextAsync(Path.Combine(directory, "modpack.yaml"),
-                YamlSerializer.Serialize(metadata));
+            var path = Path.Combine(directory, "modpack.yaml");
+            if (fileSystem.FileExists(path))
+            {
+                fileSystem.DeleteFile(path);
+            }
+            await fileSystem.WriteAllTextAsync(path, YamlSerializer.Serialize(metadata));
             
             var modpackJson = Path.Combine(directory, "modpack.json");
             if (fileSystem.FileExists(modpackJson))
@@ -256,6 +260,9 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 
             await mod.CopyToDirectory(modDirectory, fileSystem);
             var newMod = mod.Clone(modDirectory, fileSystem);
+
+            // Relative path is required for the metadata
+            newMod.Metadata.BaseDirectory = Path.Combine("Mods", mod.Metadata.Id).Replace("\\", "/");
             if (metadata.Mods == null)
             {
                 metadata.Mods = new List<ModMetadata>();

@@ -49,7 +49,7 @@ namespace SkyEditorUI.Controllers
             labelDungeonName!.Text = dungeon.DungeonName;
 
             string prefix = (dungeon.Features.HasFlag(DungeonFeature.FloorDirectionUp)) ? "" : "B";
-            labelFloorNumber!.Text = $"{prefix}{floor.Index}F";
+            labelFloorNumber!.Text = $"{prefix}{floor.FriendlyIndex}F";
 
             entryMapDataIndex!.Text = floor.DungeonMapDataInfoIndex.ToString();
             switchBossFloor!.Active = floor.IsBossFloor;

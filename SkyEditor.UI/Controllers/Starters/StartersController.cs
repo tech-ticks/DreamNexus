@@ -4,13 +4,20 @@ using UI = Gtk.Builder.ObjectAttribute;
 using SkyEditor.RomEditor.Domain.Rtdx;
 using SkyEditorUI.Infrastructure;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
 
 namespace SkyEditorUI.Controllers
 {
     class StartersController : Widget
     {
         [UI] private ListStore? startersStore;
+        [UI] private ListStore? defaultStartersStore;
+        [UI] private Entry? defaultPlayerSpecies;
+        [UI] private ComboBox? defaultPlayerGender;
         [UI] private Entry? defaultPlayerName;
+        [UI] private Entry? defaultPartnerSpecies;
+        [UI] private ComboBox? defaultPartnerGender;
         [UI] private Entry? defaultPartnerName;
         [UI] private Entry? defaultTeamName;
 
@@ -29,11 +36,12 @@ namespace SkyEditorUI.Controllers
         private const int Move3Column = 6;
         private const int Move4Column = 7;
 
-        public StartersController(IRtdxRom rom) : this(new Builder("Starters.glade"), rom)
+        public StartersController(IRtdxRom rom, Modpack modpack) : this(new Builder("Starters.glade"), rom, modpack)
         {
         }
 
-        private StartersController(Builder builder, IRtdxRom rom) : base(builder.GetRawOwnedObject("main"))
+        private StartersController(Builder builder, IRtdxRom rom, Modpack modpack)
+            : base(builder.GetRawOwnedObject("main"))
         {
             builder.Autoconnect(this);
 
@@ -53,52 +61,78 @@ namespace SkyEditorUI.Controllers
                 );
             }
 
+            // Load starters directly from the rom to figure out which ones are used by default
+            var defaultStarters = rom.GetMainExecutable().StarterFixedPokemonMaps;
+            foreach (var starter in defaultStarters)
+            {
+                defaultStartersStore!.AppendValues(AutocompleteHelpers.FormatPokemon(rom, starter.PokemonId));
+            }
+
+            defaultPlayerSpecies!.Text = AutocompleteHelpers.FormatPokemon(rom, starters.HeroCreature);
+            defaultPartnerSpecies!.Text = AutocompleteHelpers.FormatPokemon(rom, starters.PartnerCreature);
+            defaultPlayerGender!.Active = (int) starters.HeroGender + 1; // Starts at -1
+            defaultPartnerGender!.Active = (int) starters.PartnerGender + 1;
+
             defaultPlayerName!.Text = starters.HeroName;
             defaultPartnerName!.Text = starters.PartnerName;
             defaultTeamName!.Text = starters.TeamName;
 
             creaturesStore!.AppendAll(AutocompleteHelpers.GetPokemon(rom));
             movesStore!.AppendAll(AutocompleteHelpers.GetMoves(rom));
+
+            if (!modpack.Metadata.EnableCodeInjection) {
+                defaultPlayerSpecies!.Sensitive = false;
+                defaultPlayerGender!.Sensitive = false;
+                defaultPlayerName!.Sensitive = false;
+                defaultPartnerSpecies!.Sensitive = false;
+                defaultPartnerGender!.Sensitive = false;
+                defaultPartnerName!.Sensitive = false;
+            }
         }
 
         private void OnDefaultPlayerSpeciesChanged(object sender, EventArgs args)
         {
-
+            var creatureIndex = AutocompleteHelpers.ExtractPokemon(defaultPlayerSpecies!.Text);
+            if (creatureIndex.HasValue)
+            {
+                starters.HeroCreature = creatureIndex.Value;
+                defaultPlayerSpecies!.Text = AutocompleteHelpers.FormatPokemon(rom!, creatureIndex.Value);
+            }
         }
 
         private void OnDefaultPlayerNameChanged(object sender, EventArgs args)
         {
-
+            starters.HeroName = defaultPlayerName!.Text;
         }
 
         private void OnDefaultPlayerGenderChanged(object sender, EventArgs args)
         {
-
+            starters.HeroGender = (PokemonGenderType) defaultPlayerGender!.Active - 1; // Starts at -1
         }
 
         private void OnDefaultPartnerSpeciesChanged(object sender, EventArgs args)
         {
-
+            var creatureIndex = AutocompleteHelpers.ExtractPokemon(defaultPartnerSpecies!.Text);
+            if (creatureIndex.HasValue)
+            {
+                starters.PartnerCreature = creatureIndex.Value;
+                defaultPartnerSpecies!.Text = AutocompleteHelpers.FormatPokemon(rom!, creatureIndex.Value);
+            }
         }
 
         private void OnDefaultPartnerNameChanged(object sender, EventArgs args)
         {
-
+            starters.PartnerName = defaultPartnerName!.Text;
         }
 
         private void OnDefaultPartnerGenderChanged(object sender, EventArgs args)
         {
-
-        }
-
-        private void OnPlayerSpeciesEdited(object sender, EventArgs args)
-        {
-
+            starters.PartnerGender = (PokemonGenderType) defaultPartnerGender!.Active - 1; // Starts at -1
         }
 
         private void OnDefaultTeamNameChanged(object sender, EventArgs args)
         {
-
+            starters.TeamName = defaultTeamName!.Text;
         }
 
         private void OnStarterNameLabelEditingStarted(object sender, EditingStartedArgs args)
