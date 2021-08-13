@@ -68,12 +68,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 #pragma warning disable CS0612
         private DungeonModel LoadDungeon(DungeonIndex index)
         {
-            var commonStrings = rom.GetCommonStrings();
             var dungeonData = rom.GetDungeonDataInfo();
             var dungeonExtra = rom.GetDungeonExtra();
             var dungeonBalance = rom.GetDungeonBalance();
             var itemArrange = rom.GetItemArrange();
             var requestLevels = rom.GetRequestLevel();
+            var strings = rom.GetStrings().GetStringsForLanguage(LanguageType.EN);
 
             var data = dungeonData.Entries[index];
             var extra = dungeonExtra.Entries.GetValueOrDefault(index);
@@ -87,9 +87,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             return new DungeonModel(data)
             {
                 Id = index,
-                DungeonName = commonStrings.Dungeons.ContainsKey(index)
-                    ? commonStrings.Dungeons[index] : $"(Unknown: {index})",
-
+                DungeonName = strings.GetDungeonName(index) ?? $"(Unknown: {index})",
                 Features = data.Features,
                 DataInfoShort0A = data.Short0A,
                 SortKey = data.SortKey,
@@ -99,6 +97,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 DataInfoByte17 = data.Byte17,
                 DataInfoByte18 = data.Byte18,
                 DataInfoByte19 = data.Byte19,
+                NameId = data.NameID,
                 AccessibleFloorCount = (short) accessibleFloorCount,
                 UnknownFloorCount = requestLevel?.MainEntry?.Unk1 ?? -1,
                 TotalFloorCount = requestLevel?.MainEntry?.TotalFloorCount ?? -1,
@@ -243,8 +242,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
         public void Flush(IRtdxRom rom)
         {
-            var commonStrings = rom.GetCommonStrings();
-            var commonStringsEntry = new MessageBinEntry(rom.GetUSMessageBin().GetFile("common.bin")!);
             var dungeonData = rom.GetDungeonDataInfo();
             var dungeonExtra = rom.GetDungeonExtra();
             var dungeonBalance = rom.GetDungeonBalance();
@@ -269,6 +266,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 data.Byte17 = dungeon.DataInfoByte17;
                 data.Byte18 = dungeon.DataInfoByte18;
                 data.Byte19 = dungeon.DataInfoByte19;
+                data.NameID = dungeon.NameId;
                 if (dungeon.AccessibleFloorCount > -1)
                 {
                     if (extra != null)
@@ -303,13 +301,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 }
 
                 FlushFloors(dungeon.Floors, balance, requestLevel);
-
-                string hash = "DUNGEON_NAME__DUNGEON_" + dungeon.Id.ToString().ToUpper();
-                commonStringsEntry.SetString(hash, dungeon.DungeonName);
             }
-
-
-            rom.GetUSMessageBin().SetFile("common.bin", commonStringsEntry.ToByteArray());
         }
 
         private void FlushStats(List<DungeonPokemonStatsModel> models, DungeonBalance.WildPokemonInfo data)

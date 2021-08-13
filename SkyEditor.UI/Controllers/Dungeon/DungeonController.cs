@@ -3,6 +3,7 @@ using System;
 using SkyEditor.RomEditor.Domain.Rtdx;
 using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable;
 
 namespace SkyEditorUI.Controllers
 {
@@ -11,6 +12,7 @@ namespace SkyEditorUI.Controllers
         private DungeonModel dungeon;
         private IRtdxRom rom;
         private Modpack modpack;
+        private IMainExecutable executable;
         private Builder builder;
 
         public DungeonController(IRtdxRom rom, Modpack modpack, ControllerContext context)
@@ -29,6 +31,7 @@ namespace SkyEditorUI.Controllers
             this.rom = rom;
             this.modpack = modpack;
             this.builder = builder;
+            this.executable = rom.GetMainExecutable();
 
             LoadGeneralTab();
             LoadStatsTab();

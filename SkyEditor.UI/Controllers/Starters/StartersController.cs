@@ -20,6 +20,7 @@ namespace SkyEditorUI.Controllers
         [UI] private ComboBox? defaultPartnerGender;
         [UI] private Entry? defaultPartnerName;
         [UI] private Entry? defaultTeamName;
+        [UI] private ComboBoxText? cbNameLanguage;
 
         [UI] private ListStore? creaturesStore;
         [UI] private ListStore? movesStore;
@@ -28,6 +29,7 @@ namespace SkyEditorUI.Controllers
 
         private IRtdxRom? rom;
         private IStarterCollection starters;
+        private LocalizedStringCollection? strings;
 
         private const int IndexColumn = 0;
         private const int CreatureIdColumn = 1;
@@ -73,14 +75,11 @@ namespace SkyEditorUI.Controllers
             defaultPlayerGender!.Active = (int) starters.HeroGender + 1; // Starts at -1
             defaultPartnerGender!.Active = (int) starters.PartnerGender + 1;
 
-            defaultPlayerName!.Text = starters.HeroName;
-            defaultPartnerName!.Text = starters.PartnerName;
-            defaultTeamName!.Text = starters.TeamName;
-
             creaturesStore!.AppendAll(AutocompleteHelpers.GetPokemon(rom));
             movesStore!.AppendAll(AutocompleteHelpers.GetMoves(rom));
 
-            if (!modpack.Metadata.EnableCodeInjection) {
+            if (!modpack.Metadata.EnableCodeInjection)
+            {
                 defaultPlayerSpecies!.Sensitive = false;
                 defaultPlayerGender!.Sensitive = false;
                 defaultPlayerName!.Sensitive = false;
@@ -88,6 +87,8 @@ namespace SkyEditorUI.Controllers
                 defaultPartnerGender!.Sensitive = false;
                 defaultPartnerName!.Sensitive = false;
             }
+
+            LoadNames(LanguageType.EN);
         }
 
         private void OnDefaultPlayerSpeciesChanged(object sender, EventArgs args)
@@ -102,7 +103,10 @@ namespace SkyEditorUI.Controllers
 
         private void OnDefaultPlayerNameChanged(object sender, EventArgs args)
         {
-            starters.HeroName = defaultPlayerName!.Text;
+            if (!string.IsNullOrWhiteSpace(defaultPlayerName!.Text))
+            {
+                strings!.SetCommonString(TextIDHash.DEBUG_MENU__DEBUG_HERO_NAME, defaultPlayerName!.Text);
+            }
         }
 
         private void OnDefaultPlayerGenderChanged(object sender, EventArgs args)
@@ -122,7 +126,10 @@ namespace SkyEditorUI.Controllers
 
         private void OnDefaultPartnerNameChanged(object sender, EventArgs args)
         {
-            starters.PartnerName = defaultPartnerName!.Text;
+            if (!string.IsNullOrWhiteSpace(defaultPartnerName!.Text))
+            {
+                strings!.SetCommonString(TextIDHash.DEBUG_MENU__DEBUG_PARTNER_NAME, defaultPartnerName!.Text);
+            }
         }
 
         private void OnDefaultPartnerGenderChanged(object sender, EventArgs args)
@@ -132,7 +139,10 @@ namespace SkyEditorUI.Controllers
 
         private void OnDefaultTeamNameChanged(object sender, EventArgs args)
         {
-            starters.TeamName = defaultTeamName!.Text;
+            if (!string.IsNullOrWhiteSpace(defaultTeamName!.Text))
+            {
+                strings!.SetCommonString(TextIDHash.GAME_MENU__DEFAULT_TEAM_NAME, defaultTeamName!.Text);
+            }
         }
 
         private void OnStarterNameLabelEditingStarted(object sender, EditingStartedArgs args)
@@ -220,6 +230,20 @@ namespace SkyEditorUI.Controllers
                     starters.Starters[path.Indices[0]].Move4 = moveIndex.Value;
                 }
             }
+        }
+
+        private void OnNameLanguageChanged(object sender, EventArgs args)
+        {
+            LoadNames((LanguageType) cbNameLanguage!.Active);
+        }
+
+        private void LoadNames(LanguageType language)
+        {
+            strings = rom!.GetStrings().GetStringsForLanguage(language);
+
+            defaultPlayerName!.Text = strings!.GetCommonString(TextIDHash.DEBUG_MENU__DEBUG_HERO_NAME);
+            defaultPartnerName!.Text = strings!.GetCommonString(TextIDHash.DEBUG_MENU__DEBUG_PARTNER_NAME);
+            defaultTeamName!.Text = strings!.GetCommonString(TextIDHash.GAME_MENU__DEFAULT_TEAM_NAME);
         }
     }
 }

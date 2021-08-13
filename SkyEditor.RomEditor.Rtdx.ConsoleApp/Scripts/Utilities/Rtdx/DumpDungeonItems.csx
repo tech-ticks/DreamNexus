@@ -31,16 +31,25 @@ var itemDataInfo = Rom.GetItemDataInfo();
 
 void PrintItemSet(StringBuilder sb, int itemSetIndex, ItemArrange.Entry.ItemSet itemSet, DungeonModel dungeon)
 {
-  var (validFloors, invalidFloors) = GetItemSetFloors(itemSetIndex, dungeon);
+  // var (validFloors, invalidFloors) = GetItemSetFloors(itemSetIndex, dungeon);
   // if (validFloors.Length == 0 && invalidFloors.Length == 0) {
   //   // Don't include unused item sets
   //   return;
   // }
 
   sb.AppendLine();
-  sb.AppendLine($"Item set;{itemSetIndex}");
-  sb.AppendLine($"Valid floors with item set;{(validFloors.Length == 0 ? "none" : string.Join("; ", validFloors))}");
-  sb.AppendLine($"Invalid floors with item set;{(invalidFloors.Length == 0 ? "none" : string.Join("; ", invalidFloors))}");
+  var description = itemSetIndex switch
+  {
+    0 => "Floor",
+    1 => "Shop",
+    2 => "Unknown",
+    3 => "Blue (?) Treasure Boxes",
+    4 => "Red (?) Treasure Boxes",
+    _ => "Unknown/unused?"
+  };
+  sb.AppendLine($"Item set;{itemSetIndex};{description}");
+  // sb.AppendLine($"Valid floors with item set;{(validFloors.Length == 0 ? "none" : string.Join("; ", validFloors))}");
+  // sb.AppendLine($"Invalid floors with item set;{(invalidFloors.Length == 0 ? "none" : string.Join("; ", invalidFloors))}");
 
   sb.AppendLine();
 
@@ -68,19 +77,6 @@ void PrintItemSet(StringBuilder sb, int itemSetIndex, ItemArrange.Entry.ItemSet 
     float groupProbability = (float) groupWeight / itemKindWeightSum;
     float totalProbability = probabilityInGroup * groupProbability * 100f;
 
-    if (itemKind == ItemKind.SEED) {
-    if (itemSetIndex == 0) {
-    entry.Index = ItemIndex.SEED_PURE;
-    } else if (itemSetIndex == 1) {
-      entry.Index = ItemIndex.SEED_OREN;
-    } else if (itemSetIndex == 2) {
-      entry.Index = ItemIndex.SEED_FUKKATSU;
-    } else if (itemSetIndex == 3) {
-      entry.Index = ItemIndex.SEED_HEAL;
-    } else if (itemSetIndex == 4) {
-      entry.Index = ItemIndex.SEED_BLAST;
-    }
-    }
     if (itemSetIndex > -1 && itemSetIndex < 5) {
       for (int j = 0; j < itemSet.ItemKindWeights.Length; j++) {
         itemSet.ItemKindWeights[j] = (ushort) (j == (int) ItemKind.SEED ? 500 : 0);
@@ -98,7 +94,7 @@ void PrintItemSet(StringBuilder sb, int itemSetIndex, ItemArrange.Entry.ItemSet 
   }
 }
 
-foreach (var dungeon in dungeons.Dungeons)
+foreach (var dungeon in dungeons.LoadAllDungeons())
 {
   if (dungeon.Extra == null)
   {

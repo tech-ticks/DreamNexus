@@ -160,6 +160,53 @@
                           <object class="GtkBox">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
+                            <child>
+                              <object class="GtkLabel">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="label" translatable="yes">Name language: </property>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkComboBoxText" id="cbNameLanguage">
+                                <property name="visible">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="active">1</property>
+                                <items>
+                                  <item id="0" translatable="yes">Japanese</item>
+                                  <item id="1" translatable="yes">English</item>
+                                  <item id="2" translatable="yes">French</item>
+                                  <item id="3" translatable="yes">German</item>
+                                  <item id="4" translatable="yes">Italian</item>
+                                  <item id="5" translatable="yes">Spanish</item>
+                                </items>
+                                <signal name="changed" handler="OnNameLanguageChanged" swapped="no"/>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="fill">True</property>
+                                <property name="position">1</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <placeholder/>
+                            </child>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkBox">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
                             <property name="spacing">20</property>
                             <child>
                               <object class="GtkFrame">
@@ -331,7 +378,7 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">0</property>
+                            <property name="position">1</property>
                           </packing>
                         </child>
                         <child>
@@ -379,7 +426,7 @@
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">1</property>
+                            <property name="position">2</property>
                           </packing>
                         </child>
                         <child>
@@ -395,7 +442,7 @@ Default starter species and name can only be changed when code injection is enab
                           <packing>
                             <property name="expand">False</property>
                             <property name="fill">True</property>
-                            <property name="position">2</property>
+                            <property name="position">3</property>
                           </packing>
                         </child>
                       </object>

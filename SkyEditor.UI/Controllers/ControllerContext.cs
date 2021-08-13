@@ -43,4 +43,14 @@ namespace SkyEditorUI.Controllers
             FloorIndex = floorNum;
         }
     }
+
+    public class StringsControllerContext : ControllerContext
+    {
+        public LanguageType Language { get; set; }
+
+        public StringsControllerContext(LanguageType language)
+        {
+            Language = language;
+        }
+    }
 }

@@ -6,6 +6,7 @@ using SkyEditorUI.Infrastructure;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System.Linq;
 using System.Globalization;
+using SkyEditor.RomEditor.Domain.Rtdx.Models;
 
 namespace SkyEditorUI.Controllers
 {
@@ -32,10 +33,20 @@ namespace SkyEditorUI.Controllers
         [UI] private Entry? entryShort28;
         [UI] private Entry? entryShort30;
         [UI] private Entry? entryShort32;
-        [UI] private Entry? entryNameId;
+        [UI] private SpinButton? sbNameId;
+
+        // Names
+        [UI] private ComboBoxText? cbNameLanguage;
+        [UI] private Entry? entryPlaceName0;
+        [UI] private Entry? entryPlaceName1;
+        [UI] private Entry? entryPlaceName2;
+        [UI] private Entry? entryPlaceName3;
+
+        private LocalizedStringCollection? strings;
 
         void LoadGeneralTab()
         {
+            var strings = rom.GetStrings().GetStringsForLanguage(LanguageType.EN);
             var commonStrings = rom.GetCommonStrings();
             var dungeonStatuses = Enum.GetValues<DungeonStatusIndex>()
                 .SkipLast(1)
@@ -46,7 +57,7 @@ namespace SkyEditorUI.Controllers
                 });
             weatherStore!.AppendAll(dungeonStatuses);
 
-            labelDungeonName!.Text = dungeon.DungeonName;
+            labelDungeonName!.Text = strings.GetDungeonName(dungeon.Id);
 
             string prefix = (dungeon.Features.HasFlag(DungeonFeature.FloorDirectionUp)) ? "" : "B";
             labelFloorNumber!.Text = $"{prefix}{floor.FriendlyIndex}F";
@@ -63,7 +74,7 @@ namespace SkyEditorUI.Controllers
             entryShort28!.Text = floor.BalanceFloorInfoShort28.ToString();
             entryShort30!.Text = floor.BalanceFloorInfoShort30.ToString();
             entryShort32!.Text = floor.BalanceFloorInfoShort32.ToString();
-            entryNameId!.Text = floor.NameId.ToString();
+            sbNameId!.Value = floor.NameId;
 
             unknownsStore!.AppendValues("Byte2D", floor.BalanceFloorInfoByte2D);
             unknownsStore.AppendValues("Byte2E", floor.BalanceFloorInfoByte2E);
@@ -84,6 +95,8 @@ namespace SkyEditorUI.Controllers
             {
                 unknownsStore.AppendValues($"Byte{(i+0x5A).ToString("X")}", floor.BalanceFloorInfoBytes5Ato61[i]);
             }
+
+            LoadNames(LanguageType.EN);
         }
 
         private void OnMapDataIndexChanged(object sender, EventArgs args)
@@ -208,14 +221,8 @@ namespace SkyEditorUI.Controllers
 
         private void OnNameIdChanged(object sender, EventArgs args)
         {
-            if (byte.TryParse(entryNameId!.Text, out byte value))
-            {
-                floor.NameId = value;
-            }
-            else if (!string.IsNullOrEmpty(entryNameId!.Text))
-            {
-                entryNameId!.Text = floor.NameId.ToString();
-            }
+            floor.NameId = (byte) sbNameId!.ValueAsInt;
+            LoadNames((LanguageType) cbNameLanguage!.Active);
         }
 
         private void OnUnknownValueEdited(object sender, EditedArgs args)
@@ -278,5 +285,54 @@ namespace SkyEditorUI.Controllers
                 }
             }
         }
+
+        #region Names
+
+        private void OnPlaceName0Changed(object sender, EventArgs args)
+        {
+            int hash = executable.GetPlaceName0HashForNameId(floor.NameId);
+            strings!.SetCommonString(hash, entryPlaceName0!.Text);
+        }
+
+        private void OnPlaceName1Changed(object sender, EventArgs args)
+        {
+            int hash = executable.GetPlaceName1HashForNameId(floor.NameId);
+            strings!.SetCommonString(hash, entryPlaceName1!.Text);
+        }
+
+        private void OnPlaceName2Changed(object sender, EventArgs args)
+        {
+            int hash = executable.GetPlaceName2HashForNameId(floor.NameId);
+            strings!.SetCommonString(hash, entryPlaceName2!.Text);
+        }
+
+        private void OnPlaceName3Changed(object sender, EventArgs args)
+        {
+            int hash = executable.GetPlaceName3HashForNameId(floor.NameId);
+            strings!.SetCommonString(hash, entryPlaceName3!.Text);
+        }
+
+        private void OnNameLanguageChanged(object sender, EventArgs args)
+        {
+            LoadNames((LanguageType) cbNameLanguage!.Active);
+        }
+
+        private void LoadNames(LanguageType language)
+        {
+            strings = rom.GetStrings().GetStringsForLanguage(language);
+            int placeName0Hash = executable.GetPlaceName0HashForNameId(floor.NameId);
+            entryPlaceName0!.Text = strings.GetCommonString(placeName0Hash);
+
+            int placeName1Hash = executable.GetPlaceName1HashForNameId(floor.NameId);
+            entryPlaceName1!.Text = strings.GetCommonString(placeName1Hash);
+
+            int placeName2Hash = executable.GetPlaceName2HashForNameId(floor.NameId);
+            entryPlaceName2!.Text = strings.GetCommonString(placeName2Hash);
+
+            int placeName3Hash = executable.GetPlaceName3HashForNameId(floor.NameId);
+            entryPlaceName3!.Text = strings.GetCommonString(placeName3Hash);
+        }
+
+        #endregion
     }
 }

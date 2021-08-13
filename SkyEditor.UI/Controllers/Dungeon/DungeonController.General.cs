@@ -3,6 +3,9 @@ using Gtk;
 using UI = Gtk.Builder.ObjectAttribute;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using SkyEditor.RomEditor.Infrastructure;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using SkyEditor.RomEditor.Domain.Rtdx.Models;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable;
 
 namespace SkyEditorUI.Controllers
 {
@@ -39,9 +42,17 @@ namespace SkyEditorUI.Controllers
         [UI] private Entry? entryAccessibleFloorCount;
         [UI] private Entry? entryUnknownFloorCount;
         [UI] private Entry? entryTotalFloorCount;
+        [UI] private SpinButton? sbNameId;
 
         // Names
-        [UI] private Entry? entryMainEnglish;
+        [UI] private ComboBoxText? cbNameLanguage;
+        [UI] private Entry? entryDungeonName;
+        [UI] private Entry? entryPlaceName0;
+        [UI] private Entry? entryPlaceName1;
+        [UI] private Entry? entryPlaceName2;
+        [UI] private Entry? entryPlaceName3;
+       
+        private LocalizedStringCollection? strings;
 
         private void LoadGeneralTab()
         {
@@ -76,9 +87,10 @@ namespace SkyEditorUI.Controllers
             entryAccessibleFloorCount!.Text = dungeon.AccessibleFloorCount.ToString();
             entryUnknownFloorCount!.Text = dungeon.UnknownFloorCount.ToString();
             entryTotalFloorCount!.Text = dungeon.TotalFloorCount.ToString();
+            sbNameId!.Value = dungeon.NameId;
 
             // Names
-            entryMainEnglish!.Text = dungeon.DungeonName;
+            LoadNames(LanguageType.EN);
         }
 
         #region Flags
@@ -312,107 +324,67 @@ namespace SkyEditorUI.Controllers
             }
         }
 
+        private void OnNameIdChanged(object sender, EventArgs args)
+        {
+            dungeon.NameId = (short) sbNameId!.ValueAsInt;
+            LoadNames((LanguageType) cbNameLanguage!.Active);
+        }
+
         #endregion
 
         #region Names
 
-        private void OnEntryMainEnglishChanged(object sender, EventArgs args)
+        private void OnDungeonNameChanged(object sender, EventArgs args)
         {
-            dungeon.DungeonName = entryMainEnglish!.Text;
+            strings!.SetCommonString(strings.GetDungeonNameHash(dungeon.Id), entryDungeonName!.Text);
         }
 
-        private void OnEntryMainJapaneseChanged(object sender, EventArgs args)
+        private void OnPlaceName0Changed(object sender, EventArgs args)
         {
+            int hash = executable.GetPlaceName0HashForNameId(dungeon.NameId);
+            strings!.SetCommonString(hash, entryPlaceName0!.Text);
         }
 
-        private void OnEntryMainFrenchChanged(object sender, EventArgs args)
+        private void OnPlaceName1Changed(object sender, EventArgs args)
         {
+            int hash = executable.GetPlaceName1HashForNameId(dungeon.NameId);
+            strings!.SetCommonString(hash, entryPlaceName1!.Text);
         }
 
-        private void OnEntryMainGermanChanged(object sender, EventArgs args)
+        private void OnPlaceName2Changed(object sender, EventArgs args)
         {
+            int hash = executable.GetPlaceName2HashForNameId(dungeon.NameId);
+            strings!.SetCommonString(hash, entryPlaceName2!.Text);
         }
 
-        private void OnEntryMainItalianChanged(object sender, EventArgs args)
+        private void OnPlaceName3Changed(object sender, EventArgs args)
         {
+            int hash = executable.GetPlaceName3HashForNameId(dungeon.NameId);
+            strings!.SetCommonString(hash, entryPlaceName3!.Text);
         }
 
-        private void OnEntryMainSpanishChanged(object sender, EventArgs args)
+        private void OnNameLanguageChanged(object sender, EventArgs args)
         {
+            LoadNames((LanguageType) cbNameLanguage!.Active);
         }
 
-        private void OnEntryUnkName1EnglishChanged(object sender, EventArgs args)
+        private void LoadNames(LanguageType language)
         {
-        }
+            strings = rom.GetStrings().GetStringsForLanguage(language);
+            entryDungeonName!.Text = strings.GetDungeonName(dungeon.Id);
 
-        private void OnEntryUnkName1JapaneseChanged(object sender, EventArgs args)
-        {
-        }
+            int placeName0Hash = executable.GetPlaceName0HashForNameId(dungeon.NameId);
+            entryPlaceName0!.Text = strings.GetCommonString(placeName0Hash);
 
-        private void OnEntryUnkName1FrenchChanged(object sender, EventArgs args)
-        {
-        }
+            int placeName1Hash = executable.GetPlaceName1HashForNameId(dungeon.NameId);
+            entryPlaceName1!.Text = strings.GetCommonString(placeName1Hash);
 
-        private void OnEntryUnkName1GermanChanged(object sender, EventArgs args)
-        {
-        }
+            int placeName2Hash = executable.GetPlaceName2HashForNameId(dungeon.NameId);
+            entryPlaceName2!.Text = strings.GetCommonString(placeName2Hash);
 
-        private void OnEntryUnkName1ItalianChanged(object sender, EventArgs args)
-        {
+            int placeName3Hash = executable.GetPlaceName3HashForNameId(dungeon.NameId);
+            entryPlaceName3!.Text = strings.GetCommonString(placeName3Hash);
         }
-
-        private void OnEntryUnkName1SpanishChanged(object sender, EventArgs args)
-        {
-        }
-
-        private void OnEntryUnkName2EnglishChanged(object sender, EventArgs args)
-        {
-        }
-
-        private void OnEntryUnkName2JapaneseChanged(object sender, EventArgs args)
-        {
-        }
-
-        private void OnEntryUnkName2FrenchChanged(object sender, EventArgs args)
-        {
-        }
-
-        private void OnEntryUnkName2GermanChanged(object sender, EventArgs args)
-        {
-        }
-
-        private void OnEntryUnkName2ItalianChanged(object sender, EventArgs args)
-        {
-        }
-
-        private void OnEntryUnkName2SpanishChanged(object sender, EventArgs args)
-        {
-        }
-
-        private void OnEntryUnkName3EnglishChanged(object sender, EventArgs args)
-        {
-        }
-
-        private void OnEntryUnkName3JapaneseChanged(object sender, EventArgs args)
-        {
-        }
-
-        private void OnEntryUnkName3FrenchChanged(object sender, EventArgs args)
-        {
-        }
-
-        private void OnEntryUnkName3GermanChanged(object sender, EventArgs args)
-        {
-        }
-
-        private void OnEntryUnkName3ItalianChanged(object sender, EventArgs args)
-        {
-        }
-
-        private void OnEntryUnkName3SpanishChanged(object sender, EventArgs args)
-        {
-        }
-
         #endregion
     }
 }

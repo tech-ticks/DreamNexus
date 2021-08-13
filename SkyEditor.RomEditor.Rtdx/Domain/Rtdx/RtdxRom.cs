@@ -114,6 +114,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         ICommonStrings GetCommonStrings();
         PokemonGraphicsDatabase GetPokemonGraphicsDatabase();
         Farc GetUSMessageBin();
+        Farc GetMessageBin(LanguageType language);
         PokemonFormDatabase GetPokemonFormDatabase();
         Sir0StringList GetDungeonMapSymbol();
         Sir0StringList GetDungeonBgmSymbol();
@@ -152,6 +153,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IDungeonMusicCollection GetDungeonMusic();
         void SetDungeonMusic(IDungeonMusicCollection collection);
         bool DungeonMusicModified { get; set; }
+        IStringCollection GetStrings();
+        bool StringsModified { get; set; }
         #endregion
 
         #region Helpers
@@ -524,15 +527,45 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         public Farc GetUSMessageBin()
         {
-            if (messageBin == null)
+            return GetMessageBin(LanguageType.EN);
+        }
+
+        public Farc GetMessageBin(LanguageType language)
+        {
+            if (loadedMessageBins.TryGetValue(language, out var entry))
             {
-                var messageBinPath = GetMessageBinUSPath(RomDirectory);
-                messageBin = new Farc(FileSystem.ReadAllBytes(messageBinPath));
+                return entry;
             }
+
+            var messageBinPath = GetMessageBinPath(RomDirectory, language);
+            var messageBin = new Farc(FileSystem.ReadAllBytes(messageBinPath));
+            loadedMessageBins.Add(language, messageBin);
             return messageBin;
         }
-        private Farc? messageBin;
-        protected string GetMessageBinUSPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/native_data/message_us.bin");
+
+        private Dictionary<LanguageType, Farc> loadedMessageBins = new Dictionary<LanguageType, Farc>();
+
+        protected string GetMessageBinPath(string directory, LanguageType language)
+        {
+            string basePath = Path.Combine(directory, "romfs/Data/StreamingAssets/native_data");
+            switch (language)
+            {
+                case LanguageType.JP:
+                    return Path.Combine(basePath, "message.bin");
+                case LanguageType.EN:
+                    return Path.Combine(basePath, "message_us.bin");
+                case LanguageType.FR:
+                    return Path.Combine(basePath, "message_fr.bin");
+                case LanguageType.GE:
+                    return Path.Combine(basePath, "message_ge.bin");
+                case LanguageType.IT:
+                    return Path.Combine(basePath, "message_it.bin");
+                case LanguageType.SP:
+                    return Path.Combine(basePath, "message_sp.bin");
+                default:
+                    throw new ArgumentException("Invalid type", nameof(language));
+            }
+        }
 
         public MessageBinEntry GetCommonBinEntry()
         {
@@ -844,7 +877,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
             this.dungeonMapCollection = collection;
         }
-        public bool DungeonMapsModified  { get; set; }
+        public bool DungeonMapsModified { get; set; }
 
         private IDungeonMapCollection? dungeonMapCollection;
 
@@ -865,8 +898,21 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         private IDungeonMusicCollection? dungeonMusicCollection;
 
+        public IStringCollection GetStrings()
+        {
+            if (stringCollection == null)
+            {
+                stringCollection = new StringCollection(this);
+            }
+            StringsModified = true;
+            return stringCollection;
+        }
+        private IStringCollection? stringCollection;
+
+        public bool StringsModified { get; set; }
+
         public bool Modified => StartersModified || DungeonsModified || ActorsModified
-            || DungeonMapsModified || DungeonMusicModified;
+            || DungeonMapsModified || DungeonMusicModified || StringsModified;
 
         #endregion
 
@@ -920,6 +966,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
 
             // Save wrappers around files
+            stringCollection?.Flush();
             starterCollection?.Flush(this);
             actorCollection?.Flush(this);
             dungeonCollection?.Flush(this);
@@ -982,12 +1029,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
 
             // To-do: save commonStrings when implemented
-
-            if (messageBin != null)
+            foreach (var messageBin in loadedMessageBins)
             {
-                var path = GetMessageBinUSPath(directory);
+                var path = GetMessageBinPath(directory, messageBin.Key);
                 EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, messageBin.ToByteArray());
+                fileSystem.WriteAllBytes(path, messageBin.Value.ToByteArray());
             }
             if (dungeonDataInfo != null)
             {

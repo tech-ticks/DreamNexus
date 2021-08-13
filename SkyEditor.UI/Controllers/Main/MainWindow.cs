@@ -65,6 +65,12 @@ namespace SkyEditorUI.Controllers
 
             mainItemList!.AppendColumn(col);
 
+            if (OperatingSystem.IsMacOS())
+            {
+                // On macOS, the buttons need to be on the left
+                (Titlebar as HeaderBar)!.DecorationLayout = "close,minimize,maximize,menu:";
+            }
+
             Settings? settings = null;
             try
             {
@@ -752,6 +758,13 @@ namespace SkyEditorUI.Controllers
             AddMainListItem<StartersController>(root, "Starters", "skytemple-e-monster-symbolic");
             AddMainListItem<ActorListController>(root, "Actors", "skytemple-e-actor-symbolic");
 
+            var stringsIter = AddMainListItem(root, "Strings", "skytemple-e-string-symbolic");
+            for (LanguageType i = (LanguageType) 0; i < LanguageType.MAX; i++)
+            {
+                AddMainListItem<StringsController>(stringsIter, i.GetFriendlyName(), "skytemple-e-string-symbolic",
+                    new StringsControllerContext(i));
+            }
+
             var dungeonsIter = AddMainListItem(root, "Dungeons", "skytemple-e-dungeon-symbolic");
             AddMainListItem<DungeonMapsController>(dungeonsIter, "Dungeon Maps", "skytemple-e-worldmap-symbolic");
             AddMainListItem<DungeonMusicController>(dungeonsIter, "Dungeon Music", "skytemple-e-music-symbolic");
@@ -819,16 +832,17 @@ namespace SkyEditorUI.Controllers
                 return;
             }
 
+            var strings = rom.GetStrings().GetStringsForLanguage(LanguageType.EN);
             var dungeons = rom.GetDungeons();
             for (int i = 1; i <= (int) DungeonIndex.D100; i++)
             {
                 var dungeon = dungeons.GetDungeonById((DungeonIndex) i, false);
-                var dungeonIter = AddMainListItem<DungeonController>(parent, $"{dungeon!.Id}: {dungeon.DungeonName}",
+                var dungeonIter = AddMainListItem<DungeonController>(parent, $"{dungeon!.Id}: {strings.GetDungeonName(dungeon!.Id)}",
                     "skytemple-e-dungeon-symbolic", new DungeonControllerContext((DungeonIndex) i));
 
                 foreach (var floor in dungeon.Floors)
                 {
-                    bool unused = floor.Index <= 0 || floor.Index > dungeon.AccessibleFloorCount;
+                    bool unused = floor.Index < 0 || floor.Index > dungeon.AccessibleFloorCount;
                     AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor {floor.FriendlyIndex}{(unused ? " (unused)" : "")}", 
                         "skytemple-e-dungeon-floor-symbolic",
                         new DungeonFloorControllerContext((DungeonIndex) i, floor.Index));

@@ -153,6 +153,12 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             return fileSystem.FileExists(fullPath);
         }
 
+        public bool ModelDirectoryExists(string relativePath)
+        {
+            var fullPath = Path.Combine(GetDataDirectory(), relativePath);
+            return fileSystem.DirectoryExists(fullPath);
+        }
+
         public string[] GetModelFilesInDirectory(string relativePath)
         {
             var fullPath = Path.Combine(GetDataDirectory(), relativePath);

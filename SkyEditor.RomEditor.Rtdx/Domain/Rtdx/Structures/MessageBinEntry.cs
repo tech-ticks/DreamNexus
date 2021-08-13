@@ -80,10 +80,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
         public void AddString(string key, string value)
         {
+            AddString((int) Crc32Hasher.Crc32Hash(key), value);
+        }
+
+        public void AddString(int hash, string value)
+        {
             AddString(new MessageBinString
             {
                 Value = value,
-                Hash = (int) Crc32Hasher.Crc32Hash(key)
+                Hash = hash
             });
         }
 
@@ -109,6 +114,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             if (Strings.ContainsKey(hash))
             {
                 Strings[hash].First().Value = value;
+            }
+            else
+            {
+                AddString(hash, value);
             }
         }
 

@@ -424,22 +424,6 @@ the top-right of the main window.</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="saveButton">
-            <property name="label">gtk-save</property>
-            <property name="visible">True</property>
-            <property name="sensitive">False</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="tooltip_text" translatable="yes">Save the current Modpack</property>
-            <property name="use_stock">True</property>
-            <signal name="clicked" handler="OnSaveClicked" swapped="no"/>
-          </object>
-          <packing>
-            <property name="pack_type">end</property>
-            <property name="position">2</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkButton" id="deployButton">
             <property name="visible">True</property>
             <property name="sensitive">False</property>
@@ -469,6 +453,22 @@ the top-right of the main window.</property>
           <packing>
             <property name="pack_type">end</property>
             <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="saveButton">
+            <property name="label">gtk-save</property>
+            <property name="visible">True</property>
+            <property name="sensitive">False</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="tooltip_text" translatable="yes">Save the current Modpack</property>
+            <property name="use_stock">True</property>
+            <signal name="clicked" handler="OnSaveClicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="pack_type">end</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
@@ -961,9 +961,10 @@ techticks https://github.com/tech-ticks
 SkyTemple Project Lead:
 Marco "Parakoopa" Köpcke http://github.com/parakoopa
 
-Rescue Team DX Researchers:
+GTI/PSMD/RTDX Researchers:
 AntyMew https://github.com/AntyMew
 Blue587 https://projectpokemon.org/home/profile/57019-blue587/
+EddyK https://github.com/EddyK28
 
 SkyTemple Contributors:
 irdkwia https://github.com/irdkwia
