@@ -276,6 +276,65 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             return GetDungeonNameByInternalName(index.ToString("f"));
         }
 
+        public int GetPokemonNameHash(string internalName)
+        {
+            return TextIdValues.GetValueOrDefault("POKEMON_NAME__POKEMON_" + internalName.ToUpper());
+        }
+
+        public int GetPokemonNameHash(CreatureIndex index)
+        {
+            return GetPokemonNameHash(index.ToString("f"));
+        }
+
+        /// <summary>
+        /// Gets the name of a Pokemon by the internal Japanese name.
+        /// </summary>
+        /// <param name="internalName">Internal Japanese name such as "FUSHIGIDANE"</param>
+        /// <returns>User-facing name such as "Bulbasaur", or null if the internal name could not be found</returns>
+        public string? GetPokemonNameByInternalName(string internalName)
+        {
+            return GetCommonString(GetPokemonNameHash(internalName));
+        }
+
+        public string? GetPokemonName(CreatureIndex index)
+        {
+            return GetPokemonNameByInternalName(index.ToString("f"));
+        }
+
+        public int GetPokemonTaxonomyHash(int taxonId)
+        {
+            // It's stored in pokemon_data_info 1 higher than the internal id
+            return TextIdValues.GetValueOrDefault("POKEMON_TAXIS__SPECIES_"
+                + (taxonId - 1).ToString().PadLeft(3, '0'));
+        }
+
+        public string? GetPokemonTaxonomy(int taxonId)
+        {
+            return GetCommonString(GetPokemonTaxonomyHash(taxonId));
+        }
+
+        public string? GetPokemonTypeNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("TYPE_NAME__TYPE_" + internalName.ToUpper());
+            return GetCommonString(nameHash);
+        }
+
+        public string? GetPokemonTypeName(PokemonType pokemonType)
+        {
+            return GetPokemonTypeNameByInternalName(pokemonType.ToString("f"));
+        }
+
+        public string? GetAbilityNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("ABILITY_NAME__" + internalName.ToUpper());
+            return GetCommonString(nameHash);
+        }
+
+        public string? GetAbilityName(AbilityIndex abilityIndex)
+        {
+            return GetAbilityNameByInternalName(abilityIndex.ToString("f"));
+        }
+
         public void Flush()
         {
             foreach (var overrideString in CommonStringsOverride)
@@ -305,6 +364,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         LocalizedStringCollection GetStringsForLanguage(LanguageType language);
         IReadOnlyDictionary<LanguageType, LocalizedStringCollection> LoadedLanguages { get; }
         void Flush();
+
+        LocalizedStringCollection Japanese { get; }
+        LocalizedStringCollection English { get; }
+        LocalizedStringCollection French { get; }
+        LocalizedStringCollection German { get; }
+        LocalizedStringCollection Italian { get; }
+        LocalizedStringCollection Spanish { get; }
     }
 
     public class StringCollection : IStringCollection
@@ -344,5 +410,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 collection.Flush();
             }
         }
+
+        public LocalizedStringCollection Japanese => GetStringsForLanguage(LanguageType.JP);
+        public LocalizedStringCollection English => GetStringsForLanguage(LanguageType.EN);
+        public LocalizedStringCollection French => GetStringsForLanguage(LanguageType.FR);
+        public LocalizedStringCollection German => GetStringsForLanguage(LanguageType.GE);
+        public LocalizedStringCollection Italian => GetStringsForLanguage(LanguageType.IT);
+        public LocalizedStringCollection Spanish => GetStringsForLanguage(LanguageType.SP);
     }
 }

@@ -19,14 +19,12 @@ namespace SkyEditorUI.Infrastructure
 
     public static string FormatPokemon(IRtdxRom rom, CreatureIndex creatureId)
     {
-      var pokemonStrings = rom.GetCommonStrings().Pokemon;
+      var strings = rom.GetStrings().English;
       string formattedId = $"#{((int) creatureId).ToString("000")}";
-      if (pokemonStrings.TryGetValue(creatureId, out string? name))
+      var name = strings.GetPokemonName(creatureId) ?? "";
+      if (!string.IsNullOrEmpty(name.Trim()))
       {
-        if (!string.IsNullOrEmpty(name.Trim()))
-        {
-          return $"{name} ({formattedId})";
-        }
+        return $"{name} ({formattedId})";
       }
 
       var enumString = creatureId.ToString();

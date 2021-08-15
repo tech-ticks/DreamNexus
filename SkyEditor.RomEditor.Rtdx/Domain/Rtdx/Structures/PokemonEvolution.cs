@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Common.Structures;
+using YamlDotNet.Serialization;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
@@ -70,7 +71,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
         public class Entry
         {
-            public IList<PokemonEvolutionBranch> Branches { get; } = new List<PokemonEvolutionBranch>();
+            public IList<PokemonEvolutionBranch> Branches { get; set; } = new List<PokemonEvolutionBranch>();
             public (CreatureIndex First, CreatureIndex Second) MegaEvos { get; set; }
 
             public Entry(Sir0 sir0, IReadOnlyBinaryDataAccessor data)
@@ -98,6 +99,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
         }
 
+        [Flags]
+        public enum Requirements
+        {
+            None = 0,
+            Level = 0x01,
+            Item = 0x02
+        }
+
         public class PokemonEvolutionBranch
         {
             public Requirements RequirementFlags { get; set; }
@@ -111,18 +120,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public int Int00 { get; set; } // Always 0, except for Haunter
 
+            [YamlIgnore]
             public bool HasMinimumLevel => RequirementFlags.HasFlag(Requirements.Level);
 
+            [YamlIgnore]
             public bool RequiresItem => RequirementFlags.HasFlag(Requirements.Item);
-
-
-            [Flags]
-            public enum Requirements
-            {
-                None = 0,
-                Level = 0x01,
-                Item = 0x02
-            }
 
             public PokemonEvolutionBranch()
             {
@@ -148,6 +150,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 sir0.WritePadding(sir0.Length, 0x6);
                 sir0.Write(sir0.Length, (byte)RequirementFlags);
                 sir0.WritePadding(sir0.Length, 0x2);
+            }
+
+            public PokemonEvolutionBranch Clone()
+            {
+                return new PokemonEvolutionBranch
+                {
+                    RequirementFlags = RequirementFlags,
+                    Evolution = Evolution,
+                    EvolutionItem = EvolutionItem,
+                    ItemsRequired = ItemsRequired,
+                    MinimumLevel = MinimumLevel,
+                    Int00 = Int00,
+                };
             }
         }
     }

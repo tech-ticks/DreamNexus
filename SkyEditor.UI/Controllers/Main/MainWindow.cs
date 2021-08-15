@@ -749,6 +749,8 @@ namespace SkyEditorUI.Controllers
         {
             itemStore!.Clear();
 
+            var strings = rom!.GetStrings().English;
+
             string? displayName = !string.IsNullOrEmpty(modpack?.Metadata.Name)
                 ? modpack?.Metadata.Name : modpack?.Metadata.Id;
             var root = AddMainListItem<ModpackSettingsController>(displayName ?? "Unknown modpack", "skytemple-e-rom-symbolic");
@@ -763,6 +765,19 @@ namespace SkyEditorUI.Controllers
             {
                 AddMainListItem<StringsController>(stringsIter, i.GetFriendlyName(), "skytemple-e-string-symbolic",
                     new StringsControllerContext(i));
+            }
+
+            var pokemonIter = AddMainListItem(root, "Pokémon", "skytemple-e-monster-base-symbolic");
+            for (CreatureIndex i = CreatureIndex.NONE; i < CreatureIndex.END; i++)
+            {
+                string formattedId = ((int) i).ToString("0000");
+                string? name = strings.GetPokemonName(i);
+                if (string.IsNullOrEmpty(name))
+                {
+                    name = $"({i.ToString()})";
+                }
+                AddMainListItem<PokemonController>(pokemonIter, $"#{formattedId}: {name}",
+                    "skytemple-e-monster-symbolic", new PokemonControllerContext(i));
             }
 
             var dungeonsIter = AddMainListItem(root, "Dungeons", "skytemple-e-dungeon-symbolic");
@@ -832,7 +847,7 @@ namespace SkyEditorUI.Controllers
                 return;
             }
 
-            var strings = rom.GetStrings().GetStringsForLanguage(LanguageType.EN);
+            var strings = rom.GetStrings().English;
             var dungeons = rom.GetDungeons();
             for (int i = 1; i <= (int) DungeonIndex.D100; i++)
             {

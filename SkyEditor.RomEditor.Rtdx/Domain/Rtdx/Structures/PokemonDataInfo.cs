@@ -240,29 +240,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Encoding.ASCII.GetBytes(RecruitPrereq, buffer.Slice(0x9B, 69));
 #endif
             }
-
-            [Flags]
-            public enum FeatureFlags : ushort
-            {
-                Male = 1 << 0,
-                Female = 1 << 1,
-                NoGender = 1 << 2,  // unsure
-                CanWalkOnWater = 1 << 3,
-                CanWalkOnMagma = 1 << 4,
-                CanPhaseThroughWalls = 1 << 5,
-                CanLevitate = 1 << 6,  // Levitate, fly, float, etc.
-                CannotMove = 1 << 7,  // Wild Pokémon only
-                // Bits 8, 9 and 10 are always zero
-                Starter = 1 << 11,
-                BaseForm = 1 << 12,  // Not set for Megas or alternate forms
-                Unknown13 = 1 << 13,
-                // Bit 14 is always zero
-                Active = 1 << 15,  // Set to 1 for Pokémon used in RTDX
-            }
         }
 
         public class LevelUpMove
         {
+            public LevelUpMove()
+            {
+            }
+
             public LevelUpMove(byte level, WazaIndex move)
             {
                 this.Level = level;
@@ -271,6 +256,27 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public byte Level { get; set; }
             public WazaIndex Move { get; set; }
+        }
+
+        [Flags]
+        public enum FeatureFlags : ushort
+        {
+            Male = 1 << 0,
+            Female = 1 << 1,
+            NoGender = 1 << 2,  // unsure
+            CanWalkOnWater = 1 << 3,
+            CanWalkOnMagma = 1 << 4,
+            CanPhaseThroughWalls = 1 << 5,
+            CanLevitate = 1 << 6,  // Levitate, fly, float, etc.
+            CannotMove = 1 << 7,  // Wild Pokémon only
+            Unknown8 = 1 << 8,  // Always zero
+            Unknown9 = 1 << 9,  // Always zero
+            Unknown10 = 1 << 10,  // Always zero
+            Starter = 1 << 11,
+            BaseForm = 1 << 12,  // Not set for Megas or alternate forms
+            Unknown13 = 1 << 13,
+            Unknown14 = 1 << 14, // Always zero
+            Active = 1 << 15,  // Set to 1 for Pokémon used in RTDX
         }
     }
 }

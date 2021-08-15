@@ -168,6 +168,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 
         public static IYamlDeserializer YamlDeserializer { get; } = new YamlDeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
+            .IgnoreUnmatchedProperties()
             .Build();
 
         public ModpackMetadata Metadata => metadata;

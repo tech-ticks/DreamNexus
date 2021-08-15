@@ -149,8 +149,8 @@ namespace SkyEditorUI.Controllers
             }
 
             string lowerSearchText = searchText.ToLower();
-            return hash.ToString().Contains(searchText) || value.ToLower().Contains(lowerSearchText) 
-                || (hashName?.ToLower().Contains(lowerSearchText) ?? false);
+            return hash.ToString().Contains(searchText) || (value?.ToLower()?.Contains(lowerSearchText) ?? false)
+                || (hashName?.ToLower()?.Contains(lowerSearchText) ?? false);
         }
     }
 }

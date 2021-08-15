@@ -73,7 +73,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             var dungeonBalance = rom.GetDungeonBalance();
             var itemArrange = rom.GetItemArrange();
             var requestLevels = rom.GetRequestLevel();
-            var strings = rom.GetStrings().GetStringsForLanguage(LanguageType.EN);
+            var strings = rom.GetStrings().English;
 
             var data = dungeonData.Entries[index];
             var extra = dungeonExtra.Entries.GetValueOrDefault(index);

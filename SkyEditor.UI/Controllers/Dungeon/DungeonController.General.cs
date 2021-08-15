@@ -5,7 +5,6 @@ using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using SkyEditor.RomEditor.Infrastructure;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
-using SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable;
 
 namespace SkyEditorUI.Controllers
 {
@@ -94,99 +93,118 @@ namespace SkyEditorUI.Controllers
         }
 
         #region Flags
+        [GLib.ConnectBefore]
         private void OnDirectionChanged(object sender, EventArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature.FloorDirectionUp, cbDirection!.Active == 1);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature.FloorDirectionUp, cbDirection!.Active == 1);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag1StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit1, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit1, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag2StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit2, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit2, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag3StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit3, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit3, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnLevelResetStateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature.LevelReset, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature.LevelReset, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag5StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit5, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit5, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag6StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit6, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit6, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag7StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit7, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit7, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag8StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit8, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit8, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnAutoReviveStateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature.AutoRevive, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature.AutoRevive, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag10StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit10, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit10, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag11StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit11, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit11, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag12StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit12, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit12, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag13StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit13, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit13, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag14StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit14, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit14, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnRecruitingEnabledStateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature.WildPokemonRecruitable, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature.WildPokemonRecruitable, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnFlag16StateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature._Bit16, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature._Bit16, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnScannerStateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature.Scanner, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature.Scanner, args.State);
         }
 
+        [GLib.ConnectBefore]
         private void OnRadarStateSet(object sender, StateSetArgs args)
         {
-            dungeon.Features.SetFlag(DungeonFeature.Radar, args.State);
+            dungeon.Features = dungeon.Features.SetFlag(DungeonFeature.Radar, args.State);
         }
         #endregion
 

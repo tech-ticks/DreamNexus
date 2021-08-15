@@ -22,6 +22,16 @@ namespace SkyEditorUI.Controllers
         }
     }
 
+    public class PokemonControllerContext : ControllerContext
+    {
+        public CreatureIndex Index { get; set; }
+
+        public PokemonControllerContext(CreatureIndex index)
+        {
+            Index = index;
+        }
+    }
+
     public class DungeonControllerContext : ControllerContext
     {
         public DungeonIndex Index { get; }

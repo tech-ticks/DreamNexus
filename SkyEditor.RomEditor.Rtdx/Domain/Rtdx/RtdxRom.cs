@@ -44,7 +44,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         #region StreamingAssets/data/ab
 
-        AssetsManager GetAssetBundles();
+        AssetsManager GetAssetBundles(bool loadAll = false);
         string[] ListAssetBundles();
 
         #endregion
@@ -138,6 +138,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IStarterCollection GetStarters();
         void SetStarters(IStarterCollection collection);
         bool StartersModified { get; set; }
+
+        IPokemonCollection GetPokemon();
+        bool PokemonModified { get; set; }
 
         IDungeonCollection GetDungeons();
         bool DungeonsModified { get; set; }
@@ -236,18 +239,21 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         #endregion
 
         #region StreamingAssets/data/ab
-        protected static string GetAssetBundlesPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/ab");
+        public static string GetAssetBundlesPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/ab");
 
         /// <summary>
         /// Loads asset bundles
         /// Note: If the ROM is not a physical file system, exceptions may occur.
         /// </summary>
-        public AssetsManager GetAssetBundles()
+        public AssetsManager GetAssetBundles(bool loadAll = false)
         {
             if (_assetBundles == null)
             {
                 _assetBundles = new AssetsManager();
-                _assetBundles.LoadFolder(this.FileSystem, GetAssetBundlesPath(this.RomDirectory));
+                if (loadAll)
+                {
+                    _assetBundles.LoadFolder(this.FileSystem, GetAssetBundlesPath(this.RomDirectory));
+                }
             }
             return _assetBundles;
         }
@@ -832,6 +838,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public bool StartersModified { get; set; }
 
         private IStarterCollection? starterCollection;
+
+        public IPokemonCollection GetPokemon()
+        {
+            if (pokemonCollection == null)
+            {
+                pokemonCollection = new PokemonCollection(this);
+            }
+            PokemonModified = true;
+            return pokemonCollection;
+        }
+
+        public bool PokemonModified { get; set; }
+        private IPokemonCollection? pokemonCollection;
 
         public IDungeonCollection GetDungeons()
         {

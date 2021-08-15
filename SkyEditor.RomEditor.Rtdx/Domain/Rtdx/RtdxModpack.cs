@@ -59,6 +59,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     rom.SetStarters(await mod.LoadModel<StarterCollection>("starters.yaml"));
                 }
 
+                var pokemon = rom.GetPokemon();
+                foreach (var path in mod.GetModelFilesInDirectory("pokemon"))
+                {
+                    var model = await mod.LoadModel<PokemonModel>(path);
+                    pokemon.SetPokemon(model.Id, model);
+                }
+
                 var dungeons = rom.GetDungeons();
                 for (int i = 1; i < (int) DungeonIndex.END; i++)
                 {
@@ -163,6 +170,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 if (rom.StartersModified)
                 {
                     tasks.Add(mod.SaveModel(rom.GetStarters(), "starters.yaml"));
+                }
+
+                if (rom.PokemonModified)
+                {
+                    var pokemon = rom.GetPokemon();
+                    foreach (var model in pokemon.LoadedPokemon.Where(model => pokemon.IsPokemonDirty(model.Key)))
+                    {
+                        string path = Path.Combine("pokemon", $"{model.Key.ToString()}.yaml");
+                        tasks.Add(mod.SaveModel(model.Value, path));
+                    }
                 }
 
                 if (rom.DungeonsModified)

@@ -46,7 +46,7 @@ namespace SkyEditorUI.Controllers
 
         void LoadGeneralTab()
         {
-            var strings = rom.GetStrings().GetStringsForLanguage(LanguageType.EN);
+            var strings = rom.GetStrings().English;
             var commonStrings = rom.GetCommonStrings();
             var dungeonStatuses = Enum.GetValues<DungeonStatusIndex>()
                 .SkipLast(1)
