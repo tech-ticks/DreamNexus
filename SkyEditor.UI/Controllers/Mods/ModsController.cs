@@ -122,7 +122,7 @@ namespace SkyEditorUI.Controllers
             toggleButton!.Label = "Add";
 
             var selection = (TreeSelection) sender;
-            if (selection.GetSelected(out ITreeModel model, out TreeIter iter))
+            if (selection.GetSelected(out ITreeModel model, out var iter))
             {
                 var status = model.GetValue(iter, StatusColumn) as string;
                 if (status == "Not added")

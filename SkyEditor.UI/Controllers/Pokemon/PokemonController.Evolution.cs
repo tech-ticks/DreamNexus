@@ -94,7 +94,7 @@ namespace SkyEditorUI.Controllers
         private void OnEvolutionSpeciesEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (evolutionsStore!.GetIter(out TreeIter iter, path))
+            if (evolutionsStore!.GetIter(out var iter, path))
             {
                 var creatureIndex = AutocompleteHelpers.ExtractPokemon(args.NewText);
                 if (creatureIndex.HasValue)
@@ -112,7 +112,7 @@ namespace SkyEditorUI.Controllers
         private void OnEvolutionSelectionChanged(object sender, EventArgs args)
         {
             var selection = (TreeSelection) sender;
-            if (selection.GetSelected(out ITreeModel model, out TreeIter iter))
+            if (selection.GetSelected(out ITreeModel model, out var iter))
             {
                 var evolutionIndex = (int) model.GetValue(iter, EvolutionIndexColumn);
                 selectedEvolution = pokemon.EvolutionBranches[evolutionIndex];
@@ -141,7 +141,7 @@ namespace SkyEditorUI.Controllers
 
         private void OnRemoveEvolutionClicked(object sender, EventArgs args)
         {
-            if (evolutionsTreeSelection!.GetSelected(out ITreeModel model, out TreeIter iter))
+            if (evolutionsTreeSelection!.GetSelected(out ITreeModel model, out var iter))
             {
                 var evolutionIndex = (int) model.GetValue(iter, EvolutionIndexColumn);
                 pokemon.EvolutionBranches.RemoveAt(evolutionIndex);

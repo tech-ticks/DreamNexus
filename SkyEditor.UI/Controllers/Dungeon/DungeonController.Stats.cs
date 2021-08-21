@@ -51,7 +51,7 @@ namespace SkyEditorUI.Controllers
         private void OnStatsSpeciesEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (wildPokemonStatsStore!.GetIter(out TreeIter iter, path))
+            if (wildPokemonStatsStore!.GetIter(out var iter, path))
             {
                 var creatureIndex = AutocompleteHelpers.ExtractPokemon(args.NewText);
                 if (creatureIndex.HasValue)
@@ -66,7 +66,7 @@ namespace SkyEditorUI.Controllers
         private void OnStatsLevelEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (wildPokemonStatsStore!.GetIter(out TreeIter iter, path))
+            if (wildPokemonStatsStore!.GetIter(out var iter, path))
             {
                 var stat = dungeon.PokemonStats![path.Indices[0]];
                 if (byte.TryParse(args.NewText, out byte value))
@@ -80,7 +80,7 @@ namespace SkyEditorUI.Controllers
         private void OnStatsStrongFoeToggled(object sender, ToggledArgs args)
         {
             var path = new TreePath(args.Path);
-            if (wildPokemonStatsStore!.GetIter(out TreeIter iter, path))
+            if (wildPokemonStatsStore!.GetIter(out var iter, path))
             {
                 var stat = dungeon.PokemonStats![path.Indices[0]];
                 stat.StrongFoe = !stat.StrongFoe;
@@ -91,7 +91,7 @@ namespace SkyEditorUI.Controllers
         private void OnStatsXpYieldEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (wildPokemonStatsStore!.GetIter(out TreeIter iter, path))
+            if (wildPokemonStatsStore!.GetIter(out var iter, path))
             {
                 var stat = dungeon.PokemonStats![path.Indices[0]];
                 if (int.TryParse(args.NewText, out int value))
@@ -105,7 +105,7 @@ namespace SkyEditorUI.Controllers
         private void OnStatsHpEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (wildPokemonStatsStore!.GetIter(out TreeIter iter, path))
+            if (wildPokemonStatsStore!.GetIter(out var iter, path))
             {
                 var stat = dungeon.PokemonStats![path.Indices[0]];
                 if (short.TryParse(args.NewText, out short value))
@@ -119,7 +119,7 @@ namespace SkyEditorUI.Controllers
         private void OnStatsAttackEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (wildPokemonStatsStore!.GetIter(out TreeIter iter, path))
+            if (wildPokemonStatsStore!.GetIter(out var iter, path))
             {
                 var stat = dungeon.PokemonStats![path.Indices[0]];
                 if (byte.TryParse(args.NewText, out byte value))
@@ -133,7 +133,7 @@ namespace SkyEditorUI.Controllers
         private void OnStatsDefenseEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (wildPokemonStatsStore!.GetIter(out TreeIter iter, path))
+            if (wildPokemonStatsStore!.GetIter(out var iter, path))
             {
                 var stat = dungeon.PokemonStats![path.Indices[0]];
                 if (byte.TryParse(args.NewText, out byte value))
@@ -147,7 +147,7 @@ namespace SkyEditorUI.Controllers
         private void OnStatsSpecialAttackEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (wildPokemonStatsStore!.GetIter(out TreeIter iter, path))
+            if (wildPokemonStatsStore!.GetIter(out var iter, path))
             {
                 var stat = dungeon.PokemonStats![path.Indices[0]];
                 if (byte.TryParse(args.NewText, out byte value))
@@ -161,7 +161,7 @@ namespace SkyEditorUI.Controllers
         private void OnStatsSpecialDefenseEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (wildPokemonStatsStore!.GetIter(out TreeIter iter, path))
+            if (wildPokemonStatsStore!.GetIter(out var iter, path))
             {
                 var stat = dungeon.PokemonStats![path.Indices[0]];
                 if (byte.TryParse(args.NewText, out byte value))
@@ -175,7 +175,7 @@ namespace SkyEditorUI.Controllers
         private void OnStatsSpeedEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (wildPokemonStatsStore!.GetIter(out TreeIter iter, path))
+            if (wildPokemonStatsStore!.GetIter(out var iter, path))
             {
                 var stat = dungeon.PokemonStats![path.Indices[0]];
                 if (byte.TryParse(args.NewText, out byte value))

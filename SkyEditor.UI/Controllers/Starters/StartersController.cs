@@ -160,7 +160,7 @@ namespace SkyEditorUI.Controllers
         private void OnStarterNameLabelEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (startersStore!.GetIter(out TreeIter iter, path))
+            if (startersStore!.GetIter(out var iter, path))
             {
                 var creatureIndex = AutocompleteHelpers.ExtractPokemon(args.NewText);
                 if (creatureIndex.HasValue)
@@ -175,7 +175,7 @@ namespace SkyEditorUI.Controllers
         private void OnStarterMove1Edited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (startersStore!.GetIter(out TreeIter iter, path))
+            if (startersStore!.GetIter(out var iter, path))
             {
                 var moveIndex = AutocompleteHelpers.ExtractMove(args.NewText);
                 if (moveIndex.HasValue)
@@ -190,7 +190,7 @@ namespace SkyEditorUI.Controllers
         private void OnStarterMove2Edited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (startersStore!.GetIter(out TreeIter iter, path))
+            if (startersStore!.GetIter(out var iter, path))
             {
                 var moveIndex = AutocompleteHelpers.ExtractMove(args.NewText);
                 if (moveIndex.HasValue)
@@ -205,7 +205,7 @@ namespace SkyEditorUI.Controllers
         private void OnStarterMove3Edited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (startersStore!.GetIter(out TreeIter iter, path))
+            if (startersStore!.GetIter(out var iter, path))
             {
                 var moveIndex = AutocompleteHelpers.ExtractMove(args.NewText);
                 if (moveIndex.HasValue)
@@ -220,7 +220,7 @@ namespace SkyEditorUI.Controllers
         private void OnStarterMove4Edited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (startersStore!.GetIter(out TreeIter iter, path))
+            if (startersStore!.GetIter(out var iter, path))
             {
                 var moveIndex = AutocompleteHelpers.ExtractMove(args.NewText);
                 if (moveIndex.HasValue)

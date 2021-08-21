@@ -76,7 +76,7 @@ namespace SkyEditorUI.Controllers
         private void OnNameEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (actorsStore!.GetIter(out TreeIter iter, path) && !string.IsNullOrWhiteSpace(args.NewText))
+            if (actorsStore!.GetIter(out var iter, path) && !string.IsNullOrWhiteSpace(args.NewText))
             {
                 actorsStore.SetValue(iter, NameColumn, args.NewText);
                 actors!.Actors[path.Indices[0]].SymbolName = args.NewText;
@@ -86,7 +86,7 @@ namespace SkyEditorUI.Controllers
         private void OnSpeciesEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (actorsStore!.GetIter(out TreeIter iter, path))
+            if (actorsStore!.GetIter(out var iter, path))
             {
                 var creatureIndex = AutocompleteHelpers.ExtractPokemon(args.NewText);
                 if (creatureIndex.HasValue)
@@ -108,7 +108,7 @@ namespace SkyEditorUI.Controllers
         {
             var path = new TreePath((string) args.Args[0]);
 
-            if (actorsStore!.GetIter(out TreeIter iter, path))
+            if (actorsStore!.GetIter(out var iter, path))
             {
                 var formTypeIter = (TreeIter) args.Args[1];
                 var formTypePath = formTypesStore!.GetPath(formTypeIter);
@@ -122,7 +122,7 @@ namespace SkyEditorUI.Controllers
         private void OnFemaleToggled(object sender, ToggledArgs args)
         {
             var path = new TreePath(args.Path);
-            if (actorsStore!.GetIter(out TreeIter iter, path))
+            if (actorsStore!.GetIter(out var iter, path))
             {
                 var actor = actors!.Actors[path.Indices[0]];
                 actor.IsFemale = !actor.IsFemale;
@@ -133,7 +133,7 @@ namespace SkyEditorUI.Controllers
         private void OnPartyIdEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (actorsStore!.GetIter(out TreeIter iter, path))
+            if (actorsStore!.GetIter(out var iter, path))
             {
                 var actor = actors!.Actors[path.Indices[0]];
                 if (int.TryParse(args.NewText, out int value))
@@ -151,7 +151,7 @@ namespace SkyEditorUI.Controllers
         private void OnWarehouseIdEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (actorsStore!.GetIter(out TreeIter iter, path))
+            if (actorsStore!.GetIter(out var iter, path))
             {
                 var actor = actors!.Actors[path.Indices[0]];
                 if (string.IsNullOrWhiteSpace(args.NewText)
@@ -170,7 +170,7 @@ namespace SkyEditorUI.Controllers
         private void OnSpecialNameEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (actorsStore!.GetIter(out TreeIter iter, path))
+            if (actorsStore!.GetIter(out var iter, path))
             {
                 var actor = actors!.Actors[path.Indices[0]];
                 if (int.TryParse(args.NewText, out int value))

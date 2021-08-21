@@ -49,7 +49,7 @@ namespace SkyEditorUI.Controllers
             }
 
             var path = new TreePath(args.Path);
-            if (trapSpawnsStore!.GetIter(out TreeIter iter, path))
+            if (trapSpawnsStore!.GetIter(out var iter, path))
             {
                 var index = (ItemIndex) trapSpawnsStore.GetValue(iter, TrapItemIndexColumn);
                 if (short.TryParse(args.NewText, out short value))

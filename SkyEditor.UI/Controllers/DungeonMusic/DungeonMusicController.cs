@@ -40,7 +40,7 @@ namespace SkyEditorUI.Controllers
         private void OnSymbolEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (musicStore!.GetIter(out TreeIter iter, path) && !string.IsNullOrWhiteSpace(args.NewText))
+            if (musicStore!.GetIter(out var iter, path) && !string.IsNullOrWhiteSpace(args.NewText))
             {
                 musicStore.SetValue(iter, SymbolColumn, args.NewText);
                 dungeonMusic.Music[path.Indices[0]] = args.NewText;

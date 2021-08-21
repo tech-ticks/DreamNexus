@@ -6,6 +6,7 @@ using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditorUI.Infrastructure;
+using System.Linq;
 
 namespace SkyEditorUI.Controllers
 {
@@ -17,6 +18,8 @@ namespace SkyEditorUI.Controllers
         [UI] private ComboBox? cbTypeSecondary;
         [UI] private ListStore? creatureCompletionStore;
         [UI] private ListStore? itemCompletionStore;
+        [UI] private ListStore? tmCompletionStore;
+        [UI] private ListStore? moveCompletionStore;
         [UI] private ListStore? typesStore;
 
         private LocalizedStringCollection englishStrings;
@@ -62,6 +65,11 @@ namespace SkyEditorUI.Controllers
 
             creatureCompletionStore!.AppendAll(AutocompleteHelpers.GetPokemon(rom));
             itemCompletionStore!.AppendAll(AutocompleteHelpers.GetItems(rom));
+            tmCompletionStore!.AppendAll(Enumerable.Range(
+                    (int) ItemIndex.BROKENMACHINE_MIN,
+                    (int) (ItemIndex.BROKENMACHINE_MAX - ItemIndex.BROKENMACHINE_MIN))
+                .Select(id => AutocompleteHelpers.FormatItem(rom, (ItemIndex) id)));
+            moveCompletionStore!.AppendAll(AutocompleteHelpers.GetMoves(rom));
 
             string formattedId = ((int) pokemonId).ToString("0000");
             string? name = englishStrings.GetPokemonName(pokemonId);
@@ -75,6 +83,10 @@ namespace SkyEditorUI.Controllers
             LoadBaseStatsTab();
             LoadEvolutionTab();
             LoadOtherTab();
+
+            LoadStatsTab();
+            LoadLevelUpMovesTab();
+            LoadTmsTab();
         }
 
         private void OnPokedexNumChanged(object sender, EventArgs args)

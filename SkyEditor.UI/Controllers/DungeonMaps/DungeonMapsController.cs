@@ -63,7 +63,7 @@ namespace SkyEditorUI.Controllers
         private void OnSymbolEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (mapsStore!.GetIter(out TreeIter iter, path) && !string.IsNullOrWhiteSpace(args.NewText))
+            if (mapsStore!.GetIter(out var iter, path) && !string.IsNullOrWhiteSpace(args.NewText))
             {
                 mapsStore.SetValue(iter, SymbolColumn, args.NewText);
                 dungeonMaps.Maps[path.Indices[0]].Symbol = args.NewText;
@@ -73,7 +73,7 @@ namespace SkyEditorUI.Controllers
         private void OnFixedMapIndexEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (mapsStore!.GetIter(out TreeIter iter, path))
+            if (mapsStore!.GetIter(out var iter, path))
             {
                 var map = dungeonMaps.Maps[path.Indices[0]];
                 if (string.IsNullOrWhiteSpace(args.NewText)
@@ -93,7 +93,7 @@ namespace SkyEditorUI.Controllers
         private void OnBgmIndexEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (mapsStore!.GetIter(out TreeIter iter, path))
+            if (mapsStore!.GetIter(out var iter, path))
             {
                 var map = dungeonMaps.Maps[path.Indices[0]];
                 if (byte.TryParse(args.NewText, out byte value))
@@ -107,7 +107,7 @@ namespace SkyEditorUI.Controllers
         private void OnByte06Edited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (mapsStore!.GetIter(out TreeIter iter, path))
+            if (mapsStore!.GetIter(out var iter, path))
             {
                 var map = dungeonMaps.Maps[path.Indices[0]];
                 if (byte.TryParse(args.NewText, out byte value))
@@ -121,7 +121,7 @@ namespace SkyEditorUI.Controllers
         private void OnByte07Edited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (mapsStore!.GetIter(out TreeIter iter, path))
+            if (mapsStore!.GetIter(out var iter, path))
             {
                 var map = dungeonMaps.Maps[path.Indices[0]];
                 if (byte.TryParse(args.NewText, out byte value))
@@ -135,7 +135,7 @@ namespace SkyEditorUI.Controllers
         private void OnByte09Edited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (mapsStore!.GetIter(out TreeIter iter, path))
+            if (mapsStore!.GetIter(out var iter, path))
             {
                 var map = dungeonMaps.Maps[path.Indices[0]];
                 if (byte.TryParse(args.NewText, out byte value))
@@ -149,7 +149,7 @@ namespace SkyEditorUI.Controllers
         private void OnByte0AEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (mapsStore!.GetIter(out TreeIter iter, path))
+            if (mapsStore!.GetIter(out var iter, path))
             {
                 var map = dungeonMaps.Maps[path.Indices[0]];
                 if (byte.TryParse(args.NewText, out byte value))
@@ -163,7 +163,7 @@ namespace SkyEditorUI.Controllers
         private void OnByte0BEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (mapsStore!.GetIter(out TreeIter iter, path))
+            if (mapsStore!.GetIter(out var iter, path))
             {
                 var map = dungeonMaps.Maps[path.Indices[0]];
                 if (byte.TryParse(args.NewText, out byte value))

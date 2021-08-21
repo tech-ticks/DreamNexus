@@ -1,7 +1,6 @@
 using System;
 using Gtk;
 using UI = Gtk.Builder.ObjectAttribute;
-using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using SkyEditorUI.Infrastructure;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System.Linq;
@@ -60,7 +59,7 @@ namespace SkyEditorUI.Controllers
         {
             // TODO: prevent duplicates
             var path = new TreePath(args.Path);
-            if (creatureSpawnsStore!.GetIter(out TreeIter iter, path))
+            if (creatureSpawnsStore!.GetIter(out var iter, path))
             {
                 var creatureIndex = AutocompleteHelpers.ExtractPokemon(args.NewText);
                 if (creatureIndex.HasValue && allowedCreatures.Contains(creatureIndex.Value))
@@ -90,7 +89,7 @@ namespace SkyEditorUI.Controllers
         private void OnSpawnRecruitmentLevelEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (creatureSpawnsStore!.GetIter(out TreeIter iter, path))
+            if (creatureSpawnsStore!.GetIter(out var iter, path))
             {
                 var index = (CreatureIndex) creatureSpawnsStore.GetValue(iter, SpawnCreatureIdColumn);
                 if (byte.TryParse(args.NewText, out byte value))
@@ -108,7 +107,7 @@ namespace SkyEditorUI.Controllers
         private void OnSpawnWeightEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (creatureSpawnsStore!.GetIter(out TreeIter iter, path))
+            if (creatureSpawnsStore!.GetIter(out var iter, path))
             {
                 var index = (CreatureIndex) creatureSpawnsStore.GetValue(iter, SpawnCreatureIdColumn);
                 if (byte.TryParse(args.NewText, out byte value))
@@ -126,7 +125,7 @@ namespace SkyEditorUI.Controllers
         private void OnByte0BEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (creatureSpawnsStore!.GetIter(out TreeIter iter, path))
+            if (creatureSpawnsStore!.GetIter(out var iter, path))
             {
                 var index = (CreatureIndex) creatureSpawnsStore.GetValue(iter, SpawnCreatureIdColumn);
                 if (byte.TryParse(args.NewText, out byte value))

@@ -228,7 +228,7 @@ namespace SkyEditorUI.Controllers
         private void OnUnknownValueEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (!unknownsStore!.GetIter(out TreeIter iter, path))
+            if (!unknownsStore!.GetIter(out var iter, path))
             {
                 return;
             }

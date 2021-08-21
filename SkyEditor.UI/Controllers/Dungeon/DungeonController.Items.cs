@@ -119,7 +119,7 @@ namespace SkyEditorUI.Controllers
         private void OnItemCategoryWeightEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (itemCategoriesStore!.GetIter(out TreeIter iter, path))
+            if (itemCategoriesStore!.GetIter(out var iter, path))
             {
                 var index = (ItemKind) path.Indices[0] + 1;
                 var weight = currentItemSet!.ItemKindWeights[index];
@@ -134,7 +134,7 @@ namespace SkyEditorUI.Controllers
         private void OnItemEdited(TreeStore store, EditedArgs args, ItemKind kind)
         {
             var path = new TreePath(args.Path);
-            if (store.GetIter(out TreeIter iter, path))
+            if (store.GetIter(out var iter, path))
             {
                 var itemIndex = AutocompleteHelpers.ExtractItem(args.NewText);
                 if (itemIndex.HasValue && itemKindByIndex[itemIndex.Value] == kind)
@@ -160,7 +160,7 @@ namespace SkyEditorUI.Controllers
         private void OnItemWeightEdited(TreeStore store, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            if (store.GetIter(out TreeIter iter, path))
+            if (store.GetIter(out var iter, path))
             {
                 var itemIndex = (ItemIndex) store.GetValue(iter, ItemIndexColumn);
                 string name = (string) store.GetValue(iter, ItemNameColumn);
