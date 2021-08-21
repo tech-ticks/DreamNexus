@@ -8,6 +8,7 @@ To use this, you need a decrypted and extracted copy of the game. If your consol
 
 The UI project (`SkyEditor.UI`) is based on [SkyTemple](https://github.com/SkyTemple/skytemple) and licensed under GPLv3.
 All other all components including the core library and CLI are licensed under the MIT license.
+Texture format converters are sourced from https://github.com/mafaca/UtinyRipper.
 
 ## Building
 

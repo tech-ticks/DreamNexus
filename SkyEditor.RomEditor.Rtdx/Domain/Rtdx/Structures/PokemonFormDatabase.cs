@@ -36,7 +36,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         /// </summary>
         public int GetGraphicsDatabaseIndex(CreatureIndex creatureIndex, PokemonFormType formType)
         {
-            return Entries[(int)creatureIndex - 1].PokemonGraphicsDatabaseEntryIds[(int)formType];
+            return Entries[(int) creatureIndex - 1].PokemonGraphicsDatabaseEntryIds[(int)formType];
         }
         
         public Sir0 ToSir0()

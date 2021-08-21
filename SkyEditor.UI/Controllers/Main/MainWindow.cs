@@ -195,7 +195,7 @@ namespace SkyEditorUI.Controllers
             }
 
             var selection = (TreeSelection) sender;
-            if (selection.GetSelected(out ITreeModel model, out var iter))
+            if (selection.GetSelected(out ITreeModel model, out TreeIter iter))
             {
                 var path = model.GetValue(iter, 1) as string;
                 if (path != null)
