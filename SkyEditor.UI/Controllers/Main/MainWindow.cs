@@ -780,6 +780,28 @@ namespace SkyEditorUI.Controllers
                     "skytemple-e-monster-symbolic", new PokemonControllerContext(i));
             }
 
+            var itemsIter = AddMainListItem(root, "Items", "skytemple-e-item-symbolic");
+            var itemEnumNames = Enum.GetNames<ItemIndex>();
+            foreach (var enumName in itemEnumNames)
+            {
+                if (enumName.EndsWith("_MIN") || enumName.EndsWith("_MAX"))
+                {
+                    // Ignore values ending with _MIN and _MAX since we can't
+                    // use them to get the name hash
+                    continue;
+                }
+
+                var index = Enum.Parse<ItemIndex>(enumName);
+                string formattedId = ((int) index).ToString("0000");
+                string? name = strings.GetItemNameByInternalName(enumName);
+                if (string.IsNullOrEmpty(name))
+                {
+                    name = $"({index.ToString()})";
+                }
+                AddMainListItem<ItemController>(itemsIter, $"#{formattedId}: {name}",
+                    "skytemple-e-item-symbolic", new ItemControllerContext(index, enumName));
+            }
+
             var dungeonsIter = AddMainListItem(root, "Dungeons", "skytemple-e-dungeon-symbolic");
             AddMainListItem<DungeonMapsController>(dungeonsIter, "Dungeon Maps", "skytemple-e-worldmap-symbolic");
             AddMainListItem<DungeonMusicController>(dungeonsIter, "Dungeon Music", "skytemple-e-music-symbolic");

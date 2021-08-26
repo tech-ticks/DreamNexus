@@ -7,6 +7,7 @@ using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
+using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx
 {
@@ -70,6 +71,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 for (int i = 1; i < (int) DungeonIndex.END; i++)
                 {
                     await LoadDungeon(mod, rom, (DungeonIndex) i, dungeons);
+                }
+
+                var items = rom.GetItems();
+                foreach (var path in mod.GetModelFilesInDirectory("items"))
+                {
+                    var model = await mod.LoadModel<ItemDataInfo.Entry>(path);
+                    items.SetItem(model.Index, model);
                 }
 
                 if (mod.ModelExists("dungeon_maps.yaml"))
@@ -178,6 +186,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     foreach (var model in pokemon.LoadedPokemon.Where(model => pokemon.IsPokemonDirty(model.Key)))
                     {
                         string path = Path.Combine("pokemon", $"{model.Key.ToString()}.yaml");
+                        tasks.Add(mod.SaveModel(model.Value, path));
+                    }
+                }
+
+                if (rom.ItemsModified)
+                {
+                    var item = rom.GetItems();
+                    foreach (var model in item.LoadedItems.Where(model => item.IsItemDirty(model.Key)))
+                    {
+                        string path = Path.Combine("item", $"{model.Key.ToString()}.yaml");
                         tasks.Add(mod.SaveModel(model.Value, path));
                     }
                 }

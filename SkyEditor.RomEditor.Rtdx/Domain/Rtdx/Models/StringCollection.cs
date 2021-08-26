@@ -301,6 +301,52 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             return GetPokemonNameByInternalName(index.ToString("f"));
         }
 
+        public string? GetItemName(ItemIndex index, bool plural = false)
+        {
+            return GetCommonString(GetItemNameHash(index, plural));
+        }
+
+        public int GetItemNameHash(string internalName, bool plural = false)
+        {
+            return TextIdValues.GetValueOrDefault(plural
+                ? "ITEM_NAME_PLURAL__ITEM_PLURAL_" + internalName.ToUpper()
+                : "ITEM_NAME__ITEM_" + internalName.ToUpper());
+        }
+
+        public int GetItemNameHash(ItemIndex index, bool plural = false)
+        {
+            var internalName = index.ToString("f");
+            return GetItemNameHash(internalName, plural);
+        }
+
+        public string? GetItemNameByInternalName(string internalName, bool plural = false)
+        {
+            return GetCommonString(GetItemNameHash(internalName, plural));
+        }
+
+        // 
+
+        public string? GetItemDescription(ItemIndex index)
+        {
+            return GetCommonString(GetItemDescriptionHash(index));
+        }
+
+        public int GetItemDescriptionHash(string internalName)
+        {
+            return TextIdValues.GetValueOrDefault("ITEM_EXPLANATION__EXPLAIN_" + internalName.ToUpper());
+        }
+
+        public int GetItemDescriptionHash(ItemIndex index)
+        {
+            var internalName = index.ToString("f");
+            return GetItemDescriptionHash(internalName);
+        }
+
+        public string? GetItemDescriptionByInternalName(string internalName)
+        {
+            return GetCommonString(GetItemDescriptionHash(internalName));
+        }
+
         public int GetPokemonTaxonomyHash(int taxonId)
         {
             // It's stored in pokemon_data_info 1 higher than the internal id

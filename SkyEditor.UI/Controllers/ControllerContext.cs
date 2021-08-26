@@ -32,6 +32,19 @@ namespace SkyEditorUI.Controllers
         }
     }
 
+    public class ItemControllerContext : ControllerContext
+    {
+        public ItemIndex Index { get; set; }
+        public string InternalName { get; set; }
+
+        public ItemControllerContext(ItemIndex index, string internalName)
+        {
+            Index = index;
+            InternalName = internalName;
+        }
+    }
+
+
     public class DungeonControllerContext : ControllerContext
     {
         public DungeonIndex Index { get; }

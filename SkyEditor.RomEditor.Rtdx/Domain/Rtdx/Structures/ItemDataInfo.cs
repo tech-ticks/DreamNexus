@@ -51,6 +51,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         [DebuggerDisplay("{Name}")]
         public class Entry
         {
+            public Entry()
+            {
+                Symbol = "";
+            }
+
             public Entry(ItemIndex index)
             {
                 Index = index;
@@ -143,6 +148,35 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             // Determines which large item image is displayed in the bag menu (item_image_[symbol].ab)
             public string Symbol { get; set; }
+
+            public Entry Clone()
+            {
+                return new Entry
+                {
+                    ItemGraphicsKey = ItemGraphicsKey,
+                    Flags = Flags,
+                    BuyPrice = BuyPrice,
+                    SellPrice = SellPrice,
+                    TaughtMove = TaughtMove,
+                    Short0C = Short0C,
+                    PrimaryActIndex = PrimaryActIndex,
+                    ReviveActIndex  = ReviveActIndex ,
+                    ThrowActIndex = ThrowActIndex,
+                    ItemKind  = ItemKind ,
+                    Byte17 = Byte17,
+                    Byte18 = Byte18,
+                    CommandType = CommandType,
+                    Byte1A = Byte1A,
+                    Byte1B = Byte1B,
+                    Byte1C = Byte1C,
+                    Byte1D = Byte1D,
+                    IconIndex = IconIndex,
+                    Byte1F = Byte1F,
+                    Byte20 = Byte20,
+                    Byte21 = Byte21,
+                    Symbol = Symbol,
+                };
+            }
         }
     }
 }

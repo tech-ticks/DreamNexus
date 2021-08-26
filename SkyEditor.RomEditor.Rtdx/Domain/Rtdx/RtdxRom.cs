@@ -145,6 +145,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IDungeonCollection GetDungeons();
         bool DungeonsModified { get; set; }
 
+        IItemCollection GetItems();
+        bool ItemsModified { get; set; }
+
         IActorCollection GetActors();
         void SetActors(IActorCollection collection);
         bool ActorsModified { get; set;}
@@ -866,6 +869,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         private IDungeonCollection? dungeonCollection;
 
+        public IItemCollection GetItems()
+        {
+            if (itemCollection == null)
+            {
+                itemCollection = new ItemCollection(this);
+            }
+            ItemsModified = true;
+            return itemCollection;
+        }
+
+        public bool ItemsModified { get; set; }
+
+        private IItemCollection? itemCollection;
+
         public IActorCollection GetActors()
         {
             if (actorCollection == null)
@@ -989,6 +1006,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             starterCollection?.Flush(this);
             actorCollection?.Flush(this);
             dungeonCollection?.Flush(this);
+            itemCollection?.Flush(this);
             dungeonMapCollection?.Flush(this);
             dungeonMusicCollection?.Flush(this);
 
