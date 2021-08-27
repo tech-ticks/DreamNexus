@@ -70,7 +70,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public Entry(IReadOnlyBinaryDataAccessor data)
             {
-                Flags = data.ReadUInt64(0x00);
+                Flags = (ActionFlags)data.ReadUInt64(0x00);
                 DungeonMessage1 = (TextIDHash)data.ReadInt32(0x08);
                 DungeonMessage2 = (TextIDHash)data.ReadInt32(0x0C);
 
@@ -123,7 +123,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public ReadOnlySpan<byte> ToBytes()
             {
                 IBinaryDataAccessor data = new BinaryFile(new byte[EntrySize]);
-                data.WriteUInt64(0x00, Flags);
+                data.WriteUInt64(0x00, (ulong)Flags);
                 data.WriteInt32(0x08, (int)DungeonMessage1);
                 data.WriteInt32(0x0C, (int)DungeonMessage2);
 
@@ -174,79 +174,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 return data.ReadSpan();
             }
 
-            // Contains several flags:
-            //   Bit  0: (only set for Tunnel Wand)
-            //   Bit  1: Cuts corners
-            //   Bit  2: ** unknown
-            //   Bit  3: ** unknown
-            //   Bit  4: ** unknown
-            //   Bit  5: -- always zero
-            //   Bit  6: ** unknown
-            //   Bit  7: (seems related to levitation moves like Fly, Sky Drop, Flying Press, or teleportation items like Spurn Orb, Warp Wand, Pure Seed)
-            //
-            //   Bit  8: (seems related to ground-based moves like Earthquake, Fissure, Earth Power)
-            //   Bit  9: Affected by Magic Coat
-            //   Bit 10: ** unknown
-            //   Bit 11: ** unknown
-            //   Bit 12: Sound-based move
-            //   Bit 13: ** unknown
-            //   Bit 14: (seems related to powder-based moves like Powder, Poison Powder, Stun Spore, Sleep Powder)
-            //   Bit 15: (seems related to biting moves like Hyper Fang, Fire Fang, Ice Fang, Crunch)
-            //
-            //   Bit 16: (seems related to pulse moves like Dragon Pulse, Origin Pulse, Water Pulse, Dark Pulse, Aura Sphere)
-            //   Bit 17: (seems related to punch moves like Comet Punch, Drain Punch, Fire/Ice/Thunder Punch, Hammer Arm, Sky Uppercut)
-            //   Bit 18: (seems to indicate moves that have recoil damage like Jump Kick, High Jump Kick, Brave Bird, Wild Charge)
-            //   Bit 19: (seems to indicate moves that are useful to teammates like Mist, Agility, Light Screen, Reflect, Soft-Boiled)
-            //   Bit 20: (seems related to light-based moves like Flash, Tail Glow, Luster Purge, Solar Beam, Moonlight, Morning Sun)
-            //   Bit 21: (seems related to spore-based moves like Powder, Poison Powder, Stun Spore, Sleep Powder)
-            //   Bit 22: Makes contact
-            //   Bit 23: ** unknown
-            //
-            //   Bit 24: ** unknown
-            //   Bit 25: ** unknown
-            //   Bit 26: ** unknown
-            //   Bit 27: ** unknown
-            //   Bit 28: ** unknown
-            //   Bit 29: (seems mostly related to healing moves like Recover, Soft-Boiled, Rest, Roost, Aqua Ring, Milk Drink, but also includes unrelated moves)
-            //   Bit 30: -- always zero
-            //   Bit 31: -- always zero
-            //
-            //   Bit 32: -- always zero
-            //   Bit 33: -- always zero
-            //   Bit 34: -- always zero
-            //   Bit 35: -- always zero
-            //   Bit 36: -- always zero
-            //   Bit 37: -- always zero
-            //   Bit 38: -- always zero
-            //   Bit 39: -- always zero
-            //
-            //   Bit 40: (almost identical to bit 11, with a few exceptions)
-            //   Bit 41: -- always zero
-            //   Bit 42: -- always zero
-            //   Bit 43: -- always zero
-            //   Bit 44: (set for Foresight, Odor Sleuth, Miracle Eye... and Scald?!)
-            //   Bit 45: -- always zero
-            //   Bit 46: ** unknown
-            //   Bit 47: ** unknown
-            //
-            //   Bit 48: ** unknown
-            //   Bit 49: ** unknown
-            //   Bit 50: ** unknown
-            //   Bit 51: -- always zero
-            //   Bit 52: -- always zero
-            //   Bit 53: ** unknown (53, 54 and 55 are identical)
-            //   Bit 54: ** unknown (53, 54 and 55 are identical)
-            //   Bit 55: ** unknown (53, 54 and 55 are identical)
-            //
-            //   Bit 56: ** unknown
-            //   Bit 57: -- always zero
-            //   Bit 58: ** unknown
-            //   Bit 59: ** unknown (59, 60 and 61 are identical)
-            //   Bit 60: ** unknown (59, 60 and 61 are identical)
-            //   Bit 61: ** unknown (59, 60 and 61 are identical)
-            //   Bit 62: ** unknown
-            //   Bit 63: -- always zero
-            public ulong Flags { get; set; }
+            public ActionFlags Flags { get; set; }
 
             public TextIDHash DungeonMessage1 { get; set; }
             public TextIDHash DungeonMessage2 { get; set; }
@@ -368,6 +296,104 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             EveryoneExceptUser = 10,
             AlliesExceptUser = 11,
             Other = 15, // Dungeon status effects, trap moves, warp orbs, Metronome, Curse and Recycle
+        }
+
+        [Flags]
+        public enum ActionFlags : ulong
+        {
+            //   Bit  0: (only set for Tunnel Wand)
+            Unknown0 = 1u << 0,
+            CutsCorners = 1u << 1,
+            Unknown2 = 1u << 2,
+            Unknown3 = 1u << 3,
+            Unknown4 = 1u << 4,
+            //   Bit  5: -- always zero
+            Unknown5 = 1u << 5,
+            Unknown6 = 1u << 6,
+            //   Bit  7: (seems related to levitation moves like Fly, Sky Drop, Flying Press, or teleportation items like Spurn Orb, Warp Wand, Pure Seed)
+            Levitate = 1u << 7,
+            //   Bit  8: (seems related to ground-based moves like Earthquake, Fissure, Earth Power)
+            GroundBased = 1u << 8,
+            AffectedByMagicCoat = 1u << 9,
+            Unknown10 = 1u << 10,
+            Unknown11 = 1u << 11,
+            SoundBased = 1u << 12,
+            Unknown13 = 1u << 13,
+            //   Bit 14: (seems related to powder-based moves like Powder, Poison Powder, Stun Spore, Sleep Powder)
+            Powder = 1u << 14,
+            //   Bit 15: (seems related to biting moves like Hyper Fang, Fire Fang, Ice Fang, Crunch)
+            Bite = 1u << 15,
+            //   Bit 16: (seems related to pulse moves like Dragon Pulse, Origin Pulse, Water Pulse, Dark Pulse, Aura Sphere)
+            Pulse = 1u << 16,
+            //   Bit 17: (seems related to punch moves like Comet Punch, Drain Punch, Fire/Ice/Thunder Punch, Hammer Arm, Sky Uppercut)
+            Punch = 1u << 17,
+            //   Bit 18: (seems to indicate moves that have recoil damage like Jump Kick, High Jump Kick, Brave Bird, Wild Charge)
+            RecoilDamage = 1u << 18,
+            //   Bit 19: (seems to indicate moves that are useful to teammates like Mist, Agility, Light Screen, Reflect, Soft-Boiled)
+            StatusMoveUsefulToTeammates = 1u << 19,
+            //   Bit 20: (seems related to light-based moves like Flash, Tail Glow, Luster Purge, Solar Beam, Moonlight, Morning Sun)
+            LightBased = 1u << 20,
+            //   Bit 21: (seems related to spore-based moves like Powder, Poison Powder, Stun Spore, Sleep Powder)
+            SporeBased = 1u << 21,
+            //   Bit 22: Makes contact
+            MakesContact = 1u << 22,
+            //   Bit 23: ** unknown
+            Unknown23 = 1u << 23,
+            Unknown24 = 1u << 24,
+            Unknown25 = 1u << 25,
+            Unknown26 = 1u << 26,
+            Unknown27 = 1u << 27,
+            Unknown28 = 1u << 28,
+            //   Bit 29: (seems mostly related to healing moves like Recover, Soft-Boiled, Rest, Roost, Aqua Ring, Milk Drink, but also includes unrelated moves)
+            Unknown29 = 1u << 29,
+            //   Bit 30-39: -- always zero
+            Unknown30 = 1u << 30,
+            Unknown31 = 1u << 31,
+            Unknown32 = 1u << 32,
+            Unknown33 = 1u << 33,
+            Unknown34 = 1u << 34,
+            Unknown35 = 1u << 35,
+            Unknown36 = 1u << 36,
+            Unknown37 = 1u << 37,
+            Unknown38 = 1u << 38,
+            Unknown39 = 1u << 39,
+            //   Bit 40: (almost identical to bit 11, with a few exceptions)
+            Unknown40 = 1u << 40,
+            //   Bit 41-43: -- always zero
+            Unknown41 = 1u << 41,
+            Unknown42 = 1u << 42,
+            Unknown43 = 1u << 43,
+            //   Bit 44: (set for Foresight, Odor Sleuth, Miracle Eye... and Scald?!)
+            Unknown44 = 1u << 44,
+            //   Bit 45: -- always zero
+            Unknown45 = 1u << 45,
+            //   Bit 46-50: ** unknown
+            Unknown46 = 1u << 46,
+            Unknown47 = 1u << 47,
+            Unknown48 = 1u << 48,
+            Unknown49 = 1u << 49,
+            Unknown50 = 1u << 50,
+            //   Bit 51, 52: -- always zero
+            Unknown51 = 1u << 51,
+            Unknown52 = 1u << 52,
+            //   Bit 53-55: ** unknown (53, 54 and 55 are identical)
+            Unknown53 = 1u << 53,
+            Unknown54 = 1u << 54,
+            Unknown55 = 1u << 55,
+            //   Bit 56: ** unknown
+            Unknown56 = 1u << 56,
+            //   Bit 57: -- always zero
+            Unknown57 = 1u << 57,
+            //   Bit 58: ** unknown
+            Unknown58 = 1u << 58,
+            //   Bit 59-61: ** unknown (59, 60 and 61 are identical)
+            Unknown59 = 1u << 59,
+            Unknown60 = 1u << 60,
+            Unknown61 = 1u << 61,
+            //   Bit 62: ** unknown
+            Unknown62 = 1u << 62,
+            //   Bit 63: -- always zero
+            Unknown63 = 1u << 63,
         }
     }
 }

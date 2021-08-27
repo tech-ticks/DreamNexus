@@ -370,13 +370,13 @@ for (var i = 1; i < actionData.Count; i++)
     /*foreach (var move in moves)
     {
         var name = strings.Moves.GetValueOrDefault(move.Index, move.Index.ToString());
-        Console.WriteLine($"{i,3}  {(int)move.Index,3}  {name,-30}  {FormatBits(act.Flags)}");
+        Console.WriteLine($"{i,3}  {(int)move.Index,3}  {name,-30}  {FormatBits((ulong)act.Flags)}");
     }
 
     foreach (var item in items)
     {
         var name = strings.Items.GetValueOrDefault(item.Index, item.Index.ToString());
-        Console.WriteLine($"{i,3}  {(int)item.Index,3}  {name,-30}  {FormatBits(act.Flags)}");
+        Console.WriteLine($"{i,3}  {(int)item.Index,3}  {name,-30}  {FormatBits((ulong)act.Flags)}");
     }
 
     continue;*/
@@ -455,7 +455,7 @@ for (var i = 1; i < actionData.Count; i++)
     }
 
     // Print attributes
-    // Console.WriteLine($"  Flags:    {FormatBits(act.Flags)}");
+    // Console.WriteLine($"  Flags:    {FormatBits((ulong)act.Flags)}");
     if (act.Kind == ActDataInfo.ActionKind.Move)
     {
         Console.WriteLine($"  Hits:     {FormatHits(hitCountEntry)}");
@@ -528,7 +528,7 @@ for (var i = 1; i < actionData.Count; i++)
 
     // Print unknown fields
     Console.WriteLine($"  Unknown ActDataInfo fields:");
-    Console.WriteLine($"    Flags: {FormatBits(act.Flags)}");
+    Console.WriteLine($"    Flags: {FormatBits((ulong)act.Flags)}");
     Console.WriteLine($"    0x80..0x8F:   -    -    -  {act.Byte83,3}  {act.Byte84,3}  {act.Byte85,3}  {act.Byte86,3}  {act.Byte87,3}    -  {act.Byte89,3}  {act.Byte8A,3}  {act.Byte8B,3}    -    -  {act.Byte8E,3}  {act.Byte8F,3}");
     Console.WriteLine($"    0x90..0x9F: {act.Byte90,3}  {act.Byte91,3}  {act.Byte92,3}    -  {act.Byte94,3}  {act.Byte95,3}  {act.Byte96,3}  {act.Byte97,3}  {act.Byte98,3}  {act.Byte99,3}  {act.Byte9A,3}  {act.Byte9B,3}  {act.Byte9C,3}  {act.Byte9D,3}  {act.Byte9E,3}  {act.Byte9F,3}");
 
