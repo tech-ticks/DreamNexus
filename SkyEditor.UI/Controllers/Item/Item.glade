@@ -28,6 +28,12 @@
   <object class="GtkEntryCompletion" id="moveCompletion">
     <property name="model">moveCompletionStore</property>
     <property name="text_column">0</property>
+    <child>
+      <object class="GtkCellRendererText"/>
+      <attributes>
+        <attribute name="text">0</attribute>
+      </attributes>
+    </child>
   </object>
   <object class="GtkBox" id="main">
     <property name="visible">True</property>
