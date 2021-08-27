@@ -44,6 +44,16 @@ namespace SkyEditorUI.Controllers
         }
     }
 
+    public class MoveControllerContext : ControllerContext
+    {
+        public WazaIndex Index { get; }
+
+        public MoveControllerContext(WazaIndex index)
+        {
+            Index = index;
+        }
+    }
+
 
     public class DungeonControllerContext : ControllerContext
     {

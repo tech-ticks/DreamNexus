@@ -148,6 +148,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IItemCollection GetItems();
         bool ItemsModified { get; set; }
 
+        IMoveCollection GetMoves();
+        bool MovesModified { get; set; }
+
         IActorCollection GetActors();
         void SetActors(IActorCollection collection);
         bool ActorsModified { get; set;}
@@ -883,6 +886,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         private IItemCollection? itemCollection;
 
+        public IMoveCollection GetMoves()
+        {
+            if (moveCollection == null)
+            {
+                moveCollection = new MoveCollection(this);
+            }
+            MovesModified = true;
+            return moveCollection;
+        }
+
+        public bool MovesModified { get; set; }
+
+        private IMoveCollection? moveCollection;
+
         public IActorCollection GetActors()
         {
             if (actorCollection == null)
@@ -1007,6 +1024,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             actorCollection?.Flush(this);
             dungeonCollection?.Flush(this);
             itemCollection?.Flush(this);
+            moveCollection?.Flush(this);
             dungeonMapCollection?.Flush(this);
             dungeonMusicCollection?.Flush(this);
 

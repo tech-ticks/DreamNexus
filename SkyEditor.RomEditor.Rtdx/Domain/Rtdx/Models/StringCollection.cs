@@ -324,8 +324,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             return GetCommonString(GetItemNameHash(internalName, plural));
         }
 
-        // 
-
         public string? GetItemDescription(ItemIndex index)
         {
             return GetCommonString(GetItemDescriptionHash(index));
@@ -345,6 +343,46 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public string? GetItemDescriptionByInternalName(string internalName)
         {
             return GetCommonString(GetItemDescriptionHash(internalName));
+        }
+
+        public int GetMoveNameHash(string internalName)
+        {
+            return TextIdValues.GetValueOrDefault("WAZA_NAME__WAZA_" + internalName.ToUpper());
+        }
+
+        public int GetMoveNameHash(WazaIndex index)
+        {
+            return GetMoveNameHash(index.ToString("f"));
+        }
+
+        public string? GetMoveNameByInternalName(string internalName)
+        {
+            return GetCommonString(GetMoveNameHash(internalName));
+        }
+
+        public string? GetMoveName(WazaIndex index)
+        {
+            return GetMoveNameByInternalName(index.ToString("f"));
+        }
+
+        public string? GetMoveDescription(WazaIndex index)
+        {
+            return GetMoveDescriptionByInternalName(index.ToString("f"));
+        }
+
+        public int GetMoveDescriptionHash(string internalName)
+        {
+            return TextIdValues.GetValueOrDefault("WAZA_EXPLANATION__EXPLAIN_" + internalName.ToUpper());
+        }
+
+        public int GetMoveDescriptionHash(WazaIndex index)
+        {
+            return GetMoveDescriptionHash(index.ToString("f"));
+        }
+
+        public string? GetMoveDescriptionByInternalName(string internalName)
+        {
+            return GetCommonString(GetMoveDescriptionHash(internalName));
         }
 
         public int GetPokemonTaxonomyHash(int taxonId)

@@ -50,6 +50,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         [DebuggerDisplay("{Short00}|{Short02}|{Short04}|{ActIndex}|{Short0E}|{Byte10}|{Byte11}")]
         public class Entry
         {
+            public Entry()
+            {
+            }
+
             public Entry(WazaIndex index)
             {
                 Index = index;
@@ -80,7 +84,22 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 return data.ReadSpan();
             }
 
-            public WazaIndex Index { get; }
+            public Entry Clone()
+            {
+                return new Entry
+                {
+                    Index = Index,
+                    Short00 = Short00,
+                    Short02 = Short02,
+                    Short04 = Short04,
+                    ActIndex = ActIndex,
+                    Short0E = Short0E,
+                    Byte10 = Byte10,
+                    Byte11 = Byte11,
+                };
+            }
+
+            public WazaIndex Index { get; set; }
             public ushort Short00 { get; set; } // only entry 82 (Dragon Rage) has a non-zero value (0x07)
             public ushort Short02 { get; set; } // only entry 82 (Dragon Rage) has a non-zero value (0xA7)
             public ushort Short04 { get; set; } // only entry 82 (Dragon Rage) has a non-zero value (0xC4)

@@ -802,6 +802,19 @@ namespace SkyEditorUI.Controllers
                     "skytemple-e-item-symbolic", new ItemControllerContext(index, enumName));
             }
 
+            var movesIter = AddMainListItem(root, "Moves", "skytemple-e-move-symbolic");
+            for (WazaIndex i = WazaIndex.NONE; i < WazaIndex.END; i++)
+            {
+                string formattedId = ((int) i).ToString("0000");
+                string? name = strings.GetMoveName(i);
+                if (string.IsNullOrEmpty(name))
+                {
+                    name = $"({i.ToString()})";
+                }
+                AddMainListItem<MoveController>(movesIter, $"#{formattedId}: {name}",
+                    "skytemple-e-move-symbolic", new MoveControllerContext(i));
+            }
+
             var dungeonsIter = AddMainListItem(root, "Dungeons", "skytemple-e-dungeon-symbolic");
             AddMainListItem<DungeonMapsController>(dungeonsIter, "Dungeon Maps", "skytemple-e-worldmap-symbolic");
             AddMainListItem<DungeonMusicController>(dungeonsIter, "Dungeon Music", "skytemple-e-music-symbolic");

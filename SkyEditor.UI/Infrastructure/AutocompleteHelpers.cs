@@ -60,14 +60,12 @@ namespace SkyEditorUI.Infrastructure
 
     public static string FormatMove(IRtdxRom rom, WazaIndex moveId)
     {
-      var moveStrings = rom.GetCommonStrings().Moves;
+      var strings = rom.GetStrings().English;
       string formattedId = $"#{((int) moveId).ToString("000")}";
-      if (moveStrings.TryGetValue(moveId, out string? name))
+      var name = strings.GetMoveName(moveId) ?? "";
+      if (!string.IsNullOrEmpty(name.Trim()))
       {
-        if (!string.IsNullOrEmpty(name.Trim()))
-        {
-          return $"{name} ({formattedId})";
-        }
+        return $"{name} ({formattedId})";
       }
 
       var enumString = moveId.ToString();
@@ -103,14 +101,12 @@ namespace SkyEditorUI.Infrastructure
 
     public static string FormatItem(IRtdxRom rom, ItemIndex itemId)
     {
-      var itemStrings = rom.GetCommonStrings().Items;
+      var strings = rom.GetStrings().English;
       string formattedId = $"#{((int) itemId).ToString("000")}";
-      if (itemStrings.TryGetValue(itemId, out string? name))
+      var name = strings.GetItemName(itemId) ?? "";
+      if (!string.IsNullOrEmpty(name.Trim()))
       {
-        if (!string.IsNullOrEmpty(name.Trim()))
-        {
-          return $"{name} ({formattedId})";
-        }
+        return $"{name} ({formattedId})";
       }
 
       var enumString = itemId.ToString();

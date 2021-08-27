@@ -80,6 +80,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     items.SetItem(model.Index, model);
                 }
 
+                var moves = rom.GetMoves();
+                foreach (var path in mod.GetModelFilesInDirectory("moves"))
+                {
+                    var model = await mod.LoadModel<WazaDataInfo.Entry>(path);
+                    moves.SetMove(model.Index, model);
+                }
+
                 if (mod.ModelExists("dungeon_maps.yaml"))
                 {
                     rom.SetDungeonMaps(await mod.LoadModel<DungeonMapCollection>("dungeon_maps.yaml"));
@@ -192,10 +199,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
                 if (rom.ItemsModified)
                 {
-                    var item = rom.GetItems();
-                    foreach (var model in item.LoadedItems.Where(model => item.IsItemDirty(model.Key)))
+                    var items = rom.GetItems();
+                    foreach (var model in items.LoadedItems.Where(model => items.IsItemDirty(model.Key)))
                     {
                         string path = Path.Combine("item", $"{model.Key.ToString()}.yaml");
+                        tasks.Add(mod.SaveModel(model.Value, path));
+                    }
+                }
+
+                if (rom.MovesModified)
+                {
+                    var moves = rom.GetMoves();
+                    foreach (var model in moves.LoadedMoves.Where(model => moves.IsMoveDirty(model.Key)))
+                    {
+                        string path = Path.Combine("move", $"{model.Key.ToString()}.yaml");
                         tasks.Add(mod.SaveModel(model.Value, path));
                     }
                 }

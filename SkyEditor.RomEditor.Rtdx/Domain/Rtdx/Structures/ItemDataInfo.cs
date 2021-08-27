@@ -119,7 +119,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 return data.ReadSpan();
             }
 
-            public ItemIndex Index { get; }
+            public ItemIndex Index { get; set; }
             public int ItemGraphicsKey { get; set; }
             public ItemFlags Flags { get; set; }
             public ushort BuyPrice { get; set; }
@@ -153,6 +153,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 return new Entry
                 {
+                    Index = Index,
                     ItemGraphicsKey = ItemGraphicsKey,
                     Flags = Flags,
                     BuyPrice = BuyPrice,
