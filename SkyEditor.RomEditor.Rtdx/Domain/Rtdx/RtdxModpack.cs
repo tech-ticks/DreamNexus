@@ -87,6 +87,21 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     moves.SetMove(model.Index, model);
                 }
 
+                var actions = rom.GetActions();
+                foreach (var path in mod.GetModelFilesInDirectory("actions"))
+                {
+                    var model = await mod.LoadModel<ActionModel>(path);
+                    var indexStr = Path.GetFileNameWithoutExtension(path);
+                    if (int.TryParse(indexStr, out int index))
+                    {
+                        actions.SetAction(index, model);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Ignoring invalid action model file name: {path}");
+                    }
+                }
+
                 if (mod.ModelExists("dungeon_maps.yaml"))
                 {
                     rom.SetDungeonMaps(await mod.LoadModel<DungeonMapCollection>("dungeon_maps.yaml"));
@@ -213,6 +228,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     foreach (var model in moves.LoadedMoves.Where(model => moves.IsMoveDirty(model.Key)))
                     {
                         string path = Path.Combine("move", $"{model.Key.ToString()}.yaml");
+                        tasks.Add(mod.SaveModel(model.Value, path));
+                    }
+                }
+
+                if (rom.ActionsModified)
+                {
+                    var actions = rom.GetActions();
+                    foreach (var model in actions.LoadedActions.Where(model => actions.IsActionDirty(model.Key)))
+                    {
+                        string path = Path.Combine("actions", $"{model.Key.ToString()}.yaml");
                         tasks.Add(mod.SaveModel(model.Value, path));
                     }
                 }

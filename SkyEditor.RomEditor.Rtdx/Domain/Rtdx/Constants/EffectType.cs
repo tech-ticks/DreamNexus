@@ -6,6 +6,7 @@
         None = 0,
 
         // 1 is unused
+        Unknown1 = 1,
 
         // Deal random basic attack damage
         BasicAttackDamage = 2,
@@ -15,6 +16,7 @@
         Damage = 3,
 
         // 4 is unused
+        Unknown4 = 4,
 
         // Deal random damage using Defense instead of Special Defense
         //   Params[0] = (percentage) Critical hit ratio
@@ -619,7 +621,10 @@
         CleanseStickyItems = 156,
 
         // TODO: investigate 157 -- used by Gastro Acid and a dummied out trap (action 979)
+        Unknown157 = 157,
+
         // TODO: investigate 158 -- used by a dummied out item (action 807)
+        Unknown158 = 158,
 
         // Exit the dungeon
         ExitDungeon = 159,
@@ -637,6 +642,7 @@
         RevealFloor = 163,
 
         // TODO: investigate 164 -- used by a dummied out item (action 781)
+        Unknown164 = 164,
 
         // Turn the current room into a Monster House
         CreateMonsterHouse = 165,
@@ -668,6 +674,7 @@
         PullTargetsTogether = 172,
 
         // 173 is unused
+        Unknown173 = 173,
 
         // Deal random damage; damage is increased if target is in the semi-invulnerable turn of Bounce, Fly, and Sky Drop
         //   Params[0] = (percentage) Critical hit ratio
@@ -711,7 +718,10 @@
         RestoreHP = 182,
 
         // TODO: investigate 183 -- used by Tiny Reviver Seeds and Reviver Seeds
+        Unknown183 = 183,
+
         // TODO: investigate 184 -- used by Tiny Reviver Seeds and Reviver Seeds
+        Unknown184 = 184,
 
         // Decrease target's level
         //   Params[1] = (integer) Amount of levels to decrease
@@ -724,6 +734,7 @@
         IncreaseLevel = 186,
 
         // TODO: investigate 187 -- used by Tiny Reviver Seeds, Reviver Seeds and Plain Seeds
+        Unknown187 = 187,
 
         // Disable the target's last used move for everyone
         DisableMove = 188,
@@ -755,7 +766,10 @@
         IncreaseRandomStats = 195,
         
         // 196 is unused
+        Unknown196 = 196,
+
         // 197 is unused
+        Unknown197 = 197,
 
         // Swap the user's and target's current HP
         SwapHP = 198,
@@ -764,7 +778,10 @@
         RevealStairsDirection = 199,
 
         // TODO: investigate 200 -- used by a dummied out item (action 944)
+        Unknown200 = 200,
+
         // TODO: investigate 201 -- used by a dummied out item (action 945)
+        Unknown201 = 201,
 
         // Summon a random number of monsters
         //   Params[1] = (integer) Minimum number of monsters to summon
@@ -813,6 +830,7 @@
         TurnFoodIntoGrimyFood = 213,
 
         // TODO: investigate 214 -- used by a dummied out trap (action 980)
+        Unknown214 = 214,
 
         // Turn a random item in the inventory into an Apple
         TurnRandomItemIntoApple = 215,
@@ -825,11 +843,13 @@
         Explode = 217,
 
         // TODO: investigate 218 -- used by Sleep Talk and a dummied out move (action 638)
+        Unknown218 = 218,
 
         // Open Kangaskhan storage window
         OpenKangaskhanStorage = 219,
 
         // TODO: investigate 220 -- used by dummied out items (actions 924 and 925)
+        Unknown220 = 220,
 
         // TODO: investigate the difference between this and effect 3 (Damage)
         // Deal random damage (Vital Throw, Storm Throw)
@@ -870,11 +890,15 @@
         DamageWithBoostBasedOnNumberOfEnemiesNearby = 227,
 
         // TODO: investigate 228 -- used by dummied out move 679 (action 645)
+        Unknown228 = 228,
 
         DarkMatterChargingStart = 229,
 
         // TODO: investigate 230 -- used by dummied out item (action 986)
+        Unknown230 = 230,
+
         // TODO: investigate 231 -- used by dummied out items (actions 946, 947, 948, 949 and 950)
+        Unknown231 = 231,
 
         // Spawn an enemy Ditto nearby (Ditto "trap")
         SpawnDitto = 232,
@@ -888,6 +912,7 @@
         BeginEndStoringDamage = 234,
 
         // TODO: investigate 235 -- used by dummied out items (actions 888, 889 and 
+        Unknown235 = 235,
 
         // TODO: investigate -- used by Switcher Wand (236 131 236 238)
         Unknown236 = 236,
@@ -902,6 +927,7 @@
         SurroundUser = 238,
 
         // TODO: investigate 239 -- used by dummied out item (action 890)
+        Unknown239 = 239,
 
         // Deal random damage; damage is increased if the move is used in any weather other than Clear
         //   Params[0] = (percentage) Critical hit ratio
@@ -939,9 +965,16 @@
         DamageWithBoostedRecruitRate = 248,
 
         // TODO: investigate 249 -- used by dummied out action 992
+        Unknown249 = 249,
+
         // TODO: investigate 250 -- used by Reset Orb
+        Unknown250 = 250,
+
         // TODO: investigate 251 -- used by dummied out action 990 (with parameters specifying 5 to 10 items)
+        Unknown251 = 251,
+
         // TODO: investigate 252 -- used by item 612 - Unidentified Floating Object (action 991)
+        Unknown252 = 252,
 
         // Restore PP on one of the target's moves
         //   Params[1] = (integer) Amount of PP to restore
@@ -953,12 +986,16 @@
         DamageWithBoostIfPreviousTurnMissed = 254,
 
         // 255 is unused
+        Unknown255 = 255,
 
         // Remove the specified type from the target
         //   Params[6] = (PokemonType) Type to remove
         RemoveType = 256,
 
         // TODO: investigate 257 -- used by dummied out move (action 659) - also deals 10 fixed damage
+        Unknown257 = 257,
+
         // TODO: investigate 258 -- used by dummied out move (action 638)
+        Unknown258 = 258,
     }
 }
