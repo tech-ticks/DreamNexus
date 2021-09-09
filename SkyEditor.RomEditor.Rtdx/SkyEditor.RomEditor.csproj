@@ -18,7 +18,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="3.10.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="NLua" Version="1.5.9" />
+    <PackageReference Include="NLua" Version="1.5.11" />
     <PackageReference Include="YamlDotNet" Version="11.2.1" />
     <PackageReference Include="NsoElfConverterDotNet" Version="1.0.0" />
     <PackageReference Include="SkyEditor.IO" Version="5.1.16" />
