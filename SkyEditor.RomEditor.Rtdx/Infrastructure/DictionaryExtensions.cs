@@ -30,5 +30,14 @@ namespace SkyEditor.RomEditor.Infrastructure
         }
 #nullable restore
 #endif
+
+        public static void AddToList<TKey, TValue>(this IDictionary<TKey, IList<TValue>> dictionary, TKey key, TValue value)
+        {
+            if (!dictionary.ContainsKey(key))
+            {
+                dictionary.Add(key, new List<TValue>());
+            }
+            dictionary[key].Add(value);
+        }
     }
 }

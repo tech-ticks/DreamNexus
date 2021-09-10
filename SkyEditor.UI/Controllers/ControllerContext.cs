@@ -54,6 +54,15 @@ namespace SkyEditorUI.Controllers
         }
     }
 
+    public class ActionControllerContext : ControllerContext
+    {
+        public int Index { get; }
+
+        public ActionControllerContext(int index)
+        {
+            Index = index;
+        }
+    }
 
     public class DungeonControllerContext : ControllerContext
     {

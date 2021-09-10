@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using YamlDotNet.Serialization;
 using static SkyEditor.RomEditor.Domain.Rtdx.Structures.ActDataInfo;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Models
@@ -18,6 +19,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
     public class ActionModel
     {
+        [YamlIgnore]
+        public int Id { get; set; }
+
         // From act_data_info.bin
         public ActionFlags Flags { get; set; }
 

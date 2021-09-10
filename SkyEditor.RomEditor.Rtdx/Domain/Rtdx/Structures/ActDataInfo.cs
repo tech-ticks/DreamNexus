@@ -335,7 +335,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             LightBased = 1u << 20,
             //   Bit 21: (seems related to spore-based moves like Powder, Poison Powder, Stun Spore, Sleep Powder)
             SporeBased = 1u << 21,
-            //   Bit 22: Makes contact
             MakesContact = 1u << 22,
             //   Bit 23: ** unknown
             Unknown23 = 1u << 23,

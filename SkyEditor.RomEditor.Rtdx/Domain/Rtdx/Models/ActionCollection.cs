@@ -2,6 +2,7 @@
 using System.Linq;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
+using SkyEditor.RomEditor.Infrastructure;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 {
@@ -13,6 +14,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         bool IsActionDirty(int id);
         ActionModel? GetActionById(int id);
         void Flush(IRtdxRom rom);
+        string GetUsedByString(int actionId);
     }
 
     public class ActionCollection : IActionCollection
@@ -20,7 +22,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public IDictionary<int, ActionModel> LoadedActions { get; } = new Dictionary<int, ActionModel>();
         public int ActionCount => actDataInfoEntries.Count;
         public HashSet<int> DirtyActions { get; } = new HashSet<int>();
-
+        private Dictionary<int, IList<WazaDataInfo.Entry>> actionsToMoves = new Dictionary<int, IList<WazaDataInfo.Entry>>();
+        private Dictionary<int, IList<ItemDataInfo.Entry>> actionsToItems = new Dictionary<int, IList<ItemDataInfo.Entry>>();
 
         private IRtdxRom rom;
         private Dictionary<int, ActDataInfo.Entry> actDataInfoEntries;
@@ -31,6 +34,36 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             this.actDataInfoEntries = rom.GetActDataInfo().Entries
                 .Select((entry, i) => new { Entry = entry, Index = i })
                 .ToDictionary(pair => pair.Index, pair => pair.Entry);
+
+            // Build lookup tables of action indices to moves and items for fast lookups
+            for (int i = 0; i < rom.GetMoves().Count; i++)
+            {
+                var move = rom.GetMoves().GetMoveById((WazaIndex) i);
+                if (move != null && move.ActIndex != 0)
+                {
+                    actionsToMoves.AddToList(move.ActIndex, move);
+                }
+            }
+
+            for (int i = 0; i < rom.GetItems().Count; i++)
+            {
+                var item = rom.GetItems().GetItemById((ItemIndex) i);
+                if (item != null)
+                {
+                    if (item.PrimaryActIndex != 0)
+                    {
+                        actionsToItems.AddToList(item.PrimaryActIndex, item);
+                    }
+                    if (item.ReviveActIndex != 0)
+                    {
+                        actionsToItems.AddToList(item.ReviveActIndex, item);
+                    }
+                    if (item.ThrowActIndex != 0)
+                    {
+                        actionsToItems.AddToList(item.ThrowActIndex, item);
+                    }
+                }
+            }
         }
 
         public ActionModel LoadAction(int index)
@@ -61,6 +94,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
             return new ActionModel
             {
+                Id = index,
                 Flags = data.Flags,
                 DungeonMessage1 = data.DungeonMessage1,
                 DungeonMessage2 = data.DungeonMessage2,
@@ -119,6 +153,22 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public void SetAction(int id, ActionModel model)
         {
             LoadedActions[id] = model;
+        }
+
+        public string GetUsedByString(int actionId)
+        {
+            var englishStrings = rom.GetStrings().English;
+            var moveNames = (actionsToMoves.ContainsKey(actionId)
+                ? actionsToMoves[actionId] : Enumerable.Empty<WazaDataInfo.Entry>())
+                .Select(move => englishStrings.GetMoveName(move.Index)).ToArray();
+            var itemNames = (actionsToItems.ContainsKey(actionId)
+                ? actionsToItems[actionId] : Enumerable.Empty<ItemDataInfo.Entry>())
+                .Select(item => englishStrings.GetItemName(item.Index)).Distinct().ToArray();
+            
+            if (moveNames.Length == 0 && itemNames.Length == 0) {
+                return "unused";
+            }
+            return string.Join(", ", moveNames.Concat(itemNames));
         }
 
         public bool IsActionDirty(int id)

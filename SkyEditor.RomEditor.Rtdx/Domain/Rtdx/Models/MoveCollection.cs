@@ -9,6 +9,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
     public interface IMoveCollection
     {
         IDictionary<WazaIndex, WazaDataInfo.Entry> LoadedMoves { get; }
+        int Count { get; }
         void SetMove(WazaIndex id, WazaDataInfo.Entry model);
         bool IsMoveDirty(WazaIndex id);
         WazaDataInfo.Entry? GetMoveById(WazaIndex id);
@@ -19,12 +20,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
     {
         public IDictionary<WazaIndex, WazaDataInfo.Entry> LoadedMoves { get; } = new Dictionary<WazaIndex, WazaDataInfo.Entry>();
         public HashSet<WazaIndex> DirtyMoves { get; } = new HashSet<WazaIndex>();
+        public int Count { get; private set; }
 
         private IRtdxRom rom;
 
         public MoveCollection(IRtdxRom rom)
         {
             this.rom = rom;
+            Count = rom.GetWazaDataInfo().Entries.Count;
         }
 
         public WazaDataInfo.Entry LoadMove(WazaIndex index)

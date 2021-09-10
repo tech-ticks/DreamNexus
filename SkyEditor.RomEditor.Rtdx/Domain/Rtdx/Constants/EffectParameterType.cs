@@ -85,6 +85,73 @@
         StatIndex = 66,
         PokemonType = 67,
         CheckDungeonStatusEffect = 68,
-        SetDungeonStatusEffect = 69, // TODO: investigate Rare Quality Orb; parameter type is zero, but corresponding value is correct
+        SetDungeonStatusEffect = 69, // TODO: investigate Rare Quality Orb; parameter type is zero, but corresponding value is correct,
+        Max = 70
+    }
+
+    public static class EffectParameterTypeExtensions
+    {
+        public static string GetDescription(this EffectParameterType type)
+        {
+            switch (type)
+            {
+                case EffectParameterType.None: return "Unspecified";
+                case EffectParameterType.EffectChance: return "Chance to execute effect";
+                case EffectParameterType.CriticalHitRatio: return "Critical hit ratio";
+                case EffectParameterType.RecoilPercentOfMaxHP: return "Percentage of max HP as recoil damage";
+                case EffectParameterType.HPPercent: return "Percentage of HP";
+                case EffectParameterType.ChanceToApplyFurtherEffects: return "Chance to apply further effects";
+                case EffectParameterType.MinDamageLevelFactor: return "Minimum damage equal to percentage of attacker's level";
+                case EffectParameterType.MinVisitsDamageMultiplier: return "Damage multiplier based on minimum dungeons visited";
+                case EffectParameterType.DamageMultiplierAtMinimumPP: return "Damage multiplier at minimum PP";
+                case EffectParameterType.DamageMultiplierAtMinimumHP: return "Damage multiplier at minimum HP";
+                case EffectParameterType.DamageMultiplier: return "Damage multiplier";
+                case EffectParameterType.DamageMultiplierWithOneDepletedMove: return "Damage multiplier with one depleted move";
+                case EffectParameterType.FixedDamage: return "Fixed damage";
+                case EffectParameterType.StockpileCount: return "Stockpile count";
+                case EffectParameterType.SpendPercentOfMaxHP: return "Spend percentage of max HP";
+                case EffectParameterType.SelectAttackerOrTargetStatBoosts: return "Use attacker's or target's stat boosts";
+                case EffectParameterType.HealPercentOfDamageDealt: return "Heal for percentage of damage dealt";
+                case EffectParameterType.HealPercentOfMaxHP: return "Heal percentage of max HP";
+                case EffectParameterType.BellyAmount: return "Belly amount";
+                case EffectParameterType.ExcludeFloating: return "Exclude floating targets?";
+                case EffectParameterType.PPAmount: return "PP Amount";
+                case EffectParameterType.HPAmount: return "HP Amount";
+                case EffectParameterType.LevelAmount: return "Level(s)";
+                case EffectParameterType.PowerAmount: return "Power";
+                case EffectParameterType.AccuracyAmount: return "Accuracy";
+                case EffectParameterType.DigTileCount: return "Number of tiles digged";
+                case EffectParameterType.MinMonsterCount: return "Minimum monster number";
+                case EffectParameterType.SparklingFloorEmpty: return "Sparkling floor is empty?";
+                case EffectParameterType.ExplosionSize: return "Large explosion?";
+                case EffectParameterType.MinItemsToDrop: return "Minimum number of dropped items";
+                case EffectParameterType.HealPercentOfMaxHPInSunnyWeather: return "Heal percentage of max HP in sunny weather";
+                case EffectParameterType.RemoveStatusOnHit: return "Remove status effect on hit?";
+                case EffectParameterType.MaxDamageLevelFactor: return "Maximum damage equal to percentage of attacker's level";
+                case EffectParameterType.MaxVisitsDamageMultiplier: return "Damage multiplier based on maximum dungeons visited";
+                case EffectParameterType.DamageMultiplierAtMaximumPP: return "Damage multiplier at maximum PP";
+                case EffectParameterType.DamageMultiplierAtMaximumHP: return "Damage multiplier at maximum HP";
+                case EffectParameterType.DamageMultiplierWithTwoDepletedMoves: return "Damage multiplier with two depleted moves";
+                case EffectParameterType.MaxBellyAmount: return "Max Belly";
+                case EffectParameterType.MaxHPAmount: return "Max HP";
+                case EffectParameterType.MaxMonsterCount: return "Maximum number of monsters";
+                case EffectParameterType.RecruitRateBoost: return "Recruit rate boost";
+                case EffectParameterType.MaxItemsToDrop: return "Maximum number of dropped items";
+                case EffectParameterType.HealPercentOfMaxHPInBadWeather: return "Heal percentage of max HP in bad weather";
+                case EffectParameterType.PercentOfMaxHPThreshold: return "Percentage of max HP";
+                case EffectParameterType.MaxDungeonsVisited: return "Maximum number of visited dungeons";
+                case EffectParameterType.PPThreshold: return "PP threshold";
+                case EffectParameterType.DamageMultiplierWithThreeDepletedMoves: return "Damage multiplier with three depleted moves";
+                case EffectParameterType.HPThreshold: return "HP threshold";
+                case EffectParameterType.StatusEffect: return "Status effect index";
+                case EffectParameterType.StatMultiplierIndex: return "Stat change multiplier index";
+                case EffectParameterType.StatChangeIndex: return "Stat change index";
+                case EffectParameterType.StatIndex: return "Stat index";
+                case EffectParameterType.PokemonType: return "Pokémon type";
+                case EffectParameterType.CheckDungeonStatusEffect: return "Check dungeon status effect";
+                case EffectParameterType.SetDungeonStatusEffect: return "Set dungeon status effect";
+                default: return $"(unknown {type})";
+            }
+        }
     }
 }

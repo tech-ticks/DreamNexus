@@ -9,6 +9,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
     public interface IItemCollection
     {
         IDictionary<ItemIndex, ItemDataInfo.Entry> LoadedItems { get; }
+        int Count { get; }
         void SetItem(ItemIndex id, ItemDataInfo.Entry model);
         bool IsItemDirty(ItemIndex id);
         ItemDataInfo.Entry? GetItemById(ItemIndex id);
@@ -19,12 +20,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
     {
         public IDictionary<ItemIndex, ItemDataInfo.Entry> LoadedItems { get; } = new Dictionary<ItemIndex, ItemDataInfo.Entry>();
         public HashSet<ItemIndex> DirtyItems { get; } = new HashSet<ItemIndex>();
+        public int Count { get; private set; }
 
         private IRtdxRom rom;
 
         public ItemCollection(IRtdxRom rom)
         {
             this.rom = rom;
+            Count = rom.GetItemDataInfo().Entries.Count;
         }
 
         public ItemDataInfo.Entry LoadItem(ItemIndex index)

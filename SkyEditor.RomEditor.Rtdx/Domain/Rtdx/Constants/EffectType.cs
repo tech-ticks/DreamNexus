@@ -997,5 +997,6 @@
 
         // TODO: investigate 258 -- used by dummied out move (action 638)
         Unknown258 = 258,
+        Max = 259,
     }
 }
