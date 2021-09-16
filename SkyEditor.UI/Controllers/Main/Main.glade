@@ -362,7 +362,7 @@ the top-right of the main window.</property>
       <object class="GtkHeaderBar" id="header">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="title" translatable="yes">SkyEditor.UI</property>
+        <property name="title" translatable="yes">DreamNexus</property>
         <property name="show_close_button">True</property>
         <child>
           <object class="GtkMenuButton" id="open_button">
@@ -592,7 +592,7 @@ the top-right of the main window.</property>
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_bottom">16</property>
-                            <property name="label" translatable="yes">SkyEditor.UI</property>
+                            <property name="label" translatable="yes">DreamNexus</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -623,7 +623,7 @@ the top-right of the main window.</property>
                               <object class="GtkLabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">A new version of SkyEditor.UI is available: </property>
+                                <property name="label" translatable="yes">A new version of DreamNexus is available: </property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -942,18 +942,18 @@ the top-right of the main window.</property>
     </child>
   </object>
   <object class="GtkAboutDialog" id="aboutDialog">
-    <property name="name">SkyTemple</property>
+    <property name="name">DreamNexus</property>
     <property name="can_focus">False</property>
     <property name="modal">True</property>
     <property name="type_hint">dialog</property>
     <property name="transient_for">main_window</property>
     <property name="attached_to">main_window</property>
-    <property name="program_name">SkyEditor.UI</property>
+    <property name="program_name">DreamNexus</property>
     <property name="comments" translatable="yes">Application to edit the ROM of Pokémon Mystery Dungeon Rescue Team DX.</property>
     <property name="website">https://github.com/tech-ticks/SkyEditor.RomEditor.Rtdx</property>
     <property name="website_label" translatable="yes">https://github.com/tech-ticks/SkyEditor.RomEditor.Rtdx
 </property>
-    <property name="authors">SkyEditor.UI Developers:
+    <property name="authors">DreamNexus Developers:
 evandixon https://github.com/evandixon
 StrikerX3 https://github.com/StrikerX3
 techticks https://github.com/tech-ticks

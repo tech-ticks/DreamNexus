@@ -317,7 +317,7 @@ Only lowercase letters, digits and "." are allowed.</property>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="label" translatable="yes">Enable code injection to edit additional data like actors, town NPCs, fixed teams and more (experimental). Code injection only works with game version 1.0.2. You can specify a version of the code injection project ("hyperbeam") in the dropdown below (please use an up-to-date version of SkyEditor.UI to ensure compatibility). Visit the &lt;a href="https://github.com/tech-ticks/hyperbeam/releases"&gt;releases page on GitHub&lt;/a&gt; for changelogs.</property>
+                        <property name="label" translatable="yes">Enable code injection to edit additional data like actors, town NPCs, fixed teams and more (experimental). Code injection only works with game version 1.0.2. You can specify a version of the code injection project ("hyperbeam") in the dropdown below (please use an up-to-date version of DreamNexus to ensure compatibility). Visit the &lt;a href="https://github.com/tech-ticks/hyperbeam/releases"&gt;releases page on GitHub&lt;/a&gt; for changelogs.</property>
                         <property name="use_markup">True</property>
                         <property name="wrap">True</property>
                         <property name="width_chars">50</property>

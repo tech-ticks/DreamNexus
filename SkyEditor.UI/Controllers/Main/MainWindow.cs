@@ -55,6 +55,8 @@ namespace SkyEditorUI.Controllers
 
             updateInfo?.Hide();
 
+            loadingDialog!.Title = "DreamNexus";
+
             var col = new TreeViewColumn("Title", new CellRendererText());
             var iconRenderer = new CellRendererPixbuf();
             var textRenderer = new CellRendererText();
@@ -742,7 +744,7 @@ namespace SkyEditorUI.Controllers
             rom!.DungeonsModified = false;
             SetTopButtonsEnabled(true);
 
-            Title = $"{modpack!.Metadata.Name ?? modpack.Metadata.Id} (SkyEditor.UI)";
+            Title = $"{modpack!.Metadata.Name ?? modpack.Metadata.Id} (DreamNexus)";
         }
 
         public void InitMainList()
