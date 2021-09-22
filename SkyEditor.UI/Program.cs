@@ -59,7 +59,9 @@ namespace SkyEditorUI
         }
         public static bool IsDarkTheme()
         {
-            try
+            // TODO: re-enable once the code editor's dark theme has been fixed
+            return false;
+            /*try
             {
                 if (OperatingSystem.IsWindows())
                 {
@@ -91,7 +93,7 @@ namespace SkyEditorUI
                 Console.WriteLine("Failed to get system theme: " + e);
             }
 
-            return false;
+            return false;*/
         }
     }
 }

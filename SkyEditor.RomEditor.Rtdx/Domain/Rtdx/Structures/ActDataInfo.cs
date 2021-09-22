@@ -289,6 +289,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
         public enum ActionTarget : byte
         {
+            Unspecified = 0,
             Enemies = 1,
             Allies = 2,
             Everyone = 3,
