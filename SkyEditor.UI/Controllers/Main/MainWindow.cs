@@ -818,6 +818,8 @@ namespace SkyEditorUI.Controllers
             }
 
             var actionsIter = AddMainListItem(root, "Actions", "skytemple-view-list-symbolic");
+            AddMainListItem<ActionStatModifiersController>(actionsIter, "Stat Modifiers", "skytemple-view-list-symbolic");
+
             var actions = rom.GetActions();
             for (int i = 0; i < actions.ActionCount; i++)
             {

@@ -102,6 +102,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     }
                 }
 
+                if (mod.ModelExists("action_stat_modifiers.yaml"))
+                {
+                    rom.SetActionStatModifiers(await mod.LoadModel<ActionStatModifierCollection>(
+                        "action_stat_modifiers.yaml"));
+                }
+
                 if (mod.ModelExists("dungeon_maps.yaml"))
                 {
                     rom.SetDungeonMaps(await mod.LoadModel<DungeonMapCollection>("dungeon_maps.yaml"));
@@ -240,6 +246,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                         string path = Path.Combine("actions", $"{model.Key.ToString()}.yaml");
                         tasks.Add(mod.SaveModel(model.Value, path));
                     }
+                }
+
+                if (rom.ActionStatModifiersModified)
+                {
+                    tasks.Add(mod.SaveModel(rom.GetActionStatModifiers(), "action_stat_modifiers.yaml"));
                 }
 
                 if (rom.DungeonsModified)

@@ -67,5 +67,20 @@ namespace SkyEditorUI.Infrastructure
             }
             return defaultValue;
         }
+
+        public static void FixIndices(this ListStore store, int indexColumn, int startIndex = 0)
+        {
+            if (!store.GetIterFirst(out var iter))
+            {
+                return;
+            }
+
+            int i = startIndex;
+            do
+            {
+                store.SetValue(iter, indexColumn, i++);
+            }
+            while (store.IterNext(ref iter));
+        }
     }
 }
