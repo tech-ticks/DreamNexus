@@ -151,6 +151,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IMoveCollection GetMoves();
         bool MovesModified { get; set; }
 
+        IChargedMoveCollection GetChargedMoveCollection();
+        void SetChargedMoveCollection(IChargedMoveCollection collection);
+        bool ChargedMovesModified { get; set; }
+
+        IExtraLargeMoveCollection GetExtraLargeMoveCollection();
+        void SetExtraLargeMoveCollection(IExtraLargeMoveCollection collection);
+        bool ExtraLargeMovesModified { get; set; }
+
         IActionCollection GetActions();
         bool ActionsModified { get; set; }
 
@@ -907,6 +915,40 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         private IMoveCollection? moveCollection;
 
+        public IChargedMoveCollection GetChargedMoveCollection()
+        {
+            if (chargedMoveCollection == null)
+            {
+                chargedMoveCollection = new ChargedMoveCollection(this);
+            }
+            ChargedMovesModified = true;
+            return chargedMoveCollection;
+        }
+        public void SetChargedMoveCollection(IChargedMoveCollection collection)
+        {
+            this.chargedMoveCollection = collection;
+        }
+        public bool ChargedMovesModified { get; set; }
+
+        private IChargedMoveCollection? chargedMoveCollection;
+
+        public IExtraLargeMoveCollection GetExtraLargeMoveCollection()
+        {
+            if (extraLargeMoveCollection == null)
+            {
+                extraLargeMoveCollection = new ExtraLargeMoveCollection(this);
+            }
+            ExtraLargeMovesModified = true;
+            return extraLargeMoveCollection;
+        }
+        public void SetExtraLargeMoveCollection(IExtraLargeMoveCollection collection)
+        {
+            this.extraLargeMoveCollection = collection;
+        }
+        public bool ExtraLargeMovesModified { get; set; }
+
+        private IExtraLargeMoveCollection? extraLargeMoveCollection;
+
         public IActionCollection GetActions()
         {
             if (actionCollection == null)
@@ -1066,6 +1108,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             dungeonCollection?.Flush(this);
             itemCollection?.Flush(this);
             moveCollection?.Flush(this);
+            chargedMoveCollection?.Flush(this);
+            extraLargeMoveCollection?.Flush(this);
             actionCollection?.Flush(this);
             actionStatModifierCollection?.Flush(this);
             dungeonMapCollection?.Flush(this);

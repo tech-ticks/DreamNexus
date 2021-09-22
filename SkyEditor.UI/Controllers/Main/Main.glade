@@ -29,7 +29,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="pixel_size">127</property>
-            <property name="icon_name">skytemple</property>
+            <property name="icon_name">dreamnexus</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -78,7 +78,7 @@ Please note the following:
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="pixel_size">127</property>
-            <property name="icon_name">skytemple</property>
+            <property name="icon_name">dreamnexus</property>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -357,7 +357,7 @@ the top-right of the main window.</property>
   </object>
   <object class="GtkWindow" id="main_window">
     <property name="can_focus">False</property>
-    <property name="icon_name">skytemple</property>
+    <property name="icon_name">dreamnexus</property>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header">
         <property name="visible">True</property>
@@ -578,7 +578,7 @@ the top-right of the main window.</property>
                             <property name="can_focus">False</property>
                             <property name="margin_top">64</property>
                             <property name="pixel_size">127</property>
-                            <property name="icon_name">skytemple</property>
+                            <property name="icon_name">dreamnexus</property>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -1014,7 +1014,7 @@ DrGlutamate
 Quilavabom
 MrStrouder</property>
     <property name="translator_credits" translatable="yes" comments="TRANSLATORS: Replace this string with your names, one name per line.">translator-credits</property>
-    <property name="logo_icon_name">skytemple</property>
+    <property name="logo_icon_name">dreamnexus</property>
     <property name="license_type">gpl-3-0</property>
     <child type="titlebar">
       <placeholder/>

@@ -87,6 +87,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     moves.SetMove(model.Index, model);
                 }
 
+                if (mod.ModelExists("charged_moves.yaml"))
+                {
+                    rom.SetChargedMoveCollection(await mod.LoadModel<ChargedMoveCollection>("charged_moves.yaml"));
+                }
+
+                if (mod.ModelExists("extra_large_moves.yaml"))
+                {
+                    rom.SetExtraLargeMoveCollection(await mod.LoadModel<ExtraLargeMoveCollection>("extra_large_moves.yaml"));
+                }
+
                 var actions = rom.GetActions();
                 foreach (var path in mod.GetModelFilesInDirectory("actions"))
                 {
@@ -236,6 +246,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                         string path = Path.Combine("move", $"{model.Key.ToString()}.yaml");
                         tasks.Add(mod.SaveModel(model.Value, path));
                     }
+                }
+
+                if (rom.ChargedMovesModified)
+                {
+                    tasks.Add(mod.SaveModel(rom.GetChargedMoves(), "charged_moves.yaml"));
+                }
+
+                if (rom.ExtraLargeMovesModified)
+                {
+                    tasks.Add(mod.SaveModel(rom.GetExtraLargeMoveCollection(), "extra_large_moves.yaml"));
                 }
 
                 if (rom.ActionsModified)

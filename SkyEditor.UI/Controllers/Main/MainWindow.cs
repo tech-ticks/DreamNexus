@@ -805,6 +805,9 @@ namespace SkyEditorUI.Controllers
             }
 
             var movesIter = AddMainListItem(root, "Moves", "skytemple-e-move-symbolic");
+            AddMainListItem<ChargedMovesController>(movesIter, "Charged Moves", "skytemple-view-list-symbolic");
+            AddMainListItem<ExtraLargeMovesController>(movesIter, "Extra Big Moves", "skytemple-view-list-symbolic");
+
             for (WazaIndex i = WazaIndex.NONE; i < WazaIndex.END; i++)
             {
                 string formattedId = ((int) i).ToString("0000");

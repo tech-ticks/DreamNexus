@@ -41,7 +41,7 @@ namespace SkyEditorUI
             IconTheme.Default.RescanIfNeeded();
 
             // Setup application and main window
-            var app = new Application("DreamNexus", GLib.ApplicationFlags.None);
+            var app = new Application("SkyEditor.UI", GLib.ApplicationFlags.None);
             app.Register(GLib.Cancellable.Current);
 
             var win = new MainWindow();

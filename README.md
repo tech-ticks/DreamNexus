@@ -1,3 +1,5 @@
+![DreamNexus](https://raw.githubusercontent.com/tech-ticks/SkyEditor.RomEditor.Rtdx/master/SkyEditor.UI/Assets/Icons/hicolor/256x256/apps/dreamnexus.png)
+
 # DreamNexus
 
 A work-in-progress ROM editor for Pokémon Mystery Dungeon: Rescue Team DX.
