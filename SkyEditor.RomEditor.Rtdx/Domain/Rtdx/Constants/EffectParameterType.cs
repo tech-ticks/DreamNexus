@@ -1,4 +1,6 @@
-﻿namespace SkyEditor.RomEditor.Domain.Rtdx.Constants
+﻿using System;
+
+namespace SkyEditor.RomEditor.Domain.Rtdx.Constants
 {
     public enum EffectParameterType : ushort
     {
@@ -121,7 +123,7 @@
                 case EffectParameterType.PowerAmount: return "Power";
                 case EffectParameterType.AccuracyAmount: return "Accuracy";
                 case EffectParameterType.DigTileCount: return "Number of tiles digged";
-                case EffectParameterType.MinMonsterCount: return "Minimum monster number";
+                case EffectParameterType.MinMonsterCount: return "Minimum number of monsters";
                 case EffectParameterType.SparklingFloorEmpty: return "Sparkling floor is empty?";
                 case EffectParameterType.ExplosionSize: return "Large explosion?";
                 case EffectParameterType.MinItemsToDrop: return "Minimum number of dropped items";
@@ -143,7 +145,7 @@
                 case EffectParameterType.PPThreshold: return "PP threshold";
                 case EffectParameterType.DamageMultiplierWithThreeDepletedMoves: return "Damage multiplier with three depleted moves";
                 case EffectParameterType.HPThreshold: return "HP threshold";
-                case EffectParameterType.StatusEffect: return "Status effect index";
+                case EffectParameterType.StatusEffect: return "Status effect";
                 case EffectParameterType.StatMultiplierIndex: return "Stat change multiplier index";
                 case EffectParameterType.StatChangeIndex: return "Stat change index";
                 case EffectParameterType.StatIndex: return "Stat index";
@@ -151,6 +153,22 @@
                 case EffectParameterType.CheckDungeonStatusEffect: return "Check dungeon status effect";
                 case EffectParameterType.SetDungeonStatusEffect: return "Set dungeon status effect";
                 default: return $"(unknown {type})";
+            }
+        }
+
+        public static Type GetDisplayType(this EffectParameterType type)
+        {
+            switch (type)
+            {
+                case EffectParameterType.ExcludeFloating: return typeof(bool);
+                case EffectParameterType.SparklingFloorEmpty: return typeof(bool);
+                case EffectParameterType.ExplosionSize: return typeof(bool);
+                case EffectParameterType.RemoveStatusOnHit: return typeof(bool);
+                case EffectParameterType.PokemonType: return typeof(PokemonType);
+                case EffectParameterType.StatusEffect: return typeof(StatusIndex);
+                case EffectParameterType.CheckDungeonStatusEffect: return typeof(DungeonStatusIndex);
+                case EffectParameterType.SetDungeonStatusEffect: return typeof(DungeonStatusIndex);
+                default: return typeof(ushort);
             }
         }
     }

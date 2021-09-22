@@ -8,6 +8,14 @@
       <column type="gchararray"/>
     </columns>
   </object>
+  <object class="GtkListStore" id="dungeonStatusStore">
+    <columns>
+      <!-- column-name id -->
+      <column type="gint"/>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
   <object class="GtkListStore" id="effectTypesStore">
     <columns>
       <!-- column-name id -->
@@ -73,6 +81,14 @@
     </columns>
   </object>
   <object class="GtkListStore" id="paramsStore7">
+    <columns>
+      <!-- column-name id -->
+      <column type="gint"/>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+    </columns>
+  </object>
+  <object class="GtkListStore" id="statusStore">
     <columns>
       <!-- column-name id -->
       <column type="gint"/>
@@ -1264,242 +1280,545 @@
                                 <property name="row-spacing">5</property>
                                 <property name="column-spacing">5</property>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect0Param0">
-                                    <property name="name">entryEffect0Param0</property>
+                                  <object class="GtkLabel" id="labelEffect0Param0">
+                                    <property name="name">labelEffect0Param0</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
-                                    <signal name="changed" handler="OnEffect0ParamValueChanged" swapped="no"/>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect0Param1">
-                                    <property name="name">entryEffect0Param1</property>
+                                  <object class="GtkLabel" id="labelEffect0Param1">
+                                    <property name="name">labelEffect0Param1</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">1</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect0Param2">
-                                    <property name="name">entryEffect0Param2</property>
+                                  <object class="GtkLabel" id="labelEffect0Param2">
+                                    <property name="name">labelEffect0Param2</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">2</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect0Param3">
-                                    <property name="name">entryEffect0Param3</property>
+                                  <object class="GtkLabel" id="labelEffect0Param3">
+                                    <property name="name">labelEffect0Param3</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">3</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect0Param4">
-                                    <property name="name">entryEffect0Param4</property>
+                                  <object class="GtkLabel" id="labelEffect0Param4">
+                                    <property name="name">labelEffect0Param4</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">4</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect0Param5">
-                                    <property name="name">entryEffect0Param5</property>
+                                  <object class="GtkLabel" id="labelEffect0Param5">
+                                    <property name="name">labelEffect0Param5</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">5</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect0Param6">
-                                    <property name="name">entryEffect0Param6</property>
+                                  <object class="GtkLabel" id="labelEffect0Param6">
+                                    <property name="name">labelEffect0Param6</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">6</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect0Param7">
-                                    <property name="name">entryEffect0Param7</property>
+                                  <object class="GtkLabel" id="labelEffect0Param7">
+                                    <property name="name">labelEffect0Param7</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">7</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect0Param0">
-                                    <property name="name">cbEffect0Param0</property>
+                                  <object class="GtkStack" id="stackEffect0Param0">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore0</property>
-                                    <signal name="changed" handler="OnEffect0ParamTypeChanged" swapped="no"/>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect0Param0">
+                                        <property name="name">entryEffect0Param0</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect0Param0">
+                                        <property name="name">switchEffect0Param0</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect0ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect0Param0">
+                                        <property name="name">cbEffect0Param0</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect0Param1">
-                                    <property name="name">cbEffect0Param1</property>
+                                  <object class="GtkStack" id="stackEffect0Param1">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore1</property>
-                                    <signal name="changed" handler="OnEffect0ParamTypeChanged" swapped="no"/>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect0Param1">
+                                        <property name="name">entryEffect0Param1</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect0Param1">
+                                        <property name="name">switchEffect0Param1</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect0ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect0Param1">
+                                        <property name="name">cbEffect0Param1</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">1</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect0Param2">
-                                    <property name="name">cbEffect0Param2</property>
+                                  <object class="GtkStack" id="stackEffect0Param2">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore2</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect0Param2">
+                                        <property name="name">entryEffect0Param2</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect0Param2">
+                                        <property name="name">switchEffect0Param2</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect0ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect0Param2">
+                                        <property name="name">cbEffect0Param2</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">2</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect0Param3">
-                                    <property name="name">cbEffect0Param3</property>
+                                  <object class="GtkStack" id="stackEffect0Param3">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore3</property>
-                                    <signal name="changed" handler="OnEffect0ParamTypeChanged" swapped="no"/>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect0Param3">
+                                        <property name="name">entryEffect0Param3</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect0Param3">
+                                        <property name="name">switchEffect0Param3</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect0ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect0Param3">
+                                        <property name="name">cbEffect0Param3</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">3</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect0Param4">
-                                    <property name="name">cbEffect0Param4</property>
+                                  <object class="GtkStack" id="stackEffect0Param4">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore4</property>
-                                    <signal name="changed" handler="OnEffect0ParamTypeChanged" swapped="no"/>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect0Param4">
+                                        <property name="name">entryEffect0Param4</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect0Param4">
+                                        <property name="name">switchEffect0Param4</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect0ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect0Param4">
+                                        <property name="name">cbEffect0Param4</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">4</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect0Param5">
-                                    <property name="name">cbEffect0Param5</property>
+                                  <object class="GtkStack" id="stackEffect0Param5">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore5</property>
-                                    <signal name="changed" handler="OnEffect0ParamTypeChanged" swapped="no"/>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect0Param5">
+                                        <property name="name">entryEffect0Param5</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect0Param5">
+                                        <property name="name">switchEffect0Param5</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect0ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect0Param5">
+                                        <property name="name">cbEffect0Param5</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">5</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect0Param6">
-                                    <property name="name">cbEffect0Param6</property>
+                                  <object class="GtkStack" id="stackEffect0Param6">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore6</property>
-                                    <signal name="changed" handler="OnEffect0ParamTypeChanged" swapped="no"/>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect0Param6">
+                                        <property name="name">entryEffect0Param6</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect0Param6">
+                                        <property name="name">switchEffect0Param6</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect0ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect0Param6">
+                                        <property name="name">cbEffect0Param6</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">6</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect0Param7">
-                                    <property name="name">cbEffect0Param7</property>
+                                  <object class="GtkStack" id="stackEffect0Param7">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore7</property>
-                                    <signal name="changed" handler="OnEffect0ParamTypeChanged" swapped="no"/>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect0Param7">
+                                        <property name="name">entryEffect0Param7</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect0Param7">
+                                        <property name="name">switchEffect0Param7</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect0ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect0Param7">
+                                        <property name="name">cbEffect0Param7</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect0ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">7</property>
                                   </packing>
                                 </child>
@@ -1534,17 +1853,20 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="labelEffect0Parameters">
-                                <property name="height-request">30</property>
+                              <object class="GtkLabel" id="labelEffect0StatExplanation">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="halign">end</property>
-                                <property name="valign">start</property>
-                                <property name="label" translatable="yes">Parameters:</property>
+                                <property name="halign">start</property>
+                                <property name="margin-top">5</property>
+                                <property name="margin-bottom">5</property>
+                                <property name="label" translatable="yes">Stat change explanation, lorem ipsum dolor sit amet consblahblah</property>
+                                <property name="wrap">True</property>
+                                <property name="width-chars">0</property>
+                                <property name="max-width-chars">50</property>
                               </object>
                               <packing>
-                                <property name="left-attach">0</property>
-                                <property name="top-attach">1</property>
+                                <property name="left-attach">1</property>
+                                <property name="top-attach">2</property>
                               </packing>
                             </child>
                             <child>
@@ -1568,6 +1890,7 @@
                           <object class="GtkLabel">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
+                            <property name="margin-bottom">5</property>
                             <property name="label" translatable="yes">Effect 1:</property>
                             <attributes>
                               <attribute name="weight" value="bold"/>
@@ -1632,234 +1955,546 @@
                                 <property name="row-spacing">5</property>
                                 <property name="column-spacing">5</property>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect1Param0">
-                                    <property name="name">entryEffect0Param0</property>
+                                  <object class="GtkLabel" id="labelEffect1Param0">
+                                    <property name="name">labelEffect1Param0</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect1Param1">
-                                    <property name="name">entryEffect0Param1</property>
+                                  <object class="GtkLabel" id="labelEffect1Param1">
+                                    <property name="name">labelEffect1Param1</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">1</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect1Param2">
-                                    <property name="name">entryEffect0Param2</property>
+                                  <object class="GtkLabel" id="labelEffect1Param2">
+                                    <property name="name">labelEffect1Param2</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">2</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect1Param3">
-                                    <property name="name">entryEffect0Param3</property>
+                                  <object class="GtkLabel" id="labelEffect1Param3">
+                                    <property name="name">labelEffect1Param3</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">3</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect1Param4">
-                                    <property name="name">entryEffect0Param4</property>
+                                  <object class="GtkLabel" id="labelEffect1Param4">
+                                    <property name="name">labelEffect1Param4</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">4</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect1Param5">
-                                    <property name="name">entryEffect0Param5</property>
+                                  <object class="GtkLabel" id="labelEffect1Param5">
+                                    <property name="name">labelEffect1Param5</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">5</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect1Param6">
-                                    <property name="name">entryEffect0Param6</property>
+                                  <object class="GtkLabel" id="labelEffect1Param6">
+                                    <property name="name">labelEffect1Param6</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">6</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect1Param7">
-                                    <property name="name">entryEffect0Param7</property>
+                                  <object class="GtkLabel" id="labelEffect1Param7">
+                                    <property name="name">labelEffect1Param7</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">7</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect1Param0">
-                                    <property name="name">cbEffect0Param0</property>
+                                  <object class="GtkStack" id="stackEffect1Param0">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore0</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect1Param0">
+                                        <property name="name">entryEffect1Param0</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect1Param0">
+                                        <property name="name">switchEffect1Param0</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect1ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect1Param0">
+                                        <property name="name">cbEffect1Param0</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect1Param1">
-                                    <property name="name">cbEffect0Param1</property>
+                                  <object class="GtkStack" id="stackEffect1Param1">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore1</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect1Param1">
+                                        <property name="name">entryEffect1Param1</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect1Param1">
+                                        <property name="name">switchEffect1Param1</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect1ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect1Param1">
+                                        <property name="name">cbEffect1Param1</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">1</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect1Param2">
-                                    <property name="name">cbEffect0Param2</property>
+                                  <object class="GtkStack" id="stackEffect1Param2">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore2</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect1Param2">
+                                        <property name="name">entryEffect1Param2</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect1Param2">
+                                        <property name="name">switchEffect1Param2</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect1ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect1Param2">
+                                        <property name="name">cbEffect1Param2</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">2</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect1Param3">
-                                    <property name="name">cbEffect0Param3</property>
+                                  <object class="GtkStack" id="stackEffect1Param3">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore3</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect1Param3">
+                                        <property name="name">entryEffect1Param3</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect1Param3">
+                                        <property name="name">switchEffect1Param3</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect1ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect1Param3">
+                                        <property name="name">cbEffect1Param3</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">3</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect1Param4">
-                                    <property name="name">cbEffect0Param4</property>
+                                  <object class="GtkStack" id="stackEffect1Param4">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore4</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect1Param4">
+                                        <property name="name">entryEffect1Param4</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect1Param4">
+                                        <property name="name">switchEffect1Param4</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect1ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect1Param4">
+                                        <property name="name">cbEffect1Param4</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">4</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect1Param5">
-                                    <property name="name">cbEffect0Param5</property>
+                                  <object class="GtkStack" id="stackEffect1Param5">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore5</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect1Param5">
+                                        <property name="name">entryEffect1Param5</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect1Param5">
+                                        <property name="name">switchEffect1Param5</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect1ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect1Param5">
+                                        <property name="name">cbEffect1Param5</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">5</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect1Param6">
-                                    <property name="name">cbEffect0Param6</property>
+                                  <object class="GtkStack" id="stackEffect1Param6">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore6</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect1Param6">
+                                        <property name="name">entryEffect1Param6</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect1Param6">
+                                        <property name="name">switchEffect1Param6</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect1ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect1Param6">
+                                        <property name="name">cbEffect1Param6</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">6</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect1Param7">
-                                    <property name="name">cbEffect0Param7</property>
+                                  <object class="GtkStack" id="stackEffect1Param7">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore7</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect1Param7">
+                                        <property name="name">entryEffect1Param7</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect1Param7">
+                                        <property name="name">switchEffect1Param7</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect1ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect1Param7">
+                                        <property name="name">cbEffect1Param7</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect1ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">7</property>
                                   </packing>
                                 </child>
@@ -1894,17 +2529,20 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="labelEffect1Parameters">
-                                <property name="height-request">30</property>
+                              <object class="GtkLabel" id="labelEffect1StatExplanation">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="halign">end</property>
-                                <property name="valign">start</property>
-                                <property name="label" translatable="yes">Parameters:</property>
+                                <property name="halign">start</property>
+                                <property name="margin-top">5</property>
+                                <property name="margin-bottom">5</property>
+                                <property name="label" translatable="yes">Stat change explanation, lorem ipsum dolor sit amet consblahblah</property>
+                                <property name="wrap">True</property>
+                                <property name="width-chars">0</property>
+                                <property name="max-width-chars">50</property>
                               </object>
                               <packing>
-                                <property name="left-attach">0</property>
-                                <property name="top-attach">1</property>
+                                <property name="left-attach">1</property>
+                                <property name="top-attach">2</property>
                               </packing>
                             </child>
                             <child>
@@ -1928,6 +2566,7 @@
                           <object class="GtkLabel">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
+                            <property name="margin-bottom">5</property>
                             <property name="label" translatable="yes">Effect 2:</property>
                             <attributes>
                               <attribute name="weight" value="bold"/>
@@ -1960,6 +2599,7 @@
                                 <property name="can-focus">False</property>
                                 <property name="halign">end</property>
                                 <property name="label" translatable="yes">Type:</property>
+                                <property name="justify">right</property>
                               </object>
                               <packing>
                                 <property name="left-attach">0</property>
@@ -1992,234 +2632,546 @@
                                 <property name="row-spacing">5</property>
                                 <property name="column-spacing">5</property>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect2Param0">
-                                    <property name="name">entryEffect0Param0</property>
+                                  <object class="GtkLabel" id="labelEffect2Param0">
+                                    <property name="name">labelEffect2Param0</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect2Param1">
-                                    <property name="name">entryEffect0Param1</property>
+                                  <object class="GtkLabel" id="labelEffect2Param1">
+                                    <property name="name">labelEffect2Param1</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">1</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect2Param2">
-                                    <property name="name">entryEffect0Param2</property>
+                                  <object class="GtkLabel" id="labelEffect2Param2">
+                                    <property name="name">labelEffect2Param2</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">2</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect2Param3">
-                                    <property name="name">entryEffect0Param3</property>
+                                  <object class="GtkLabel" id="labelEffect2Param3">
+                                    <property name="name">labelEffect2Param3</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">3</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect2Param4">
-                                    <property name="name">entryEffect0Param4</property>
+                                  <object class="GtkLabel" id="labelEffect2Param4">
+                                    <property name="name">labelEffect2Param4</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">4</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect2Param5">
-                                    <property name="name">entryEffect0Param5</property>
+                                  <object class="GtkLabel" id="labelEffect2Param5">
+                                    <property name="name">labelEffect2Param5</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">5</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect2Param6">
-                                    <property name="name">entryEffect0Param6</property>
+                                  <object class="GtkLabel" id="labelEffect2Param6">
+                                    <property name="name">labelEffect2Param6</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">6</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect2Param7">
-                                    <property name="name">entryEffect0Param7</property>
+                                  <object class="GtkLabel" id="labelEffect2Param7">
+                                    <property name="name">labelEffect2Param7</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">7</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect2Param0">
-                                    <property name="name">cbEffect0Param0</property>
+                                  <object class="GtkStack" id="stackEffect2Param0">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore0</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect2Param0">
+                                        <property name="name">entryEffect2Param0</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect2Param0">
+                                        <property name="name">switchEffect2Param0</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect2ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect2Param0">
+                                        <property name="name">cbEffect2Param0</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect2Param1">
-                                    <property name="name">cbEffect0Param1</property>
+                                  <object class="GtkStack" id="stackEffect2Param1">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore1</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect2Param1">
+                                        <property name="name">entryEffect2Param1</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect2Param1">
+                                        <property name="name">switchEffect2Param1</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect2ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect2Param1">
+                                        <property name="name">cbEffect2Param1</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">1</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect2Param2">
-                                    <property name="name">cbEffect0Param2</property>
+                                  <object class="GtkStack" id="stackEffect2Param2">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore2</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect2Param2">
+                                        <property name="name">entryEffect2Param2</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect2Param2">
+                                        <property name="name">switchEffect2Param2</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect2ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect2Param2">
+                                        <property name="name">cbEffect2Param2</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">2</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect2Param3">
-                                    <property name="name">cbEffect0Param3</property>
+                                  <object class="GtkStack" id="stackEffect2Param3">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore3</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect2Param3">
+                                        <property name="name">entryEffect2Param3</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect2Param3">
+                                        <property name="name">switchEffect2Param3</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect2ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect2Param3">
+                                        <property name="name">cbEffect2Param3</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">3</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect2Param4">
-                                    <property name="name">cbEffect0Param4</property>
+                                  <object class="GtkStack" id="stackEffect2Param4">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore4</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect2Param4">
+                                        <property name="name">entryEffect2Param4</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect2Param4">
+                                        <property name="name">switchEffect2Param4</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect2ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect2Param4">
+                                        <property name="name">cbEffect2Param4</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">4</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect2Param5">
-                                    <property name="name">cbEffect0Param5</property>
+                                  <object class="GtkStack" id="stackEffect2Param5">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore5</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect2Param5">
+                                        <property name="name">entryEffect2Param5</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect2Param5">
+                                        <property name="name">switchEffect2Param5</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect2ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect2Param5">
+                                        <property name="name">cbEffect2Param5</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">5</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect2Param6">
-                                    <property name="name">cbEffect0Param6</property>
+                                  <object class="GtkStack" id="stackEffect2Param6">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore6</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect2Param6">
+                                        <property name="name">entryEffect2Param6</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect2Param6">
+                                        <property name="name">switchEffect2Param6</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect2ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect2Param6">
+                                        <property name="name">cbEffect2Param6</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">6</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect2Param7">
-                                    <property name="name">cbEffect0Param7</property>
+                                  <object class="GtkStack" id="stackEffect2Param7">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore7</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect2Param7">
+                                        <property name="name">entryEffect2Param7</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect2Param7">
+                                        <property name="name">switchEffect2Param7</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect2ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect2Param7">
+                                        <property name="name">cbEffect2Param7</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect2ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">7</property>
                                   </packing>
                                 </child>
@@ -2254,17 +3206,20 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="labelEffect2Parameters">
-                                <property name="height-request">30</property>
+                              <object class="GtkLabel" id="labelEffect2StatExplanation">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="halign">end</property>
-                                <property name="valign">start</property>
-                                <property name="label" translatable="yes">Parameters:</property>
+                                <property name="halign">start</property>
+                                <property name="margin-top">5</property>
+                                <property name="margin-bottom">5</property>
+                                <property name="label" translatable="yes">Stat change explanation, lorem ipsum dolor sit amet consblahblah</property>
+                                <property name="wrap">True</property>
+                                <property name="width-chars">0</property>
+                                <property name="max-width-chars">50</property>
                               </object>
                               <packing>
-                                <property name="left-attach">0</property>
-                                <property name="top-attach">1</property>
+                                <property name="left-attach">1</property>
+                                <property name="top-attach">2</property>
                               </packing>
                             </child>
                             <child>
@@ -2288,6 +3243,7 @@
                           <object class="GtkLabel">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
+                            <property name="margin-bottom">5</property>
                             <property name="label" translatable="yes">Effect 3:</property>
                             <attributes>
                               <attribute name="weight" value="bold"/>
@@ -2352,105 +3308,103 @@
                                 <property name="row-spacing">5</property>
                                 <property name="column-spacing">5</property>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect3Param0">
-                                    <property name="name">entryEffect0Param0</property>
+                                  <object class="GtkLabel" id="labelEffect3Param1">
+                                    <property name="name">labelEffect3Param1</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
-                                    <property name="top-attach">0</property>
-                                  </packing>
-                                </child>
-                                <child>
-                                  <object class="GtkEntry" id="entryEffect3Param1">
-                                    <property name="name">entryEffect0Param1</property>
-                                    <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
-                                  </object>
-                                  <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">1</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect3Param2">
-                                    <property name="name">entryEffect0Param2</property>
+                                  <object class="GtkLabel" id="labelEffect3Param2">
+                                    <property name="name">labelEffect3Param2</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">2</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect3Param3">
-                                    <property name="name">entryEffect0Param3</property>
+                                  <object class="GtkLabel" id="labelEffect3Param3">
+                                    <property name="name">labelEffect3Param3</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">3</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect3Param4">
-                                    <property name="name">entryEffect0Param4</property>
+                                  <object class="GtkLabel" id="labelEffect3Param4">
+                                    <property name="name">labelEffect3Param4</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">4</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect3Param5">
-                                    <property name="name">entryEffect0Param5</property>
+                                  <object class="GtkLabel" id="labelEffect3Param5">
+                                    <property name="name">labelEffect3Param5</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">5</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect3Param6">
-                                    <property name="name">entryEffect0Param6</property>
+                                  <object class="GtkLabel" id="labelEffect3Param6">
+                                    <property name="name">labelEffect3Param6</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">6</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="entryEffect3Param7">
-                                    <property name="name">entryEffect0Param7</property>
+                                  <object class="GtkLabel" id="labelEffect3Param7">
+                                    <property name="name">labelEffect3Param7</property>
                                     <property name="visible">True</property>
-                                    <property name="can-focus">True</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">1</property>
+                                    <property name="left-attach">0</property>
                                     <property name="top-attach">7</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect3Param0">
-                                    <property name="name">cbEffect0Param0</property>
+                                  <object class="GtkLabel" id="labelEffect3Param0">
+                                    <property name="name">labelEffect3Param0</property>
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore0</property>
-                                    <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
-                                    </child>
+                                    <property name="halign">start</property>
+                                    <property name="label" translatable="yes">Param type</property>
                                   </object>
                                   <packing>
                                     <property name="left-attach">0</property>
@@ -2458,128 +3412,442 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect3Param1">
-                                    <property name="name">cbEffect0Param1</property>
+                                  <object class="GtkStack" id="stackEffect3Param0">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore1</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect3Param0">
+                                        <property name="name">entryEffect3Param0</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect3Param0">
+                                        <property name="name">switchEffect3Param0</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect3ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect3Param0">
+                                        <property name="name">cbEffect3Param0</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
+                                    <property name="top-attach">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkStack" id="stackEffect3Param1">
+                                    <property name="visible">True</property>
+                                    <property name="can-focus">False</property>
+                                    <child>
+                                      <object class="GtkEntry" id="entryEffect3Param1">
+                                        <property name="name">entryEffect3Param1</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect3Param1">
+                                        <property name="name">switchEffect3Param1</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect3ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect3Param1">
+                                        <property name="name">cbEffect3Param1</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">1</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect3Param2">
-                                    <property name="name">cbEffect0Param2</property>
+                                  <object class="GtkStack" id="stackEffect3Param2">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore2</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect3Param2">
+                                        <property name="name">entryEffect3Param2</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect3Param2">
+                                        <property name="name">switchEffect3Param2</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect3ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect3Param2">
+                                        <property name="name">cbEffect3Param2</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">2</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect3Param3">
-                                    <property name="name">cbEffect0Param3</property>
+                                  <object class="GtkStack" id="stackEffect3Param3">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore3</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect3Param3">
+                                        <property name="name">entryEffect3Param3</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect3Param3">
+                                        <property name="name">switchEffect3Param3</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect3ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect3Param3">
+                                        <property name="name">cbEffect3Param3</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">3</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect3Param4">
-                                    <property name="name">cbEffect0Param4</property>
+                                  <object class="GtkStack" id="stackEffect3Param4">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore4</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect3Param4">
+                                        <property name="name">entryEffect3Param4</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect3Param4">
+                                        <property name="name">switchEffect3Param4</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect3ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect3Param4">
+                                        <property name="name">cbEffect3Param4</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">4</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect3Param5">
-                                    <property name="name">cbEffect0Param5</property>
+                                  <object class="GtkStack" id="stackEffect3Param5">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore5</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect3Param5">
+                                        <property name="name">entryEffect3Param5</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect3Param5">
+                                        <property name="name">switchEffect3Param5</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect3ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect3Param5">
+                                        <property name="name">cbEffect3Param5</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">5</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect3Param6">
-                                    <property name="name">cbEffect0Param6</property>
+                                  <object class="GtkStack" id="stackEffect3Param6">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore6</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect3Param6">
+                                        <property name="name">entryEffect3Param6</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect3Param6">
+                                        <property name="name">switchEffect3Param6</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect3ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect3Param6">
+                                        <property name="name">cbEffect3Param6</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">6</property>
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkComboBox" id="cbEffect3Param7">
-                                    <property name="name">cbEffect0Param7</property>
+                                  <object class="GtkStack" id="stackEffect3Param7">
                                     <property name="visible">True</property>
                                     <property name="can-focus">False</property>
-                                    <property name="model">paramsStore7</property>
                                     <child>
-                                      <object class="GtkCellRendererText"/>
-                                      <attributes>
-                                        <attribute name="text">1</attribute>
-                                      </attributes>
+                                      <object class="GtkEntry" id="entryEffect3Param7">
+                                        <property name="name">entryEffect3Param7</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueChanged" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page0</property>
+                                        <property name="title" translatable="yes">page0</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkSwitch" id="switchEffect3Param7">
+                                        <property name="name">switchEffect3Param7</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="halign">start</property>
+                                        <signal name="state-set" handler="OnEffect3ParamValueStateSet" swapped="no"/>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page1</property>
+                                        <property name="title" translatable="yes">page1</property>
+                                        <property name="position">1</property>
+                                      </packing>
+                                    </child>
+                                    <child>
+                                      <object class="GtkComboBox" id="cbEffect3Param7">
+                                        <property name="name">cbEffect3Param7</property>
+                                        <property name="visible">True</property>
+                                        <property name="can-focus">False</property>
+                                        <signal name="changed" handler="OnEffect3ParamValueEnumChanged" swapped="no"/>
+                                        <child>
+                                          <object class="GtkCellRendererText"/>
+                                          <attributes>
+                                            <attribute name="text">1</attribute>
+                                          </attributes>
+                                        </child>
+                                      </object>
+                                      <packing>
+                                        <property name="name">page2</property>
+                                        <property name="title" translatable="yes">page2</property>
+                                        <property name="position">2</property>
+                                      </packing>
                                     </child>
                                   </object>
                                   <packing>
-                                    <property name="left-attach">0</property>
+                                    <property name="left-attach">1</property>
                                     <property name="top-attach">7</property>
                                   </packing>
                                 </child>
@@ -2614,17 +3882,20 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkLabel" id="labelEffect3Parameters">
-                                <property name="height-request">30</property>
+                              <object class="GtkLabel" id="labelEffect3StatExplanation">
                                 <property name="visible">True</property>
                                 <property name="can-focus">False</property>
-                                <property name="halign">end</property>
-                                <property name="valign">start</property>
-                                <property name="label" translatable="yes">Parameters:</property>
+                                <property name="halign">start</property>
+                                <property name="margin-top">5</property>
+                                <property name="margin-bottom">5</property>
+                                <property name="label" translatable="yes">Stat change explanation, lorem ipsum dolor sit amet consblahblah</property>
+                                <property name="wrap">True</property>
+                                <property name="width-chars">0</property>
+                                <property name="max-width-chars">50</property>
                               </object>
                               <packing>
-                                <property name="left-attach">0</property>
-                                <property name="top-attach">1</property>
+                                <property name="left-attach">1</property>
+                                <property name="top-attach">2</property>
                               </packing>
                             </child>
                             <child>
@@ -2648,6 +3919,7 @@
                           <object class="GtkLabel">
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
+                            <property name="margin-bottom">5</property>
                             <property name="label" translatable="yes">Effect 4:</property>
                             <attributes>
                               <attribute name="weight" value="bold"/>

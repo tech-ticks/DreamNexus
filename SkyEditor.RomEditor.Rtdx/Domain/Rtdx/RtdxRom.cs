@@ -1010,14 +1010,17 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// <param name="data">Data to write</param>
         public void WriteFile(string relativePath, byte[] data)
         {
-            var file = filesToWrite.FirstOrDefault(file => file.relativePath == relativePath);
-            if (file.relativePath != null)
+            lock (filesToWrite)
             {
-                file.data = data;
-            }
-            else
-            {
-                filesToWrite.Add((relativePath, data));
+                var file = filesToWrite.FirstOrDefault(file => file.relativePath == relativePath);
+                if (file.relativePath != null)
+                {
+                    file.data = data;
+                }
+                else
+                {
+                    filesToWrite.Add((relativePath, data));
+                }
             }
         }
 

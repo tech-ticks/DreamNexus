@@ -19,16 +19,14 @@ namespace SkyEditorUI.Controllers
         [UI] private ComboBox? cbEffectType1;
         [UI] private ComboBox? cbEffectType2;
         [UI] private ComboBox? cbEffectType3;
-        [UI] private Label? labelEffect0Parameters;
-        [UI] private Label? labelEffect1Parameters;
-        [UI] private Label? labelEffect2Parameters;
-        [UI] private Label? labelEffect3Parameters;
         [UI] private Grid? effect0Parameters;
         [UI] private Grid? effect1Parameters;
         [UI] private Grid? effect2Parameters;
         [UI] private Grid? effect3Parameters;
 
         [UI] private ListStore? effectTypesStore;
+        [UI] private ListStore? statusStore;
+        [UI] private ListStore? dungeonStatusStore;
 
         private List<EffectParameterType>[] effectParametersByIndex = new List<EffectParameterType>[8];
 
@@ -42,9 +40,9 @@ namespace SkyEditorUI.Controllers
                 string? effectDescription = EffectTypeStrings.ResourceManager.GetString(i.ToString());
                 if (string.IsNullOrEmpty(effectDescription))
                 {
-                    effectDescription = $"Unknown effect {i}";
+                    effectDescription = "Unknown effect";
                 }
-                effectTypesStore.AppendValues((int) i, effectDescription);
+                effectTypesStore.AppendValues((int) i, $"#{((int) i).ToString("000")}: {effectDescription}");
             }
 
             for (int i = 0; i < effectParametersByIndex.Length; i++)
@@ -69,6 +67,26 @@ namespace SkyEditorUI.Controllers
                 effectParametersByIndex[expectedIndex].Add(i);
             }
 
+            for (StatusIndex i = 0; i < StatusIndex.END; i++)
+            {
+                string? name = englishStrings.GetStatusName(i);
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    name = $"({i.ToString()})";
+                }
+                statusStore!.AppendValues((int) i, name);
+            }
+
+            for (DungeonStatusIndex i = 0; i < DungeonStatusIndex.END; i++)
+            {
+                string? name = englishStrings.GetDungeonStatusName(i);
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    name = $"({i.ToString()})";
+                }
+                dungeonStatusStore!.AppendValues((int) i, name);
+            }
+
             cbEffectType0!.Active = (int) action.Effects[0].Type;
             cbEffectType1!.Active = (int) action.Effects[1].Type;
             cbEffectType2!.Active = (int) action.Effects[2].Type;
@@ -87,19 +105,80 @@ namespace SkyEditorUI.Controllers
             for (int j = 0; j < effect.Parameters.Count; j++)
             {
                 var param = effect.Parameters[j];
-                var typeComboBox = builder.GetObject($"cbEffect{effectIndex}Param{j}") as ComboBox;
-                if (typeComboBox != null)
+                var typeLabel = builder.GetObject($"labelEffect{effectIndex}Param{j}") as Label;
+                if (typeLabel != null)
                 {
-                    typeComboBox.Active = effectParametersByIndex[j].IndexOf(param.Type) + 1;
-                    typeComboBox.Sensitive = !foundTypes;
-                    typeComboBox.Visible = param.Type != EffectParameterType.None;
+                    typeLabel.Text = $"{param.Type.GetDescription()}:";
+                    typeLabel.Visible = param.Type != EffectParameterType.None;
                 }
-                var valueEntry = builder.GetObject($"entryEffect{effectIndex}Param{j}") as Entry;
-                if (valueEntry != null)
+
+                var displayType = param.Type.GetDisplayType();
+
+                var valueStack = builder.GetObject($"stackEffect{effectIndex}Param{j}") as Stack;
+                valueStack!.Visible = param.Type != EffectParameterType.None;
+
+                if (displayType == typeof(ushort))
                 {
-                    valueEntry.Text = param.Value.ToString();
-                    valueEntry.Visible = param.Type != EffectParameterType.None;
+                    var valueEntry = builder.GetObject($"entryEffect{effectIndex}Param{j}") as Entry;
+                    if (valueEntry != null)
+                    {
+                        valueEntry.Text = param.Value.ToString();
+                        valueStack!.VisibleChild = valueStack.Children[0];
+                    }
                 }
+                else if (displayType == typeof(bool))
+                {
+                    var valueSwitch = builder.GetObject($"switchEffect{effectIndex}Param{j}") as Switch;
+                    if (valueSwitch != null)
+                    {
+                        valueSwitch.Active = param.Value != 0;
+                        valueStack!.VisibleChild = valueStack.Children[1];
+                    }
+                }
+                else
+                {
+                    // Enum type
+                    var valueComboBox = builder.GetObject($"cbEffect{effectIndex}Param{j}") as ComboBox;
+                    valueStack!.VisibleChild = valueStack.Children[2];
+                    
+                    if (displayType == typeof(PokemonType))
+                    {
+                        valueComboBox!.Model = typesStore;
+                    }
+                    else if (displayType == typeof(StatusIndex))
+                    {
+                        valueComboBox!.Model = statusStore;
+                    }
+                    else if (displayType == typeof(DungeonStatusIndex))
+                    {
+                        valueComboBox!.Model = dungeonStatusStore;
+                    }
+
+                    valueComboBox!.Active = param.Value;
+                }
+            }
+
+            UpdateStatChangeDescription(effectIndex);
+        }
+
+        private void UpdateStatChangeDescription(int effectIndex)
+        {
+            var effect = action.Effects[effectIndex];
+            var statChangeParam = effect.Parameters.FirstOrDefault(param =>
+                param.Type == EffectParameterType.StatChangeIndex
+                || param.Type == EffectParameterType.StatMultiplierIndex);
+
+            var explainationLabel = builder.GetObject($"labelEffect{effectIndex}StatExplanation") as Label;
+            if (statChangeParam != null)
+            {
+                var description = DescribeStatChanges(statChangeParam.Value,
+                    statChangeParam.Type == EffectParameterType.StatMultiplierIndex);
+                explainationLabel!.Visible = true;
+                explainationLabel.Text = $"Stat change: {description}";
+            }
+            else
+            {
+                explainationLabel!.Visible = false;
             }
         }
 
@@ -111,7 +190,6 @@ namespace SkyEditorUI.Controllers
             bool visible = effect.Type != EffectType.None
                 && effect.Parameters.Any(param => param.Type != EffectParameterType.None);
             effect0Parameters!.Visible = visible;
-            labelEffect0Parameters!.Visible = visible;
         }
 
         private void OnEffectType1Changed(object sender, EventArgs args)
@@ -122,7 +200,6 @@ namespace SkyEditorUI.Controllers
             bool visible = effect.Type != EffectType.None
                 && effect.Parameters.Any(param => param.Type != EffectParameterType.None);
             effect1Parameters!.Visible = visible;
-            labelEffect1Parameters!.Visible = visible;
         }
 
         private void OnEffectType2Changed(object sender, EventArgs args)
@@ -133,7 +210,6 @@ namespace SkyEditorUI.Controllers
             bool visible = effect.Type != EffectType.None
                 && effect.Parameters.Any(param => param.Type != EffectParameterType.None);
             effect2Parameters!.Visible = visible;
-            labelEffect2Parameters!.Visible = visible;
         }
 
         private void OnEffectType3Changed(object sender, EventArgs args)
@@ -144,7 +220,6 @@ namespace SkyEditorUI.Controllers
             bool visible = effect.Type != EffectType.None
                 && effect.Parameters.Any(param => param.Type != EffectParameterType.None);
             effect3Parameters!.Visible = visible;
-            labelEffect3Parameters!.Visible = visible;
         }
 
         private void OnEffect0ParamTypeChanged(object sender, EventArgs args)
@@ -186,6 +261,7 @@ namespace SkyEditorUI.Controllers
             int parameterIndex = int.Parse(entry.Name.Last().ToString());
             var param = action.Effects[0].Parameters[parameterIndex];
             param.Value = entry.ParseUShort(param.Value);
+            UpdateStatChangeDescription(0);
         }
 
         private void OnEffect1ParamValueChanged(object sender, EventArgs args)
@@ -195,6 +271,7 @@ namespace SkyEditorUI.Controllers
             int parameterIndex = int.Parse(entry.Name.Last().ToString());
             var param = action.Effects[1].Parameters[parameterIndex];
             param.Value = entry.ParseUShort(param.Value);
+            UpdateStatChangeDescription(1);
         }
 
         private void OnEffect2ParamValueChanged(object sender, EventArgs args)
@@ -204,6 +281,7 @@ namespace SkyEditorUI.Controllers
             int parameterIndex = int.Parse(entry.Name.Last().ToString());
             var param = action.Effects[2].Parameters[parameterIndex];
             param.Value = entry.ParseUShort(param.Value);
+            UpdateStatChangeDescription(2);
         }
 
         private void OnEffect3ParamValueChanged(object sender, EventArgs args)
@@ -213,9 +291,86 @@ namespace SkyEditorUI.Controllers
             int parameterIndex = int.Parse(entry.Name.Last().ToString());
             var param = action.Effects[3].Parameters[parameterIndex];
             param.Value = entry.ParseUShort(param.Value);
+            UpdateStatChangeDescription(3);
         }
 
-        public bool FindParameterTypes(int effectIndex)
+        [GLib.ConnectBefore]
+        private void OnEffect0ParamValueStateSet(object sender, StateSetArgs args)
+        {
+            var switchWidget = (Switch) sender; 
+            // The last digit of the widget's name is the parameter index
+            int parameterIndex = int.Parse(switchWidget.Name.Last().ToString());
+            var param = action.Effects[0].Parameters[parameterIndex];
+            param.Value = args.State ? (ushort) 1 : (ushort) 0;
+        }
+
+        [GLib.ConnectBefore]
+        private void OnEffect1ParamValueStateSet(object sender, StateSetArgs args)
+        {
+            var switchWidget = (Switch) sender; 
+            // The last digit of the widget's name is the parameter index
+            int parameterIndex = int.Parse(switchWidget.Name.Last().ToString());
+            var param = action.Effects[1].Parameters[parameterIndex];
+            param.Value = args.State ? (ushort) 1 : (ushort) 0;
+        }
+
+        [GLib.ConnectBefore]
+        private void OnEffect2ParamValueStateSet(object sender, StateSetArgs args)
+        {
+            var switchWidget = (Switch) sender; 
+            // The last digit of the widget's name is the parameter index
+            int parameterIndex = int.Parse(switchWidget.Name.Last().ToString());
+            var param = action.Effects[2].Parameters[parameterIndex];
+            param.Value = args.State ? (ushort) 1 : (ushort) 0;
+        }
+
+        [GLib.ConnectBefore]
+        private void OnEffect3ParamValueStateSet(object sender, StateSetArgs args)
+        {
+            var switchWidget = (Switch) sender; 
+            // The last digit of the widget's name is the parameter index
+            int parameterIndex = int.Parse(switchWidget.Name.Last().ToString());
+            var param = action.Effects[3].Parameters[parameterIndex];
+            param.Value = args.State ? (ushort) 1 : (ushort) 0;
+        }
+
+        private void OnEffect0ParamValueEnumChanged(object sender, EventArgs args)
+        {
+            var comboBox = (ComboBox) sender; 
+            // The last digit of the widget's name is the parameter index
+            int parameterIndex = int.Parse(comboBox.Name.Last().ToString());
+            var param = action.Effects[0].Parameters[parameterIndex];
+            param.Value = (ushort) comboBox.Active;
+        }
+
+        private void OnEffect1ParamValueEnumChanged(object sender, EventArgs args)
+        {
+            var comboBox = (ComboBox) sender; 
+            // The last digit of the widget's name is the parameter index
+            int parameterIndex = int.Parse(comboBox.Name.Last().ToString());
+            var param = action.Effects[1].Parameters[parameterIndex];
+            param.Value = (ushort) comboBox.Active;
+        }
+
+        private void OnEffect2ParamValueEnumChanged(object sender, EventArgs args)
+        {
+            var comboBox = (ComboBox) sender; 
+            // The last digit of the widget's name is the parameter index
+            int parameterIndex = int.Parse(comboBox.Name.Last().ToString());
+            var param = action.Effects[2].Parameters[parameterIndex];
+            param.Value = (ushort) comboBox.Active;
+        }
+
+        private void OnEffect3ParamValueEnumChanged(object sender, EventArgs args)
+        {
+            var comboBox = (ComboBox) sender; 
+            // The last digit of the widget's name is the parameter index
+            int parameterIndex = int.Parse(comboBox.Name.Last().ToString());
+            var param = action.Effects[3].Parameters[parameterIndex];
+            param.Value = (ushort) comboBox.Active;
+        }
+
+        private bool FindParameterTypes(int effectIndex)
         {
             if (paramTypesByEffect == null)
             {
@@ -242,6 +397,44 @@ namespace SkyEditorUI.Controllers
             else
             {
                 return false;
+            }
+        }
+
+        private string DescribeStatChanges(ushort index, bool percentage)
+        {
+            var statChangeData = rom.GetActStatusTableDataInfo().Entries;
+            if (index < statChangeData.Count)
+            {
+                var entry = statChangeData[index];
+                var changes = new List<string>();
+
+                void addEntry(short mod, string name)
+                {
+                    if (mod != 0)
+                    {
+                        if (percentage)
+                        {
+                            changes.Add($"{mod}% {name}");
+                        }
+                        else
+                        {
+                            changes.Add($"{mod:+#;-#} {name}");
+                        }
+                    }
+                }
+
+                addEntry(entry.AttackMod, "Attack");
+                addEntry(entry.SpecialAttackMod, "Special Attack");
+                addEntry(entry.DefenseMod, "Defense");
+                addEntry(entry.SpecialDefenseMod, "Special Defense");
+                addEntry(entry.SpeedMod, "Speed");
+                addEntry(entry.AccuracyMod, "Accuracy");
+                addEntry(entry.EvasionMod, "Evasion");
+                return changes.Count > 0 ? string.Join(", ", changes): "None";
+            }
+            else
+            {
+                return $"{index} (out of range)";
             }
         }
     }

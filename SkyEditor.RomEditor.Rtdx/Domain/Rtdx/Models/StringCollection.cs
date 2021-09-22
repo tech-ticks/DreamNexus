@@ -419,6 +419,28 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             return GetAbilityNameByInternalName(abilityIndex.ToString("f"));
         }
 
+        public string? GetDungeonStatusNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("DUNGEON_STATUS_NAME__DUNGEON_STATUS_" + internalName.ToUpper());
+            return GetCommonString(nameHash);
+        }
+
+        public string? GetDungeonStatusName(DungeonStatusIndex statusIndex)
+        {
+            return GetDungeonStatusNameByInternalName(statusIndex.ToString("f"));
+        }
+
+        public string? GetStatusNameByInternalName(string internalName)
+        {
+            var nameHash = TextIdValues.GetValueOrDefault("STATUS_NAME__STATUS_" + internalName.ToUpper());
+            return GetCommonString(nameHash);
+        }
+
+        public string? GetStatusName(StatusIndex statusIndex)
+        {
+            return GetStatusNameByInternalName(statusIndex.ToString("f"));
+        }
+
         public void Flush()
         {
             foreach (var overrideString in CommonStringsOverride)

@@ -817,7 +817,7 @@ namespace SkyEditorUI.Controllers
                     "skytemple-e-move-symbolic", new MoveControllerContext(i));
             }
 
-            var actionsIter = AddMainListItem(root, "Actions", "skytemple-e-move-symbolic");
+            var actionsIter = AddMainListItem(root, "Actions", "skytemple-view-list-symbolic");
             var actions = rom.GetActions();
             for (int i = 0; i < actions.ActionCount; i++)
             {
@@ -848,7 +848,7 @@ namespace SkyEditorUI.Controllers
 
         private void AddAllModScripts(TreeIter parent)
         {
-            if (modpack == null) 
+            if (modpack == null)
             {
                 return;
             }
