@@ -8,7 +8,7 @@ To use this, you need a decrypted and extracted copy of the game. If your consol
 
 ## Licensing
 
-DreamNexus (in the `SkyEditor.UI` directory) is based on [SkyTemple](https://github.com/SkyTemple/skytemple) and licensed under GPLv3.
+The DreamNexus UI (in the `SkyEditor.UI` directory) is based on [SkyTemple](https://github.com/SkyTemple/skytemple) and licensed under GPLv3.
 All other all components including the core library and CLI are licensed under the MIT license.
 Texture format converters are sourced from https://github.com/mafaca/UtinyRipper.
 
@@ -67,7 +67,7 @@ Operations on multiple ROMs can be chained together simply by specifying another
 dotnet SkyEditor.RomEditor.Rtdx.Console.dll ./RTDX ./Scripts/Queries/ListStarters.lua ./RTDX-Copy ./Scripts/Samples/ChangeStarters.lua ./Scripts/Hypothetical/ChangeMoreStarters.lua --save
 ```
 
-In reality, you're likely to have long path names that look something like `H:\atmosphere\contents\01003D200BAA2000` or some variant. If this gets to be a hassle, you can Add the ROM to Sky Editor's library:
+In reality, you're likely to have long path names that look something like `H:\atmosphere\contents\01003D200BAA2000` or some variant. If this gets to be a hassle, you can Add the ROM to DreamNexus's library:
 ```
 dotnet SkyEditor.RomEditor.Rtdx.Console.dll ./RTDX Import MyRom
 ```
@@ -109,7 +109,7 @@ You can currently fix this mismatch by manually modifying and executing `SkyEdit
 
 ### Change Script Generation
 
-Most of the control over ROMs is done with scripts. These can be written in your favorite code editor, but Sky Editor can _generate_ scripts for certain kinds of edits, such as starter editing. The idea behind this is that a user will use a GUI to make edits, then will be able to generate a script that allows their friends to do the same.
+Most of the control over ROMs is done with scripts. These can be written in your favorite code editor, but DreamNexus can _generate_ scripts for certain kinds of edits, such as starter editing. The idea behind this is that a user will use a GUI to make edits, then will be able to generate a script that allows their friends to do the same.
 
 Supported languages are C# and Lua, but this is subject to change in the future.
 
@@ -118,12 +118,12 @@ Right now, the change starters sample script can be used to generate itself, min
 More than just starters will be supported in the future.
 
 ## Mods
-Sky Editor features a mod system allowing people to create and distribute custom modifications that aren't supported by the UI.
+DreamNexus features a mod system allowing people to create and distribute custom modifications that aren't supported by the UI.
 
 Note that all mods will be applied to Pokémon Mystery Dungeon: Rescue Team DX, but more ROMs will be supported in the future.
 
 ### Scripts
-The most basic layer of modification is the script. These are C# (.csx files) or Lua (.lua files) that have access to a ROM and can modify its contents in any way the Sky Editor library supports.
+The most basic layer of modification is the script. These are C# (.csx files) or Lua (.lua files) that have access to a ROM and can modify its contents in any way the DreamNexus library supports.
 
 See SkyEditor.RomEditor.Infrastructure.Automation.ScriptContext for which globals are available.
 
@@ -223,7 +223,7 @@ Which option to use depends on your specific circumstances, but in general:
 - If you plan to give your modification to others, create a Mod or a Modpack.
 - If your script needs access to a static resource (such as a Pokémon model), create a Mod or a Modpack.
 - If you don't need users' input (e.g. you don't want them to disable something), create a Mod.
-- If you want to make your own Mod, but you also want to use someone else's Mod(s), create a Mod, then combine it with the other(s) with the Sky Editor console to make a Modpack.
+- If you want to make your own Mod, but you also want to use someone else's Mod(s), create a Mod, then combine it with the other(s) with the DreamNexus console to make a Modpack.
 - If you want users to be able to enable or disable specific features, create a Modpack, with each feature that can be enabled or disabled as a separate Mod.
 - If you don't intend to make any changes (e.g. if you're extracting Pokémon data), create a Script.
 - If you plan to keep your modification for yourself, a Script is easiest unless one of the above points applies.

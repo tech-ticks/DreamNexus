@@ -5,6 +5,9 @@ on: [push]
 jobs:
   build-and-test:
     runs-on: ubuntu-18.04
+    name: Build and test on Linux
+    env:
+      DREAMNEXUS_VERSION: ${{ secrets.DREAMNEXUS_VERSION }} # TODO: get proper version
     
     steps:
     - name: Checkout
@@ -32,40 +35,28 @@ jobs:
     - name: Run tests
       run: dotnet test
 
-    - name: Publish UI for Windows
-      run: cd SkyEditor.UI && dotnet publish -c Release -r win-x64
-
     - name: Publish UI for Mac
-      run: cd SkyEditor.UI && dotnet publish -c Release -r osx-x64
+      run: cd SkyEditor.UI && dotnet publish -c Release -r osx-x64 /p:AssemblyVersion=$DREAMNEXUS_VERSION
 
     - name: Publish UI for Linux
-      run: cd SkyEditor.UI && dotnet publish -c Release -r linux-x64
+      run: cd SkyEditor.UI && dotnet publish -c Release -r linux-x64 /p:AssemblyVersion=$DREAMNEXUS_VERSION
 
     - name: Post-process builds, copy themes
       run: |
         curl https://skytemple.org/build_deps/Arc.zip -O
         unzip Arc.zip
 
-        mkdir -p SkyEditor.UI/bin/Release/net5.0/win-x64/publish/share/themes/
         mkdir -p SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/share/themes/
         mkdir -p SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/share/themes/
 
-        cp -r Arc SkyEditor.UI/bin/Release/net5.0/win-x64/publish/share/themes/
         cp -r Arc SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/share/themes/
         cp -r Arc SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/share/themes/
-        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/win-x64/publish/share/themes/
+        
         cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/share/themes/
         cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/share/themes/
 
-        chmod +x SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/SkyEditor.UI
-        chmod +x SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/SkyEditor.UI
-    
-    - name: Upload Windows build
-      uses: actions/upload-artifact@v2
-      with:
-        name: windows-app
-        path: |
-          SkyEditor.UI/bin/Release/net5.0/win-x64/publish/
+        chmod +x SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/DreamNexus
+        chmod +x SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/DreamNexus
 
     - name: Upload Mac build
       uses: actions/upload-artifact@v2
@@ -80,3 +71,65 @@ jobs:
         name: linux-app
         path: |
           SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/
+
+  build-windows:
+    runs-on: windows-2019
+    name: Build and package for Windows
+    env:
+      DREAMNEXUS_VERSION: ${{ secrets.DREAMNEXUS_VERSION }}
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.4
+      with:
+        submodules: true
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1.8.2
+      with:
+        dotnet-version: 5.0.x
+
+    - name: Install dependencies
+      run: |
+        # SkyEditor nuget feed is required to resolve dependencies
+        dotnet nuget add source "https://pkgs.dev.azure.com/project-pokemon/4a5da2d7-09b8-4354-9450-562116aac7b5/_packaging/skyeditor/nuget/v3/index.json" -n "skyeditor"
+        dotnet restore
+
+    - name: Copy mods folder
+      run: cp -r SkyEditor.RomEditor.Rtdx.ConsoleApp/Mods SkyEditor.UI/Mods/
+
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Publish UI for Windows
+      run: cd SkyEditor.UI && dotnet publish -c Release -r win-x64 /p:AssemblyVersion=$DREAMNEXUS_VERSION
+
+    - name: Post-process build, copy themes
+      run: |
+        curl https://skytemple.org/build_deps/Arc.zip -O
+        unzip Arc.zip
+
+        mkdir -p SkyEditor.UI/bin/Release/net5.0/win-x64/publish/share/themes/
+
+        cp -r Arc SkyEditor.UI/bin/Release/net5.0/win-x64/publish/share/themes/
+        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/win-x64/publish/share/themes/
+
+    - name: Copy GTK runtime
+      run: |
+        # Downloaded automatically on build
+        mkdir -p gtk
+        unzip C:\Users\runneradmin\AppData\Local\Gtk\3.24.24\gtk.zip -d gtk
+        xcopy gtk SkyEditor.UI\bin\Release\net5.0\win-x64\publish\ /E/H
+
+    - name: Create installer
+      uses: joncloud/makensis-action@v3.4
+      with:
+        script-file: "SkyEditor.UI/Installer/dreamnexus.nsi"
+        arguments: "/DPRODUCT_VERSION=${{ env.DREAMNEXUS_VERSION }}"
+
+    - name: Upload Windows installer
+      uses: actions/upload-artifact@v2
+      with:
+        name: windows-installer
+        path: |
+          SkyEditor.UI/Installer/dreamnexus-*-install-*.exe

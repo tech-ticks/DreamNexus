@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using Gtk;
-using GtkSource;
 using Settings = Gtk.Settings;
 using SkyEditorUI.Controllers;
 using SkyEditorUI.Infrastructure;
@@ -15,6 +14,11 @@ namespace SkyEditorUI
         [STAThread]
         public static void Main(string[] args)
         {
+            if (OperatingSystem.IsMacOS())
+            {
+                FixMacOSWorkingDirectory();
+            }
+
             Application.Init();
 
             // Setup theme
@@ -57,7 +61,7 @@ namespace SkyEditorUI
             win.Show();
             Application.Run();
         }
-        public static bool IsDarkTheme()
+        private static bool IsDarkTheme()
         {
             // TODO: re-enable once the code editor's dark theme has been fixed
             return false;
@@ -94,6 +98,23 @@ namespace SkyEditorUI
             }
 
             return false;*/
+        }
+
+        private static void FixMacOSWorkingDirectory()
+        {
+            // The working directory isn't set automatically if we're running in a mac .app
+            if (Directory.GetCurrentDirectory() == "/")
+            {
+                var executablePath = Process.GetCurrentProcess()?.MainModule?.FileName;
+                if (executablePath != null)
+                {
+                    var executableDirectory = Path.GetDirectoryName(executablePath);
+                    if (executableDirectory != null)
+                    {
+                        Directory.SetCurrentDirectory(executableDirectory);
+                    }
+                }
+            }
         }
     }
 }
