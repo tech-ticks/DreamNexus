@@ -54,8 +54,8 @@ namespace SkyEditorUI.Controllers
             DeleteEvent += OnWindowDelete;
 
             updateInfo?.Hide();
-
             loadingDialog!.Title = "DreamNexus";
+            IconName = "dreamnexus";
 
             var col = new TreeViewColumn("Title", new CellRendererText());
             var iconRenderer = new CellRendererPixbuf();
