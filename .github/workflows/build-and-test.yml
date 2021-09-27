@@ -126,7 +126,7 @@ jobs:
         xcopy gtk SkyEditor.UI\bin\Release\net5.0\win-x64\publish\ /E/H
 
     - name: Create installer
-      uses: joncloud/makensis-action@v3.4
+      uses: joncloud/makensis-action@v3.6
       with:
         script-file: "SkyEditor.UI/Installer/dreamnexus.nsi"
         arguments: "/DPRODUCT_VERSION=${{ env.DREAMNEXUS_VERSION }}"
