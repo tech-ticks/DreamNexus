@@ -430,6 +430,11 @@ namespace SkyEditorUI.Controllers
                     rom!.EnableCustomFiles = modpack.Metadata.EnableCodeInjection;
 
                     await SaveSourceFiles();
+                    if (modpack?.GetDefaultMod() != null)
+                    {
+                        // Write changed source files to the ROM
+                        await modpack!.GetDefaultMod()!.WriteAssets(rom);
+                    }
                     if (structure == BuildFileStructureType.Atmosphere)
                     {
                         var paths = BuildHelpers.CreateAtmosphereFolderStructure(Settings.Load(), folder, fileSystem);

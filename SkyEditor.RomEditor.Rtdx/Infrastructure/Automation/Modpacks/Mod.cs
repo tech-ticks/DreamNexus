@@ -68,7 +68,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 
         public async Task Apply(IScriptHost context)
         {
-            await WriteAssets(context);
+            await WriteAssets(context.Target);
 
             foreach (var script in Scripts)
             {
@@ -86,7 +86,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             }
         }
 
-        public async Task WriteAssets(IScriptHost context)
+        public async Task WriteAssets(IModTarget target) // TODO: make virtual and move this code to RtdxMod
         {
             // TODO: Directly copy the files instead of loading all assets in RAM
             var assetsDir = GetAssetsDirectory();
@@ -100,7 +100,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             {
                 var relativePath = FileSystemExtensions.GetRelativePath(assetsDir, assetPath);
                 var targetPath = Path.Combine("romfs", "Data", "StreamingAssets", relativePath);
-                tasks.Add(WriteAsset(context.Target, assetPath, targetPath));
+                tasks.Add(WriteAsset(target, assetPath, targetPath));
             }
 
             await Task.WhenAll(tasks);

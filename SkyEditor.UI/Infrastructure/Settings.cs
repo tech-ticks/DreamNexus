@@ -16,7 +16,7 @@ namespace SkyEditorUI.Infrastructure
   {
 
     public static string DataPath =>
-      Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "SkyEditorDX");
+      Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "DreamNexus");
 
     public static string SettingsFilePath => Path.Combine(DataPath, "settings.json");
 

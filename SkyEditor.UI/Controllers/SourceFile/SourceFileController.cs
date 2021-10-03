@@ -145,7 +145,6 @@ namespace SkyEditorUI.Controllers
             sourceView.Buffer.Text = file.Contents;
         }
 
-
         private void OnSourceViewFocusOut(object sender, EventArgs args)
         {
             if (file.InProject)
