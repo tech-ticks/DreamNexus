@@ -49,6 +49,11 @@ namespace SkyEditorUI.Controllers
             RefreshPath();
         }
 
+        protected override void OnDestroyed()
+        {
+            Program.OnThemeUpdated -= OnThemeUpdated;
+        }
+
         private void SetupSourceView()
         {
             sourceView = new SourceView();
@@ -66,6 +71,16 @@ namespace SkyEditorUI.Controllers
             sourceView.Editable = file.InProject;
 
             sourceView.FocusOutEvent += OnSourceViewFocusOut;
+            sourceView.Buffer.StyleScheme = StyleSchemeManager.Default.GetScheme(Program.IsDarkTheme()
+                ? "cobalt" : "kate");
+
+            Program.OnThemeUpdated += OnThemeUpdated;
+        }
+
+        private void OnThemeUpdated(bool dark)
+        {
+            sourceView.Buffer.StyleScheme = StyleSchemeManager.Default.GetScheme(dark
+                ? "cobalt" : "kate");
         }
 
         private void OnOpenInVSCodeClicked(object sender, EventArgs args)

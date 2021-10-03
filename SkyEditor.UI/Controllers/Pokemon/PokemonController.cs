@@ -51,7 +51,6 @@ namespace SkyEditorUI.Controllers
             : base(builder.GetRawOwnedObject("main"))
         {
             builder.Autoconnect(this);
-            Destroyed += OnDestroyed;
             
             var pokemonId = (context as PokemonControllerContext)!.Index;
             this.pokemon = rom.GetPokemon().GetPokemonById(pokemonId)
@@ -186,7 +185,7 @@ namespace SkyEditorUI.Controllers
             }).Start();
         }
 
-        private void OnDestroyed(object? sender, EventArgs args)
+        protected override void OnDestroyed()
         {
             portraitSurface?.Dispose();
         }

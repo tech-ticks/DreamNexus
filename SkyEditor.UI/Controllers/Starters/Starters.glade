@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.22"/>
   <object class="GtkListStore" id="creaturesStore">
@@ -10,7 +10,7 @@
   </object>
   <object class="GtkEntryCompletion" id="creaturesCompletion">
     <property name="model">creaturesStore</property>
-    <property name="text_column">0</property>
+    <property name="text-column">0</property>
     <child>
       <object class="GtkCellRendererText"/>
       <attributes>
@@ -26,7 +26,7 @@
   </object>
   <object class="GtkEntryCompletion" id="creaturesCompletionPartner">
     <property name="model">defaultStartersStore</property>
-    <property name="text_column">0</property>
+    <property name="text-column">0</property>
     <child>
       <object class="GtkCellRendererText"/>
       <attributes>
@@ -36,7 +36,7 @@
   </object>
   <object class="GtkEntryCompletion" id="creaturesCompletionPlayer">
     <property name="model">defaultStartersStore</property>
-    <property name="text_column">0</property>
+    <property name="text-column">0</property>
     <child>
       <object class="GtkCellRendererText"/>
       <attributes>
@@ -78,7 +78,7 @@
   </object>
   <object class="GtkEntryCompletion" id="movesCompletion">
     <property name="model">movesStore</property>
-    <property name="text_column">0</property>
+    <property name="text-column">0</property>
     <child>
       <object class="GtkCellRendererText"/>
       <attributes>
@@ -108,25 +108,25 @@
   </object>
   <object class="GtkBox" id="main">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="orientation">vertical</property>
     <child>
       <object class="GtkAlignment">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="xscale">0.80000001192092896</property>
-        <property name="yscale">0.80000001192092896</property>
+        <property name="can-focus">False</property>
+        <property name="xscale">0.8000000119209289</property>
+        <property name="yscale">0.8000000119209289</property>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="orientation">vertical</property>
             <property name="spacing">20</property>
             <child>
               <object class="GtkLabel">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_top">32</property>
+                <property name="can-focus">False</property>
+                <property name="margin-top">32</property>
                 <property name="label" translatable="yes">Starters</property>
                 <style>
                   <class name="skytemple-view-main-label"/>
@@ -141,29 +141,29 @@
             <child>
               <object class="GtkFrame">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label_xalign">0</property>
-                <property name="shadow_type">none</property>
+                <property name="can-focus">False</property>
+                <property name="label-xalign">0</property>
+                <property name="shadow-type">none</property>
                 <child>
                   <object class="GtkAlignment">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="left_padding">10</property>
-                    <property name="right_padding">10</property>
+                    <property name="can-focus">False</property>
+                    <property name="left-padding">10</property>
+                    <property name="right-padding">10</property>
                     <child>
                       <object class="GtkBox">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="orientation">vertical</property>
                         <property name="spacing">5</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <child>
                               <object class="GtkLabel">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <property name="label" translatable="yes">Name language: </property>
                               </object>
                               <packing>
@@ -175,7 +175,7 @@
                             <child>
                               <object class="GtkComboBoxText" id="cbNameLanguage">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <property name="active">1</property>
                                 <items>
                                   <item id="0" translatable="yes">Japanese</item>
@@ -206,29 +206,29 @@
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="spacing">20</property>
                             <child>
                               <object class="GtkFrame">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label_xalign">0</property>
-                                <property name="shadow_type">none</property>
+                                <property name="can-focus">False</property>
+                                <property name="label-xalign">0</property>
+                                <property name="shadow-type">none</property>
                                 <child>
                                   <object class="GtkAlignment">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="left_padding">12</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="left-padding">12</property>
                                     <child>
                                       <object class="GtkBox">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
+                                        <property name="can-focus">False</property>
                                         <property name="spacing">5</property>
                                         <child>
                                           <object class="GtkEntry" id="defaultPlayerSpecies">
                                             <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="width_chars">10</property>
+                                            <property name="can-focus">True</property>
+                                            <property name="width-chars">10</property>
                                             <property name="completion">creaturesCompletionPlayer</property>
                                             <signal name="changed" handler="OnDefaultPlayerSpeciesChanged" swapped="no"/>
                                           </object>
@@ -241,10 +241,10 @@
                                         <child>
                                           <object class="GtkComboBox" id="defaultPlayerGender">
                                             <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
+                                            <property name="can-focus">False</property>
                                             <property name="model">genderTypeStore</property>
                                             <property name="active">1</property>
-                                            <property name="id_column">0</property>
+                                            <property name="id-column">0</property>
                                             <signal name="changed" handler="OnDefaultPlayerGenderChanged" swapped="no"/>
                                             <child>
                                               <object class="GtkCellRendererText" id="renderer"/>
@@ -262,8 +262,8 @@
                                         <child>
                                           <object class="GtkEntry" id="defaultPlayerName">
                                             <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="width_chars">10</property>
+                                            <property name="can-focus">True</property>
+                                            <property name="width-chars">10</property>
                                             <signal name="changed" handler="OnDefaultPlayerNameChanged" swapped="no"/>
                                           </object>
                                           <packing>
@@ -279,8 +279,8 @@
                                 <child type="label">
                                   <object class="GtkLabel">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="margin_bottom">5</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="margin-bottom">5</property>
                                     <property name="label" translatable="yes">Player</property>
                                   </object>
                                 </child>
@@ -294,24 +294,24 @@
                             <child>
                               <object class="GtkFrame">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="label_xalign">0</property>
-                                <property name="shadow_type">none</property>
+                                <property name="can-focus">False</property>
+                                <property name="label-xalign">0</property>
+                                <property name="shadow-type">none</property>
                                 <child>
                                   <object class="GtkAlignment">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="left_padding">12</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="left-padding">12</property>
                                     <child>
                                       <object class="GtkBox">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">False</property>
+                                        <property name="can-focus">False</property>
                                         <property name="spacing">5</property>
                                         <child>
                                           <object class="GtkEntry" id="defaultPartnerSpecies">
                                             <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="width_chars">10</property>
+                                            <property name="can-focus">True</property>
+                                            <property name="width-chars">10</property>
                                             <property name="completion">creaturesCompletionPartner</property>
                                             <signal name="changed" handler="OnDefaultPartnerSpeciesChanged" swapped="no"/>
                                           </object>
@@ -324,10 +324,10 @@
                                         <child>
                                           <object class="GtkComboBox" id="defaultPartnerGender">
                                             <property name="visible">True</property>
-                                            <property name="can_focus">False</property>
+                                            <property name="can-focus">False</property>
                                             <property name="model">genderTypeStore</property>
                                             <property name="active">1</property>
-                                            <property name="id_column">0</property>
+                                            <property name="id-column">0</property>
                                             <signal name="changed" handler="OnDefaultPartnerGenderChanged" swapped="no"/>
                                             <child>
                                               <object class="GtkCellRendererText"/>
@@ -345,8 +345,8 @@
                                         <child>
                                           <object class="GtkEntry" id="defaultPartnerName">
                                             <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="width_chars">10</property>
+                                            <property name="can-focus">True</property>
+                                            <property name="width-chars">10</property>
                                             <signal name="changed" handler="OnDefaultPartnerNameChanged" swapped="no"/>
                                           </object>
                                           <packing>
@@ -362,8 +362,8 @@
                                 <child type="label">
                                   <object class="GtkLabel">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="margin_bottom">5</property>
+                                    <property name="can-focus">False</property>
+                                    <property name="margin-bottom">5</property>
                                     <property name="label" translatable="yes">Partner</property>
                                   </object>
                                 </child>
@@ -384,24 +384,24 @@
                         <child>
                           <object class="GtkFrame">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="label_xalign">0</property>
-                            <property name="shadow_type">none</property>
+                            <property name="can-focus">False</property>
+                            <property name="label-xalign">0</property>
+                            <property name="shadow-type">none</property>
                             <child>
                               <object class="GtkAlignment">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="left_padding">12</property>
+                                <property name="can-focus">False</property>
+                                <property name="left-padding">12</property>
                                 <child>
                                   <object class="GtkBox">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can-focus">False</property>
                                     <property name="spacing">5</property>
                                     <child>
                                       <object class="GtkEntry" id="defaultTeamName">
                                         <property name="visible">True</property>
-                                        <property name="can_focus">True</property>
-                                        <property name="width_chars">16</property>
+                                        <property name="can-focus">True</property>
+                                        <property name="width-chars">16</property>
                                         <signal name="changed" handler="OnDefaultTeamNameChanged" swapped="no"/>
                                       </object>
                                       <packing>
@@ -417,8 +417,8 @@
                             <child type="label">
                               <object class="GtkLabel">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="margin_bottom">5</property>
+                                <property name="can-focus">False</property>
+                                <property name="margin-bottom">5</property>
                                 <property name="label" translatable="yes">Team Name</property>
                               </object>
                             </child>
@@ -432,11 +432,11 @@
                         <child>
                           <object class="GtkLabel">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="halign">start</property>
                             <property name="label" translatable="yes">The default team is only applied if you bypass the personality quiz (remove the call to &lt;tt&gt;SpecialFunc&lt;/tt&gt; with &lt;tt&gt;specialFuncType&lt;/tt&gt; 300 in script/event/seikaku/01_seikakushindan/seikakushindan.lua). 
-Default starter species and name can only be changed when code injection is enabled. &lt;b&gt;If you changed one of the entries in the list below, enter the original species from before it was changed as the default partner and player species.&lt;/b&gt;</property>
-                            <property name="use_markup">True</property>
+Default starter species and name can only be changed when code injection is enabled.</property>
+                            <property name="use-markup">True</property>
                             <property name="wrap">True</property>
                           </object>
                           <packing>
@@ -452,8 +452,8 @@ Default starter species and name can only be changed when code injection is enab
                 <child type="label">
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="margin_bottom">5</property>
+                    <property name="can-focus">False</property>
+                    <property name="margin-bottom">5</property>
                     <property name="label" translatable="yes">Default Starters</property>
                   </object>
                 </child>
@@ -467,37 +467,37 @@ Default starter species and name can only be changed when code injection is enab
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="spacing">10</property>
                 <child>
                   <object class="GtkFrame">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label_xalign">0</property>
-                    <property name="label_yalign">0.05000000074505806</property>
-                    <property name="shadow_type">none</property>
+                    <property name="can-focus">False</property>
+                    <property name="label-xalign">0</property>
+                    <property name="label-yalign">0.05000000074505806</property>
+                    <property name="shadow-type">none</property>
                     <child>
                       <object class="GtkAlignment">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="left_padding">12</property>
+                        <property name="can-focus">False</property>
+                        <property name="left-padding">12</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="orientation">vertical</property>
                             <property name="spacing">5</property>
                             <child>
                               <object class="GtkScrolledWindow">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="shadow_type">in</property>
+                                <property name="can-focus">True</property>
+                                <property name="shadow-type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="player_tree">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
+                                    <property name="can-focus">True</property>
                                     <property name="model">startersStore</property>
-                                    <property name="search_column">0</property>
+                                    <property name="search-column">0</property>
                                     <child internal-child="selection">
                                       <object class="GtkTreeSelection"/>
                                     </child>

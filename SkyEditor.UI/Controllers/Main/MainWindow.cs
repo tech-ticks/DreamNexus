@@ -32,6 +32,7 @@ namespace SkyEditorUI.Controllers
         [UI] private Button? buildButton;
         [UI] private Button? deployButton;
         [UI] private TreeView? mainItemList;
+        [UI] private Entry? mainItemListSearch;
         [UI] private Box? esLoading;
         [UI] private TreeView? recentModpacksList;
         [UI] private ListStore? recentModpacksStore;
@@ -43,6 +44,8 @@ namespace SkyEditorUI.Controllers
         private Modpack? modpack;
         private List<SourceFile> sourceFiles = new List<SourceFile>();
         private bool preventLoadingRecent;
+        private TreeModelFilter filter;
+        private string searchText = "";
 
         public MainWindow() : this(new Builder("Main.glade")) { }
 
@@ -66,6 +69,10 @@ namespace SkyEditorUI.Controllers
             col.AddAttribute(textRenderer, "text", 1);
 
             mainItemList!.AppendColumn(col);
+
+            filter = new TreeModelFilter(mainItemList!.Model, null);
+            mainItemList!.Model = filter;
+            filter.VisibleFunc = MainListVisibleFunc;
 
             if (OperatingSystem.IsMacOS())
             {
@@ -123,6 +130,25 @@ namespace SkyEditorUI.Controllers
                 }
             }
             Application.Quit();
+        }
+
+        private void OnSearchChanged(object sender, EventArgs args)
+        {
+            searchText = (sender as Entry)!.Text;
+            filter.Refilter();
+        }
+
+        private bool MainListVisibleFunc(ITreeModel model, TreeIter iter)
+        {
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                return true;
+            }
+
+            string value = (string) model.GetValue(iter, 1);
+
+            string lowerSearchText = searchText.ToLower();
+            return value?.ToLower()?.Contains(lowerSearchText) ?? false;
         }
 
         private void OnCreateModpackClicked(object sender, EventArgs args)
@@ -959,6 +985,7 @@ namespace SkyEditorUI.Controllers
             deployButton!.Sensitive = enabled;
             mainItemList!.Sensitive = enabled;
             recentModpacksList!.Sensitive = enabled;
+            mainItemListSearch!.Sensitive = enabled;
         }
 
         private void CheckRomAndModpackLoaded()

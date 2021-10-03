@@ -20,12 +20,7 @@ namespace SkyEditorUI
             }
 
             Application.Init();
-
-            // Setup theme
-            if (!OperatingSystem.IsLinux())
-            {
-                Settings.Default.ThemeName = IsDarkTheme() ? "Arc-Dark" : "Arc";
-            }
+            UpdateTheme();
 
             // Setup CSS
             const int StyleProviderPriorityApplication = 600;
@@ -58,18 +53,53 @@ namespace SkyEditorUI
                 args.ExitApplication = false;
             };
 
+            // Update the theme every eight seconds
+            GLib.Timeout.AddSeconds(8, UpdateTheme);
+
             win.Show();
             Application.Run();
         }
-        private static bool IsDarkTheme()
+
+        public static event Action<bool>? OnThemeUpdated; 
+
+        public static bool UpdateTheme()
         {
-            // TODO: re-enable once the code editor's dark theme has been fixed
-            return false;
-            /*try
+            // Setup theme
+            if (!OperatingSystem.IsLinux())
+            {
+                bool dark = IsDarkTheme();
+                Settings.Default.ThemeName = dark ? "Arc-Dark" : "Arc";
+                OnThemeUpdated?.Invoke(dark);
+            }
+            return true; // Continue the timer
+        }
+
+        public static bool IsDarkTheme()
+        {
+            try
             {
                 if (OperatingSystem.IsWindows())
                 {
-                    // TODO: figure out how to do this on Windows
+                    var proc = Process.Start(new ProcessStartInfo
+                    {
+                        FileName = "cmd.exe",
+                        Arguments = @"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+                            + " /v AppsUseLightTheme",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                    });
+
+                    if (proc == null)
+                    {
+                        return true;
+                    }
+
+                    var output = proc.StandardOutput.ReadToEnd();
+                    proc.WaitForExit();
+
+                    // Output looks like: "AppsUseLightTheme    REG_DWORD    0x1"
+                    return output.Contains("0x0");
                 }
                 else if (OperatingSystem.IsMacOS())
                 {
@@ -84,7 +114,7 @@ namespace SkyEditorUI
 
                     if (proc == null)
                     {
-                        return false;
+                        return true;
                     }
 
                     var theme = proc.StandardOutput.ReadToEnd();
@@ -97,7 +127,7 @@ namespace SkyEditorUI
                 Console.WriteLine("Failed to get system theme: " + e);
             }
 
-            return false;*/
+            return true;
         }
 
         private static void FixMacOSWorkingDirectory()
