@@ -38,7 +38,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             // Build lookup tables of action indices to moves and items for fast lookups
             for (int i = 0; i < rom.GetMoves().Count; i++)
             {
-                var move = rom.GetMoves().GetMoveById((WazaIndex) i);
+                var move = rom.GetMoves().GetMoveById((WazaIndex) i, false);
                 if (move != null && move.ActIndex != 0)
                 {
                     actionsToMoves.AddToList(move.ActIndex, move);
@@ -47,7 +47,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
             for (int i = 0; i < rom.GetItems().Count; i++)
             {
-                var item = rom.GetItems().GetItemById((ItemIndex) i);
+                var item = rom.GetItems().GetItemById((ItemIndex) i, false);
                 if (item != null)
                 {
                     if (item.PrimaryActIndex != 0)

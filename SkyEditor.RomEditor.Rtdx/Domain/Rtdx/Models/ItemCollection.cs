@@ -12,7 +12,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         int Count { get; }
         void SetItem(ItemIndex id, ItemDataInfo.Entry model);
         bool IsItemDirty(ItemIndex id);
-        ItemDataInfo.Entry? GetItemById(ItemIndex id);
+        ItemDataInfo.Entry? GetItemById(ItemIndex id, bool markAsDirty = false);
         void Flush(IRtdxRom rom);
     }
 
@@ -36,12 +36,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             return data.Clone();
         }
 
-        public ItemDataInfo.Entry GetItemById(ItemIndex id)
+        public ItemDataInfo.Entry GetItemById(ItemIndex id, bool markAsDirty = false)
         {
-            DirtyItems.Add(id);
             if (!LoadedItems.ContainsKey(id))
             {
                 LoadedItems.Add(id, LoadItem(id));
+            }
+            if (markAsDirty)
+            {
+                DirtyItems.Add(id);
             }
             return LoadedItems[id];
         }

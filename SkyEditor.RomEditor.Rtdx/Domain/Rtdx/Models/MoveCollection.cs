@@ -12,7 +12,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         int Count { get; }
         void SetMove(WazaIndex id, WazaDataInfo.Entry model);
         bool IsMoveDirty(WazaIndex id);
-        WazaDataInfo.Entry? GetMoveById(WazaIndex id);
+        WazaDataInfo.Entry? GetMoveById(WazaIndex id, bool markAsDirty = true);
         void Flush(IRtdxRom rom);
     }
 
@@ -36,12 +36,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             return data.Clone();
         }
 
-        public WazaDataInfo.Entry GetMoveById(WazaIndex id)
+        public WazaDataInfo.Entry GetMoveById(WazaIndex id, bool markAsDirty = true)
         {
-            DirtyMoves.Add(id);
             if (!LoadedMoves.ContainsKey(id))
             {
                 LoadedMoves.Add(id, LoadMove(id));
+            }
+            if (markAsDirty)
+            {
+                DirtyMoves.Add(id);
             }
             return LoadedMoves[id];
         }
