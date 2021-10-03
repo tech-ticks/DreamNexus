@@ -27,7 +27,9 @@ jobs:
         dotnet restore
 
     - name: Copy mods folder
-      run: cp -r SkyEditor.RomEditor.Rtdx.ConsoleApp/Mods SkyEditor.UI/Mods
+      run: |
+        cp -r SkyEditor.RomEditor.Rtdx.ConsoleApp/Mods SkyEditor.UI/Mods
+        rm -rf SkyEditor.UI/Mods/AddMissingPokemonModels # The AddMissingPokemonModels mod is excluded
 
     - name: Build
       run: dotnet build --no-restore
@@ -96,7 +98,9 @@ jobs:
         dotnet restore
 
     - name: Copy mods folder
-      run: cp -r SkyEditor.RomEditor.Rtdx.ConsoleApp/Mods SkyEditor.UI/Mods/
+      run: |
+        cp -r SkyEditor.RomEditor.Rtdx.ConsoleApp/Mods SkyEditor.UI/Mods/
+        rm -rf SkyEditor.UI/Mods/AddMissingPokemonModels # The AddMissingPokemonModels mod is excluded
 
     - name: Build
       run: dotnet build --no-restore
