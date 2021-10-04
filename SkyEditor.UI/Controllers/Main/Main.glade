@@ -158,11 +158,13 @@ the top-right of the main window.</property>
       <column type="gchararray"/>
       <!-- column-name name -->
       <column type="gchararray"/>
-      <!-- column-name controller_class -->
+      <!-- column-name controllerClass -->
       <column type="GtkSharpValue"/>
-      <!-- column-name controller_context -->
+      <!-- column-name controllerContext -->
       <column type="GtkSharpValue"/>
       <!-- column-name modified -->
+      <column type="gboolean"/>
+      <!-- column-name visible -->
       <column type="gboolean"/>
     </columns>
   </object>

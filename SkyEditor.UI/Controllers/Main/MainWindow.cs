@@ -20,6 +20,9 @@ namespace SkyEditorUI.Controllers
 {
     class MainWindow : Window
     {
+        private const int TextColumn = 1;
+        private const int VisibleColumn = 5;
+
         public static MainWindow? Instance;
 
         [UI] private Dialog? loadingDialog;
@@ -72,7 +75,7 @@ namespace SkyEditorUI.Controllers
 
             filter = new TreeModelFilter(mainItemList!.Model, null);
             mainItemList!.Model = filter;
-            filter.VisibleFunc = MainListVisibleFunc;
+            filter.VisibleColumn = VisibleColumn;
 
             if (OperatingSystem.IsMacOS())
             {
@@ -135,20 +138,56 @@ namespace SkyEditorUI.Controllers
         private void OnSearchChanged(object sender, EventArgs args)
         {
             searchText = (sender as Entry)!.Text;
-            filter.Refilter();
-        }
-
-        private bool MainListVisibleFunc(ITreeModel model, TreeIter iter)
-        {
             if (string.IsNullOrWhiteSpace(searchText))
             {
-                return true;
+                itemStore!.Foreach((model, path, iter) =>
+                {
+                    itemStore.SetValue(iter, VisibleColumn, true);
+                    return false;
+                });
             }
+            else
+            {
+                itemStore!.Foreach((model, path, iter) =>
+                {
+                    var text = model.GetValue(iter, TextColumn).ToString()!.ToLower();
+                    if (text.Contains(searchText.ToLower()))
+                    {
+                        itemStore.SetValue(iter, VisibleColumn, true);
 
-            string value = (string) model.GetValue(iter, 1);
+                        // Make children visible
+                        for (int i = 0; i < itemStore.IterNChildren(iter); i++)
+                        {
+                            if (itemStore.IterNthChild(out var child, iter, i))
+                            {
+                                itemStore.SetValue(iter, VisibleColumn, true);
+                            }
+                        }
 
-            string lowerSearchText = searchText.ToLower();
-            return value?.ToLower()?.Contains(lowerSearchText) ?? false;
+                        // Make ancestors visible
+                        var current = iter;
+                        while (model.IterParent(out current, current))
+                        {
+                            itemStore.SetValue(current, VisibleColumn, true);
+                        }
+                    }
+                    else
+                    {
+                        itemStore.SetValue(iter, VisibleColumn, false);
+                    }
+                    return false;
+                });
+
+                filter.Foreach((model, path, iter) =>
+                {
+                    var text = model.GetValue(iter, TextColumn).ToString()!.ToLower();
+                    if (text.Contains(searchText.ToLower()))
+                    {
+                        mainItemList!.ExpandToPath(path);
+                    }
+                    return false;
+                });
+            }
         }
 
         private void OnCreateModpackClicked(object sender, EventArgs args)
@@ -879,7 +918,7 @@ namespace SkyEditorUI.Controllers
                 "skytemple-e-local-variable-symbolic");
             AddDefaultModScripts(automationScriptsIter);
 
-            mainItemList!.ExpandToPath(mainItemList.Model.GetPath(root));
+            mainItemList!.ExpandToPath(itemStore.GetPath(root));
         }
 
         private void AddAllModScripts(TreeIter parent)
@@ -1047,23 +1086,23 @@ namespace SkyEditorUI.Controllers
 
         public TreeIter AddMainListItem<T>(string name, string icon, ControllerContext? context = null) where T : Widget
         {
-            return itemStore!.AppendValues(icon, name, typeof(T), context ?? ControllerContext.Null, false);
+            return itemStore!.AppendValues(icon, name, typeof(T), context ?? ControllerContext.Null, false, true);
         }
 
         public TreeIter AddMainListItem<T>(TreeIter parent, string name, string icon, ControllerContext? context = null)
             where T : Widget
         {
-            return itemStore!.AppendValues(parent, icon, name, typeof(T), context ?? ControllerContext.Null, false);
+            return itemStore!.AppendValues(parent, icon, name, typeof(T), context ?? ControllerContext.Null, false, true);
         }
 
         public TreeIter AddMainListItem(string name, string icon, ControllerContext? context = null)
         {
-            return itemStore!.AppendValues(icon, name, null, context ?? ControllerContext.Null, false);
+            return itemStore!.AppendValues(icon, name, null, context ?? ControllerContext.Null, false, true);
         }
 
         public TreeIter AddMainListItem(TreeIter parent, string name, string icon, ControllerContext? context = null)
         {
-            return itemStore!.AppendValues(parent, icon, name, null, context ?? ControllerContext.Null, false);
+            return itemStore!.AppendValues(parent, icon, name, null, context ?? ControllerContext.Null, false, true);
         }
     }
 }
