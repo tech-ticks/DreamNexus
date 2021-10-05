@@ -60,6 +60,13 @@ jobs:
         chmod +x SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/DreamNexus
         chmod +x SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/DreamNexus
 
+    - name: Download hactool
+      run: |
+        # Mac
+        curl https://cdn.discordapp.com/attachments/830753390824783875/894197312937668709/hactool -L -o SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/hactool
+        # Linux
+        curl https://cdn.discordapp.com/attachments/830753390824783875/894197154665599057/hactool -L -o SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/hactool
+
     - name: Upload Mac build
       uses: actions/upload-artifact@v2
       with:
@@ -124,6 +131,11 @@ jobs:
         mkdir -p gtk
         unzip C:\Users\runneradmin\AppData\Local\Gtk\3.24.24\gtk.zip -d gtk
         xcopy gtk SkyEditor.UI\bin\Release\net5.0\win-x64\publish\ /E/H
+
+    - name: Download hactool
+      run: |
+        curl https://github.com/SciresM/hactool/releases/download/1.4.0/hactool-1.4.0-win.zip -L -o hactool.zip
+        unzip hactool.zip -d SkyEditor.UI\bin\Release\net5.0\win-x64\publish\
 
     - name: Create installer
       uses: joncloud/makensis-action@v3.4
