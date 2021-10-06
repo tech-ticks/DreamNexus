@@ -28,9 +28,10 @@ class CommonPokemonDataInfoEntry
 
 // Set the stats
 var psmdStats = Utilities.DeserializeJson<List<CommonPokemonDataInfoEntry>>(Mod.ReadResourceText("Resources/PsmdPokemonDataInfo.json")).ToDictionary(e => (int)e.Id, e => e);
-var rtdxStats = Rom.GetPokemonDataInfo();
-foreach (var rtdxEntry in rtdxStats.Entries)
+var rtdxStats = Rom.GetPokemon();
+for (CreatureIndex i = CreatureIndex.NONE; i < CreatureIndex.END; i++)
 {
+    var rtdxEntry = rtdxStats.GetPokemonById(i);
     if (rtdxEntry.LevelupLearnset.All(l => l.Level == default && l.Move == default))
     {
         if (!psmdStats.TryGetValue((int)rtdxEntry.Id, out var psmdEntry))
