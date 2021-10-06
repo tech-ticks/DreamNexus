@@ -37,9 +37,6 @@ jobs:
     - name: Run tests
       run: dotnet test
 
-    - name: Publish UI for Mac
-      run: cd SkyEditor.UI && dotnet publish -c Release -r osx-x64 /p:AssemblyVersion=$DREAMNEXUS_VERSION
-
     - name: Publish UI for Linux
       run: cd SkyEditor.UI && dotnet publish -c Release -r linux-x64 /p:AssemblyVersion=$DREAMNEXUS_VERSION
 
@@ -48,31 +45,15 @@ jobs:
         curl https://skytemple.org/build_deps/Arc.zip -O
         unzip Arc.zip
 
-        mkdir -p SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/share/themes/
         mkdir -p SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/share/themes/
-
-        cp -r Arc SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/share/themes/
         cp -r Arc SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/share/themes/
-        
-        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/share/themes/
         cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/share/themes/
-
-        chmod +x SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/DreamNexus
         chmod +x SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/DreamNexus
 
     - name: Download hactool
       run: |
-        # Mac
-        curl https://cdn.discordapp.com/attachments/830753390824783875/894197312937668709/hactool -L -o SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/hactool
         # Linux
         curl https://cdn.discordapp.com/attachments/830753390824783875/894197154665599057/hactool -L -o SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/hactool
-
-    - name: Upload Mac build
-      uses: actions/upload-artifact@v2
-      with:
-        name: mac-app
-        path: |
-          SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/
 
     - name: Upload Linux build
       uses: actions/upload-artifact@v2
@@ -80,6 +61,75 @@ jobs:
         name: linux-app
         path: |
           SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/
+
+  build-mac:
+    runs-on: macos-10.15
+    name: Build and package for Mac
+    env:
+      DREAMNEXUS_VERSION: ${{ secrets.DREAMNEXUS_VERSION }} # TODO: get proper version
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2.3.4
+      with:
+        submodules: true
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1.8.2
+      with:
+        dotnet-version: 5.0.x
+ 
+    - name: Install GTK with Homebrew
+      run: brew install gtk+3 gtksourceview4 librsvg graphicsmagick imagemagick
+
+    - name: Install Nuget dependencies
+      run: |
+        # SkyEditor nuget feed is required to resolve dependencies
+        dotnet nuget add source "https://pkgs.dev.azure.com/project-pokemon/4a5da2d7-09b8-4354-9450-562116aac7b5/_packaging/skyeditor/nuget/v3/index.json" -n "skyeditor"
+        dotnet restore
+
+    - name: Copy mods folder
+      run: |
+        cp -r SkyEditor.RomEditor.Rtdx.ConsoleApp/Mods SkyEditor.UI/Mods
+        rm -rf SkyEditor.UI/Mods/AddMissingPokemonModels # The AddMissingPokemonModels mod is excluded
+
+    - name: Build
+      run: dotnet build --no-restore
+
+    - name: Publish UI for Mac
+      run: cd SkyEditor.UI && dotnet publish -c Release -r osx-x64 /p:AssemblyVersion=$DREAMNEXUS_VERSION
+
+    - name: Post-process builds, copy themes
+      run: |
+        curl https://skytemple.org/build_deps/Arc.zip -O
+        unzip Arc.zip
+
+        mkdir -p SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/share/themes/
+        cp -r Arc SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/share/themes/
+        cp -r Arc-Dark SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/share/themes/
+        chmod +x SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/DreamNexus
+
+    - name: Download hactool
+      run: |
+        # Mac
+        curl https://cdn.discordapp.com/attachments/830753390824783875/894197312937668709/hactool -L -o SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/hactool
+    
+    - name: Create Mac .app
+      run: | # sudo is required to access some dependency libraries
+        sudo -E ./SkyEditor.UI/Installer/create-mac-app.sh
+
+    - name: Create .dmg
+      run: |
+        # See https://github.com/sindresorhus/create-dmg
+        # This tool returns exit code 2 if the DMG was created but code signing failed for some reason
+        npx create-dmg --dmg-title=DreamNexus SkyEditor.UI/Installer/DreamNexus.app . || true
+
+    - name: Upload Mac .dmg
+      uses: actions/upload-artifact@v2
+      with:
+        name: mac-dmg
+        path: |
+          DreamNexus*.dmg
 
   build-windows:
     runs-on: windows-2019
