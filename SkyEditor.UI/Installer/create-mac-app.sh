@@ -1,5 +1,9 @@
 #!/bin/bash
+set -e
+
 cd "$(dirname "$0")"
+
+echo "Creating app for version $DREAMNEXUS_VERSION"
 
 # Create the app folder
 mkdir -p DreamNexus.app/Contents/MacOS
@@ -36,6 +40,19 @@ cat > DreamNexus.app/Contents/Info.plist << EOF
 </plist>
 
 EOF
+
+# Copy GTK libraries
+cat ./mac-deps.txt | while read line 
+do
+  cp $line DreamNexus.app/Contents/MacOS/
+done
+
+mkdir -p DreamNexus.app/Contents/MacOS/share
+mkdir -p DreamNexus.app/Contents/MacOS/lib/gdk-pixbuf/loaders
+cp -r /usr/local/Cellar/gtk+3/*/share/* DreamNexus.app/Contents/MacOS/share/
+cp -r /usr/local/Cellar/gdk-pixbuf/*/lib/gdk-pixbuf-2.0/2.10.0/loaders/* DreamNexus.app/Contents/MacOS/lib/gdk-pixbuf/loaders/
+cp -r /usr/local/Cellar/gtk+3/*/etc/* DreamNexus.app/Contents/MacOS/etc/
+cp -r /usr/local/Cellar/gtksourceview4/*/share/* DreamNexus.app/Contents/MacOS/share/
 
 # Create the icon
 # https://www.codingforentrepreneurs.com/blog/create-icns-icons-for-macos-apps
