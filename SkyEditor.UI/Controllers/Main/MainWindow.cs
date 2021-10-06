@@ -983,8 +983,8 @@ namespace SkyEditorUI.Controllers
 
                 foreach (var floor in dungeon.Floors)
                 {
-                    bool unused = floor.Index < 0 || floor.Index > dungeon.AccessibleFloorCount;
-                    AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor {floor.FriendlyIndex}{(unused ? " (unused)" : "")}", 
+                    bool unused = floor.Index <= 0 || floor.Index > dungeon.AccessibleFloorCount;
+                    AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor {floor.Index}{(unused ? " (unused)" : "")}", 
                         "skytemple-e-dungeon-floor-symbolic",
                         new DungeonFloorControllerContext((DungeonIndex) i, floor.Index));
                 }

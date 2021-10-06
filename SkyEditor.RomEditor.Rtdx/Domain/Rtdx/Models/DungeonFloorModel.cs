@@ -7,7 +7,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
     {
         // From dungeon_balance.bin
         public short Index { get; set; }
-        public int FriendlyIndex => Index >= 0 && Index < 1000 ? Index + 1 : Index;
         public short BalanceFloorInfoShort02 { get; set; } // Same as RequestLevel Short4
         public string Event { get; set; } = "";
         public short BalanceFloorInfoShort24 { get; set; }
