@@ -98,8 +98,15 @@ namespace SkyEditorUI.Controllers
             }
         }
 
+        private bool forceExit = false;
+
         private void OnWindowDelete(object sender, DeleteEventArgs args)
         {
+            if (forceExit)
+            {
+                Application.Quit();
+                return;
+            }
             if (rom != null && modpack != null && (rom.Modified || sourceFiles.Any(file => file.IsDirty)))
             {
                 var dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Warning, ButtonsType.None, true,
@@ -121,6 +128,7 @@ namespace SkyEditorUI.Controllers
                 {
                     TrySaveModpack(() =>
                     {
+                        forceExit = true;
                         Close();
                     });
                     args.RetVal = true;

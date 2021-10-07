@@ -176,7 +176,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 var entry = data.FloorInfos[i];
                 var requestLevelData = requestLevelEntry?.MainEntry?.FloorData.ElementAtOrDefault(i);
                 var trapWeightsEntry = data.TrapWeights?.Records.ElementAtOrDefault(i - 1);
-                var spawnsEntry = data.WildPokemon?.Floors.ElementAtOrDefault(i);
+                var spawnsEntry = data.WildPokemon?.Floors.ElementAtOrDefault(i - 1);
 
                 dungeonFloors.Add(new DungeonFloorModel
                 {
@@ -400,14 +400,22 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     requestLevelEntry.IsBossFloor = model.IsBossFloor ? (short) 1 : (short) 0;
                 }
 
-                if (model.TrapWeights != null && balance.TrapWeights != null && balance.TrapWeights.Records.Length > i)
+                if (model.TrapWeights != null && balance.TrapWeights != null)
                 {
-                    FlushTrapWeights(model, balance.TrapWeights.Records[i]);
+                    var record = balance.TrapWeights.Records.ElementAtOrDefault(i - 1);
+                    if (record != null)
+                    {
+                        FlushTrapWeights(model, record);
+                    }
                 }
 
-                if (model.Spawns != null && balance.WildPokemon != null && balance.WildPokemon.Floors.Length > i)
+                if (model.Spawns != null && balance.WildPokemon != null)
                 {
-                    FlushSpawns(model.Spawns, balance.WildPokemon.Floors[i]);
+                    var record = balance.WildPokemon.Floors.ElementAtOrDefault(i - 1);
+                    if (record != null)
+                    {
+                        FlushSpawns(model.Spawns, record);
+                    }
                 }
             }
         }
