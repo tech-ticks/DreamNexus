@@ -1,5 +1,5 @@
 {
-  "Id": "SkyEditor.RestoreRegularAttack",
+  "Id": "DreamNexus.RestoreRegularAttack",
   "Version": "3.0.0",
   "Target": "RTDX",
   "Name": "Restore Regular Attack",
