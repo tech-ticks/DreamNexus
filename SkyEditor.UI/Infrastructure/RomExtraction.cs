@@ -46,6 +46,11 @@ namespace SkyEditorUI.Infrastructure
             return RunHactool("-k", keysPath, "-t", "xci", "--securedir", outPath, romPath);
         }
 
+        private static string ExtractNsp(string romPath, string keysPath, string outPath)
+        {
+            return RunHactool("-k", keysPath, "-t", "pfs0", "--pfs0dir", outPath, romPath);
+        }
+
         private static string ExtractNca(string ncaFilePath, string keysPath, string outPath)
         {
             string exefsDir = Path.Combine(outPath, "exefs");
@@ -60,13 +65,27 @@ namespace SkyEditorUI.Infrastructure
 
             Console.WriteLine($"Extracting to {tempDir}");
 
-            string securePath = Path.Combine(tempDir, "secure");
-            var secureDir = Directory.CreateDirectory(securePath);
+            string outPath = Path.Combine(tempDir, "out");
+            var secureDir = Directory.CreateDirectory(outPath);
+
+            bool isNsp = romPath.EndsWith(".nsp");
+            if (!isNsp && !romPath.EndsWith(".xci"))
+            {
+                throw new Exception("Unsupported file type, only .nsp or .xci is supported.");
+            }
 
             try
             {
-                onProgress("Unpacking XCI (1/2)...");
-                ExtractXci(romPath, keysPath, securePath);
+                if (isNsp)
+                {
+                     onProgress("Unpacking NSP (1/2)...");
+                    ExtractNsp(romPath, keysPath, outPath);
+                }
+                else
+                {
+                    onProgress("Unpacking XCI (1/2)...");
+                    ExtractXci(romPath, keysPath, outPath);
+                }
 
                 // We assume that the largest file is the NCA we're interested in
                 var ncaFile = secureDir.EnumerateFiles()
@@ -79,7 +98,7 @@ namespace SkyEditorUI.Infrastructure
                     throw new InvalidOperationException("No NCA file found");
                 }
 
-                var targetDirectory = romPath.Replace(".xci", "");
+                var targetDirectory = romPath.Replace(".xci", "").Replace(".nsp", "");
                 Directory.CreateDirectory(targetDirectory);
                 
                 onProgress("Unpacking NCA (2/2)...");

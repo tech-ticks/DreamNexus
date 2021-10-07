@@ -69,15 +69,16 @@ namespace SkyEditorUI.Controllers
             string keysFile = keysDialog.Filename;
             keysDialog.Destroy();
 
-            UIUtils.ShowInfoDialog(this, "DreamNexus", "Select the ROM file (.xci) you want to unpack. The ROM will be "
-                + "unpacked into a folder next to its location with the same name. Please ensure that you have "
-                + "at least around 10 GB of free disk space before continuing.");
+            UIUtils.ShowInfoDialog(this, "DreamNexus", "Select the ROM file (.xci or .nsp) you want to unpack. "
+                + "The ROM will unpacked into a folder next to its location with the same name. Please ensure that "
+                + "you have at least around 10 GB of free disk space before continuing.");
 
             var romDialog = new FileChooserNative("Select ROM file", this, FileChooserAction.Open,
                 null, null);
             response = (ResponseType) romDialog.Run();
             filter = new FileFilter();
             filter.AddPattern("*.xci");
+            filter.AddPattern("*.nsp");
             romDialog.AddFilter(filter);
 
             if (response != ResponseType.Accept)
@@ -88,9 +89,9 @@ namespace SkyEditorUI.Controllers
             string romFile = romDialog.Filename;
             romDialog.Destroy();
 
-            if (!romFile.EndsWith(".xci"))
+            if (!romFile.EndsWith(".xci") && !romFile.EndsWith(".nsp"))
             {
-                UIUtils.ShowErrorDialog(this, "Error", "The ROM file must be a .xci file.");
+                UIUtils.ShowErrorDialog(this, "Error", "The ROM file must be a .nsp or .xci file.");
                 return;
             }
 
