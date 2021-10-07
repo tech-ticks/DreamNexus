@@ -54,6 +54,7 @@ jobs:
       run: |
         # Linux
         curl https://cdn.discordapp.com/attachments/830753390824783875/894197154665599057/hactool -L -o SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/hactool
+        chmod +x SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/hactool
 
     - name: Upload Linux build
       uses: actions/upload-artifact@v2
@@ -113,6 +114,7 @@ jobs:
       run: |
         # Mac
         curl https://cdn.discordapp.com/attachments/830753390824783875/894197312937668709/hactool -L -o SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/hactool
+        chmod +x SkyEditor.UI/bin/Release/net5.0/osx-x64/publish/hactool
     
     - name: Create Mac .app
       run: | # sudo is required to access some dependency libraries

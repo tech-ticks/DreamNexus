@@ -78,7 +78,7 @@ namespace SkyEditorUI.Infrastructure
             {
                 if (isNsp)
                 {
-                     onProgress("Unpacking NSP (1/2)...");
+                    onProgress("Unpacking NSP (1/2)...");
                     ExtractNsp(romPath, keysPath, outPath);
                 }
                 else
