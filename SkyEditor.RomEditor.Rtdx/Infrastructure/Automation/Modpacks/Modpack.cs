@@ -13,6 +13,7 @@ using YamlSerializerBuilder = YamlDotNet.Serialization.SerializerBuilder;
 using YamlDeserializerBuilder = YamlDotNet.Serialization.DeserializerBuilder;
 using YamlDotNet.Serialization.NamingConventions;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 {
@@ -87,6 +88,7 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
             {
                 fileSystem.DeleteFile(path);
             }
+            metadata.EditorVersion = GetAppVersion();
             await fileSystem.WriteAllTextAsync(path, YamlSerializer.Serialize(metadata));
             
             var modpackJson = Path.Combine(directory, "modpack.json");
@@ -341,6 +343,16 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 
             var id = $"{sanitizedAuthor}.{sanitizedName}";
             return IsValidId(id) ? id : null;
+        }
+
+        private static string GetAppVersion()
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            if (version == null)
+            {
+                throw new InvalidOperationException("The assembly version is null, this should never happen");
+            }
+            return version.ToString();
         }
     }
 }

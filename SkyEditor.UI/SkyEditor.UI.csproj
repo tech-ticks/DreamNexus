@@ -11,6 +11,7 @@
     <AssemblyName>DreamNexus</AssemblyName>
     <AssemblyTitle>DreamNexus</AssemblyTitle>
     <TargetName>DreamNexus</TargetName>
+    <AssemblyVersion>0.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

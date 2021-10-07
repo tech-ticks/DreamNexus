@@ -37,6 +37,11 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         public string? Author { get; set; }
 
         /// <summary>
+        /// The version of DreamNexus this modpack was last edited with
+        /// </summary>
+        public string EditorVersion { get; set; } = "0.0.0";
+
+        /// <summary>
         /// Mods within the modpack
         /// </summary>
         public List<ModMetadata>? Mods { get; set; }
