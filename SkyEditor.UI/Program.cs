@@ -80,26 +80,7 @@ namespace SkyEditorUI
             {
                 if (OperatingSystem.IsWindows())
                 {
-                    var proc = Process.Start(new ProcessStartInfo
-                    {
-                        FileName = "cmd.exe",
-                        Arguments = @"reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-                            + " /v AppsUseLightTheme",
-                        UseShellExecute = false,
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                    });
-
-                    if (proc == null)
-                    {
-                        return true;
-                    }
-
-                    var output = proc.StandardOutput.ReadToEnd();
-                    proc.WaitForExit();
-
-                    // Output looks like: "AppsUseLightTheme    REG_DWORD    0x1"
-                    return output.Contains("0x0");
+                    return true;
                 }
                 else if (OperatingSystem.IsMacOS())
                 {
