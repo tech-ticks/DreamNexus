@@ -625,6 +625,7 @@ namespace SkyEditorUI.Controllers
         private void OnOpenAboutDialogClicked(object sender, EventArgs args)
         {
             aboutDialog!.Run();
+            aboutDialog!.Hide();
         }
 
         private void OnMainItemListButtonPressed(object sender, ButtonPressEventArgs args)
