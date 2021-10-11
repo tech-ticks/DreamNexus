@@ -27,6 +27,7 @@ namespace SkyEditorUI.Controllers
             : this(new Builder("SourceFile.glade"), rom, modpack, context)
         {
         }
+        public string FileNameLabelValue => file.InProject ? IOPath.GetRelativePath(modpack.Directory!, file.Path) : file.Path.Replace(rom.RomDirectory, "");
 
         private SourceFileController(Builder builder, IRtdxRom rom, Modpack modpack, ControllerContext context) 
             : base(builder.GetRawOwnedObject("main"))
@@ -156,7 +157,7 @@ namespace SkyEditorUI.Controllers
 
         private void RefreshPath()
         {
-            fileNameLabel!.Text = file.InProject ? IOPath.GetRelativePath(modpack.Directory!, file.Path) : file.Path;
+            fileNameLabel!.Text = FileNameLabelValue;
         }
 
         private string? GetLanguageIdFromExtension()
