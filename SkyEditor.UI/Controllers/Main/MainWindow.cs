@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System.Runtime.ExceptionServices;
+using Gdk;
+using Window = Gtk.Window;
 
 namespace SkyEditorUI.Controllers
 {
@@ -49,6 +51,8 @@ namespace SkyEditorUI.Controllers
         private bool preventLoadingRecent;
         private TreeModelFilter filter;
         private string searchText = "";
+        private List<string> currentBreadcrumbs;
+        private readonly DiscordRpc discordRpc;
 
         public MainWindow() : this(new Builder("Main.glade")) { }
 
@@ -58,10 +62,13 @@ namespace SkyEditorUI.Controllers
 
             builder.Autoconnect(this);
             DeleteEvent += OnWindowDelete;
+            WindowStateEvent += OnWindowStateEvent;
 
             updateInfo?.Hide();
             loadingDialog!.Title = "DreamNexus";
             IconName = "dreamnexus";
+
+            discordRpc = new DiscordRpc();
 
             var col = new TreeViewColumn("Title", new CellRendererText());
             var iconRenderer = new CellRendererPixbuf();
@@ -95,6 +102,19 @@ namespace SkyEditorUI.Controllers
                     + "Your settings will be reverted to the default settings (close the application if you "
                     + "want to fix them manually, otherwise your settings will be overwritten once they are saved).\n"
                     + "Exception message:\n\n" + e.ToString());
+            }
+        }
+
+        private void OnWindowStateEvent(object sender, WindowStateEventArgs args)
+        {
+            if ((args.Event.ChangedMask & WindowState.Focused) == 0) return;
+            if ((args.Event.NewWindowState & WindowState.Focused) != 0)
+            {
+                discordRpc.OnWindowHasFocus();
+            }
+            else
+            {
+                discordRpc.OnWindowLostFocus();
             }
         }
 
@@ -739,6 +759,7 @@ namespace SkyEditorUI.Controllers
 
             editorStack.AddNamed(currentController, "es__loaded_view");
             editorStack.VisibleChild = currentController;
+            discordRpc.OnViewLoaded(currentController, currentBreadcrumbs);
             Console.WriteLine("Loaded view.");
         }
 
@@ -823,6 +844,7 @@ namespace SkyEditorUI.Controllers
             rom!.DungeonsModified = false;
             SetTopButtonsEnabled(true);
 
+            discordRpc.OnModpackLoaded(rom, modpack!, modpack!.Metadata.Name ?? modpack.Metadata.Id);
             Title = $"{modpack!.Metadata.Name ?? modpack.Metadata.Id} (DreamNexus)";
         }
 
@@ -1079,17 +1101,17 @@ namespace SkyEditorUI.Controllers
 
         private void UpdateBreadcrumbs(TreeIter iter, ITreeModel model)
         {
-            var items = new List<string>();
+            currentBreadcrumbs = new List<string>();
             TreeIter current = iter;
             bool hasParent = true;
 
             while (hasParent)
             {
-                items.Add(model.GetValue(current, 1) as string ?? "");
+                currentBreadcrumbs.Add(model.GetValue(current, 1) as string ?? "");
                 hasParent = model.IterParent(out current, current);
             }
-
-            var breadcrumbs = string.Join(" > ", items.Reverse<string>());
+            
+            var breadcrumbs = string.Join(" > ", currentBreadcrumbs.Reverse<string>());
             ((HeaderBar) Titlebar).Subtitle = breadcrumbs;
         }
 
