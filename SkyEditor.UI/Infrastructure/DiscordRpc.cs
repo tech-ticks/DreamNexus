@@ -11,7 +11,7 @@ namespace SkyEditorUI.Infrastructure
 {
     public class DiscordRpc
     {
-        private const string ClientId = "897109434893991976";
+        private const string ClientId = "897159105196736592";
         private const uint IdleTimeoutSeconds = 5 * 60;
         
         private readonly DiscordRpcClient? client;
