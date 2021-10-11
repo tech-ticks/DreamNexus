@@ -139,7 +139,9 @@ namespace SkyEditorUI.Infrastructure
                         break;
                     case SourceFileController v:
                         controllerInfo = "Editing Scripts";
-                        controllerState = v.FileNameLabelValue;
+                        controllerState = v.FileNameLabelValue.Replace("\\", "/")
+                            // Get rid of the common path prefix
+                            .Replace("/romfs/Data/StreamingAssets/native_data/script/", "");
                         break;
                     case StartersController v:
                         controllerInfo = "Editing Starters";
@@ -171,13 +173,14 @@ namespace SkyEditorUI.Infrastructure
 
         private void UpdateCurrentPresence()
         {
+            string suffix = !string.IsNullOrWhiteSpace(modpackName) ? $" | {modpackName}" : "";
             if (!idle)
             {
-                UpdatePresence(controllerState, controllerInfo, start, version  + " | " + modpackName);
+                UpdatePresence(controllerState, controllerInfo, start, version + suffix);
             }
             else
             {
-                UpdatePresence(null, "Idle", null, version  + " | " + modpackName);
+                UpdatePresence(null, "Idle", null, version + suffix);
             }
         }
 
