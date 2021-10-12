@@ -12,6 +12,17 @@ mkdir -p DreamNexus.app/Contents/Resources
 # Copy contents
 cp -r ../bin/Release/net5.0/osx-x64/publish/* DreamNexus.app/Contents/MacOS
 
+# Stupid library search path workaround with a shell script
+cat > DreamNexus.app/Contents/MacOS/run_dreamnexus << EOF
+#!/bin/sh
+export DYLD_LIBRARY_PATH="\$DYLD_LIBRARY_PATH:\$(dirname \$0)"
+
+# Run the DreamNexus binary
+"\$(dirname \$0)/DreamNexus"
+EOF
+
+chmod +x DreamNexus.app/Contents/MacOS/run_dreamnexus
+
 # Write Info.plist
 cat > DreamNexus.app/Contents/Info.plist << EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -21,7 +32,7 @@ cat > DreamNexus.app/Contents/Info.plist << EOF
 	<key>CFBundleDisplayName</key>
 	<string>DreamNexus</string>
 	<key>CFBundleExecutable</key>
-	<string>DreamNexus</string>
+	<string>run_dreamnexus</string>
 	<key>CFBundleIconFile</key>
 	<string>dreamnexus.icns</string>
 	<key>CFBundleIdentifier</key>
