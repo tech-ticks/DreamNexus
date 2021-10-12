@@ -37,6 +37,6 @@
         SEREBII = 0x20,
         MAX = 33,
         START = 0,
-        NULL = 0xFFFF
+        NONE = 0xFFFF
     }
 }

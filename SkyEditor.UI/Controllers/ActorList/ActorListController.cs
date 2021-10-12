@@ -157,7 +157,7 @@ namespace SkyEditorUI.Controllers
                 if (string.IsNullOrWhiteSpace(args.NewText)
                     || args.NewText.ToLower() == "none" || args.NewText.ToLower() == "null")
                 {
-                    actor.WarehouseId = PokemonFixedWarehouseId.NULL;
+                    actor.WarehouseId = PokemonFixedWarehouseId.NONE;
                 }
                 else if (int.TryParse(args.NewText, out int value))
                 {
@@ -183,7 +183,7 @@ namespace SkyEditorUI.Controllers
 
         private void OnAddClicked(object sender, EventArgs args)
         {
-            var actor = new ActorData { WarehouseId = PokemonFixedWarehouseId.NULL };
+            var actor = new ActorData { WarehouseId = PokemonFixedWarehouseId.NONE };
             actors!.Actors.Add(actor);
             AddActorToStore(actor, actors.Actors.Count - 1);
         }
@@ -201,7 +201,7 @@ namespace SkyEditorUI.Controllers
 
         private string FormatWarehouseId(PokemonFixedWarehouseId id)
         {
-            return id == PokemonFixedWarehouseId.NULL ? "None" : ((int) id).ToString();
+            return id == PokemonFixedWarehouseId.NONE ? "None" : ((int) id).ToString();
         }
     }
 }

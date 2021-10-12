@@ -112,8 +112,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
             }
 
             // The dummy entry at the beginning is usually ignored, but must be included here.
-            var actorList = ActorDataList.Prepend(new ActorData {
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+            var actorList = ActorDataList.Prepend(new ActorData
+            {
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 SymbolName = "",
                 DebugName = ""
             }).ToList();

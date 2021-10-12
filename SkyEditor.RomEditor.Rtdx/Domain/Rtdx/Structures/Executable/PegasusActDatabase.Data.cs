@@ -34,7 +34,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
                 PartyId = PegasusActorDataPartyId.PARTY1,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x190,
                 PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
@@ -45,7 +45,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
                 PartyId = PegasusActorDataPartyId.PARTY3,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x238,
                 PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
@@ -56,7 +56,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
                 PartyId = PegasusActorDataPartyId.PARTY2,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2DC,
                 PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
@@ -86,7 +86,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KOMORUU,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4F0,
                 PokemonIndexEditable = false  // Can't edit due to unsupported instruction 
             },
@@ -96,7 +96,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.BOOMANDA,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x58C,
                 PokemonIndexEditable = true
             },
@@ -106,7 +106,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.HOERUKO,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x628,
                 PokemonIndexEditable = true
             },
@@ -116,7 +116,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.HOERUOO,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6C4,
                 PokemonIndexEditable = true
             },
@@ -127,7 +127,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.IWAAKU,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x760,
                 PokemonIndexEditable = false
             },
@@ -138,7 +138,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.HAGANEERU,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7FC,
                 PokemonIndexEditable = false
             },
@@ -148,7 +148,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.BATAFURII,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x8A8,
                 PokemonIndexEditable = true
             },
@@ -158,7 +158,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KYATAPII,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x958,
                 PokemonIndexEditable = true
             },
@@ -168,7 +168,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PERIPPAA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0xA04,
                 PokemonIndexEditable = true
             },
@@ -178,7 +178,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PERIPPAA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -187,7 +187,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PERIPPAA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -196,7 +196,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PERIPPAA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -205,7 +205,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PERIPPAA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -224,7 +224,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KOIRU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -233,7 +233,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KOIRU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -242,7 +242,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KOIRU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -251,7 +251,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.REAKOIRU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1010,
                 PokemonIndexEditable = true
             },
@@ -261,7 +261,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.DAGUTORIO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x10C0,
                 PokemonIndexEditable = true
             },
@@ -271,7 +271,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.DIGUDA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1170,
                 PokemonIndexEditable = true
             },
@@ -281,7 +281,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.EAAMUDO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1220,
                 PokemonIndexEditable = true
             },
@@ -291,7 +291,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KAKUREON,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x12D0,
                 PokemonIndexEditable = true
             },
@@ -301,7 +301,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KAKUREON_AZUKI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1380,
                 PokemonIndexEditable = true
             },
@@ -311,7 +311,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PERUSHIAN,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1438,
                 PokemonIndexEditable = true
             },
@@ -321,7 +321,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PUKURIN,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x14E8,
                 PokemonIndexEditable = true
             },
@@ -331,7 +331,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GOKURIN,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1594,
                 PokemonIndexEditable = true
             },
@@ -341,7 +341,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GARUURA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1650,
                 PokemonIndexEditable = true
             },
@@ -351,7 +351,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GOKURIN,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -360,7 +360,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.HASUBURERO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x17AC,
                 PokemonIndexEditable = true
             },
@@ -370,7 +370,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.WATAKKO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x185C,
                 PokemonIndexEditable = true
             },
@@ -380,7 +380,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MADATSUBOMI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x190C,
                 PokemonIndexEditable = true
             },
@@ -390,7 +390,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.BURUU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x19BC,
                 PokemonIndexEditable = true
             },
@@ -400,7 +400,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GURANBURU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1A6C,
                 PokemonIndexEditable = true
             },
@@ -410,7 +410,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SAANAITO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1B1C,
                 PokemonIndexEditable = true
             },
@@ -420,7 +420,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ABUSORU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1BCC,
                 PokemonIndexEditable = true
             },
@@ -430,7 +430,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MAKUNOSHITA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1C98,
                 PokemonIndexEditable = true
             },
@@ -440,7 +440,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.DAATENGU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1D48,
                 PokemonIndexEditable = true
             },
@@ -450,7 +450,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KONOHANA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1DF4,
                 PokemonIndexEditable = true
             },
@@ -460,7 +460,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KONOHANA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -469,7 +469,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.FUUDIN,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x1F54,
                 PokemonIndexEditable = true
             },
@@ -479,7 +479,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RIZAADON,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2004,
                 PokemonIndexEditable = true
             },
@@ -489,7 +489,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.BANGIRASU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x20B4,
                 PokemonIndexEditable = true
             },
@@ -499,7 +499,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GENGAA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2164,
                 PokemonIndexEditable = true
             },
@@ -509,7 +509,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.AABO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2214,
                 PokemonIndexEditable = true
             },
@@ -519,7 +519,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.CHAAREMU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x22C4,
                 PokemonIndexEditable = true
             },
@@ -529,7 +529,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.TORANSERU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2374,
                 PokemonIndexEditable = true
             },
@@ -539,7 +539,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.WATAKKO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2424,
                 PokemonIndexEditable = true
             },
@@ -549,7 +549,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SANDAA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x24D4,
                 PokemonIndexEditable = true
             },
@@ -559,7 +559,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.NEITYIO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x25A0,
                 PokemonIndexEditable = true
             },
@@ -569,7 +569,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.NAMAZUN,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2650,
                 PokemonIndexEditable = true
             },
@@ -579,7 +579,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KYUUKON,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2700,
                 PokemonIndexEditable = true
             },
@@ -589,7 +589,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.FAIYAA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x27B0,
                 PokemonIndexEditable = true
             },
@@ -599,7 +599,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.FURIIZAA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x287C,
                 PokemonIndexEditable = true
             },
@@ -609,7 +609,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GURAADON,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2948,
                 PokemonIndexEditable = true
             },
@@ -619,7 +619,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KAMEKKUSU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x29F8,
                 PokemonIndexEditable = true
             },
@@ -629,7 +629,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.OKUTAN,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2AA8,
                 PokemonIndexEditable = true
             },
@@ -639,7 +639,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GOROONYA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2B58,
                 PokemonIndexEditable = true
             },
@@ -649,7 +649,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.REKKUUZA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2C08,
                 PokemonIndexEditable = true
             },
@@ -659,7 +659,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SOONANO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2CB8,
                 PokemonIndexEditable = true
             },
@@ -669,7 +669,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SOONANSU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2D68,
                 PokemonIndexEditable = true
             },
@@ -679,7 +679,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MANKII,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x2E14,
                 PokemonIndexEditable = true
             },
@@ -689,7 +689,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MANKII,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -698,7 +698,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MANKII,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -707,7 +707,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MANKII,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -716,7 +716,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PATCHIIRU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x30BC,
                 PokemonIndexEditable = true
             },
@@ -726,7 +726,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ENTEI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x316C,
                 PokemonIndexEditable = true
             },
@@ -736,7 +736,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RAIKOU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x321C,
                 PokemonIndexEditable = true
             },
@@ -746,7 +746,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SUIKUN,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x32CC,
                 PokemonIndexEditable = true
             },
@@ -756,7 +756,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.HOUOU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x337C,
                 PokemonIndexEditable = true
             },
@@ -766,7 +766,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MYUUTSUU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x342C,
                 PokemonIndexEditable = true
             },
@@ -776,7 +776,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RATYIOSU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x34DC,
                 PokemonIndexEditable = true
             },
@@ -786,7 +786,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RATYIASU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x358C,
                 PokemonIndexEditable = true
             },
@@ -796,7 +796,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.JIRAACHI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x363C,
                 PokemonIndexEditable = true
             },
@@ -806,7 +806,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.DOOBURU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x3704,
                 PokemonIndexEditable = true
             },
@@ -816,7 +816,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.DOOBURU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -825,7 +825,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.DOOBURU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -834,7 +834,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GONBE,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x3924,
                 PokemonIndexEditable = true
             },
@@ -844,7 +844,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MYUU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x39D4,
                 PokemonIndexEditable = true
             },
@@ -854,7 +854,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.REJIROKKU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x3A84,
                 PokemonIndexEditable = true
             },
@@ -864,7 +864,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.REJIAISU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x3B34,
                 PokemonIndexEditable = true
             },
@@ -874,7 +874,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.REJISUCHIRU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x3BE4,
                 PokemonIndexEditable = true
             },
@@ -884,7 +884,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KAIOOGA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x3C94,
                 PokemonIndexEditable = true
             },
@@ -894,7 +894,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RUGIA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x3D44,
                 PokemonIndexEditable = true
             },
@@ -904,7 +904,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.DEOKISHISU_N,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x3DF4,
                 PokemonIndexEditable = true
             },
@@ -914,7 +914,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RAICHUU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x3EA4,
                 PokemonIndexEditable = true
             },
@@ -924,7 +924,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GORUBATTO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x3F54,
                 PokemonIndexEditable = true
             },
@@ -934,7 +934,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SAIDON,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4004,
                 PokemonIndexEditable = true
             },
@@ -944,7 +944,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.BARIYAADO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x40B4,
                 PokemonIndexEditable = true
             },
@@ -954,7 +954,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SUTORAIKU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4164,
                 PokemonIndexEditable = true
             },
@@ -964,7 +964,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KAIROSU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4214,
                 PokemonIndexEditable = true
             },
@@ -974,7 +974,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MEGANIUMU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x42C4,
                 PokemonIndexEditable = true
             },
@@ -984,7 +984,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.EIPAMU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4374,
                 PokemonIndexEditable = true
             },
@@ -994,7 +994,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GOMAZOU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4424,
                 PokemonIndexEditable = true
             },
@@ -1004,7 +1004,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SEREBII,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x44D4,
                 PokemonIndexEditable = true
             },
@@ -1014,7 +1014,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.HITOKAGE,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4570,
                 PokemonIndexEditable = true
             },
@@ -1024,7 +1024,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.FUSHIGIDANE,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4610,
                 PokemonIndexEditable = true
             },
@@ -1034,7 +1034,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ZENIGAME,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x46AC,
                 PokemonIndexEditable = true
             },
@@ -1044,7 +1044,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PIKACHUU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x474C,
                 PokemonIndexEditable = true
             },
@@ -1054,7 +1054,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PIKACHUU,
                 FormType = PokemonFormType.HIGH_FEMALE,
                 IsFemale = true,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x47E8,
                 PokemonIndexEditable = true
             },
@@ -1064,7 +1064,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.CHIKORIITA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4884,
                 PokemonIndexEditable = true
             },
@@ -1074,7 +1074,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.WANINOKO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4920,
                 PokemonIndexEditable = true
             },
@@ -1084,7 +1084,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.HINOARASHI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x49BC,
                 PokemonIndexEditable = true
             },
@@ -1094,7 +1094,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ACHAMO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4A58,
                 PokemonIndexEditable = true
             },
@@ -1104,7 +1104,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ACHAMO,
                 FormType = PokemonFormType.HIGH_FEMALE,
                 IsFemale = true,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4AF4,
                 PokemonIndexEditable = true
             },
@@ -1114,7 +1114,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KIMORI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4B90,
                 PokemonIndexEditable = true
             },
@@ -1124,7 +1124,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MIZUGOROU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4C2C,
                 PokemonIndexEditable = true
             },
@@ -1134,7 +1134,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KODAKKU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4CC8,
                 PokemonIndexEditable = true
             },
@@ -1144,7 +1144,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KARAKARA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4D64,
                 PokemonIndexEditable = true
             },
@@ -1154,7 +1154,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.NYAASU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4E00,
                 PokemonIndexEditable = true
             },
@@ -1164,7 +1164,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.WANRIKII,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4E9C,
                 PokemonIndexEditable = true
             },
@@ -1174,7 +1174,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.IIBUI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4F38,
                 PokemonIndexEditable = true
             },
@@ -1184,7 +1184,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.IIBUI,
                 FormType = PokemonFormType.HIGH_FEMALE,
                 IsFemale = true,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x4FD4,
                 PokemonIndexEditable = true
             },
@@ -1194,7 +1194,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ENEKO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5070,
                 PokemonIndexEditable = true
             },
@@ -1204,7 +1204,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RIZAADO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x510C,
                 PokemonIndexEditable = true
             },
@@ -1214,7 +1214,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.POPPO,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x51A8,
                 PokemonIndexEditable = true
             },
@@ -1224,7 +1224,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.POPPO,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5240,
                 PokemonIndexEditable = true
             },
@@ -1234,7 +1234,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.POPPO,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x52D8,
                 PokemonIndexEditable = true
             },
@@ -1244,7 +1244,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PIJON,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5370,
                 PokemonIndexEditable = true
             },
@@ -1254,7 +1254,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PIJON,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5408,
                 PokemonIndexEditable = true
             },
@@ -1264,7 +1264,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PIJON,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x54A0,
                 PokemonIndexEditable = true
             },
@@ -1274,7 +1274,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ONISUZUME,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5538,
                 PokemonIndexEditable = true
             },
@@ -1284,7 +1284,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ONISUZUME,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x55D0,
                 PokemonIndexEditable = true
             },
@@ -1294,7 +1294,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ONISUZUME,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5668,
                 PokemonIndexEditable = true
             },
@@ -1304,7 +1304,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SUBAME,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5700,
                 PokemonIndexEditable = true
             },
@@ -1314,7 +1314,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SUBAME,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5798,
                 PokemonIndexEditable = true
             },
@@ -1324,7 +1324,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SUBAME,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5830,
                 PokemonIndexEditable = true
             },
@@ -1334,7 +1334,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KYAMOME,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x58C8,
                 PokemonIndexEditable = true
             },
@@ -1344,7 +1344,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KYAMOME,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5960,
                 PokemonIndexEditable = true
             },
@@ -1354,7 +1354,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KYAMOME,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x59F8,
                 PokemonIndexEditable = true
             },
@@ -1364,7 +1364,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RIZAADO,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5A9C,
                 PokemonIndexEditable = true
             },
@@ -1374,7 +1374,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RIZAADON,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5B48,
                 PokemonIndexEditable = true
             },
@@ -1384,7 +1384,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RIZAADON_MEGA_X,
                 FormType = PokemonFormType.NORMAL,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5BF4,
                 PokemonIndexEditable = true
             },
@@ -1394,7 +1394,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.HITOKAGE,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5C98,
                 PokemonIndexEditable = true
             },
@@ -1404,7 +1404,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.FUSHIGIDANE,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5D38,
                 PokemonIndexEditable = true
             },
@@ -1414,7 +1414,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ZENIGAME,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5DD8,
                 PokemonIndexEditable = true
             },
@@ -1424,7 +1424,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PIKACHUU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5E78,
                 PokemonIndexEditable = true
             },
@@ -1434,7 +1434,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.CHIKORIITA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5F18,
                 PokemonIndexEditable = true
             },
@@ -1444,7 +1444,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.WANINOKO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x5FB8,
                 PokemonIndexEditable = true
             },
@@ -1454,7 +1454,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.HINOARASHI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6058,
                 PokemonIndexEditable = true
             },
@@ -1464,7 +1464,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ACHAMO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x60F8,
                 PokemonIndexEditable = true
             },
@@ -1474,7 +1474,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KIMORI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6198,
                 PokemonIndexEditable = true
             },
@@ -1484,7 +1484,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MIZUGOROU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6238,
                 PokemonIndexEditable = true
             },
@@ -1494,7 +1494,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KODAKKU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x62D8,
                 PokemonIndexEditable = true
             },
@@ -1504,7 +1504,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KARAKARA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6378,
                 PokemonIndexEditable = true
             },
@@ -1514,7 +1514,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.NYAASU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6418,
                 PokemonIndexEditable = true
             },
@@ -1524,7 +1524,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.WANRIKII,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x64B8,
                 PokemonIndexEditable = true
             },
@@ -1534,7 +1534,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.IIBUI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6558,
                 PokemonIndexEditable = true
             },
@@ -1544,7 +1544,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ENEKO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x65F8,
                 PokemonIndexEditable = true
             },
@@ -1554,7 +1554,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RIZAADO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexEditable = false // Can't edit due to copied value 
             },
             new ActorData {
@@ -1563,7 +1563,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.FUSHIGISOU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6728,
                 
                 // TODO: this one doesn't work for some reason although it should
@@ -1575,7 +1575,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KAMEERU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x67C0,
                 PokemonIndexEditable = true
             },
@@ -1585,7 +1585,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RAICHUU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6860,
                 PokemonIndexEditable = true
             },
@@ -1595,7 +1595,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.BEIRIIFU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x68FC,
                 PokemonIndexEditable = true
             },
@@ -1605,7 +1605,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ARIGEITSU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6998,
                 PokemonIndexEditable = true
             },
@@ -1615,7 +1615,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MAGUMARASHI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6A34,
                 PokemonIndexEditable = true
             },
@@ -1625,7 +1625,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.WAKASHAMO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6AD0,
                 PokemonIndexEditable = true
             },
@@ -1635,7 +1635,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.JUPUTORU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6B6C,
                 PokemonIndexEditable = true
             },
@@ -1645,7 +1645,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.NUMAKUROO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6C08,
                 PokemonIndexEditable = true
             },
@@ -1655,7 +1655,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GORUDAKKU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6CA4,
                 PokemonIndexEditable = true
             },
@@ -1665,7 +1665,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GARAGARA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6D40,
                 PokemonIndexEditable = true
             },
@@ -1675,7 +1675,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.PERUSHIAN,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6DE0,
                 PokemonIndexEditable = true
             },
@@ -1685,7 +1685,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GOORIKII,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6E7C,
                 PokemonIndexEditable = true
             },
@@ -1695,7 +1695,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SHAWAAZU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6F18,
                 PokemonIndexEditable = true
             },
@@ -1705,7 +1705,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.SANDAASU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x6FB4,
                 PokemonIndexEditable = true
             },
@@ -1715,7 +1715,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.BUUSUTAA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7050,
                 PokemonIndexEditable = true
             },
@@ -1725,7 +1725,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.EEFI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x70EC,
                 PokemonIndexEditable = true
             },
@@ -1735,7 +1735,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.BURAKKII,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7188,
                 PokemonIndexEditable = true
             },
@@ -1745,7 +1745,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RIIFIA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7224,
                 PokemonIndexEditable = true
             },
@@ -1755,7 +1755,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.GUREISHIA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x72C0,
                 PokemonIndexEditable = true
             },
@@ -1765,7 +1765,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.NINFIA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x735C,
                 PokemonIndexEditable = true
             },
@@ -1775,7 +1775,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.ENEKORORO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x73F8,
                 PokemonIndexEditable = true
             },
@@ -1785,7 +1785,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RIZAADON,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7498,
                 PokemonIndexEditable = true
             },
@@ -1795,7 +1795,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.FUSHIGIBANA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7534,
                 PokemonIndexEditable = true
             },
@@ -1805,7 +1805,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KAMEKKUSU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x75D4,
                 PokemonIndexEditable = true
             },
@@ -1815,7 +1815,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.MEGANIUMU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7674,
                 PokemonIndexEditable = true
             },
@@ -1825,7 +1825,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.OODAIRU,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7710,
                 PokemonIndexEditable = true
             },
@@ -1835,7 +1835,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.BAKUFUUN,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x77AC,
                 PokemonIndexEditable = true
             },
@@ -1845,7 +1845,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.BASHAAMO,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7848,
                 PokemonIndexEditable = true
             },
@@ -1855,7 +1855,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.JUKAIN,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x78E4,
                 PokemonIndexEditable = true
             },
@@ -1865,7 +1865,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RAGURAAJI,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7980,
                 PokemonIndexEditable = true
             },
@@ -1875,7 +1875,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KAIRIKII,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7A1C,
                 PokemonIndexEditable = true
             },
@@ -1885,7 +1885,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.FUSHIGIBANA_MEGA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7AB8,
                 PokemonIndexEditable = true
             },
@@ -1895,7 +1895,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RIZAADON_MEGA_X,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7B54,
                 PokemonIndexEditable = true
             },
@@ -1905,7 +1905,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RIZAADON_MEGA_Y,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7BF0,
                 PokemonIndexEditable = true
             },
@@ -1915,7 +1915,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.KAMEKKUSU_MEGA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7C8C,
                 PokemonIndexEditable = true
             },
@@ -1925,7 +1925,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 PokemonIndex = CreatureIndex.RAGURAAJI_MEGA,
                 FormType = PokemonFormType.HIGH,
                 IsFemale = false,
-                WarehouseId = PokemonFixedWarehouseId.NULL,
+                WarehouseId = PokemonFixedWarehouseId.NONE,
                 PokemonIndexOffset = 0x7D28,
                 PokemonIndexEditable = true
             },
