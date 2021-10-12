@@ -105,12 +105,14 @@ namespace SkyEditorUI.Controllers
         private void OnStatsHpEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
+            System.Console.WriteLine("edited");
             if (wildPokemonStatsStore!.GetIter(out var iter, path))
             {
                 var stat = dungeon.PokemonStats![path.Indices[0]];
                 if (short.TryParse(args.NewText, out short value))
                 {
                     stat.HitPoints = value;
+                    System.Console.WriteLine("hp set to " + value);
                 }
                 wildPokemonStatsStore.SetValue(iter, StatsHitPointsColumn, stat.HitPoints);
             }
@@ -216,15 +218,15 @@ namespace SkyEditorUI.Controllers
         {
             wildPokemonStatsStore!.AppendValues(
                 AutocompleteHelpers.FormatPokemon(rom, stats.CreatureIndex),
-                stats.XpYield,
-                stats.HitPoints,
-                stats.Attack,
-                stats.SpecialAttack,
-                stats.Defense,
-                stats.SpecialDefense,
-                stats.Speed,
+                (int) stats.XpYield,
+                (int) stats.HitPoints,
+                (int) stats.Attack,
+                (int) stats.SpecialAttack,
+                (int) stats.Defense,
+                (int) stats.SpecialDefense,
+                (int) stats.Speed,
                 stats.StrongFoe,
-                stats.Level
+                (int) stats.Level
             );
         }
     }
