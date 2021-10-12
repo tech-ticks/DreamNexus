@@ -94,7 +94,8 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             var output = new MemoryStream((int)input.Length / 2);
             var inputData = input.ReadArray();
 
-            void writeArray(byte[] array) {
+            void writeArray(byte[] array)
+            {
                 output.Write(array, 0, array.Length);
             };
 
@@ -161,11 +162,8 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             TryCompressSkip(data, offset, output, ref result);
             output.Position = outputPos;
 
-            // FIXME: Redesign this algorithm; too slow
-            // - Move to the main loop
-            // - Use a rolling window instead of recomputing every time
-            //TryCompressPrevious(data, offset, output, ref result);
-            //output.Position = outputPos;
+            TryCompressPrevious(data, offset, output, ref result);
+            output.Position = outputPos;
 
             if (result.Valid) output.Position += result.OutputByteCount;
         }
@@ -279,55 +277,70 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 
             try
             {
-                // Search output up to 0x400 bytes behind for the longest subsequence of bytes found in data starting at offset.
-                // The common substring must be between 2 and 33 bytes long.
+                // Search output up to 0x400 bytes backwards for the longest subsequence that matches the bytes starting at data[offset].
+                // The common substring must be between 2 and 33 bytes long. The longer, the better.
                 var maxLookbehindDistance = Math.Min(0x400, (int)offset);
                 if (maxLookbehindDistance < 2) return;
                 var maxLength = Math.Min(33, (int)Math.Min(maxLookbehindDistance, data.Length - offset));
+                if (maxLength < 2) return;
 
                 var lookbehindData = new Span<byte>(data, (int)(offset - maxLookbehindDistance), maxLookbehindDistance);
                 var lookaheadData = new Span<byte>(data, (int)offset, maxLength);
 
                 int matchLength = 0;
-                int matchPos = -1;
+                int matchPos = -1; // relative to the start of the lookbehind span
 
-                int[,] longestCommonSuffixes = new int[lookbehindData.Length + 1, lookaheadData.Length + 1];
-                for (int i = 0; i <= lookbehindData.Length; i++)
+                // Look for the first matching sequence of 2 bytes backwards into the lookbehind buffer
+                for (int i = 0; i <= maxLookbehindDistance - 2; i++)
                 {
-                    for (int j = 0; j <= lookaheadData.Length; j++)
+                    int bufOffset = maxLookbehindDistance - 2 - i;
+                    if (lookbehindData[bufOffset] == lookaheadData[0] &&
+                        lookbehindData[bufOffset + 1] == lookaheadData[1])
                     {
-                        if (i == 0 || j == 0)
-                        {
-                            longestCommonSuffixes[i, j] = 0;
-                        }
-                        else if (lookbehindData[i - 1] == lookaheadData[j - 1])
-                        {
-                            longestCommonSuffixes[i, j] = longestCommonSuffixes[i - 1, j - 1] + 1;
-                            if (longestCommonSuffixes[i, j] > matchLength && longestCommonSuffixes[i, j] == j)
-                            {
-                                matchLength = longestCommonSuffixes[i, j];
-                                matchPos = i - matchLength;
-                            }
-                        }
-                        else
-                        {
-                            longestCommonSuffixes[i, j] = 0;
-                        }
+                        matchLength = 2;
+                        matchPos = bufOffset;
+                        break;
                     }
                 }
 
-                if (matchLength >= 2)
-                {
-                    var compressionRatio = matchLength * 0.5f;
-                    if (compressionRatio > result.CompressionRatio)
-                    {
-                        var matchOffset = matchPos - maxLookbehindDistance;
+                // A match length of zero means we haven't found any matches in the buffer, so bail out
+                if (matchLength == 0) return;
 
-                        result.InputByteCount = matchLength;
-                        result.OutputByteCount = 2;
-                        output.WriteByte((byte)((byte)((matchLength - 2) << 2) | (byte)((matchOffset >> 8) & 3)));
-                        output.WriteByte((byte)(matchOffset & 0xFF));
+                // Search for longer matches from there
+                while (matchLength < maxLength && matchLength + matchPos < maxLookbehindDistance)
+                {
+                    if (lookbehindData[matchPos + matchLength] == lookaheadData[matchLength])
+                    {
+                        // Expand match length at the current position
+                        matchLength++;
                     }
+                    else
+                    {
+                        // Search backwards for another match of the same length
+                        // Stop the search if no more matches are available
+                        int tentativeMatchPos = matchPos - 1;
+                        while (tentativeMatchPos >= 0)
+                        {
+                            if (lookbehindData.Slice(tentativeMatchPos, matchLength).SequenceEqual(lookaheadData.Slice(0, matchLength)))
+                            {
+                                matchPos = tentativeMatchPos;
+                                break;
+                            }
+                            tentativeMatchPos--;
+                        }
+                        if (tentativeMatchPos < 0) break;
+                    }
+                }
+
+                var compressionRatio = matchLength * 0.5f;
+                if (compressionRatio > result.CompressionRatio)
+                {
+                    var matchOffset = matchPos - maxLookbehindDistance;
+
+                    result.InputByteCount = matchLength;
+                    result.OutputByteCount = 2;
+                    output.WriteByte((byte)((byte)((matchLength - 2) << 2) | (byte)((matchOffset >> 8) & 3)));
+                    output.WriteByte((byte)(matchOffset & 0xFF));
                 }
             }
             catch (IndexOutOfRangeException)
