@@ -14,11 +14,6 @@ namespace SkyEditorUI
         [STAThread]
         public static void Main(string[] args)
         {
-            if (OperatingSystem.IsMacOS())
-            {
-                FixMacOSWorkingDirectory();
-            }
-
             Application.Init();
             UpdateTheme();
 
@@ -109,23 +104,6 @@ namespace SkyEditorUI
             }
 
             return true;
-        }
-
-        private static void FixMacOSWorkingDirectory()
-        {
-            // The working directory isn't set automatically if we're running in a mac .app
-            if (Directory.GetCurrentDirectory() == "/")
-            {
-                var executablePath = Process.GetCurrentProcess()?.MainModule?.FileName;
-                if (executablePath != null)
-                {
-                    var executableDirectory = Path.GetDirectoryName(executablePath);
-                    if (executableDirectory != null)
-                    {
-                        Directory.SetCurrentDirectory(executableDirectory);
-                    }
-                }
-            }
         }
     }
 }

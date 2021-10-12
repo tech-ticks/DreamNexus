@@ -16,7 +16,9 @@ cp -r ../bin/Release/net5.0/osx-x64/publish/* DreamNexus.app/Contents/MacOS
 cat > DreamNexus.app/Contents/MacOS/run_dreamnexus << EOF
 #!/bin/sh
 export DYLD_LIBRARY_PATH="\$DYLD_LIBRARY_PATH:\$(dirname \$0)"
+export GTK_DATA_PREFIX="" # Required to resolve themes relative to the current directory for some reason
 
+cd "\$(dirname \$0)"
 # Run the DreamNexus binary
 "\$(dirname \$0)/DreamNexus"
 EOF
