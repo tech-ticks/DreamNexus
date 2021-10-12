@@ -15,6 +15,7 @@ namespace SkyEditorUI.Infrastructure
                 UseShellExecute = false,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
+                CreateNoWindow = true
             };
             
             foreach (var arg in args)
