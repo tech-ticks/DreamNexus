@@ -28,7 +28,7 @@ namespace SkyEditorUI.Infrastructure
 
         public DiscordRpc()
         {
-            version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "dev";
+            version = UIUtils.GetUIVersion();
             loaded = false;
             idle = false;
             start = DateTime.UtcNow;

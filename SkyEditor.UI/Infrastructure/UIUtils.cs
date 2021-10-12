@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using Gtk;
 
@@ -75,6 +76,27 @@ namespace SkyEditorUI.Infrastructure
             {
                 Application.RunIteration();
             }
+        }
+
+        private static bool readVersion = false;
+        private static string? cachedVersion;
+
+        public static string GetUIVersion()
+        {
+            if (!readVersion)
+            {
+                try
+                {
+                    // Nightly builds have version.txt file containing the current version and commit
+                    cachedVersion = File.ReadAllText("version.txt");
+                }
+                catch
+                {
+                    cachedVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
+                }
+            }
+            readVersion = true;
+            return cachedVersion ?? "dev";
         }
     }
 }
