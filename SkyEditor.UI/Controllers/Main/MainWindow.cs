@@ -498,8 +498,14 @@ namespace SkyEditorUI.Controllers
 
                     await SaveSourceFiles();
 
-                    Action<string> progressCallback = progress
-                        => openFileDialogLabel!.Text = "Building modpack...\n\n" + progress;
+                    Action<string> progressCallback = progress => 
+                    {
+                        GLib.Idle.Add(() =>
+                        {
+                            openFileDialogLabel!.Text = "Building modpack...\n\n" + progress;
+                            return false;
+                        });
+                    };
                     if (modpack?.GetDefaultMod() != null)
                     {
                         // Write changed source files to the ROM
@@ -576,7 +582,14 @@ namespace SkyEditorUI.Controllers
                     Exception? exception = null;
                     try
                     {
-                        FTPDeployment.Deploy(settings, tempDir, progress => openFileDialogLabel!.Text = progress);
+                        FTPDeployment.Deploy(settings, tempDir, progress =>
+                        {
+                            GLib.Idle.Add(() =>
+                            {
+                                openFileDialogLabel!.Text = progress;
+                                return false;
+                            });
+                        });
                     }
                     catch (Exception e)
                     {
@@ -889,7 +902,7 @@ namespace SkyEditorUI.Controllers
 
             var itemsIter = AddMainListItem(root, "Items", "skytemple-e-item-symbolic");
             var itemEnumNames = Enum.GetNames<ItemIndex>();
-            foreach (var enumName in itemEnumNames)
+            foreach (var enumName in itemEnumNames.SkipLast(1))
             {
                 if (enumName.EndsWith("_MIN") || enumName.EndsWith("_MAX"))
                 {

@@ -18,11 +18,7 @@ namespace SkyEditorUI.Infrastructure
             var client = new FtpClient(settings.SwitchIp, int.Parse(settings.SwitchFtpPort ?? "3000"),
                 settings.SwitchFtpUser, settings.SwitchFtpPassword);
             client.RetryAttempts = 3;
-
-            FtpTrace.LogToConsole = true;
-            FtpTrace.LogUserName = false;
-            FtpTrace.LogPassword = false;
-
+            
             onProgress($"Preparing upload...");
 
             var exefsDir = "atmosphere/contents/01003D200BAA2000/exefs";
