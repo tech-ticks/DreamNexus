@@ -15,7 +15,6 @@ namespace SkyEditor.UI.Infrastructure
 
         private static void WriteToLogFile(string line)
         {
-
             lock(logFileLock)
             {
                 File.AppendAllLines(Path.Combine(Settings.DataPath, "hactool.log"), new[] { line });

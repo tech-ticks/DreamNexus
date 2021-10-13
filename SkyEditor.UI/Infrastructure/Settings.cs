@@ -47,6 +47,10 @@ namespace SkyEditorUI.Infrastructure
 
     public static Settings TryLoad()
     {
+      if (!Directory.Exists(SettingsFilePath))
+      {
+        Directory.CreateDirectory(DataPath);
+      }
       if (!File.Exists(SettingsFilePath))
       {
         return new Settings();
