@@ -101,7 +101,12 @@ namespace SkyEditor.RomEditor.ConsoleApp
 
                     var targetDirectory = GetRomDirectory(target, context);
 
-                    await saveableRom.Save(targetDirectory, fileSystem);
+                    Action<string>? progressAction = null;
+                    if (context.VerboseLogging)
+                    {
+                        progressAction = (progress) => Console.WriteLine(progress);
+                    }
+                    await saveableRom.Save(targetDirectory, fileSystem, progressAction);
                     if (context.VerboseLogging) Console.WriteLine("Saved to " + targetDirectory);
                 }
                 else if (arg.StartsWith("library:"))

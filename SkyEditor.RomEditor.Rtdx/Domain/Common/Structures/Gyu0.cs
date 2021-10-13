@@ -7,6 +7,8 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 {
     public static class Gyu0
     {
+        const int LookbehindDistance = 0x50;
+
         private enum Opcode
         {
             Copy,
@@ -280,7 +282,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 // Search output up to a given number of bytes backwards for the longest subsequence that matches the bytes starting at data[offset].
                 // A smaller maxLookbehindDistance increases compressed size but decreases time
                 // The common substring must be between 2 and 33 bytes long. The longer, the better.
-                var maxLookbehindDistance = Math.Min(0x100, (int)offset);
+                var maxLookbehindDistance = Math.Min(LookbehindDistance, (int)offset);
                 if (maxLookbehindDistance < 2) return;
                 var maxLength = Math.Min(33, (int)Math.Min(maxLookbehindDistance, data.Length - offset));
                 if (maxLength < 2) return;
