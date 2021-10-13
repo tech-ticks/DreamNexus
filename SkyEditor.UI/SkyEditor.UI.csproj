@@ -12,6 +12,7 @@
     <AssemblyTitle>DreamNexus</AssemblyTitle>
     <TargetName>DreamNexus</TargetName>
     <VersionPrefix>0.1.1</VersionPrefix>
+    <RootNamespace>SkyEditorUI</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
