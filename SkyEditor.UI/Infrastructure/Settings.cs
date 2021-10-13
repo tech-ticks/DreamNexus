@@ -29,6 +29,7 @@ namespace SkyEditorUI.Infrastructure
     public BuildFileStructureType BuildFileStructure { get; set; } = BuildFileStructureType.Atmosphere;
 
     public bool EnableHactoolLogging { get; set; } = true;
+    public bool EnableDiscordRichPresense { get; set; } = false;
 
     public List<(string nameOrId, string path)> RecentModpacks { get; set; } = new List<(string nameOrId, string path)>();
 

@@ -52,7 +52,7 @@ namespace SkyEditorUI.Controllers
         private TreeModelFilter filter;
         private string searchText = "";
         private List<string>? currentBreadcrumbs;
-        private readonly DiscordRpc discordRpc;
+        private readonly DiscordRpc? discordRpc;
 
         public MainWindow() : this(new Builder("Main.glade")) { }
 
@@ -67,8 +67,6 @@ namespace SkyEditorUI.Controllers
             updateInfo?.Hide();
             loadingDialog!.Title = "DreamNexus";
             IconName = "dreamnexus";
-
-            discordRpc = new DiscordRpc();
 
             var col = new TreeViewColumn("Title", new CellRendererText());
             var iconRenderer = new CellRendererPixbuf();
@@ -90,7 +88,7 @@ namespace SkyEditorUI.Controllers
                 (Titlebar as HeaderBar)!.DecorationLayout = "close,minimize,maximize,menu:";
             }
 
-            Settings? settings = null;
+            Settings settings;
             try
             {
                 settings = Settings.TryLoad();
@@ -102,6 +100,12 @@ namespace SkyEditorUI.Controllers
                     + "Your settings will be reverted to the default settings (close the application if you "
                     + "want to fix them manually, otherwise your settings will be overwritten once they are saved).\n"
                     + "Exception message:\n\n" + e.ToString());
+                return;
+            }
+
+            if (settings.EnableDiscordRichPresense)
+            {
+                discordRpc = new DiscordRpc();
             }
         }
 
@@ -110,11 +114,11 @@ namespace SkyEditorUI.Controllers
             if ((args.Event.ChangedMask & WindowState.Focused) == 0) return;
             if ((args.Event.NewWindowState & WindowState.Focused) != 0)
             {
-                discordRpc.OnWindowHasFocus();
+                discordRpc?.OnWindowHasFocus();
             }
             else
             {
-                discordRpc.OnWindowLostFocus();
+                discordRpc?.OnWindowLostFocus();
             }
         }
 
@@ -129,7 +133,7 @@ namespace SkyEditorUI.Controllers
             }
             if (rom != null && modpack != null && (rom.Modified || sourceFiles.Any(file => file.IsDirty)))
             {
-                var dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Warning, ButtonsType.None, true,
+                using var dialog = new MessageDialog(this, DialogFlags.Modal, MessageType.Warning, ButtonsType.None, true,
                     $"<b>Do you want to save changes to {IOPath.GetFileName(modpack.Directory)}?</b>\n\n"
                     + "If you don't save, your changes will be lost.");
 
@@ -231,7 +235,7 @@ namespace SkyEditorUI.Controllers
 
                 if (response == ResponseType.Accept)
                 {
-                    var dialog = new FileChooserNative("Select the modpack directory", this, FileChooserAction.Save | FileChooserAction.CreateFolder, null, null);
+                    using var dialog = new FileChooserNative("Select the modpack directory", this, FileChooserAction.Save | FileChooserAction.CreateFolder, null, null);
                     response = (ResponseType) dialog.Run();
 
                     if (response == ResponseType.Accept)
@@ -271,7 +275,7 @@ namespace SkyEditorUI.Controllers
 
         private void OnOpenModpackClicked(object sender, EventArgs args)
         {
-            var dialog = new FileChooserNative("Select Modpack", this, FileChooserAction.Open | FileChooserAction.SelectFolder, null, null);
+            using var dialog = new FileChooserNative("Select Modpack", this, FileChooserAction.Open | FileChooserAction.SelectFolder, null, null);
             var response = (ResponseType) dialog.Run();
 
             if (response == ResponseType.Accept)
@@ -372,7 +376,7 @@ namespace SkyEditorUI.Controllers
                 UIUtils.ShowInfoDialog(this, "Read-only mod",
                             "This mod is read-only. Please select another directory to create a new modpack based on this mod.");
 
-                var dialog = new FileChooserNative("Save modpack", this, FileChooserAction.Save | FileChooserAction.SelectFolder, null, null);
+                using var dialog = new FileChooserNative("Save modpack", this, FileChooserAction.Save | FileChooserAction.SelectFolder, null, null);
                 var response = (ResponseType) dialog.Run();
                 string path = dialog.Filename;
                 dialog.Dispose();
@@ -452,7 +456,7 @@ namespace SkyEditorUI.Controllers
         {
             CheckRomAndModpackLoaded();
 
-            var dialog = new FileChooserNative("Select a directory to save ROM files to...", this, FileChooserAction.Save | FileChooserAction.SelectFolder, null, null);
+            using var dialog = new FileChooserNative("Select a directory to save ROM files to...", this, FileChooserAction.Save | FileChooserAction.SelectFolder, null, null);
             var response = (ResponseType) dialog.Run();
 
             if (modpack?.Metadata.Id == null)
@@ -624,7 +628,7 @@ namespace SkyEditorUI.Controllers
 
         private void OpenSettings()
         {
-            var settings = new SettingsDialog();
+            using var settings = new SettingsDialog();
             var response = (ResponseType) settings.Run();
             settings.Destroy();
         }
@@ -776,7 +780,7 @@ namespace SkyEditorUI.Controllers
 
             editorStack.AddNamed(currentController, "es__loaded_view");
             editorStack.VisibleChild = currentController;
-            discordRpc.OnViewLoaded(currentController, currentBreadcrumbs ?? new List<string>());
+            discordRpc?.OnViewLoaded(currentController, currentBreadcrumbs ?? new List<string>());
             Console.WriteLine("Loaded view.");
         }
 
@@ -861,7 +865,7 @@ namespace SkyEditorUI.Controllers
             rom!.DungeonsModified = false;
             SetTopButtonsEnabled(true);
 
-            discordRpc.OnModpackLoaded(rom, modpack!, modpack!.Metadata.Name ?? modpack.Metadata.Id);
+            discordRpc?.OnModpackLoaded(rom, modpack!, modpack!.Metadata.Name ?? modpack.Metadata.Id);
             Title = $"{modpack!.Metadata.Name ?? modpack.Metadata.Id} (DreamNexus)";
         }
 
