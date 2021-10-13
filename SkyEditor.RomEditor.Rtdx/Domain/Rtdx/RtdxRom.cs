@@ -20,7 +20,6 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Data;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures.Custom;
-using System.Diagnostics;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx
 {
@@ -605,7 +604,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     throw new Exception("Unable to load common.bin from US message bin");
                 }
 
-                commonBinEntry = new MessageBinEntry(data, GetCodeTable());
+                commonBinEntry = new MessageBinEntry(data);
             }
             return commonBinEntry;
         }
@@ -621,7 +620,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     throw new Exception("Unable to load dungeon.bin from US message bin");
                 }
 
-                dungeonBinEntry = new MessageBinEntry(data, GetCodeTable());
+                dungeonBinEntry = new MessageBinEntry(data);
             }
             return dungeonBinEntry;
         }
@@ -637,7 +636,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     throw new Exception("Unable to load script.bin from US message bin");
                 }
 
-                scriptBinEntry = new MessageBinEntry(data, GetCodeTable());
+                scriptBinEntry = new MessageBinEntry(data);
             }
             return scriptBinEntry;
         }
@@ -653,7 +652,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     throw new Exception("Unable to load debug.bin from US message bin");
                 }
 
-                debugBinEntry = new MessageBinEntry(data, GetCodeTable());
+                debugBinEntry = new MessageBinEntry(data);
             }
             return debugBinEntry;
         }
@@ -669,7 +668,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     throw new Exception("Unable to load test.bin from US message bin");
                 }
 
-                testBinEntry = new MessageBinEntry(data, GetCodeTable());
+                testBinEntry = new MessageBinEntry(data);
             }
             return testBinEntry;
         }

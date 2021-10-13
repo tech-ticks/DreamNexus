@@ -153,7 +153,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             defaultStarters.HeroGender = HeroGender;
             defaultStarters.PartnerCreature = PartnerCreature;
             defaultStarters.PartnerGender = PartnerGender;
-            System.Console.WriteLine("Flush finished");
         }
 
         public StarterModel? GetStarterById(CreatureIndex id)

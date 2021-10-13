@@ -446,18 +446,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         {
             foreach (var overrideString in CommonStringsOverride)
             {
-                common.SetString((int) overrideString.Key, codeTable.UnicodeEncode(overrideString.Value)
-                    .Replace("\n", "[R]"));
+                common.SetString((int) overrideString.Key, codeTable.UnicodeEncode(overrideString.Value));
             }
             foreach (var overrideString in DungeonStringsOverride)
             {
-                dungeon.SetString(overrideString.Key, codeTable.UnicodeEncode(overrideString.Value)
-                    .Replace("\n", "[R]"));
+                dungeon.SetString(overrideString.Key, codeTable.UnicodeEncode(overrideString.Value));
             }
             foreach (var overrideString in ScriptStringsOverride)
             {
-                script.SetString(overrideString.Key, codeTable.UnicodeEncode(overrideString.Value)
-                    .Replace("\n", "[R]"));
+                script.SetString(overrideString.Key, codeTable.UnicodeEncode(overrideString.Value));
             }
 
             var commonTask = Task.Run(() => common.ToByteArray());

@@ -3,6 +3,7 @@ using SkyEditor.RomEditor.Domain;
 using SkyEditor.RomEditor.Domain.Library;
 using SkyEditor.RomEditor.Domain.Psmd;
 using SkyEditor.RomEditor.Domain.Rtdx;
+using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using SkyEditor.RomEditor.Infrastructure.Automation.CSharp;
 using SkyEditor.RomEditor.Infrastructure.Automation.Lua;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.ConsoleApp
@@ -44,7 +46,35 @@ namespace SkyEditor.RomEditor.ConsoleApp
             Console.WriteLine("                       Download a build from https://github.com/tech-ticks/hyperbeam to use custom file formats.");
         }
 
-        static async Task Main(string[] args)
+        static void Main(string[] args)
+        {
+            var farc = new Farc(File.ReadAllBytes("/Users/rene/misc/switch/extracted/romfs/Data/StreamingAssets/native_data/message_us.bin"));
+            var codeTable = new RtdxCodeTable(File.ReadAllBytes("/Users/rene/misc/switch/extracted/romfs/Data/StreamingAssets/native_data/code_table.bin"));
+            var strings = new MessageBinEntry(farc.GetFile("dungeon.bin"));
+            var val = strings.Strings[(long) TextIDHash.DUNGEON_MESSAGE__DEFAULT_JOBAN_DUNGEON_MESSAGE_SECOND].FirstOrDefault().Value;
+            var decoded = codeTable.UnicodeDecode(val);
+            System.Console.WriteLine(val);
+            System.Console.WriteLine();
+            System.Console.WriteLine(decoded);
+            System.Console.WriteLine();
+            var encoded = codeTable.UnicodeEncode(decoded);
+            System.Console.WriteLine(encoded);
+            System.Console.WriteLine();
+            decoded = codeTable.UnicodeDecode(encoded);
+            System.Console.WriteLine(decoded);
+            System.Console.WriteLine();
+
+            System.Console.WriteLine("Read again");
+
+            strings = new MessageBinEntry(strings.ToByteArray());
+            val = strings.Strings[(long) TextIDHash.DUNGEON_MESSAGE__DEFAULT_JOBAN_DUNGEON_MESSAGE_SECOND].FirstOrDefault().Value;
+            decoded = codeTable.UnicodeDecode(val);
+            System.Console.WriteLine(val);
+            System.Console.WriteLine();
+            System.Console.WriteLine(decoded);
+        }
+
+        /*static async Task Main(string[] args)
         {
             if (args.Length < 2 || string.Equals(args[0], "--help", StringComparison.OrdinalIgnoreCase))
             {
@@ -196,7 +226,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
             {
                 throw new ArgumentException("Unsupported ROM type: " + context.Rom.GetType().Name);
             }
-        }
+        }*/
 
         #region Commands
         private delegate Task ConsoleCommand(Queue<string> arguments, ConsoleContext context);
