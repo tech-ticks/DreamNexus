@@ -1090,7 +1090,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
-        public async Task Save(string directory, IFileSystem fileSystem)
+        public async Task Save(string directory, IFileSystem fileSystem, Action<string>? onProgress = null)
         {
             void EnsureDirectoryExists(string path)
             {
@@ -1100,6 +1100,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     Directory.CreateDirectory(dir);
                 }
             }
+
+            onProgress?.Invoke("Applying models (1/3)");
 
             // Save wrappers around files
             stringCollection?.Flush();
@@ -1115,6 +1117,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             dungeonMapCollection?.Flush(this);
             dungeonMusicCollection?.Flush(this);
 
+            onProgress?.Invoke("Writing data (2/3)");
             // Save the files themselves
             if (EnableCustomFiles)
             {
@@ -1170,7 +1173,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 fileSystem.WriteAllBytes(path, wazaDataInfo.ToByteArray());
             }
 
-            // To-do: save commonStrings when implemented
             foreach (var messageBin in loadedMessageBins)
             {
                 var path = GetMessageBinPath(directory, messageBin.Key);
@@ -1373,6 +1375,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 fileSystem.WriteAllBytes(path, defaultStarters.ToByteArray());
             }
 
+            onProgress?.Invoke("Copying assets and source files (3/3)");
             foreach (var (relativePath, data) in filesToWrite)
             {
                 var path = Path.Combine(directory, relativePath);

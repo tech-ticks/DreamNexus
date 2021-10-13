@@ -497,6 +497,9 @@ namespace SkyEditorUI.Controllers
                     rom!.EnableCustomFiles = modpack.Metadata.EnableCodeInjection;
 
                     await SaveSourceFiles();
+
+                    Action<string> progressCallback = progress
+                        => openFileDialogLabel!.Text = "Building modpack...\n\n" + progress;
                     if (modpack?.GetDefaultMod() != null)
                     {
                         // Write changed source files to the ROM
@@ -505,7 +508,7 @@ namespace SkyEditorUI.Controllers
                     if (structure == BuildFileStructureType.Atmosphere)
                     {
                         var paths = BuildHelpers.CreateAtmosphereFolderStructure(Settings.Load(), folder, fileSystem);
-                        await rom.Save(paths.ContentRoot, fileSystem);
+                        await rom.Save(paths.ContentRoot, fileSystem, progressCallback);
                         if (codeInjectionDirectory != null)
                         {
                             BuildHelpers.CopyCodeInjectionBinariesForAtmosphere(paths, codeInjectionDirectory);
@@ -513,7 +516,7 @@ namespace SkyEditorUI.Controllers
                     }
                     else if (structure == BuildFileStructureType.Emulator)
                     {
-                        await rom.Save(folder, fileSystem);
+                        await rom.Save(folder, fileSystem, progressCallback);
                         if (codeInjectionDirectory != null)
                         {
                             BuildHelpers.CopyCodeInjectionBinariesForEmulator(folder, codeInjectionDirectory);
@@ -573,7 +576,7 @@ namespace SkyEditorUI.Controllers
                     Exception? exception = null;
                     try
                     {
-                        FTPDeployment.Deploy(settings, tempDir);
+                        FTPDeployment.Deploy(settings, tempDir, progress => openFileDialogLabel!.Text = progress);
                     }
                     catch (Exception e)
                     {
