@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SkyEditorUI.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -14,14 +15,17 @@ namespace SkyEditor.UI.Infrastructure
 
         private static void WriteToLogFile(string line)
         {
+
             lock(logFileLock)
             {
-                File.AppendAllLines("hactool.log", new[] { line });
+                File.AppendAllLines(Path.Combine(Settings.DataPath, "hactool.log"), new[] { line });
             }
         }
 
         public static string RunHactool(params string[] args)
         {
+            var enableFileLogging = Settings.Load().EnableHactoolLogging;
+
             using var proc = new Process
             {
                 StartInfo = new ProcessStartInfo
@@ -45,13 +49,13 @@ namespace SkyEditor.UI.Infrastructure
             {
                 output.AppendLine(e.Data);
                 Console.WriteLine($"[hactool stdout {proc.Id}] {e.Data}");
-                WriteToLogFile($"[hactool stdout {proc.Id}] {e.Data}");
+                if (enableFileLogging) WriteToLogFile($"[hactool stdout {proc.Id}] {e.Data}");
             };
             proc.ErrorDataReceived += (object sender, DataReceivedEventArgs e) =>
             {
                 error.AppendLine(e.Data);
                 Console.WriteLine($"[hactool stderr {proc.Id}] {e.Data}");
-                WriteToLogFile($"[hactool stderr {proc.Id}] {e.Data}");
+                if (enableFileLogging) WriteToLogFile($"[hactool stderr {proc.Id}] {e.Data}");
             };
 
             Console.WriteLine($"Running hactool with '{string.Join(" ", args)}'");
@@ -65,13 +69,16 @@ namespace SkyEditor.UI.Infrastructure
             }
             catch (Exception ex)
             {
-                try
+                if (enableFileLogging)
                 {
-                    WriteToLogFile("Encountered exception running hactool: " + ex.ToString());
-                }
-                catch (Exception)
-                {
-                    // Bubble up the original exception, we don't want errors about logging interfering with errors from hactool
+                    try
+                    {
+                        WriteToLogFile("Encountered exception running hactool: " + ex.ToString());
+                    }
+                    catch (Exception)
+                    {
+                        // Bubble up the original exception, we don't want errors about logging interfering with errors from hactool
+                    }
                 }
 
                 throw;
