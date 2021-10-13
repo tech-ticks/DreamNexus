@@ -303,6 +303,8 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                     // Skip sequences that don't match at least the first two bytes
                     if (lookbehindData[i] != lookaheadData[0] || lookbehindData[i + 1] != lookaheadData[1])
                     {
+                        // Optimization: Skip one extra byte if the second byte of the lookbehind buffer doesn't match the first byte in the lookahead buffer
+                        if (lookbehindData[i + 1] != lookaheadData[0]) i++;
                         continue;
                     }
 
