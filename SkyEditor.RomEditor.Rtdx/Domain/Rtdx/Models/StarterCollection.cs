@@ -108,6 +108,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             var mainExecutable = rom.GetMainExecutable();
             var natureDiagnosis = rom.GetNatureDiagnosis();
             var fixedPokemon = rom.GetFixedPokemon();
+
+            var natureDiagnosisActorMaleLookup = mainExecutable.ActorDatabase.ActorDataList
+                .ToLookup(actor => actor.SymbolName);
+
             for (int i = 0; i < Starters.Length; i++)
             {
                 var starter = Starters[i];
@@ -126,8 +130,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 var ndEntry = natureDiagnosis.m_pokemonNatureAndTypeList.First(p => p.m_nameLabel == oldPokemon.PokemonId);
                 ndEntry.m_nameLabel = starter.PokemonId;
 
-                var natureDiagnosisActorMale = mainExecutable.ActorDatabase.ActorDataList
-                    .FirstOrDefault(a => a.SymbolName == ndEntry.m_symbolName);
+                var natureDiagnosisActorMale = natureDiagnosisActorMaleLookup[ndEntry.m_symbolName]
+                    .FirstOrDefault();
 
                 if (natureDiagnosisActorMale != null)
                 {

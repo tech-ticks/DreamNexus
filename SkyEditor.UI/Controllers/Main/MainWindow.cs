@@ -51,7 +51,7 @@ namespace SkyEditorUI.Controllers
         private bool preventLoadingRecent;
         private TreeModelFilter filter;
         private string searchText = "";
-        private List<string> currentBreadcrumbs;
+        private List<string>? currentBreadcrumbs;
         private readonly DiscordRpc discordRpc;
 
         public MainWindow() : this(new Builder("Main.glade")) { }
@@ -497,6 +497,15 @@ namespace SkyEditorUI.Controllers
                     rom!.EnableCustomFiles = modpack.Metadata.EnableCodeInjection;
 
                     await SaveSourceFiles();
+
+                    Action<string> progressCallback = progress => 
+                    {
+                        GLib.Idle.Add(() =>
+                        {
+                            openFileDialogLabel!.Text = "Building modpack...\n\n" + progress;
+                            return false;
+                        });
+                    };
                     if (modpack?.GetDefaultMod() != null)
                     {
                         // Write changed source files to the ROM
@@ -505,7 +514,7 @@ namespace SkyEditorUI.Controllers
                     if (structure == BuildFileStructureType.Atmosphere)
                     {
                         var paths = BuildHelpers.CreateAtmosphereFolderStructure(Settings.Load(), folder, fileSystem);
-                        await rom.Save(paths.ContentRoot, fileSystem);
+                        await rom.Save(paths.ContentRoot, fileSystem, progressCallback);
                         if (codeInjectionDirectory != null)
                         {
                             BuildHelpers.CopyCodeInjectionBinariesForAtmosphere(paths, codeInjectionDirectory);
@@ -513,7 +522,7 @@ namespace SkyEditorUI.Controllers
                     }
                     else if (structure == BuildFileStructureType.Emulator)
                     {
-                        await rom.Save(folder, fileSystem);
+                        await rom.Save(folder, fileSystem, progressCallback);
                         if (codeInjectionDirectory != null)
                         {
                             BuildHelpers.CopyCodeInjectionBinariesForEmulator(folder, codeInjectionDirectory);
@@ -573,7 +582,14 @@ namespace SkyEditorUI.Controllers
                     Exception? exception = null;
                     try
                     {
-                        FTPDeployment.Deploy(settings, tempDir);
+                        FTPDeployment.Deploy(settings, tempDir, progress =>
+                        {
+                            GLib.Idle.Add(() =>
+                            {
+                                openFileDialogLabel!.Text = progress;
+                                return false;
+                            });
+                        });
                     }
                     catch (Exception e)
                     {
@@ -760,7 +776,7 @@ namespace SkyEditorUI.Controllers
 
             editorStack.AddNamed(currentController, "es__loaded_view");
             editorStack.VisibleChild = currentController;
-            discordRpc.OnViewLoaded(currentController, currentBreadcrumbs);
+            discordRpc.OnViewLoaded(currentController, currentBreadcrumbs ?? new List<string>());
             Console.WriteLine("Loaded view.");
         }
 
@@ -886,7 +902,7 @@ namespace SkyEditorUI.Controllers
 
             var itemsIter = AddMainListItem(root, "Items", "skytemple-e-item-symbolic");
             var itemEnumNames = Enum.GetNames<ItemIndex>();
-            foreach (var enumName in itemEnumNames)
+            foreach (var enumName in itemEnumNames.SkipLast(1))
             {
                 if (enumName.EndsWith("_MIN") || enumName.EndsWith("_MAX"))
                 {

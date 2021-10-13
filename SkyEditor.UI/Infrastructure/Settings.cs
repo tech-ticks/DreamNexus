@@ -28,6 +28,8 @@ namespace SkyEditorUI.Infrastructure
     public string? RtdxRomPath { get; set; }
     public BuildFileStructureType BuildFileStructure { get; set; } = BuildFileStructureType.Atmosphere;
 
+    public bool EnableHactoolLogging { get; set; } = true;
+
     public List<(string nameOrId, string path)> RecentModpacks { get; set; } = new List<(string nameOrId, string path)>();
 
     public static Settings Load()
@@ -45,6 +47,10 @@ namespace SkyEditorUI.Infrastructure
 
     public static Settings TryLoad()
     {
+      if (!Directory.Exists(SettingsFilePath))
+      {
+        Directory.CreateDirectory(DataPath);
+      }
       if (!File.Exists(SettingsFilePath))
       {
         return new Settings();

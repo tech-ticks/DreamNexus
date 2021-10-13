@@ -604,7 +604,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     throw new Exception("Unable to load common.bin from US message bin");
                 }
 
-                commonBinEntry = new MessageBinEntry(data, GetCodeTable());
+                commonBinEntry = new MessageBinEntry(data);
             }
             return commonBinEntry;
         }
@@ -620,7 +620,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     throw new Exception("Unable to load dungeon.bin from US message bin");
                 }
 
-                dungeonBinEntry = new MessageBinEntry(data, GetCodeTable());
+                dungeonBinEntry = new MessageBinEntry(data);
             }
             return dungeonBinEntry;
         }
@@ -636,7 +636,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     throw new Exception("Unable to load script.bin from US message bin");
                 }
 
-                scriptBinEntry = new MessageBinEntry(data, GetCodeTable());
+                scriptBinEntry = new MessageBinEntry(data);
             }
             return scriptBinEntry;
         }
@@ -652,7 +652,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     throw new Exception("Unable to load debug.bin from US message bin");
                 }
 
-                debugBinEntry = new MessageBinEntry(data, GetCodeTable());
+                debugBinEntry = new MessageBinEntry(data);
             }
             return debugBinEntry;
         }
@@ -668,7 +668,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     throw new Exception("Unable to load test.bin from US message bin");
                 }
 
-                testBinEntry = new MessageBinEntry(data, GetCodeTable());
+                testBinEntry = new MessageBinEntry(data);
             }
             return testBinEntry;
         }
@@ -1090,7 +1090,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
-        public async Task Save(string directory, IFileSystem fileSystem)
+        public async Task Save(string directory, IFileSystem fileSystem, Action<string>? onProgress = null)
         {
             void EnsureDirectoryExists(string path)
             {
@@ -1101,20 +1101,31 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 }
             }
 
+            onProgress?.Invoke("Applying models (1/3) - 0%");
             // Save wrappers around files
-            stringCollection?.Flush();
-            starterCollection?.Flush(this);
-            actorCollection?.Flush(this);
-            dungeonCollection?.Flush(this);
-            itemCollection?.Flush(this);
-            moveCollection?.Flush(this);
-            chargedMoveCollection?.Flush(this);
-            extraLargeMoveCollection?.Flush(this);
-            actionCollection?.Flush(this);
-            actionStatModifierCollection?.Flush(this);
-            dungeonMapCollection?.Flush(this);
-            dungeonMusicCollection?.Flush(this);
+            var modelActions = new List<Action> {
+                () => stringCollection?.Flush(),
+                () => starterCollection?.Flush(this),
+                () => actorCollection?.Flush(this),
+                () => dungeonCollection?.Flush(this),
+                () => itemCollection?.Flush(this),
+                () => moveCollection?.Flush(this),
+                () => chargedMoveCollection?.Flush(this),
+                () => extraLargeMoveCollection?.Flush(this),
+                () => actionCollection?.Flush(this),
+                () => actionStatModifierCollection?.Flush(this),
+                () => dungeonMapCollection?.Flush(this),
+                () => dungeonMusicCollection?.Flush(this)
+            };
+            
+            for (int i = 0; i < modelActions.Count; i++)
+            {
+                float progress = (float) i / modelActions.Count;
+                modelActions[i]();
+                onProgress?.Invoke($"Applying models (1/3) - {(int) (progress * 100)}%");
+            }
 
+            onProgress?.Invoke("Writing data (2/3)");
             // Save the files themselves
             if (EnableCustomFiles)
             {
@@ -1137,242 +1148,216 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 fileSystem.WriteAllBytes(path, mainExecutable!.ToNso());
             }
 
+            var jobs = new List<Action>();
+         
+            void addJob(string path, Func<byte[]> action)
+            {
+                jobs!.Add(() =>
+                {
+                    EnsureDirectoryExists(path);
+                    fileSystem.WriteAllBytes(path, action());
+                });
+            }
+            void addCustomJob(Action action)
+            {
+                jobs!.Add(action);
+            }
+            
             if (natureDiagnosis != null)
             {
-                var path = GetNatureDiagnosisPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllText(path, JsonConvert.SerializeObject(natureDiagnosis));
+                addJob(GetNatureDiagnosisPath(directory), () => Encoding.Unicode.GetBytes(
+                    JsonConvert.SerializeObject(natureDiagnosis)));
             }
             if (fixedPokemon != null)
             {
-                var path = GetFixedPokemonPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, fixedPokemon.Build().Data.ReadArray());
+                addJob(GetFixedPokemonPath(directory), () => fixedPokemon.Build().Data.ReadArray());
             }
             if (pokemonDataInfo != null)
             {
-                var path = GetPokemonDataInfoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, pokemonDataInfo.ToByteArray());
+                addJob(GetPokemonDataInfoPath(directory), () => pokemonDataInfo.ToByteArray());
             }
             if (experience != null)
             {
-                var path = GetExperiencePath(directory);
-                EnsureDirectoryExists(path);
-                var (binData, entData) = experience.Build();
-                fileSystem.WriteAllBytes(path + ".bin", binData);
-                fileSystem.WriteAllBytes(path + ".ent", entData);
+                addCustomJob(() =>
+                {
+                    var path = GetExperiencePath(directory);
+                    EnsureDirectoryExists(path);
+                    var (binData, entData) = experience.Build();
+                    fileSystem.WriteAllBytes(path + ".bin", binData);
+                    fileSystem.WriteAllBytes(path + ".ent", entData);
+                });
             }
             if (wazaDataInfo != null)
             {
-                var path = GetWazaDataInfoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, wazaDataInfo.ToByteArray());
+                addJob(GetWazaDataInfoPath(directory), () => wazaDataInfo.ToByteArray());
             }
 
-            // To-do: save commonStrings when implemented
             foreach (var messageBin in loadedMessageBins)
             {
-                var path = GetMessageBinPath(directory, messageBin.Key);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, messageBin.Value.ToByteArray());
+                addJob(GetMessageBinPath(directory, messageBin.Key), () => messageBin.Value.ToByteArray());
             }
             if (dungeonDataInfo != null)
             {
-                var path = GetDungeonDataInfoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, dungeonDataInfo.ToByteArray());
+                addJob(GetDungeonDataInfoPath(directory), () => dungeonDataInfo.ToByteArray());
             }
             if (fixedMap != null)
             {
-                var path = GetFixedMapPath(directory);
-                EnsureDirectoryExists(path);
-                var (binData, entData) = fixedMap.Build();
-                fileSystem.WriteAllBytes(path + ".bin", binData);
-                fileSystem.WriteAllBytes(path + ".ent", entData);
+                addCustomJob(() =>
+                {
+                    var path = GetFixedMapPath(directory);
+                    EnsureDirectoryExists(path);
+                    var (binData, entData) = fixedMap.Build();
+                    fileSystem.WriteAllBytes(path + ".bin", binData);
+                    fileSystem.WriteAllBytes(path + ".ent", entData);
+                });
             }
             if (fixedItem != null)
             {
-                var path = GetFixedItemPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, fixedItem.ToByteArray());
+                addJob(GetFixedItemPath(directory), () => fixedItem.ToByteArray());
             }
             if (randomParts != null)
             {
-                var path = GetRandomPartsPath(directory);
-                EnsureDirectoryExists(path);
-                var (binData, entData) = randomParts.Build();
-                fileSystem.WriteAllBytes(path + ".bin", binData);
-                fileSystem.WriteAllBytes(path + ".ent", entData);
+                addCustomJob(() =>
+                {
+                    var path = GetRandomPartsPath(directory);
+                    EnsureDirectoryExists(path);
+                    var (binData, entData) = randomParts.Build();
+                    fileSystem.WriteAllBytes(path + ".bin", binData);
+                    fileSystem.WriteAllBytes(path + ".ent", entData);
+                });
             }
             if (actDataInfo != null)
             {
-                var path = GetActDataInfoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, actDataInfo.ToByteArray());
+                addJob(GetActDataInfoPath(directory), () => actDataInfo.ToByteArray());
             }
             if (actEffectDataInfo != null)
             {
-                var path = GetActEffectDataInfoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, actEffectDataInfo.ToByteArray());
+                addJob(GetActEffectDataInfoPath(directory), () => actEffectDataInfo.ToByteArray());
             }
             if (actHitCountTableDataInfo != null)
             {
-                var path = GetActHitCountTableDataInfoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, actHitCountTableDataInfo.Build());
+                addJob(GetActHitCountTableDataInfoPath(directory), () => actHitCountTableDataInfo.Build());
             }
             if (actParamDataInfo != null)
             {
-                var path = GetActParamDataInfoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, actParamDataInfo.Build());
+                addJob(GetActParamDataInfoPath(directory), () => actParamDataInfo.Build());
             }
             if (actStatusTableDataInfo != null)
             {
-                var path = GetActStatusTableDataInfoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, actStatusTableDataInfo.Build());
+                addJob(GetActStatusTableDataInfoPath(directory), () => actStatusTableDataInfo.Build());
             }
             if (chargedMoves != null)
             {
-                var path = GetChargedMovesPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, chargedMoves.ToByteArray());
+                addJob(GetChargedMovesPath(directory), () => chargedMoves.ToByteArray());
             }
             if (extraLargeMoves != null)
             {
-                var path = GetExtraLargeMovesPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, extraLargeMoves.ToByteArray());
+                addJob(GetExtraLargeMovesPath(directory), () => extraLargeMoves.ToByteArray());
             }
             if (statusDataInfo != null)
             {
-                var path = GetStatusDataInfoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, statusDataInfo.ToByteArray());
+                addJob(GetStatusDataInfoPath(directory), () => statusDataInfo.ToByteArray());
             }
+
+            if (itemArrange != null)
+            {
+                addCustomJob(() =>
+                {
+                    var path = GetItemArrangePath(directory);
+                    EnsureDirectoryExists(path);
+                    var (binData, entData) = itemArrange.Build();
+                    fileSystem.WriteAllBytes(path + ".bin", binData);
+                    fileSystem.WriteAllBytes(path + ".ent", entData);
+                });
+            }
+            if (dungeonMapDataInfo != null)
+            {
+                addJob(GetDungeonMapDataInfoPath(directory), () => dungeonMapDataInfo.ToByteArray());
+            }
+            if (dungeonExtra != null)
+            {
+                addJob(GetDungeonExtraPath(directory), () => dungeonExtra.ToByteArray());
+            }
+            if (requestLevel != null)
+            {
+                addJob(GetRequestLevel(directory), () => requestLevel.ToByteArray());
+            }
+            if (pokemonFormDatabase != null)
+            {
+                addJob(GetPokemonFormDatabasePath(directory), () => pokemonFormDatabase.ToByteArray());
+            }
+            if (pokemonGraphicsDatabase != null)
+            {
+                addJob(GetPokemonGraphicsDatabasePath(directory), () => pokemonGraphicsDatabase.ToByteArray());
+            }
+            if (dungeonMapSymbol != null)
+            {
+                addJob(GetDungeonMapSymbolPath(directory), () => dungeonMapSymbol.ToByteArray());
+            }
+            if (dungeonBgmSymbol != null)
+            {
+                addJob(GetDungeonBgmSymbolPath(directory), () => dungeonBgmSymbol.ToByteArray());
+            }
+            if (dungeonSeSymbol != null)
+            {
+                addJob(GetDungeonSeSymbolPath(directory), () => dungeonSeSymbol.ToByteArray());
+            }
+            if (effectSymbol != null)
+            {
+                addJob(GetEffectSymbolPath(directory), () => effectSymbol.ToByteArray());
+            }
+            if (mapRandomGraphics != null)
+            {
+                addJob(GetMapRandomGraphicsPath(directory), () => mapRandomGraphics.ToByteArray());
+            }
+            if (itemGraphics != null)
+            {
+                addJob(GetItemGraphicsPath(directory), () => itemGraphics.ToByteArray());
+            }
+            if (itemDataInfo != null)
+            {
+                addJob(GetItemDataInfoPath(directory), () => itemDataInfo.ToByteArray());
+            }
+            if (camps != null)
+            {
+                addJob(GetCampPath(directory), () => camps.ToByteArray());
+            }
+            if (campHabitat != null)
+            {
+                addJob(GetCampHabitatPath(directory), () => campHabitat.ToByteArray());
+            }
+            if (pokemonEvolution != null)
+            {
+                addJob(GetPokemonEvolutionPath(directory), () => pokemonEvolution.ToByteArray());
+            }
+            if (ranks != null)
+            {
+                addJob(GetRankPath(directory), () => ranks.ToByteArray());
+            }
+            if (defaultStarters != null && EnableCustomFiles)
+            {
+                addJob(GetDefaultStartersPath(directory), () => defaultStarters.ToByteArray());
+            }
+
+            var tasks = jobs.Select(job => Task.Run(() =>
+            {
+                job();
+            }));
+
+            await Task.WhenAll(tasks);
 
             if (dungeonBalance != null)
             {
+                onProgress?.Invoke("Writing data (2/3) - Writing dungeon_balance.bin");
                 var path = GetDungeonBalancePath(directory);
                 EnsureDirectoryExists(path);
+
                 var (binData, entData) = await dungeonBalance.Build();
                 fileSystem.WriteAllBytes(path + ".bin", binData);
                 fileSystem.WriteAllBytes(path + ".ent", entData);
             }
-            if (itemArrange != null)
-            {
-                var path = GetItemArrangePath(directory);
-                EnsureDirectoryExists(path);
-                var (binData, entData) = itemArrange.Build();
-                fileSystem.WriteAllBytes(path + ".bin", binData);
-                fileSystem.WriteAllBytes(path + ".ent", entData);
-            }
-            if (dungeonMapDataInfo != null)
-            {
-                var path = GetDungeonMapDataInfoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, dungeonMapDataInfo.ToByteArray());
-            }
-            if (dungeonExtra != null)
-            {
-                var path = GetDungeonExtraPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, dungeonExtra.ToByteArray());
-            }
-            if (requestLevel != null)
-            {
-                var path = GetRequestLevel(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, requestLevel.ToByteArray());
-            }
-            if (pokemonFormDatabase != null)
-            {
-                var path = GetPokemonFormDatabasePath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, pokemonFormDatabase.ToByteArray());
-            }
-            if (pokemonGraphicsDatabase != null)
-            {
-                var path = GetPokemonGraphicsDatabasePath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, pokemonGraphicsDatabase.ToByteArray());
-            }
-            if (dungeonMapSymbol != null)
-            {
-                var path = GetDungeonMapSymbolPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, dungeonMapSymbol.ToByteArray());
-            }
-            if (dungeonBgmSymbol != null)
-            {
-                var path = GetDungeonBgmSymbolPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, dungeonBgmSymbol.ToByteArray());
-            }
-            if (dungeonSeSymbol != null)
-            {
-                var path = GetDungeonSeSymbolPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, dungeonSeSymbol.ToByteArray());
-            }
-            if (effectSymbol != null)
-            {
-                var path = GetEffectSymbolPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, effectSymbol.ToByteArray());
-            }
-            if (mapRandomGraphics != null)
-            {
-                var path = GetMapRandomGraphicsPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, mapRandomGraphics.ToByteArray());
-            }
-            if (itemGraphics != null)
-            {
-                var path = GetItemGraphicsPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, itemGraphics.ToByteArray());
-            }
-            if (itemDataInfo != null)
-            {
-                var path = GetItemDataInfoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, itemDataInfo.ToByteArray());
-            }
-            if (camps != null)
-            {
-                var path = GetCampPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, camps.ToByteArray());
-            }
-            if (campHabitat != null)
-            {
-                var path = GetCampHabitatPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, campHabitat.ToByteArray());
-            }
-            if (pokemonEvolution != null)
-            {
-                var path = GetPokemonEvolutionPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, pokemonEvolution.ToByteArray());
-            }
-            if (ranks != null)
-            {
-                var path = GetRankPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, ranks.ToByteArray());
-            }
-            if (defaultStarters != null && EnableCustomFiles)
-            {
-                var path = GetDefaultStartersPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, defaultStarters.ToByteArray());
-            }
 
+            onProgress?.Invoke("Copying assets and source files (3/3)");
             foreach (var (relativePath, data) in filesToWrite)
             {
                 var path = Path.Combine(directory, relativePath);

@@ -1,6 +1,7 @@
 ﻿using SkyEditor.IO.Binary;
 using SkyEditor.RomEditor.Domain.Common.Structures;
 using SkyEditor.RomEditor.Infrastructure;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,24 +14,21 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         public const int UnknownValue = 0x3020003;
         public const int EntryLength = 0x10;
 
-        private ICodeTable? codeTable;
-
         public MessageBinEntry()
         {
             Strings = new Dictionary<long, List<MessageBinString>>();
             OrderedHashes = new List<int>();
         }
 
-        public MessageBinEntry(IReadOnlyBinaryDataAccessor data, ICodeTable? codeTable = null): this()
+        public MessageBinEntry(IReadOnlyBinaryDataAccessor data): this()
         {
-            this.codeTable = codeTable;
-
             var sir0 = new Sir0(data);
             var entryCount1 = sir0.SubHeader.ReadInt32(0);
             var entryCount2 = sir0.SubHeader.ReadInt32(4);
             var entriesOffset = sir0.SubHeader.ReadInt32(8);
 
             var hashes = new Dictionary<long, int>();
+            var stringBuffer = new byte[100000];
             for (int i = 0; i < entryCount1; i++)
             {
                 var entryOffset = entriesOffset + (i * EntryLength);
@@ -40,20 +38,21 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 var unknown = sir0.Data.ReadInt32(entryOffset + 0xC);
 
                 // Read the string manually since ReadNullTerminatedUnicodeString automatically converts invalid Unicode characters to 0xFFFD
-                var sb = new StringBuilder();
+                
+                int bufferOffset = 0;
                 var strOffset = stringOffset;
                 ushort ch;
                 while ((ch = sir0.Data.ReadUInt16(strOffset)) != 0) {
-                    sb.Append((char)ch);
+                    stringBuffer[bufferOffset] = (byte) ch;
+                    stringBuffer[bufferOffset+1] = (byte) (ch >> 8);
+                    bufferOffset += 2;
                     strOffset += 2;
                 }
-                var value = sb.ToString();
+
+                var value = new byte[bufferOffset];
+                Array.Copy(stringBuffer, value, bufferOffset);
                 
                 //var value = sir0.Data.ReadNullTerminatedUnicodeString(stringOffset);
-                if (codeTable != null)
-                {
-                    value = codeTable.UnicodeDecode(value);
-                }
                 AddString(new MessageBinString
                 {
                     Value = value,
@@ -66,7 +65,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             OrderedHashes = hashes.OrderBy(h => h.Key).Select(h => h.Value).ToArray();
         }
 
-        public MessageBinEntry(byte[] data, ICodeTable? codeTable = null) : this(new BinaryFile(data), codeTable)
+        public MessageBinEntry(byte[] data) : this(new BinaryFile(data))
         {
         }
 
@@ -76,14 +75,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         public Dictionary<long, List<MessageBinString>> Strings { get; }
         public IReadOnlyList<int> OrderedHashes { get; }
 
-        public string GetStringByHash(int hash) => Strings.ContainsKey(hash) ? Strings[hash].FirstOrDefault()!.Value : "";
+        public string GetStringByHash(int hash) => Strings.ContainsKey(hash) ? 
+            Encoding.Unicode.GetString(Strings[hash].FirstOrDefault()!.Value!) : "";
 
-        public void AddString(string key, string value)
+        public void AddString(string key, byte[] value)
         {
             AddString((int) Crc32Hasher.Crc32Hash(key), value);
         }
 
-        public void AddString(int hash, string value)
+        public void AddString(int hash, byte[] value)
         {
             AddString(new MessageBinString
             {
@@ -104,12 +104,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
         }
 
-        public void SetString(string key, string value)
+        public void SetString(string key, byte[] value)
         {
             SetString((int) Crc32Hasher.Crc32Hash(key), value);
         }
 
-        public void SetString(int hash, string value)
+        public void SetString(int hash, byte[] value)
         {
             if (Strings.ContainsKey(hash))
             {
@@ -132,8 +132,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             foreach (var entry in orderedStrings)
             {
                 entry.StringOffset = sir0.Length;
-                var value = codeTable != null ? codeTable.UnicodeEncode(entry.Value) : entry.Value;
-                sir0.WriteNullTerminatedString(sir0.Length, Encoding.Unicode, value);
+
+                sir0.Write(sir0.Length, entry.Value!);
+                sir0.WriteInt16(sir0.Length, 0);
             }
             sir0.Align(8);
 
@@ -161,7 +162,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
         public class MessageBinString
         {
-            public string Value { get; set; } = "";
+            public byte[]? Value { get; set; }
             public int Hash { get; set; }
             public int Unknown { get; set; } = UnknownValue;
             public long StringOffset { get; set; }

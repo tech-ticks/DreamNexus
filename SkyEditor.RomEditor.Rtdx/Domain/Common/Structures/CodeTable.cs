@@ -14,13 +14,13 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
         /// Replaces special text tokens with Unicode symbols for message.bin
         /// </summary>
         /// <param name="text">User-friendly text</param>
-        string UnicodeEncode(string text);
+        byte[] UnicodeEncode(string text);
 
         /// <summary>
         /// Replaces Unicode symbols from message.bin with human readable text tokens
         /// </summary>
         /// <param name="text">Encoded text</param>
-        string UnicodeDecode(string text);
+        string UnicodeDecode(byte[] text);
     }
 
     /// <summary>
@@ -86,23 +86,28 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
         /// Replaces special text tokens with Unicode symbols for message.bin
         /// </summary>
         /// <param name="text">User-friendly text</param>
-        public string UnicodeEncode(string text)
+        public byte[] UnicodeEncode(string text)
         {
-            var sb = new StringBuilder();
-
             var match = StringTokenRegex.Match(text);
             int lastStringPos = 0;
 
+            var buffer = new byte[Encoding.Unicode.GetByteCount(text)];
+            int bufferPos = 0;
+
             while (match.Success)
             {
-                sb.Append(text.Substring(lastStringPos, match.Index - lastStringPos));
+                var bytes = Encoding.Unicode.GetBytes(text.Substring(lastStringPos, match.Index - lastStringPos));
+                Array.Copy(bytes, 0, buffer, bufferPos, bytes.Length);
+                bufferPos += bytes.Length;
+
                 string directive = match.Groups[1].Value;
                 string? valueString = match.Groups.Count > 1 ? match.Groups[2].Value : null;
 
                 if (!string.IsNullOrEmpty(valueString) && EntriesByCodeString.TryGetValue(directive + valueString, out var entry))
                 {
                     // Sometimes the directive and value are both included (e.g. [M:B01])
-                    sb.Append((char)entry.UnicodeValue);
+                    buffer[bufferPos++] = (byte) entry.UnicodeValue;
+                    buffer[bufferPos++] = (byte) (entry.UnicodeValue >> 8);
                 }
                 else if (EntriesByCodeString.TryGetValue(directive, out entry))
                 {
@@ -122,7 +127,8 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                         // Encode the value into the two low bytes.
                         // It seems like one of the bytes inside the value is encoded redundantly.
                         unicodeValue = (ushort)((unicodeValue & 0xFF00) | (byte)value);
-                        sb.Append((char)unicodeValue);
+                        buffer[bufferPos++] = (byte) unicodeValue;
+                        buffer[bufferPos++] = (byte) (unicodeValue >> 8);
 
                         if (entry.Length > 0)
                         {
@@ -131,37 +137,46 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                                 throw new Exception("Invalid entry length.");
                             }
 
-                            byte[] bytes = BitConverter.GetBytes(value + 1);
-                            sb.Append(Encoding.Unicode.GetString(bytes, 0, entry.Length * 2));
+                            byte[] valueBytes = BitConverter.GetBytes(value + 1);
+                            Array.Copy(valueBytes, 0, buffer, bufferPos, valueBytes.Length);
+                            bufferPos += valueBytes.Length;
                         }
                     }
                     else
                     {
-                        sb.Append((char)unicodeValue);
+                        buffer[bufferPos++] = (byte) unicodeValue;
+                        buffer[bufferPos++] = (byte) (unicodeValue >> 8);
                     }
                 }
                 else
                 {
-                    sb.Append(match.Value);
+                    var matchBytes = Encoding.Unicode.GetBytes(match.Value);
+                    Array.Copy(matchBytes, 0, buffer, bufferPos, bytes.Length);
+                    bufferPos += matchBytes.Length;
                 }
                 lastStringPos = match.Index + match.Length;
                 match = match.NextMatch();
             }
 
-            sb.Append(text.Substring(lastStringPos, text.Length - lastStringPos));
-            return sb.ToString();
+            return buffer;
         }
 
         /// <summary>
         /// Replaces Unicode symbols from message.bin with human readable text tokens
         /// </summary>
         /// <param name="text">Encoded text</param>
-        public string UnicodeDecode(string text)
+        public string UnicodeDecode(byte[] text)
         {
             var sb = new StringBuilder();
-            for (int i = 0; i < text.Length; i++)
+            
+            int length = text.Length;
+            if (length % 2 != 0)
             {
-                ushort shortCharacter = text[i];
+                length--;
+            }
+            for (int i = 0; i < length; i += 2)
+            {
+                ushort shortCharacter = (ushort) (text[i] | (text[i+1] << 8));
 
                 bool specialCode = false;
                 uint encodedValue = 0;
@@ -193,7 +208,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                             encodedValue = 0;
                             for (int j = 0; j < entry.Length; j++)
                             {
-                                i++;
+                                i += 2;
                                 if (i >= text.Length) break;
                                 encodedValue |= ((uint)text[i] - 1) << (j * 16);
                             }
@@ -216,7 +231,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 }
                 else
                 {
-                    sb.Append(text[i]);
+                    sb.Append((char) shortCharacter);
                 }
             }
             return sb.ToString();

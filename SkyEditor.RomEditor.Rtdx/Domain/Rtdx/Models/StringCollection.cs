@@ -6,6 +6,7 @@ using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Common.Structures;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using SkyEditor.RomEditor.Infrastructure;
+using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 {
@@ -441,27 +442,30 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             return GetStatusNameByInternalName(statusIndex.ToString("f"));
         }
 
-        public void Flush()
+        public async Task Flush()
         {
             foreach (var overrideString in CommonStringsOverride)
             {
-                common.SetString((int) overrideString.Key, codeTable.UnicodeEncode(overrideString.Value)
-                    .Replace("\n", "[R]"));
+                common.SetString((int) overrideString.Key, codeTable.UnicodeEncode(overrideString.Value));
             }
             foreach (var overrideString in DungeonStringsOverride)
             {
-                dungeon.SetString(overrideString.Key, codeTable.UnicodeEncode(overrideString.Value)
-                    .Replace("\n", "[R]"));
+                dungeon.SetString(overrideString.Key, codeTable.UnicodeEncode(overrideString.Value));
             }
             foreach (var overrideString in ScriptStringsOverride)
             {
-                script.SetString(overrideString.Key, codeTable.UnicodeEncode(overrideString.Value)
-                    .Replace("\n", "[R]"));
+                script.SetString(overrideString.Key, codeTable.UnicodeEncode(overrideString.Value));
             }
 
-            farc.SetFile("common.bin", common.ToByteArray());
-            farc.SetFile("dungeon.bin", dungeon.ToByteArray());
-            farc.SetFile("script.bin", script.ToByteArray());
+            var commonTask = Task.Run(() => common.ToByteArray());
+            var dungeonTask = Task.Run(() => dungeon.ToByteArray());
+            var scriptTask = Task.Run(() => script.ToByteArray());
+
+            await Task.WhenAll(commonTask, dungeonTask, scriptTask);
+
+            farc.SetFile("common.bin", commonTask.Result);
+            farc.SetFile("dungeon.bin", dungeonTask.Result);
+            farc.SetFile("script.bin", scriptTask.Result);
         }
     }
 
@@ -511,10 +515,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
         public void Flush()
         {
-            foreach (var collection in loadedLanguages.Values)
-            {
-                collection.Flush();
-            }
+            var tasks = loadedLanguages.Values.Select(lang => lang.Flush()).ToArray();
+            Task.WaitAll(tasks);
         }
 
         public LocalizedStringCollection Japanese => GetStringsForLanguage(LanguageType.JP);

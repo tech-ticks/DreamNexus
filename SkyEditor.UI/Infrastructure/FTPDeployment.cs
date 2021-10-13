@@ -1,85 +1,47 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using Method = System.Net.WebRequestMethods.Ftp;
+using FluentFTP;
+using FluentFTP.Helpers;
+using FluentFTP.Rules;
 
 namespace SkyEditorUI.Infrastructure
 {
-  public static class FTPDeployment
-  {
-    public static void Deploy(Settings settings, string buildPath)
+    public static class FTPDeployment
     {
-      WalkDirectory(settings, buildPath, new DirectoryInfo(buildPath));
-    }
-
-    public static void WalkDirectory(Settings settings, string basePath, DirectoryInfo directory)
-    {
-      var remoteFiles = ListDirectory(settings, Path.GetRelativePath(basePath, directory.FullName));
-
-      foreach (var info in directory.GetFileSystemInfos())
-      {
-        if (info is FileInfo file)
+        public static void Deploy(Settings settings, string buildPath, Action<string> onProgress)
         {
-          UploadFile(settings, Path.GetRelativePath(basePath, file.FullName), File.ReadAllBytes(file.FullName));
+            onProgress($"Connecting to ${settings.SwitchIp}...");
+
+            var client = new FtpClient(settings.SwitchIp, int.Parse(settings.SwitchFtpPort ?? "3000"),
+                settings.SwitchFtpUser, settings.SwitchFtpPassword);
+            client.RetryAttempts = 3;
+            
+            onProgress($"Preparing upload...");
+
+            var exefsDir = "atmosphere/contents/01003D200BAA2000/exefs";
+            var romfsDir = "atmosphere/contents/01003D200BAA2000/romfs";
+            var patchDir = "atmosphere/exefs_patches/hyperbeam_patch_102";
+            client.CreateDirectory(exefsDir);
+            client.CreateDirectory(romfsDir);
+            client.CreateDirectory(patchDir);
+
+            var localExefsDir = Path.Combine(buildPath, exefsDir);
+            var localRomfsDir = Path.Combine(buildPath, romfsDir);
+            var localPatchDir = Path.Combine(buildPath, patchDir);
+
+            onProgress($"Uploading exefs...");
+            client.UploadDirectory(localExefsDir, exefsDir, FtpFolderSyncMode.Update, FtpRemoteExists.Overwrite,
+                FtpVerify.None, null);
+            onProgress($"Uploading romfs...");
+            client.UploadDirectory(localRomfsDir, romfsDir, FtpFolderSyncMode.Update, FtpRemoteExists.Overwrite,
+                FtpVerify.None, null, progress => onProgress("Uploading romfs...\n"
+                    + $"Uploading file {progress.FileIndex + 1} of {progress.FileCount} ({(int) progress.Progress}%)"));
+            onProgress($"Uploading patches...");
+            client.UploadDirectory(localPatchDir, patchDir, FtpFolderSyncMode.Update, FtpRemoteExists.Overwrite,
+                FtpVerify.None, null);
         }
-        if (info is DirectoryInfo innerDir)
-        {
-          var relativePath = Path.GetRelativePath(basePath, innerDir.FullName);
-          if (!remoteFiles.Contains(relativePath))
-          {
-            CreateDirectory(settings, relativePath);
-            WalkDirectory(settings, basePath, innerDir);
-          }
-        }
-      }
     }
-
-    public static FtpWebRequest CreateRequest(Settings settings, string path, string method)
-    {
-      path = path.Replace("\\", "/");
-
-      var request = (FtpWebRequest) WebRequest.Create($"ftp://{settings.SwitchIp}:{settings.SwitchFtpPort}/{path}");
-      request.Timeout = 20000;
-      request.Credentials = new NetworkCredential(settings.SwitchFtpUser, settings.SwitchFtpPassword);
-      request.Method = method;
-      return request;
-    }
-
-    public static void UploadFile(Settings settings, string fileName, byte[] data)
-    {
-      var request = CreateRequest(settings, fileName, Method.UploadFile);
-      request.ContentLength = data.Length;
-      using (var requestStream = request.GetRequestStream())
-      {
-        requestStream.Write(data, 0, data.Length);
-      }
-      using (var response = (FtpWebResponse) request.GetResponse())
-      {
-        Console.WriteLine($"Uploaded {fileName} ({response.StatusDescription?.Replace("\r\n", "")})");
-      }
-    }
-
-    public static void CreateDirectory(Settings settings, string path)
-    {
-      var request = CreateRequest(settings, path, Method.MakeDirectory);
-      using (var response = (FtpWebResponse) request.GetResponse())
-      {
-        Console.WriteLine($"Created directory {path} ({response.StatusDescription?.Replace("\r\n", "")})");
-      }
-    }
-
-    public static string[] ListDirectory(Settings settings, string path)
-    {
-      var request = CreateRequest(settings, path, Method.ListDirectory);
-      using (var response = (FtpWebResponse) request.GetResponse())
-      {
-        var responseStream = response.GetResponseStream();
-        using (var reader = new StreamReader(responseStream))
-        {
-          return reader.ReadToEnd().Split("\r\n", StringSplitOptions.RemoveEmptyEntries);
-        }
-      }
-    }
-  }
 }
