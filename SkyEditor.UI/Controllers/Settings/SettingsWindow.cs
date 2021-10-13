@@ -53,41 +53,44 @@ namespace SkyEditorUI.Controllers
             UIUtils.ShowInfoDialog(this, "DreamNexus", "A file with decryption keys must be provided to extract "
                 + "encrypted Switch ROMs. Provide a keys file (commonly named \"prod.keys\" or \"keys.txt\").");
 
-            var keysDialog = new FileChooserNative("Select prod.keys/keys.txt file", this, FileChooserAction.Open,
-                null, null);
-            var response = (ResponseType) keysDialog.Run();
-            var filter = new FileFilter();
-            filter.AddPattern("*.keys");
-            filter.AddPattern("*.txt");
-            keysDialog.AddFilter(filter);
-
-            if (response != ResponseType.Accept)
+            string keysFile;
+            using (var keysDialog = new FileChooserNative("Select prod.keys/keys.txt file", this, FileChooserAction.Open, null, null))
             {
-                return;
-            }
+                var response = (ResponseType)keysDialog.Run();
+                var filter = new FileFilter();
+                filter.AddPattern("*.keys");
+                filter.AddPattern("*.txt");
+                keysDialog.AddFilter(filter);
 
-            string keysFile = keysDialog.Filename;
-            keysDialog.Destroy();
+                if (response != ResponseType.Accept)
+                {
+                    return;
+                }
+
+                keysFile = keysDialog.Filename;
+                keysDialog.Destroy();
+            }                
 
             UIUtils.ShowInfoDialog(this, "DreamNexus", "Select the ROM file (.xci or .nsp) you want to unpack. "
                 + "The ROM will unpacked into a folder next to its location with the same name. Please ensure that "
                 + "you have at least around 10 GB of free disk space before continuing.");
-
-            var romDialog = new FileChooserNative("Select ROM file", this, FileChooserAction.Open,
-                null, null);
-            response = (ResponseType) romDialog.Run();
-            filter = new FileFilter();
-            filter.AddPattern("*.xci");
-            filter.AddPattern("*.nsp");
-            romDialog.AddFilter(filter);
-
-            if (response != ResponseType.Accept)
+            string romFile;
+            using (var romDialog = new FileChooserNative("Select ROM file", this, FileChooserAction.Open, null, null))
             {
-                return;
-            }
+                var response = (ResponseType)romDialog.Run();
+                var filter = new FileFilter();
+                filter.AddPattern("*.xci");
+                filter.AddPattern("*.nsp");
+                romDialog.AddFilter(filter);
 
-            string romFile = romDialog.Filename;
-            romDialog.Destroy();
+                if (response != ResponseType.Accept)
+                {
+                    return;
+                }
+
+                romFile = romDialog.Filename;
+                romDialog.Destroy();
+            }
 
             if (!romFile.EndsWith(".xci") && !romFile.EndsWith(".nsp"))
             {

@@ -24,7 +24,7 @@ namespace SkyEditorUI.Infrastructure
             return Hactool.RunHactool("-k", keysPath, "-t", "nca", "--exefsdir", exefsDir, "--romfsdir", romfsDir, ncaFilePath);
         }
 
-        public static string UnpackRom(string romPath, string keysPath, Action<string> onProgress)
+        public static string UnpackRom(string romPath, string keysPath, Action<string>? onProgress)
         {
             var tempDir = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
             Directory.CreateDirectory(tempDir);
@@ -44,12 +44,12 @@ namespace SkyEditorUI.Infrastructure
             {
                 if (isNsp)
                 {
-                    onProgress("Unpacking NSP (1/2)...");
+                    onProgress?.Invoke("Unpacking NSP (1/2)...");
                     ExtractNsp(romPath, keysPath, outPath);
                 }
                 else
                 {
-                    onProgress("Unpacking XCI (1/2)...");
+                    onProgress?.Invoke("Unpacking XCI (1/2)...");
                     ExtractXci(romPath, keysPath, outPath);
                 }
 
@@ -67,7 +67,7 @@ namespace SkyEditorUI.Infrastructure
                 var targetDirectory = romPath.Replace(".xci", "").Replace(".nsp", "");
                 Directory.CreateDirectory(targetDirectory);
                 
-                onProgress("Unpacking NCA (2/2)...");
+                onProgress?.Invoke("Unpacking NCA (2/2)...");
                 ExtractNca(ncaFile.FullName, keysPath, targetDirectory);
 
                 return targetDirectory;

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SkyEditor.UI.Infrastructure
@@ -17,7 +18,7 @@ namespace SkyEditor.UI.Infrastructure
         {
             lock(logFileLock)
             {
-                File.AppendAllLines(Path.Combine(Settings.DataPath, "hactool.log"), new[] { line });
+                File.AppendAllLines(Path.Combine(Settings.DataPath, "hactool.log"), new[] { DateTime.Now.ToString() + ": " + line });
             }
         }
 
@@ -58,6 +59,7 @@ namespace SkyEditor.UI.Infrastructure
             };
 
             Console.WriteLine($"Running hactool with '{string.Join(" ", args)}'");
+            if (enableFileLogging) WriteToLogFile($"Running hactool with '{string.Join(" ", args)}'");
 
             try
             {
