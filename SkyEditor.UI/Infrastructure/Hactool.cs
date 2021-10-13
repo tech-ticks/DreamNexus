@@ -55,10 +55,27 @@ namespace SkyEditor.UI.Infrastructure
             };
 
             Console.WriteLine($"Running hactool with '{string.Join(" ", args)}'");
-            proc.Start();
-            proc.BeginOutputReadLine();
-            proc.BeginErrorReadLine();
-            proc.WaitForExit();
+
+            try
+            {
+                proc.Start();
+                proc.BeginOutputReadLine();
+                proc.BeginErrorReadLine();
+                proc.WaitForExit();
+            }
+            catch (Exception ex)
+            {
+                try
+                {
+                    WriteToLogFile("Encountered exception running hactool: " + ex.ToString());
+                }
+                catch (Exception)
+                {
+                    // Bubble up the original exception, we don't want errors about logging interfering with errors from hactool
+                }
+
+                throw;
+            }
 
             return output.ToString();
         }
