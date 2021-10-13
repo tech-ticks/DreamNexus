@@ -49,7 +49,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 
                 switch (op)
                 {
-                    case Opcode.Copy:
+                    case Opcode.Copy: // 80..9F
                         {
                             var bytes = data.ReadSpan(dataIndex, arg + 1);
                             dataIndex += bytes.Length;
@@ -58,7 +58,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                             break;
                         }
 
-                    case Opcode.SplitCopy:
+                    case Opcode.SplitCopy: // A0..BF
                         {
                             var sep = data.ReadByte(dataIndex++);
                             var bytes = data.ReadSpan(dataIndex, arg + 2);
@@ -71,7 +71,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                             break;
                         }
 
-                    case Opcode.Fill:
+                    case Opcode.Fill: // C0..DF
                         {
                             var fill = data.ReadByte(dataIndex++);
                             for (int i = 0; i < arg + 2; i++)
@@ -79,7 +79,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                             break;
                         }
 
-                    case Opcode.Skip:
+                    case Opcode.Skip: // E0..FF
                         {
                             var count = arg < 0x1F ? arg + 1 : 0x20 + data.ReadByte(dataIndex++);
                             destIndex += count;
@@ -147,6 +147,13 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             public long OutputByteCount { get; set; }
             public float CompressionRatio => Valid ? ((float)InputByteCount / OutputByteCount) : 0;
             public bool Valid => (InputByteCount != 0);
+
+            public bool IsCompressionRatioImproved(int newInputByteCount, float newCompressionRatio)
+            {
+                if (newInputByteCount > InputByteCount) return true;
+                if (newInputByteCount < InputByteCount) return false;
+                return newCompressionRatio > CompressionRatio;
+            }
         }
 
         private static void TryCompress(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
@@ -182,7 +189,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 if (count >= 2)
                 {
                     var compressionRatio = count * 2.0f / (2.0f + count);
-                    if (compressionRatio > result.CompressionRatio)
+                    if (result.IsCompressionRatioImproved(count, compressionRatio))
                     {
                         result.InputByteCount = count * 2;
                         result.OutputByteCount = 2 + count;
@@ -215,7 +222,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 if (count >= 2)
                 {
                     var compressionRatio = count * 0.5f;
-                    if (compressionRatio > result.CompressionRatio)
+                    if (result.IsCompressionRatioImproved(count, compressionRatio))
                     {
                         result.InputByteCount = count;
                         result.OutputByteCount = 2;
@@ -244,7 +251,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                     if (count < 0x1F)
                     {
                         var compressionRatio = count;
-                        if (compressionRatio > result.CompressionRatio)
+                        if (result.IsCompressionRatioImproved(count, compressionRatio))
                         {
                             result.InputByteCount = count;
                             result.OutputByteCount = 1;
@@ -254,7 +261,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                     else
                     {
                         var compressionRatio = count * 0.5f;
-                        if (compressionRatio > result.CompressionRatio)
+                        if (result.IsCompressionRatioImproved(count, compressionRatio))
                         {
                             result.InputByteCount = count;
                             result.OutputByteCount = 2;
@@ -277,10 +284,12 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 
             try
             {
+                // TODO: figure out if it's possible to reuse state from previous iterations
+
                 // Search output up to a given number of bytes backwards for the longest subsequence that matches the bytes starting at data[offset].
                 // A smaller maxLookbehindDistance increases compressed size but decreases time
                 // The common substring must be between 2 and 33 bytes long. The longer, the better.
-                var maxLookbehindDistance = Math.Min(0x100, (int)offset);
+                var maxLookbehindDistance = Math.Min(0x400, (int)offset);
                 if (maxLookbehindDistance < 2) return;
                 var maxLength = Math.Min(33, (int)Math.Min(maxLookbehindDistance, data.Length - offset));
                 if (maxLength < 2) return;
@@ -308,9 +317,9 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 if (matchLength == 0) return;
 
                 // Search for longer matches from there
-                while (matchLength < maxLength && matchLength + matchPos < maxLookbehindDistance)
+                while (matchLength < maxLength)
                 {
-                    if (lookbehindData[matchPos + matchLength] == lookaheadData[matchLength])
+                    if (matchLength + matchPos < maxLookbehindDistance && lookbehindData[matchPos + matchLength] == lookaheadData[matchLength])
                     {
                         // Expand match length at the current position
                         matchLength++;
@@ -320,11 +329,14 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                         // Search backwards for another match of the same length
                         // Stop the search if no more matches are available
                         int tentativeMatchPos = matchPos - 1;
+                        int tentativeMatchLength = matchLength + 1;
+                        var lookaheadSlice = lookaheadData.Slice(0, tentativeMatchLength);
                         while (tentativeMatchPos >= 0)
                         {
-                            if (lookbehindData.Slice(tentativeMatchPos, matchLength).SequenceEqual(lookaheadData.Slice(0, matchLength)))
+                            if (lookbehindData.Slice(tentativeMatchPos, tentativeMatchLength).SequenceEqual(lookaheadSlice))
                             {
                                 matchPos = tentativeMatchPos;
+                                matchLength = tentativeMatchLength;
                                 break;
                             }
                             tentativeMatchPos--;
@@ -334,7 +346,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 }
 
                 var compressionRatio = matchLength * 0.5f;
-                if (compressionRatio > result.CompressionRatio)
+                if (result.IsCompressionRatioImproved(matchLength, compressionRatio))
                 {
                     var matchOffset = matchPos - maxLookbehindDistance;
 
