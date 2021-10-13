@@ -1090,7 +1090,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
-        public Task Save(string directory, IFileSystem fileSystem)
+        public async Task Save(string directory, IFileSystem fileSystem)
         {
             void EnsureDirectoryExists(string path)
             {
@@ -1258,7 +1258,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             {
                 var path = GetDungeonBalancePath(directory);
                 EnsureDirectoryExists(path);
-                var (binData, entData) = dungeonBalance.Build();
+                var (binData, entData) = await dungeonBalance.Build();
                 fileSystem.WriteAllBytes(path + ".bin", binData);
                 fileSystem.WriteAllBytes(path + ".ent", entData);
             }
@@ -1384,17 +1384,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 fileSystem.WriteAllBytes(path, data);
             }
             filesToWrite.Clear();
-
-            return Task.CompletedTask;
         }
 
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
-        public Task Save()
+        public async Task Save()
         {
-            this.Save(this.RomDirectory, this.FileSystem);
-            return Task.CompletedTask;
+            await this.Save(this.RomDirectory, this.FileSystem);
         }
 
         [Obsolete]

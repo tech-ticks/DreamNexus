@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace SkyEditor.RomEditor.Tests.Domain.Structures
@@ -8,7 +9,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
     public class DungeonBalanceTests
     {
         [Fact]
-        public void CanBuildDungeonBalanceTests()
+        public async Task CanBuildDungeonBalanceTests()
         {
             // Arrange
             var db = new DungeonBalance();
@@ -119,7 +120,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             d002.FloorInfos[0].InvitationIndex = 0x74;
 
             // Act
-            var (bin, ent) = db.Build();
+            var (bin, ent) = await db.Build();
 
             // Assert
             var rebuiltDb = new DungeonBalance(bin, ent);
