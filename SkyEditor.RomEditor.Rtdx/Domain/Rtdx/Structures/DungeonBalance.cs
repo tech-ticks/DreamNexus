@@ -5,14 +5,16 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
     public interface IDungeonBalance
     {
         DungeonBalance.Entry[] Entries { get; }
-        (byte[] bin, byte[] ent) Build();
+        Task<(byte[] bin, byte[] ent)> Build();
     }
 
     public class DungeonBalance : IDungeonBalance
@@ -41,19 +43,22 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
         }
 
-        public (byte[] bin, byte[] ent) Build()
+        public async Task<(byte[] bin, byte[] ent)> Build()
         {
             MemoryStream bin = new MemoryStream();
             var entryPointers = new List<int>();
 
+            // Compress entries in parallel
+            var compressedEntries = await Task.WhenAll(Entries.Select(entry => Task.Run(() =>
+            {
+                var sir0 = entry.ToSir0();
+                return Gyu0.Compress(sir0.Data);
+            })));
+
             // Build the .bin file data
             entryPointers.Add(0);
-            foreach (var entry in Entries)
+            foreach (var data in compressedEntries)
             {
-                // Build SIR0 and compress to GYU0
-                var sir0 = entry.ToSir0();
-                var data = Gyu0.Compress(sir0.Data);
-
                 // Write data to .bin and the pointer to .ent
                 // Align data to 16 bytes
                 var binData = data.ReadArray();
