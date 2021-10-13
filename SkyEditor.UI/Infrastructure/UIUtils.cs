@@ -25,7 +25,7 @@ namespace SkyEditorUI.Infrastructure
 
         public static ResponseType ShowDialog(Window? parent, string title, string text, MessageType type)
         {
-             var dialog = new MessageDialog(parent, DialogFlags.Modal, type, ButtonsType.Ok, false, text);
+            using var dialog = new MessageDialog(parent, DialogFlags.Modal, type, ButtonsType.Ok, false, text);
 
             dialog.Title = title;
             var response = (ResponseType) dialog.Run();

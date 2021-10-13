@@ -51,7 +51,7 @@ namespace SkyEditorUI.Controllers
         private bool preventLoadingRecent;
         private TreeModelFilter filter;
         private string searchText = "";
-        private List<string> currentBreadcrumbs;
+        private List<string>? currentBreadcrumbs;
         private readonly DiscordRpc discordRpc;
 
         public MainWindow() : this(new Builder("Main.glade")) { }
@@ -776,7 +776,7 @@ namespace SkyEditorUI.Controllers
 
             editorStack.AddNamed(currentController, "es__loaded_view");
             editorStack.VisibleChild = currentController;
-            discordRpc.OnViewLoaded(currentController, currentBreadcrumbs);
+            discordRpc.OnViewLoaded(currentController, currentBreadcrumbs ?? new List<string>());
             Console.WriteLine("Loaded view.");
         }
 

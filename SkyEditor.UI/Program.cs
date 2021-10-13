@@ -49,7 +49,7 @@ namespace SkyEditorUI
             };
 
             // Update the theme every eight seconds
-            GLib.Timeout.AddSeconds(8, UpdateTheme);
+            //GLib.Timeout.AddSeconds(8, UpdateTheme);
 
             win.Show();
             Application.Run();
