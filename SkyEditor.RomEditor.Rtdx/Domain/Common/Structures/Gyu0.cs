@@ -284,8 +284,6 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 
             try
             {
-                // TODO: figure out if it's possible to reuse state from previous iterations
-
                 // Search output up to a given number of bytes backwards for the longest subsequence that matches the bytes starting at data[offset].
                 // A smaller maxLookbehindDistance increases compressed size but decreases time
                 // The common substring must be between 2 and 33 bytes long. The longer, the better.
@@ -300,50 +298,36 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 int matchLength = 0;
                 int matchPos = -1; // relative to the start of the lookbehind span
 
-                // Look for the first matching sequence of 2 bytes backwards into the lookbehind buffer
                 for (int i = 0; i <= maxLookbehindDistance - 2; i++)
                 {
-                    int bufOffset = maxLookbehindDistance - 2 - i;
-                    if (lookbehindData[bufOffset] == lookaheadData[0] &&
-                        lookbehindData[bufOffset + 1] == lookaheadData[1])
+                    // Skip sequences that don't match at least the first two bytes
+                    if (lookbehindData[i] != lookaheadData[0] || lookbehindData[i + 1] != lookaheadData[1])
                     {
-                        matchLength = 2;
-                        matchPos = bufOffset;
-                        break;
+                        continue;
+                    }
+
+                    int currentMatchLength = 2;
+
+                    // Find the longest match from that point on
+                    while (currentMatchLength < maxLength &&
+                        currentMatchLength + i < maxLookbehindDistance &&
+                        lookbehindData[i + currentMatchLength] == lookaheadData[currentMatchLength])
+                    {
+                        currentMatchLength++;
+                    }
+
+                    // Update match.
+                    // A match of the same length as the previous match is always superior since we're scanning forward and
+                    // want the longest match that is closest to the cursor.
+                    if (currentMatchLength >= matchLength)
+                    {
+                        matchLength = currentMatchLength;
+                        matchPos = i;
                     }
                 }
 
                 // A match length of zero means we haven't found any matches in the buffer, so bail out
                 if (matchLength == 0) return;
-
-                // Search for longer matches from there
-                while (matchLength < maxLength)
-                {
-                    if (matchLength + matchPos < maxLookbehindDistance && lookbehindData[matchPos + matchLength] == lookaheadData[matchLength])
-                    {
-                        // Expand match length at the current position
-                        matchLength++;
-                    }
-                    else
-                    {
-                        // Search backwards for another match of the same length
-                        // Stop the search if no more matches are available
-                        int tentativeMatchPos = matchPos - 1;
-                        int tentativeMatchLength = matchLength + 1;
-                        var lookaheadSlice = lookaheadData.Slice(0, tentativeMatchLength);
-                        while (tentativeMatchPos >= 0)
-                        {
-                            if (lookbehindData.Slice(tentativeMatchPos, tentativeMatchLength).SequenceEqual(lookaheadSlice))
-                            {
-                                matchPos = tentativeMatchPos;
-                                matchLength = tentativeMatchLength;
-                                break;
-                            }
-                            tentativeMatchPos--;
-                        }
-                        if (tentativeMatchPos < 0) break;
-                    }
-                }
 
                 var compressionRatio = matchLength * 0.5f;
                 if (result.IsCompressionRatioImproved(matchLength, compressionRatio))
