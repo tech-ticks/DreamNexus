@@ -1,6 +1,7 @@
 using FluentAssertions;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using SkyEditor.RomEditor.Infrastructure;
+using System.Text;
 using Xunit;
 
 namespace SkyEditor.RomEditor.Tests.Domain.Structures
@@ -12,9 +13,9 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
         {
             // Arrange
             var messageBin = new MessageBinEntry();
-            messageBin.AddString("first", "Grookey");
-            messageBin.AddString("second", "Scorbunny");
-            messageBin.AddString("third", "Sobble");
+            messageBin.AddString("first", Encoding.Unicode.GetBytes("Grookey"));
+            messageBin.AddString("second", Encoding.Unicode.GetBytes("Scorbunny"));
+            messageBin.AddString("third", Encoding.Unicode.GetBytes("Sobble"));
 
             // Act
             var data = messageBin.ToByteArray();
