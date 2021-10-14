@@ -223,7 +223,7 @@ jobs:
         # Downloaded automatically on build
         mkdir -p gtk
         unzip /c/Users/runneradmin/AppData/Local/Gtk/3.24.24/gtk.zip -d gtk
-        cp -r gtk SkyEditor.UI/bin/Release/net5.0/win-x64/publish/
+        cp -r gtk/* SkyEditor.UI/bin/Release/net5.0/win-x64/publish/
 
     - name: Download hactool
       run: |
