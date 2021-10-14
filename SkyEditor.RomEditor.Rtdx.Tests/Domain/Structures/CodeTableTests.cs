@@ -1,5 +1,6 @@
 using FluentAssertions;
 using SkyEditor.RomEditor.Domain.Common.Structures;
+using System.Text;
 using Xunit;
 
 namespace SkyEditor.RomEditor.Tests.Domain.Structures
@@ -35,8 +36,9 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             string originalString = "Hello [hero] and [partner], press the [M:B01] button to evolve to [kind_p:25] and [kind_p:90]";
 
             // Act
-            var encodedString = codeTable.UnicodeEncode(originalString);
-            var decodedString = codeTable.UnicodeDecode(encodedString);
+            var encodedBytes = codeTable.UnicodeEncode(originalString);
+            var encodedString = Encoding.Unicode.GetString(encodedBytes).TrimEnd('\0');
+            var decodedString = codeTable.UnicodeDecode(encodedBytes).TrimEnd('\0');
 
             // Assert
             char unicode(ushort value)
