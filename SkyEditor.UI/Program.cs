@@ -14,6 +14,8 @@ namespace SkyEditorUI
         [STAThread]
         public static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.UnhandledException += OnAppDomainUnhandledException;
+
             Application.Init();
             UpdateTheme();
 
@@ -104,6 +106,26 @@ namespace SkyEditorUI
             }
 
             return true;
+        }
+
+        private static void OnAppDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var dataDirectory = SkyEditorUI.Infrastructure.Settings.DataPath;
+            if (!Directory.Exists(dataDirectory))
+            {
+                Directory.CreateDirectory(dataDirectory);
+            }
+
+            string message;
+            if (e.ExceptionObject is Exception ex)
+            {
+                message = $"{ex.Message}\nStack trace: {ex.StackTrace}\n";
+            }
+            else
+            {
+                message = e.ExceptionObject?.ToString() ?? "No exception object";
+            }
+            File.WriteAllText($"AppDomainUnhandledException-{DateTime.Now}.txt", message);
         }
     }
 }
