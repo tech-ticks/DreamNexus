@@ -7,7 +7,11 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 {
     public static class Gyu0
     {
-        const int LookbehindDistance = 0x50;
+#if DEBUG
+        const int LookbehindDistance = 0x25;
+#else
+        const int LookbehindDistance = 0x150;
+#endif
 
         private enum Opcode
         {
@@ -51,7 +55,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 
                 switch (op)
                 {
-                    case Opcode.Copy:
+                    case Opcode.Copy: // 80..9F
                         {
                             var bytes = data.ReadSpan(dataIndex, arg + 1);
                             dataIndex += bytes.Length;
@@ -60,7 +64,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                             break;
                         }
 
-                    case Opcode.SplitCopy:
+                    case Opcode.SplitCopy: // A0..BF
                         {
                             var sep = data.ReadByte(dataIndex++);
                             var bytes = data.ReadSpan(dataIndex, arg + 2);
@@ -73,7 +77,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                             break;
                         }
 
-                    case Opcode.Fill:
+                    case Opcode.Fill: // C0..DF
                         {
                             var fill = data.ReadByte(dataIndex++);
                             for (int i = 0; i < arg + 2; i++)
@@ -81,7 +85,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                             break;
                         }
 
-                    case Opcode.Skip:
+                    case Opcode.Skip: // E0..FF
                         {
                             var count = arg < 0x1F ? arg + 1 : 0x20 + data.ReadByte(dataIndex++);
                             destIndex += count;
@@ -149,6 +153,13 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             public long OutputByteCount { get; set; }
             public float CompressionRatio => Valid ? ((float)InputByteCount / OutputByteCount) : 0;
             public bool Valid => (InputByteCount != 0);
+
+            public bool IsCompressionRatioImproved(int newInputByteCount, float newCompressionRatio)
+            {
+                if (newInputByteCount > InputByteCount) return true;
+                if (newInputByteCount < InputByteCount) return false;
+                return newCompressionRatio > CompressionRatio;
+            }
         }
 
         private static void TryCompress(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
@@ -184,7 +195,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 if (count >= 2)
                 {
                     var compressionRatio = count * 2.0f / (2.0f + count);
-                    if (compressionRatio > result.CompressionRatio)
+                    if (result.IsCompressionRatioImproved(count, compressionRatio))
                     {
                         result.InputByteCount = count * 2;
                         result.OutputByteCount = 2 + count;
@@ -217,7 +228,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 if (count >= 2)
                 {
                     var compressionRatio = count * 0.5f;
-                    if (compressionRatio > result.CompressionRatio)
+                    if (result.IsCompressionRatioImproved(count, compressionRatio))
                     {
                         result.InputByteCount = count;
                         result.OutputByteCount = 2;
@@ -246,7 +257,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                     if (count < 0x1F)
                     {
                         var compressionRatio = count;
-                        if (compressionRatio > result.CompressionRatio)
+                        if (result.IsCompressionRatioImproved(count, compressionRatio))
                         {
                             result.InputByteCount = count;
                             result.OutputByteCount = 1;
@@ -256,7 +267,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                     else
                     {
                         var compressionRatio = count * 0.5f;
-                        if (compressionRatio > result.CompressionRatio)
+                        if (result.IsCompressionRatioImproved(count, compressionRatio))
                         {
                             result.InputByteCount = count;
                             result.OutputByteCount = 2;
@@ -274,8 +285,66 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 
         private static void TryCompressPrevious(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
         {
-            // Don't waste time trying to look behind if there's nothing written yet
-            if (offset == 0) return;
+            // Implementation notes:
+            //
+            // This algorithm performs a simple forward search with a few optimizations.
+            // The first and simplest one is to skip one or two bytes by checking the first two bytes with a handcrafted conditional sequence.
+            // This is made possible by the fact that the command requires at least two bytes.
+            //
+            // There are a couple of optimizations done if the lookahead buffer starts with a sequence of repeated bytes:
+            //
+            // 1. Skip bytes when a non-matching byte is found after the full sequence of repeated bytes
+            // 
+            //   The sequence of repeated bytes can be safely skipped since it is impossible to match a longer sequence at any point within that portion of the sequence.
+            //
+            //   For example, suppose we have the following buffers:
+            //
+            //       Lookbehind buffer   AAABAAAACAAABC
+            //       Lookahead buffer    AAABC
+            //
+            //     These are all valid matches:
+            //       AAABBBAAAACAAABC   match pos
+            //    *  AAAB                  0
+            //    -   AA                   1
+            //             AAA             6
+            //           *  AAA            7
+            //           -   AA            8
+            //               *  AAABC     11
+            //               -   AA       12
+            //
+            //    The matches marked with an asterisk indicate cases for which this optimization applies.
+            //    The dashes beneath the asterisk indicate matches eliminated by the special cases.
+            //    Note that, in all of the marked cases, the matched string contains all repeated characters from the beginning of the lookahead buffer and the next byte
+            //    in the lookbehind buffer does not match the repeated character.
+            //    Under those circumstances we can safely skip ahead the entire repeated block until we find a byte that matches the repeated character.
+            //    Also note that we cannot skip the entire matched string since it's possible to have the initial portion of the string match in the middle of that block.
+            //    For example, in the string 'AAABCAAADAAAE', the block 'AAA' appears twice. We can safely skip the initial 'AAABC', which would then match 'AAA' from 'AAAD'.
+            //
+            // 2. Find the furthest match for the repeating sequence
+            //
+            //    When encountering a sequence of repeated characters in the lookbehind buffer that matches the repeated character in the start of the lookahead buffer,
+            //    we can skip several costly scans by advancing the cursor to the furthest point where the sequence fully matches the beginning of the string.
+            //    At that point, resume the normal search process to try to match the following characters.
+            //
+            //    For example, assume we have the following buffers:
+            //
+            //       Lookbehind buffer   AAABAAAAAABC
+            //       Lookahead buffer    AAABC
+            //
+            //     These are all valid matches:
+            //       AAABAAAABC     match pos
+            //       AAAB              0
+            //        AA               1
+            //         - AAA           4
+            //         -  AAA          5
+            //         -   AAA         6
+            //         *    AAABC      7
+            //               AA        8
+            //
+            //   The match marked with an asterisk is the only case in this example where this optimization applies.
+            //   That is the furthest point in which the initial sequence of repeating characters from the lookahead buffer matches the byte sequence in the
+            //   lookbehind buffer. All previous matches (marked with a dash) can be skipped since they cannot be any longer and are automatically superseded
+            //   by the other matches since the algorithm prioritizes matches of the same size closest to the read cursor.
 
             try
             {
@@ -293,50 +362,111 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 int matchLength = 0;
                 int matchPos = -1; // relative to the start of the lookbehind span
 
-                // Look for the first matching sequence of 2 bytes backwards into the lookbehind buffer
-                for (int i = 0; i <= maxLookbehindDistance - 2; i++)
+                byte repeatChar = lookaheadData[0];
+                int repeatLength = 1;
+                while (repeatLength < maxLength && lookaheadData[repeatLength] == repeatChar)
                 {
-                    int bufOffset = maxLookbehindDistance - 2 - i;
-                    if (lookbehindData[bufOffset] == lookaheadData[0] &&
-                        lookbehindData[bufOffset + 1] == lookaheadData[1])
+                    repeatLength++;
+                }
+
+                if (repeatLength == 1)
+                {
+                    // Do a regular search when the lookahead buffer doesn't have repeating bytes at the start
+                    for (int i = 0; i <= maxLookbehindDistance - 2; i++)
                     {
-                        matchLength = 2;
-                        matchPos = bufOffset;
-                        break;
+                        // Skip sequences that don't match at least the first two bytes
+                        if (lookbehindData[i] != lookaheadData[0] || lookbehindData[i + 1] != lookaheadData[1])
+                        {
+                            // Optimization: Skip one extra byte if the second byte of the lookbehind buffer doesn't match the first byte in the lookahead buffer
+                            if (lookbehindData[i + 1] != lookaheadData[0]) i++;
+                            continue;
+                        }
+
+                        int currentMatchLength = 2;
+
+                        // Find the longest match from that point on
+                        while (currentMatchLength < maxLength &&
+                            currentMatchLength + i < maxLookbehindDistance &&
+                            lookbehindData[i + currentMatchLength] == lookaheadData[currentMatchLength])
+                        {
+                            currentMatchLength++;
+                        }
+
+                        // Update match.
+                        // A match of the same length as the previous match is always superior since we're scanning forward and
+                        // want the longest match that is closest to the cursor.
+                        if (currentMatchLength >= matchLength)
+                        {
+                            matchLength = currentMatchLength;
+                            matchPos = i;
+                        }
+                    }
+                }
+                else
+                {
+                    // Do an optimized search when the lookahead buffer contains repeating bytes at the start
+                    for (int i = 0; i <= maxLookbehindDistance - 2; i++)
+                    {
+                        // Skip sequences that don't match at least the first two bytes.
+                        // Note that the first two bytes in the lookahead buffer are guaranteed to be the same here.
+                        if (lookbehindData[i] != repeatChar || lookbehindData[i + 1] != repeatChar)
+                        {
+                            if (lookbehindData[i + 1] != repeatChar) i++;
+                            continue;
+                        }
+
+                        int currentMatchLength = 2;
+
+                        // Find the match for the repeating byte sequence first.
+                        // Expand the match to its length, then move it as far forward as possible.
+                        while (currentMatchLength + i < maxLookbehindDistance &&
+                            lookbehindData[i + currentMatchLength] == repeatChar)
+                        {
+                            if (currentMatchLength < repeatLength)
+                            {
+                                currentMatchLength++;
+                            }
+                            else
+                            {
+                                i++;
+                            }
+                        }
+
+                        // Find the longest match from that point on, but only if we already matched the sequence of repeating bytes
+                        if (currentMatchLength == repeatLength)
+                        {
+                            while (currentMatchLength < maxLength &&
+                            currentMatchLength + i < maxLookbehindDistance &&
+                            lookbehindData[i + currentMatchLength] == lookaheadData[currentMatchLength])
+                            {
+                                currentMatchLength++;
+                            }
+                        }
+
+                        // Update match.
+                        // A match of the same length as the previous match is always superior since we're scanning forward and
+                        // want the longest match that is closest to the cursor.
+                        if (currentMatchLength >= matchLength)
+                        {
+                            matchLength = currentMatchLength;
+                            matchPos = i;
+                        }
+
+                        // Skip additional bytes when a non-matching byte is found after the full sequence of repeated bytes
+                        if (currentMatchLength >= repeatLength &&
+                            i + currentMatchLength < maxLookbehindDistance &&
+                            lookbehindData[i + currentMatchLength] != repeatChar)
+                        {
+                            i += repeatLength;
+                        }
                     }
                 }
 
                 // A match length of zero means we haven't found any matches in the buffer, so bail out
                 if (matchLength == 0) return;
 
-                // Search for longer matches from there
-                while (matchLength < maxLength && matchLength + matchPos < maxLookbehindDistance)
-                {
-                    if (lookbehindData[matchPos + matchLength] == lookaheadData[matchLength])
-                    {
-                        // Expand match length at the current position
-                        matchLength++;
-                    }
-                    else
-                    {
-                        // Search backwards for another match of the same length
-                        // Stop the search if no more matches are available
-                        int tentativeMatchPos = matchPos - 1;
-                        while (tentativeMatchPos >= 0)
-                        {
-                            if (lookbehindData.Slice(tentativeMatchPos, matchLength).SequenceEqual(lookaheadData.Slice(0, matchLength)))
-                            {
-                                matchPos = tentativeMatchPos;
-                                break;
-                            }
-                            tentativeMatchPos--;
-                        }
-                        if (tentativeMatchPos < 0) break;
-                    }
-                }
-
                 var compressionRatio = matchLength * 0.5f;
-                if (compressionRatio > result.CompressionRatio)
+                if (result.IsCompressionRatioImproved(matchLength, compressionRatio))
                 {
                     var matchOffset = matchPos - maxLookbehindDistance;
 
