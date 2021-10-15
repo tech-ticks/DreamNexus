@@ -81,7 +81,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 {
                     continue;
                 }
-                ScriptStringsOriginal[(int) entry.Key] = codeTable.UnicodeDecode(stringValue.Value)
+                ScriptStringsOriginal[(int) entry.Key] = codeTable.UnicodeDecode(stringValue.Value!)
                     .Replace("[R]", "\n");
             }
         }

@@ -9,22 +9,31 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 {
     public partial class PegasusActDatabase
     {
-        /// <summary>
-        /// Offset of the first creature ID ("HERO") relative to the start of the PegasusActDatabase constructor.
-        /// </summary>
-        private const ulong RelativeFirstCreatureIdOffset = 0x1b0;
+         /// <summary>
+         /// Offset of .text, must be added to the other values. This value works in Versions 1.0 and 1.1
+         /// </summary>
+         private const int TextOffset = 0x788;
+
+         /// <summary>
+         /// Offset of the first creature ID ("HERO") relative to the .text offset. This value works in Version 1.0
+         /// </summary>
+         private const int FirstCreatureIdOffsetOriginal = 0xB61290;
+
+         /// <summary>
+         /// Offset of the first creature ID ("HERO") relative to the .text offset. This value works in Version 1.1
+         /// </summary>
+         private const int FirstCreatureIdOffsetUpdate = 0x6172B0;
 
         public PegasusActDatabase(IMainExecutable executable)
         {
             this.executable = executable;
 
-#if !NETSTANDARD2_0
-            firstCreatureIdOffset = executable.CodeSectionOffset
-                + executable.GetIlConstructorOffset("PegasusActDatabase", new string[] {})
-                + RelativeFirstCreatureIdOffset;
-
-            Read();
-#endif
+            firstCreatureIdOffset = executable.Version switch
+             {
+                 ExecutableVersion.Original => FirstCreatureIdOffsetOriginal,
+                 ExecutableVersion.Update1 => FirstCreatureIdOffsetUpdate,
+                 _ => throw new ArgumentOutOfRangeException(),
+             };
         }
 
         private IMainExecutable executable;
@@ -84,7 +93,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 
         private ulong AbsolutePokemonIndexOffset(ActorData actorData)
         {
-            return firstCreatureIdOffset + actorData.PokemonIndexOffset;
+            return actorData.PokemonIndexOffset + TextOffset + firstCreatureIdOffset;;
         }
 
 #else

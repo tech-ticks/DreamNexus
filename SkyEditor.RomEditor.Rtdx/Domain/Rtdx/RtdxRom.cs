@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Data;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures.Custom;
+using NsoElfConverterDotNet;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx
 {
@@ -227,15 +228,34 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
             if (mainExecutable == null)
             {
-                byte[] nso = FileSystem.ReadAllBytes(GetNsoPath(this.RomDirectory));
-                byte[] metadata = FileSystem.ReadAllBytes(GetIl2CppMetadataPath(this.RomDirectory));
-                mainExecutable = MainExecutable.LoadFromNso(nso, metadata);
+                var elfPath = GetMainElfPath(this.RomDirectory);
+                if (FileSystem.FileExists(elfPath))
+                {
+                    byte[] elf = FileSystem.ReadAllBytes(elfPath);
+                    mainExecutable = new MainExecutable(elf);
+                }
+                else
+                {
+                    byte[] nso = FileSystem.ReadAllBytes(GetNsoPath(this.RomDirectory));
+                    byte[] elf = NsoElfConverter.Instance.ConvertNsoToElf(nso);
+                    try
+                    {
+                        FileSystem.WriteAllBytes(elfPath, elf);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.Error.WriteLine("Failed to save ELF file cache.");
+                        Console.Error.WriteLine(e);
+                    }
+                    mainExecutable = new MainExecutable(elf);
+                }
             }
             return mainExecutable;
         }
         private IMainExecutable? mainExecutable;
 
         protected static string GetNsoPath(string directory) => Path.Combine(directory, "exefs", "main");
+        protected static string GetMainElfPath(string directory) => Path.Combine(directory, "exefs", "main.elf");
 
         protected static string GetIl2CppMetadataPath(string directory) => Path.Combine(directory,
             "romfs/Data/Managed/Metadata/global-metadata.dat");

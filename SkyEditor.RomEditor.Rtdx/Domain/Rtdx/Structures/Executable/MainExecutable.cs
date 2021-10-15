@@ -1,19 +1,11 @@
 ﻿using NsoElfConverterDotNet;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.IO;
-using BindingFlags = System.Reflection.BindingFlags;
 using SkyEditor.IO.Binary;
-#if !NETSTANDARD2_0
-using Il2CppInspector;
-using Il2CppInspector.Reflection;
-using Il2CppInspector.Model;
-using NoisyCowStudios.Bin2Object;
-#endif
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 {
@@ -32,29 +24,18 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
         byte[] ToNso(INsoElfConverter? nsoElfConverter = null);
 
         byte[] StartersToByteArray();
-
-#if !NETSTANDARD2_0
-        public AppModel IlAppModel { get; }
-        public ulong CodeSectionOffset { get; }
-
-        /// <summary>Retrieve the offset of a method relative to the start of the code ELF segment.</summary>
-        ulong GetIlMethodOffset(string fullTypeName, string methodName, string[] paramTypeNames);
-
-        /// <summary>Retrieve the offset of a constructor relative to the start of the code ELF segment.</summary>
-        ulong GetIlConstructorOffset(string fullTypeName, string[] paramTypeNames);
-#endif
     }
 
     public class MainExecutable : IMainExecutable
     {
-        public static MainExecutable LoadFromNso(byte[] file, byte[] il2CppMetadata, INsoElfConverter? nsoElfConverter = null)
+        public static MainExecutable LoadFromNso(byte[] file, INsoElfConverter? nsoElfConverter = null)
         {
             nsoElfConverter ??= NsoElfConverter.Instance;
             var data = nsoElfConverter.ConvertNsoToElf(file);
-            return new MainExecutable(data, il2CppMetadata);
+            return new MainExecutable(data);
         }
 
-        public MainExecutable(byte[] elfData, byte[] il2CppMetadata)
+        public MainExecutable(byte[] elfData)
         {
             if (elfData == null)
             {
@@ -66,7 +47,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
             }
 
             this.Data = elfData ?? throw new ArgumentNullException(nameof(elfData));
-            this.Il2CppMetadata = il2CppMetadata ?? throw new ArgumentNullException(nameof(il2CppMetadata));
 
             Init();
         }
@@ -189,7 +169,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
         }
 
         public byte[] Data { get; set; }
-        public byte[] Il2CppMetadata { get; }
         public ExecutableVersion Version { get; private set; }
 
         public IReadOnlyList<StarterFixedPokemonMap> StarterFixedPokemonMaps { get; private set; } = default!;
@@ -206,123 +185,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 return actorDatabase;
             }
         }
-
-#if !NETSTANDARD2_0
-        private ulong? codeSectionOffset;
-
-        public ulong CodeSectionOffset
-        {
-            get
-            {
-                if (codeSectionOffset == null)
-                {
-                    LoadIlAppModel();
-                }
-                return codeSectionOffset!.Value;
-            }
-        }
-
-        private AppModel? ilAppModel;
-
-        public AppModel IlAppModel
-        {
-            get
-            {
-                {
-                    if (ilAppModel == null)
-                    {
-                        LoadIlAppModel();
-                    }
-                    return ilAppModel!;
-                }
-            }
-        }
-
-        private void LoadIlAppModel()
-        {
-            // Lazily create an Il2CppInspector model.
-            // TODO: Consider caching the result in a file. This is horribly slow.
-            var binaryStream = new MemoryStream(Data.ToArray());
-            var metadataStream = new MemoryStream(Il2CppMetadata);
-
-            var oldOut = Console.Out;
-            // Disable Console.WriteLine() since Il2CppInspector logs text
-            Console.SetOut(TextWriter.Null);
-            try
-            {
-                // Disable the plugin manager since it would crash due to a missing "plugins" folder
-                PluginManager.Enabled = false;
-
-                var inspector = Il2CppInspector.Il2CppInspector
-                    .LoadFromStream(binaryStream, metadataStream, silent: true).FirstOrDefault();
-
-                if (inspector == null)
-                {
-                    throw new Exception("Couldn't extract Il2Cpp metadata.");
-                }
-
-                ilAppModel = new AppModel(new TypeModel(inspector));
-                codeSectionOffset = inspector.BinaryImage.GetSections()
-                    .First(section => section.IsExec).ImageStart;
-            }
-            finally
-            {
-                Console.SetOut(oldOut);
-            }
-        }
-
-        public ulong GetIlMethodOffset(string fullTypeName, string methodName, string[] paramTypeNames)
-        {
-            var methodInfos = GetIlType(fullTypeName).GetMethods(methodName);
-            var overloadMethodInfo = FindMethodOverload(methodInfos, paramTypeNames);
-            if (overloadMethodInfo == null || !overloadMethodInfo.VirtualAddress.HasValue)
-            {
-                throw new ArgumentException("The method doesn't exist.");
-            }
-            return overloadMethodInfo.VirtualAddress.Value.Start;
-        }
-
-        public ulong GetIlConstructorOffset(string fullTypeName, string[] paramTypeNames)
-        {
-            var methodInfos = GetIlType(fullTypeName).DeclaredConstructors.ToArray();
-            var overloadMethodInfo = FindMethodOverload(methodInfos, paramTypeNames);
-            if (overloadMethodInfo == null || !overloadMethodInfo.VirtualAddress.HasValue)
-            {
-                throw new ArgumentException("The constructor doesn't exist.");
-            }
-            return overloadMethodInfo.VirtualAddress.Value.Start;
-        }
-
-        private TypeInfo GetIlType(string fullTypeName)
-        {
-            return IlAppModel.TypeModel.GetType(fullTypeName);
-        }
-
-        private MethodBase? FindMethodOverload(MethodBase[] methodInfos, string[] paramTypeNames)
-        {
-            var paramTypes = paramTypeNames.Select(GetIlType).ToArray();
-            for (int i = 0; i < methodInfos.Length; i++)
-            {
-                var methodInfo = methodInfos[i];
-                bool isPossibleCandidate = methodInfo.DeclaredParameters.Count == paramTypeNames.Length;
-                for (int j = 0; j < methodInfo.DeclaredParameters.Count && isPossibleCandidate; j++)
-                {
-                    if (paramTypes[j] != methodInfo.DeclaredParameters[j].ParameterType)
-                    {
-                        isPossibleCandidate = false;
-                    }
-                }
-
-                if (isPossibleCandidate)
-                {
-                    return methodInfo;
-                }
-            }
-
-            return null;
-        }
-
-#endif
     }
 
     [DebuggerDisplay("StarterFixedPokemonMap: {PokemonId} -> {FixedPokemonId}")]

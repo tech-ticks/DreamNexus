@@ -24,10 +24,6 @@
     <PackageReference Include="SkyEditor.IO" Version="5.1.16" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='net5.0'">
-    <PackageReference Include="NoisyCowStudios.Il2CppInspector" Version="2021.1.0" />
-  </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
