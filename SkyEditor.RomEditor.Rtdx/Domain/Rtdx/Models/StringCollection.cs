@@ -231,10 +231,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     ScriptStringsOverride[hash] = value;
                 }
             }
-            else
-            {
-                throw new ArgumentException("Invalid type", nameof(type));
-            }
         }
 
         public void SetString(StringType type, string key, string value)
