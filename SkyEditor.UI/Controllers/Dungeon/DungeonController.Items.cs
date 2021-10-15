@@ -140,6 +140,11 @@ namespace SkyEditorUI.Controllers
                 if (itemIndex.HasValue && itemKindByIndex[itemIndex.Value] == kind)
                 {
                     var oldIndex = (ItemIndex) store.GetValue(iter, ItemIndexColumn);
+                    var weightIndex = currentItemSet!.ItemWeights.FindIndex(weight => weight.Index == oldIndex);
+                    if (weightIndex == -1)
+                    {
+                        return;
+                    }
                     if (itemIndex != oldIndex &&
                         currentItemSet!.ItemWeights.Any(weight => weight.Index == itemIndex.Value))
                     {
@@ -147,24 +152,25 @@ namespace SkyEditorUI.Controllers
                             "The item is already in the list.");
                         return;
                     }
-                    int i = (int) store.GetValue(iter, ItemRunningIndexColumn);
-                    var weight = currentItemSet!.ItemWeights[i];
+                    var weight = currentItemSet!.ItemWeights[weightIndex];
                     weight.Index = itemIndex.Value;
-                    currentItemSet!.ItemWeights[i] = weight;
-                    store.SetValue(iter, ItemIndexColumn, itemIndex.Value);
+                    currentItemSet!.ItemWeights[weightIndex] = weight;
+                    store.SetValue(iter, ItemIndexColumn, (int) itemIndex.Value);
                     store.SetValue(iter, ItemNameColumn, AutocompleteHelpers.FormatItem(rom, itemIndex.Value));
+                    RefreshCategoryLookup();
+                    RefreshItemsInCategory(kind);
                 }
             }
         }
 
-        private void OnItemWeightEdited(TreeStore store, EditedArgs args)
+        private void OnItemWeightEdited(TreeStore store, EditedArgs args, ItemKind kind)
         {
             var path = new TreePath(args.Path);
             if (store.GetIter(out var iter, path))
             {
                 var itemIndex = (ItemIndex) store.GetValue(iter, ItemIndexColumn);
                 string name = (string) store.GetValue(iter, ItemNameColumn);
-                if (ushort.TryParse(args.NewText, out ushort value))
+                if (ushort.TryParse(args.NewText, out ushort value) && value > 0)
                 {
                     Console.WriteLine("Edited " + name + " to weight " + value);
                     var weightIndex = currentItemSet!.ItemWeights.FindIndex(weight => weight.Index == itemIndex);
@@ -175,7 +181,8 @@ namespace SkyEditorUI.Controllers
                     var weight = currentItemSet.ItemWeights[weightIndex];
                     weight.Weight = value;
                     currentItemSet!.ItemWeights[weightIndex] = weight;
-                    store.SetValue(iter, ItemWeightColumn, value);
+                    RefreshCategoryLookup();
+                    RefreshItemsInCategory(kind);
                 }
             }
         }
@@ -214,6 +221,7 @@ namespace SkyEditorUI.Controllers
                     currentItemSet!.ItemWeights.RemoveAll(item => item.Index == index);
                     (model as TreeStore)!.Remove(ref iter);
                     RefreshCategoryLookup();
+                    RefreshItemsInCategory(kind);
                 }
             }
         }
@@ -265,7 +273,7 @@ namespace SkyEditorUI.Controllers
             textRenderer2.Editable = true;
             textRenderer2.Edited += (object sender, EditedArgs args) =>
             {
-                OnItemWeightEdited(model, args);
+                OnItemWeightEdited(model, args, kind);
             };
 
             var col3 = new TreeViewColumn();
