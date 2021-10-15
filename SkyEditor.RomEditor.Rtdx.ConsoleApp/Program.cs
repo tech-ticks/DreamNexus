@@ -138,6 +138,11 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     else
                     {
                         var rom = await RomLoader.LoadRom(arg, fileSystem);
+                        if (rom is IRtdxRom rtdxRom)
+                        {
+                            rtdxRom.EnableCustomFiles = args.Contains("--enable-custom-files");
+                        }
+
                         context.Rom = rom ?? throw new ArgumentException($"Unable to determine the type of ROM located at {arg}");
                         context.RomPath = arg;
                         if (context.VerboseLogging) Console.WriteLine($"Loaded {arg}");

@@ -103,7 +103,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 TotalFloorCount = requestLevel?.MainEntry?.TotalFloorCount ?? -1,
 
                 ItemSets = LoadItemSets(itemArrangeEntry),
-                PokemonStats = balance.WildPokemon != null ? LoadPokemonStats(balance.WildPokemon) : null,
+                PokemonStats = balance.WildPokemon != null ? LoadStats(balance.WildPokemon) : null,
                 Floors = LoadFloors(balance, requestLevel),
 
                 Extra = extra,
@@ -114,7 +114,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         }
 #pragma warning restore CS0612
 
-        private List<DungeonPokemonStatsModel> LoadPokemonStats(DungeonBalance.WildPokemonInfo data)
+        private List<DungeonPokemonStatsModel> LoadStats(DungeonBalance.WildPokemonInfo data)
         {
             // Only include stats that are actually used (every dungeon has empty stats for all unused Pokémon)
             var lookup = data.Floors
@@ -123,13 +123,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 .ToLookup(entry => entry.PokemonIndex);
 
             return data.Stats
-                .Where(stat => lookup.Contains((short) stat.Index) || stat.StrongFoe != 0)
+                .Where(stat => lookup.Contains((short) stat.CreatureIndex) || stat.StrongFoe != 0)
                 .Select(stat => new DungeonPokemonStatsModel
                 {
-                    CreatureIndex = (CreatureIndex) stat.Index,
+                    CreatureIndex = stat.CreatureIndex,
                     XpYield = stat.XPYield,
                     HitPoints = stat.HitPoints,
                     Attack = stat.Attack,
+                    Defense = stat.Defense,
                     SpecialAttack = stat.SpecialAttack,
                     SpecialDefense = stat.SpecialDefense,
                     Speed = stat.Speed,
@@ -306,13 +307,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
         private void FlushStats(List<DungeonPokemonStatsModel> models, DungeonBalance.WildPokemonInfo data)
         {
-            var modelsDict = models.ToDictionary(model => (int) model.CreatureIndex);
+            var modelsDict = models.ToDictionary(model => model.CreatureIndex);
             for (int i = 0; i < data.Stats.Length; i++)
             {
                 var stats = data.Stats[i];
-                if (modelsDict.ContainsKey(stats.Index))
+                if (modelsDict.ContainsKey(stats.CreatureIndex))
                 {
-                    var model = modelsDict[i];
+                    var model = modelsDict[stats.CreatureIndex];
                     stats.XPYield = model.XpYield;
                     stats.HitPoints = model.HitPoints;
                     stats.Attack = model.Attack;
