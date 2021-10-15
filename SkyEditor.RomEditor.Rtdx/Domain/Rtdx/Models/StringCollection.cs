@@ -198,7 +198,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
         public void SetString(StringType type, int hash, string value)
         {
-            if (type == StringType.Common)
+            if (type == StringType.Common && GetString(StringType.Common, hash) != value)
             {
                 if (!CommonStringsOverride.ContainsKey((TextIDHash) hash))
                 {
@@ -209,7 +209,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     CommonStringsOverride[(TextIDHash) hash] = value;
                 }
             }
-            else if (type == StringType.Dungeon)
+            else if (type == StringType.Dungeon && GetString(StringType.Dungeon, hash) != value)
             {
                 if (!DungeonStringsOverride.ContainsKey(hash))
                 {
@@ -220,7 +220,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     DungeonStringsOverride[hash] = value;
                 }
             }
-            else if (type == StringType.Script)
+            else if (type == StringType.Script && GetString(StringType.Script, hash) != value)
             {
                 if (!ScriptStringsOverride.ContainsKey(hash))
                 {
