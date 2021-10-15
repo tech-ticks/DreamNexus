@@ -69,13 +69,14 @@ jobs:
         # Linux
         curl https://cdn.discordapp.com/attachments/830753390824783875/894197154665599057/hactool -L -o SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/hactool
         chmod +x SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/hactool
+        zip -r DreamNexus-linux.zip SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/
 
     - name: Upload Linux build
       uses: actions/upload-artifact@v2
       with:
         name: linux-app
         path: |
-          SkyEditor.UI/bin/Release/net5.0/linux-x64/publish/
+          DreamNexus-linux.zip
 
   build-mac:
     runs-on: macos-10.15
