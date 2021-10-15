@@ -97,7 +97,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             while (match.Success)
             {
                 var bytes = Encoding.Unicode.GetBytes(text.Substring(lastStringPos, match.Index - lastStringPos));
-                Array.Copy(bytes, 0, buffer, bufferPos, bytes.Length);
+                Buffer.BlockCopy(bytes, 0, buffer, bufferPos, bytes.Length);
                 bufferPos += bytes.Length;
 
                 string directive = match.Groups[1].Value;
@@ -138,7 +138,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                             }
 
                             byte[] valueBytes = BitConverter.GetBytes(value + 1);
-                            Array.Copy(valueBytes, 0, buffer, bufferPos, valueBytes.Length);
+                            Buffer.BlockCopy(valueBytes, 0, buffer, bufferPos, valueBytes.Length);
                             bufferPos += valueBytes.Length;
                         }
                     }
@@ -151,13 +151,15 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 else
                 {
                     var matchBytes = Encoding.Unicode.GetBytes(match.Value);
-                    Array.Copy(matchBytes, 0, buffer, bufferPos, bytes.Length);
+                    Buffer.BlockCopy(matchBytes, 0, buffer, bufferPos, bytes.Length);
                     bufferPos += matchBytes.Length;
                 }
                 lastStringPos = match.Index + match.Length;
                 match = match.NextMatch();
             }
 
+            var textBytes = Encoding.Unicode.GetBytes(text.Substring(lastStringPos, text.Length - lastStringPos));
+            Buffer.BlockCopy(textBytes, 0, buffer, bufferPos, textBytes.Length);
             return buffer;
         }
 

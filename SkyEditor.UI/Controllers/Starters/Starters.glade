@@ -434,7 +434,7 @@
                             <property name="visible">True</property>
                             <property name="can-focus">False</property>
                             <property name="halign">start</property>
-                            <property name="label" translatable="yes">The default team is only applied if you bypass the personality quiz (remove the call to &lt;tt&gt;SpecialFunc&lt;/tt&gt; with &lt;tt&gt;specialFuncType&lt;/tt&gt; 300 in script/event/seikaku/01_seikakushindan/seikakushindan.lua). 
+                            <property name="label" translatable="yes">The default team is only applied if you bypass the personality quiz (remove the call to &lt;tt&gt;SpecialFunc&lt;/tt&gt; in script/event/seikaku/01_seikakushindan/seikakushindan.lua). 
 Default starter species and name can only be changed when code injection is enabled.</property>
                             <property name="use-markup">True</property>
                             <property name="wrap">True</property>
