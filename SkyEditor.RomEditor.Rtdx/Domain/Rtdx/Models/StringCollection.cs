@@ -59,7 +59,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 {
                     continue;
                 }
-                CommonStringsOriginal[(TextIDHash) entry.Key] = codeTable.UnicodeDecode(stringValue.Value)
+                CommonStringsOriginal[(TextIDHash) entry.Key] = codeTable.UnicodeDecode(stringValue.Value!)
                     .Replace("[R]", "\n");
             }
             
@@ -70,7 +70,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 {
                     continue;
                 }
-                DungeonStringsOriginal[(int) entry.Key] = codeTable.UnicodeDecode(stringValue.Value)
+                DungeonStringsOriginal[(int) entry.Key] = codeTable.UnicodeDecode(stringValue.Value!)
                     .Replace("[R]", "\n");
             }
 

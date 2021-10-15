@@ -43,7 +43,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     var tmIndex = j + i * 8;
                     if ((data.LearnableTMs[i] & (1 << j)) != 0)
                     {
-                       learnableTMs.Add(ItemIndex.BROKENMACHINE_MIN + tmIndex);
+                       learnableTMs.Add(ItemIndexConstants.BROKENMACHINE_MIN + tmIndex);
                     }
                 }
             }
@@ -135,7 +135,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     for (var j = 0; j < 8; j++)
                     {
                         var tmIndex = j + i * 8;
-                        var itemIndex = ItemIndex.BROKENMACHINE_MIN + tmIndex;
+                        var itemIndex = ItemIndexConstants.BROKENMACHINE_MIN + tmIndex;
                         if (tmsSet.Contains(itemIndex))
                         {
                             tmBits |= (byte) (1 << j);

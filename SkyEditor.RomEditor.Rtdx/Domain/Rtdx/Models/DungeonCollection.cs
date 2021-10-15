@@ -219,7 +219,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             foreach (var weight in weights.Entries.SkipLast(1)) // End terminator entry, always -1
             {
                 // Can't use LINQ ToDictionary due to duplicate keys
-                var index = ItemIndex.TRAP_MIN + weight.Index;
+                var index = ItemIndexConstants.TRAP_MIN + weight.Index;
                 if (!dict.ContainsKey(index))
                 {
                     dict.Add(index, weight.Weight);
@@ -424,7 +424,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         {
             foreach (var entry in data.Entries.SkipLast(1))
             {
-                if (model.TrapWeights!.TryGetValue(entry.Index + ItemIndex.TRAP_MIN, out short modelWeight))
+                if (model.TrapWeights!.TryGetValue(entry.Index + ItemIndexConstants.TRAP_MIN, out short modelWeight))
                 {
                     entry.Weight = modelWeight;
                 }

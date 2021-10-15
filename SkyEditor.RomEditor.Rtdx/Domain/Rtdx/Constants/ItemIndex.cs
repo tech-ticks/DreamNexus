@@ -1,42 +1,7 @@
 ﻿namespace SkyEditor.RomEditor.Domain.Rtdx.Constants
 {
     public enum ItemIndex
-    {
-        ARROW_MIN = 1,
-        ARROW_MAX = 11,
-        STONE_MIN = 12,
-        STONE_MAX = 19,
-        EQUIP_MIN = 20,
-        EQUIP_MAX = 72,
-        FOOD_MIN = 73,
-        FOOD_MAX = 82,
-        SEED_MIN = 83,
-        SEED_MAX = 113,
-        PP_MIN = 114,
-        PP_MAX = 121,
-        PARAMETER_MIN = 122,
-        PARAMETER_MAX = 158,
-        ORB_MIN = 159,
-        ORB_MAX = 206,
-        WAND_MIN = 207,
-        WAND_MAX = 225,
-        EVOLUTION_MIN = 226,
-        EVOLUTION_MAX = 263,
-        OTHER_MIN = 264,
-        OTHER_MAX = 278,
-        MONEY_MIN = 279,
-        MONEY_MAX = 279,
-        BOX_MIN = 280,
-        BOX_MAX = 286,
-        CHEST_MIN = 287,
-        CHEST_MAX = 328,
-        WAZAMACHINE_MIN = 329,
-        WAZAMACHINE_MAX = 453,
-        BROKENMACHINE_MIN = 454,
-        BROKENMACHINE_MAX = 578,
-        TRAP_MIN = 579,
-        TRAP_MAX = 641,
-        
+    {        
         NONE = 0,
         ARROW_WOOD = 1,
         ARROW_IRON = 2,
@@ -680,5 +645,43 @@
         TRAP_QUEST_YOBI4 = 640,
         TRAP_QUEST_YOBI5 = 641,
         END = 642,
+    }
+
+    public static class ItemIndexConstants
+    {
+        public const ItemIndex ARROW_MIN = (ItemIndex) 1;
+        public const ItemIndex ARROW_MAX = (ItemIndex) 11;
+        public const ItemIndex STONE_MIN = (ItemIndex) 12;
+        public const ItemIndex STONE_MAX = (ItemIndex) 19;
+        public const ItemIndex EQUIP_MIN = (ItemIndex) 20;
+        public const ItemIndex EQUIP_MAX = (ItemIndex) 72;
+        public const ItemIndex FOOD_MIN = (ItemIndex) 73;
+        public const ItemIndex FOOD_MAX = (ItemIndex) 82;
+        public const ItemIndex SEED_MIN = (ItemIndex) 83;
+        public const ItemIndex SEED_MAX = (ItemIndex) 113;
+        public const ItemIndex PP_MIN = (ItemIndex) 114;
+        public const ItemIndex PP_MAX = (ItemIndex) 121;
+        public const ItemIndex PARAMETER_MIN = (ItemIndex) 122;
+        public const ItemIndex PARAMETER_MAX = (ItemIndex) 158;
+        public const ItemIndex ORB_MIN = (ItemIndex) 159;
+        public const ItemIndex ORB_MAX = (ItemIndex) 206;
+        public const ItemIndex WAND_MIN = (ItemIndex) 207;
+        public const ItemIndex WAND_MAX = (ItemIndex) 225;
+        public const ItemIndex EVOLUTION_MIN = (ItemIndex) 226;
+        public const ItemIndex EVOLUTION_MAX = (ItemIndex) 263;
+        public const ItemIndex OTHER_MIN = (ItemIndex) 264;
+        public const ItemIndex OTHER_MAX = (ItemIndex) 278;
+        public const ItemIndex MONEY_MIN = (ItemIndex) 279;
+        public const ItemIndex MONEY_MAX = (ItemIndex) 279;
+        public const ItemIndex BOX_MIN = (ItemIndex) 280;
+        public const ItemIndex BOX_MAX = (ItemIndex) 286;
+        public const ItemIndex CHEST_MIN = (ItemIndex) 287;
+        public const ItemIndex CHEST_MAX = (ItemIndex) 328;
+        public const ItemIndex WAZAMACHINE_MIN = (ItemIndex) 329;
+        public const ItemIndex WAZAMACHINE_MAX = (ItemIndex) 453;
+        public const ItemIndex BROKENMACHINE_MIN = (ItemIndex) 454;
+        public const ItemIndex BROKENMACHINE_MAX = (ItemIndex) 578;
+        public const ItemIndex TRAP_MIN = (ItemIndex) 579;
+        public const ItemIndex TRAP_MAX = (ItemIndex) 641;
     }
 }

@@ -74,8 +74,8 @@ namespace SkyEditorUI.Controllers
             creatureCompletionStore!.AppendAll(AutocompleteHelpers.GetPokemon(rom));
             itemCompletionStore!.AppendAll(AutocompleteHelpers.GetItems(rom));
             tmCompletionStore!.AppendAll(Enumerable.Range(
-                    (int) ItemIndex.BROKENMACHINE_MIN,
-                    (int) (ItemIndex.BROKENMACHINE_MAX - ItemIndex.BROKENMACHINE_MIN))
+                    (int) ItemIndexConstants.BROKENMACHINE_MIN,
+                    (int) (ItemIndexConstants.BROKENMACHINE_MAX - ItemIndexConstants.BROKENMACHINE_MIN))
                 .Select(id => AutocompleteHelpers.FormatItem(rom, (ItemIndex) id)));
             moveCompletionStore!.AppendAll(AutocompleteHelpers.GetMoves(rom));
 

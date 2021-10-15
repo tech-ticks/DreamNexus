@@ -33,7 +33,7 @@ namespace SkyEditorUI.Controllers
                 int index = path.Indices[0];
                 var tmItem = AutocompleteHelpers.ExtractItem(args.NewText);
                 if (tmItem.HasValue
-                    && tmItem.Value >= ItemIndex.BROKENMACHINE_MIN && tmItem.Value <= ItemIndex.BROKENMACHINE_MAX)
+                    && tmItem.Value >= ItemIndexConstants.BROKENMACHINE_MIN && tmItem.Value <= ItemIndexConstants.BROKENMACHINE_MAX)
                 {
                     pokemon.LearnableTMs[index] = tmItem.Value;
                     tmStore!.SetValue(iter, TmIndexColumn, (int) tmItem);
@@ -52,8 +52,8 @@ namespace SkyEditorUI.Controllers
         {
             if (tmTree!.Selection.GetSelected(out var _, out var iter))
             {
-                var newTm = Enum.GetValues<ItemIndex>().FirstOrDefault(item => item >= ItemIndex.BROKENMACHINE_MIN
-                    && item <= ItemIndex.BROKENMACHINE_MAX && !pokemon.LearnableTMs.Contains(item));
+                var newTm = Enum.GetValues<ItemIndex>().FirstOrDefault(item => item >= ItemIndexConstants.BROKENMACHINE_MIN
+                    && item <= ItemIndexConstants.BROKENMACHINE_MAX && !pokemon.LearnableTMs.Contains(item));
 
                 if (newTm == default)
                 {
