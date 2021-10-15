@@ -38,7 +38,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 
         private IMainExecutable executable;
 
-#if !NETSTANDARD2_0
         private readonly ulong firstCreatureIdOffset = 0;
 
         private void Read()
@@ -95,13 +94,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
         {
             return actorData.PokemonIndexOffset + TextOffset + firstCreatureIdOffset;;
         }
-
-#else
-        public void Write()
-        {
-            throw new Exception("Not supported on .NET Standard 2.0");
-        }
-#endif
 
         public byte[] ToByteArray()
         {
