@@ -125,7 +125,7 @@ namespace SkyEditorUI
             {
                 message = e.ExceptionObject?.ToString() ?? "No exception object";
             }
-            File.WriteAllText($"AppDomainUnhandledException-{DateTime.Now}.txt", message);
+            File.WriteAllText(Path.Combine(dataDirectory, $"AppDomainUnhandledException-{DateTime.Now}.txt"), message);
         }
     }
 }
