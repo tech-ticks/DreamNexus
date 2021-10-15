@@ -7,7 +7,11 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 {
     public static class Gyu0
     {
-        const int LookbehindDistance = 0x400;
+#if DEBUG
+        const int LookbehindDistance = 0x25;
+#else
+        const int LookbehindDistance = 0x150;
+#endif
 
         private enum Opcode
         {
