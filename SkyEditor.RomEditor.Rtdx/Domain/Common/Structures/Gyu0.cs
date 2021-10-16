@@ -186,103 +186,82 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 
         private static void TryCompressSplitCopy(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
         {
-            try
+            var sep = data[offset];
+            var count = 1;
+            while (count < 0x21 && offset + count * 2 + 1 < data.Length && data[offset + count * 2] == sep && data[offset + count * 2 + 1] != sep)
             {
-                var sep = data[offset];
-                var count = 1;
-                while (data[offset + count * 2] == sep && data[offset + count * 2 + 1] != sep && count < 0x21)
-                {
-                    count++;
-                }
+                count++;
+            }
 
-                if (count >= 2)
+            if (count >= 2)
+            {
+                var compressionRatio = count * 2.0f / (2.0f + count);
+                if (result.IsCompressionRatioImproved(count, compressionRatio))
                 {
-                    var compressionRatio = count * 2.0f / (2.0f + count);
-                    if (result.IsCompressionRatioImproved(count, compressionRatio))
+                    result.InputByteCount = count * 2;
+                    result.OutputByteCount = 2 + count;
+                    output.WriteByte((byte)(0xA0 + count - 2));
+                    output.WriteByte(sep);
+                    for (int i = 0; i < count; i++)
                     {
-                        result.InputByteCount = count * 2;
-                        result.OutputByteCount = 2 + count;
-                        output.WriteByte((byte)(0xA0 + count - 2));
-                        output.WriteByte(sep);
-                        for (int i = 0; i < count; i++)
-                        {
-                            output.WriteByte(data[offset + i * 2 + 1]);
-                        }
+                        output.WriteByte(data[offset + i * 2 + 1]);
                     }
                 }
-            }
-            catch (IndexOutOfRangeException)
-            {
-                // EOF means failure
             }
         }
 
         private static void TryCompressFill(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
         {
-            try
+            var fill = data[offset];
+            var count = 1;
+            while (count < 0x21 && offset + count < data.Length && data[offset + count] == fill)
             {
-                var fill = data[offset];
-                var count = 1;
-                while (data[offset + count] == fill && count < 0x21)
-                {
-                    count++;
-                }
+                count++;
+            }
 
-                if (count >= 2)
+            if (count >= 2)
+            {
+                var compressionRatio = count * 0.5f;
+                if (result.IsCompressionRatioImproved(count, compressionRatio))
+                {
+                    result.InputByteCount = count;
+                    result.OutputByteCount = 2;
+                    output.WriteByte((byte)(0xC0 + count - 2));
+                    output.WriteByte(fill);
+                }
+            }
+        }
+
+        private static void TryCompressSkip(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
+        {
+            var count = 0;
+            while (count < 0x11F && offset + count < data.Length && data[offset + count] == 0)
+            {
+                count++;
+            }
+            if (count > 0)
+            {
+                if (count < 0x1F)
+                {
+                    var compressionRatio = count;
+                    if (result.IsCompressionRatioImproved(count, compressionRatio))
+                    {
+                        result.InputByteCount = count;
+                        result.OutputByteCount = 1;
+                        output.WriteByte((byte)(0xE0 + count - 1));
+                    }
+                }
+                else
                 {
                     var compressionRatio = count * 0.5f;
                     if (result.IsCompressionRatioImproved(count, compressionRatio))
                     {
                         result.InputByteCount = count;
                         result.OutputByteCount = 2;
-                        output.WriteByte((byte)(0xC0 + count - 2));
-                        output.WriteByte(fill);
+                        output.WriteByte(0xFF);
+                        output.WriteByte((byte)(count - 0x20));
                     }
                 }
-            }
-            catch (IndexOutOfRangeException)
-            {
-                // EOF means failure
-            }
-        }
-
-        private static void TryCompressSkip(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
-        {
-            try
-            {
-                var count = 0;
-                while (data[offset + count] == 0 && count < 0x11F)
-                {
-                    count++;
-                }
-                if (count > 0)
-                {
-                    if (count < 0x1F)
-                    {
-                        var compressionRatio = count;
-                        if (result.IsCompressionRatioImproved(count, compressionRatio))
-                        {
-                            result.InputByteCount = count;
-                            result.OutputByteCount = 1;
-                            output.WriteByte((byte)(0xE0 + count - 1));
-                        }
-                    }
-                    else
-                    {
-                        var compressionRatio = count * 0.5f;
-                        if (result.IsCompressionRatioImproved(count, compressionRatio))
-                        {
-                            result.InputByteCount = count;
-                            result.OutputByteCount = 2;
-                            output.WriteByte(0xFF);
-                            output.WriteByte((byte)(count - 0x20));
-                        }
-                    }
-                }
-            }
-            catch (IndexOutOfRangeException)
-            {
-                // EOF means failure
             }
         }
 
@@ -382,6 +361,10 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                             currPos--;
                             currMatchLength++;
                         }
+                        else
+                        {
+                            break;
+                        }
                     }
 
                     while (currPos != -1 && currPos >= maxLookbehindOffset)
@@ -412,6 +395,10 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                                 currPos--;
                                 currMatchLength++;
                             }
+                            else
+                            {
+                                break;
+                            }
                         }
                     }
                 }
@@ -434,25 +421,18 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 
         private static void TryCompressPrevious(byte[] data, long offset, MemoryStream output, ref CompressPreviousState state, ref CompressionResult result)
         {
-            try
-            {
-                state.Search(data, offset, out int matchPos, out int matchLength);
+            state.Search(data, offset, out int matchPos, out int matchLength);
 
-                // A match length of zero means we haven't found any matches in the buffer, so bail out
-                if (matchLength == 0) return;
+            // A match length of zero means we haven't found any matches in the buffer, so bail out
+            if (matchLength == 0) return;
 
-                var compressionRatio = matchLength * 0.5f;
-                if (result.IsCompressionRatioImproved(matchLength, compressionRatio))
-                {
-                    result.InputByteCount = matchLength;
-                    result.OutputByteCount = 2;
-                    output.WriteByte((byte)((byte)((matchLength - 2) << 2) | (byte)((matchPos >> 8) & 3)));
-                    output.WriteByte((byte)(matchPos & 0xFF));
-                }
-            }
-            catch (IndexOutOfRangeException)
+            var compressionRatio = matchLength * 0.5f;
+            if (result.IsCompressionRatioImproved(matchLength, compressionRatio))
             {
-                // EOF means failure
+                result.InputByteCount = matchLength;
+                result.OutputByteCount = 2;
+                output.WriteByte((byte)((byte)((matchLength - 2) << 2) | (byte)((matchPos >> 8) & 3)));
+                output.WriteByte((byte)(matchPos & 0xFF));
             }
         }
     }
