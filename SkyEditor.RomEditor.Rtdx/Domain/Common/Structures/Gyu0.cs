@@ -8,6 +8,13 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
 {
     public static class Gyu0
     {
+
+#if DEBUG
+        const int LookbehindDistance = 0x100;
+#else
+        const int LookbehindDistance = 0x400;
+#endif
+
         private enum Opcode
         {
             Copy,
@@ -310,7 +317,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 matchPos = -1;
                 matchLength = 0;
 
-                var maxLookbehindDistance = Math.Min(0x400, (int)offset);
+                var maxLookbehindDistance = Math.Min(LookbehindDistance, (int)offset);
                 if (maxLookbehindDistance < 2) return;
                 var maxLength = Math.Min(33, (int)Math.Min(maxLookbehindDistance, data.Length - offset));
                 if (maxLength < 2) return;
