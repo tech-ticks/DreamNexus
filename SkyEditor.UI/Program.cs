@@ -6,6 +6,7 @@ using Gtk;
 using Settings = Gtk.Settings;
 using SkyEditorUI.Controllers;
 using SkyEditorUI.Infrastructure;
+using Microsoft.Win32;
 
 namespace SkyEditorUI
 {
@@ -51,7 +52,7 @@ namespace SkyEditorUI
             };
 
             // Update the theme every eight seconds
-            //GLib.Timeout.AddSeconds(8, UpdateTheme);
+            GLib.Timeout.AddSeconds(8, UpdateTheme);
 
             win.Show();
             Application.Run();
@@ -77,7 +78,14 @@ namespace SkyEditorUI
             {
                 if (OperatingSystem.IsWindows())
                 {
-                    return true;
+                    var subkey = Registry.CurrentUser.OpenSubKey(
+                        @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+                    var theme = subkey?.GetValue("AppsUseLightTheme", 0) as int?;
+
+                    if (theme != null)
+                    {
+                        return theme == 0;
+                    }
                 }
                 else if (OperatingSystem.IsMacOS())
                 {
