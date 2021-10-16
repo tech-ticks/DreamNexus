@@ -292,14 +292,9 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 {
                     head[i] = -1;
                 }
-                for (int i = 0; i < prev.Length; i++)
-                {
-                    prev[i] = -1;
-                }
             }
 
             // Search output up to a given number of bytes backwards for the longest subsequence that matches the bytes starting at data[offset].
-            // A smaller maxLookbehindDistance increases compressed size but decreases time
             // The common substring must be between 2 and 33 bytes long. The longer, the better.
             public void Search(byte[] data, long offset, out int matchPos, out int matchLength)
             {
@@ -321,28 +316,97 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 if (maxLength < 2) return;
                 var maxLookbehindOffset = offset - maxLookbehindDistance;
 
+                // Check if the first two bytes at the current offset have been found somewhere within the lookbehind window
                 long pos = head[Hash(data, offset)];
                 if (pos < maxLookbehindOffset) return;
 
+                // At this point we know we have matched at least two bytes
                 int longestMatchLength = 2;
 
-                long currPos = pos;
-                while (currPos != -1 && currPos >= maxLookbehindOffset)
+                // In many cases, the lookahead string starts with a repeated series of bytes for which additional optimizations can be applied
+                byte repeatChar = data[offset];
+                int repeatLength = 1;
+                while (repeatLength < maxLength && data[offset + repeatLength] == repeatChar)
                 {
+                    repeatLength++;
+                }
+
+                // Expand the search for the longest match into the rest of the window.
+                // The first match is not necessarily the best, but it is the closest to the cursor.
+                if (repeatLength <= 2)
+                {
+                    // Do a regular search when the sequence of repeated bytes is too short for optimizations
+                    long currPos = pos;
+
+                    while (currPos != -1 && currPos >= maxLookbehindOffset)
+                    {
+                        // Expand the match length
+                        int currMatchLength = 2;
+                        while (currMatchLength < maxLength &&
+                            currPos + currMatchLength - 1 < offset &&
+                            data[offset + currMatchLength] == data[currPos + currMatchLength - 1])
+                        {
+                            currMatchLength++;
+                        }
+
+                        // Update match position if that's a longer match
+                        if (currMatchLength > longestMatchLength)
+                        {
+                            longestMatchLength = currMatchLength;
+                            pos = currPos;
+                        }
+
+                        // Go to the previous position in the stream
+                        if (prev[currPos & 0x3FF] > currPos) break;
+                        currPos = prev[currPos & 0x3FF];
+                    }
+                }
+                else
+                {
+                    // Do an optimized search, taking advantage of repeated bytes at the start of the lookahead string
+                    long currPos = pos;
                     int currMatchLength = 2;
-                    while (currMatchLength < maxLength &&
-                        currPos + currMatchLength - 1 < offset &&
-                        data[offset + currMatchLength] == data[currPos + currMatchLength - 1])
+
+                    // Move the current position backwards up to repeatLength bytes as long as the previous bytes match the repeated byte
+                    for (int i = 2; i < repeatLength; i++)
                     {
-                        currMatchLength++;
+                        if (currPos - 1 > maxLookbehindOffset && data[currPos - 2] == repeatChar)
+                        {
+                            currPos--;
+                            currMatchLength++;
+                        }
                     }
-                    if (currMatchLength > longestMatchLength)
+
+                    while (currPos != -1 && currPos >= maxLookbehindOffset)
                     {
-                        longestMatchLength = currMatchLength;
-                        pos = currPos;
+                        // Expand the match length
+                        while (currMatchLength < maxLength &&
+                            currPos + currMatchLength - 1 < offset &&
+                            data[offset + currMatchLength] == data[currPos + currMatchLength - 1])
+                        {
+                            currMatchLength++;
+                        }
+
+                        // Update match position if that's a longer match
+                        if (currMatchLength > longestMatchLength)
+                        {
+                            longestMatchLength = currMatchLength;
+                            pos = currPos;
+                        }
+
+                        // Go to the previous position in the stream and adjust it to the repeated byte sequence
+                        if (prev[currPos & 0x3FF] > currPos) break;
+                        currPos = prev[currPos & 0x3FF];
+                        currMatchLength = 2;
+                        for (int i = 2; i < repeatLength; i++)
+                        {
+                            if (currPos - 1 > maxLookbehindOffset && data[currPos - 2] == repeatChar)
+                            {
+                                currPos--;
+                                currMatchLength++;
+                            }
+                        }
                     }
-                    if (prev[currPos & 0x3FF] > currPos) break;
-                    currPos = prev[currPos & 0x3FF];
                 }
                 matchPos = (int)(pos - 1 - offset);
                 matchLength = longestMatchLength;
