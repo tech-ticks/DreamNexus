@@ -16,7 +16,7 @@ jobs:
 
     - name: Prepare environment
       run: |
-        git fetch --tags
+        git fetch --tags -f
         echo "DREAMNEXUS_VERSION=$(git describe --abbrev=0)" >> $GITHUB_ENV
         if ! git describe --exact-match HEAD; then
           echo "DREAMNEXUS_VERSION_SUFFIX=dev-$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
@@ -90,7 +90,7 @@ jobs:
 
     - name: Prepare environment
       run: |
-        git fetch --tags
+        git fetch --tags -f
         echo "DREAMNEXUS_VERSION=$(git describe --abbrev=0)" >> $GITHUB_ENV
         if ! git describe --exact-match HEAD; then
           echo "DREAMNEXUS_VERSION_SUFFIX=dev-$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
@@ -176,7 +176,7 @@ jobs:
 
     - name: Prepare environment
       run: |
-        git fetch --tags
+        git fetch --tags -f
         echo "DREAMNEXUS_VERSION=$(git describe --abbrev=0)" >> $GITHUB_ENV
         if ! git describe --exact-match HEAD; then
           echo "DREAMNEXUS_VERSION_SUFFIX=dev-$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
