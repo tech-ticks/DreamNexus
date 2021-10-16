@@ -105,14 +105,12 @@ namespace SkyEditorUI.Controllers
         private void OnStatsHpEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
-            System.Console.WriteLine("edited");
             if (wildPokemonStatsStore!.GetIter(out var iter, path))
             {
                 var stat = dungeon.PokemonStats![path.Indices[0]];
                 if (short.TryParse(args.NewText, out short value))
                 {
                     stat.HitPoints = value;
-                    System.Console.WriteLine("hp set to " + value);
                 }
                 wildPokemonStatsStore.SetValue(iter, StatsHitPointsColumn, stat.HitPoints);
             }

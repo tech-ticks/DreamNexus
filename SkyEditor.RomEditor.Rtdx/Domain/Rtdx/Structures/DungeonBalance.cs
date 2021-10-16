@@ -436,7 +436,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     public Entry(IReadOnlyBinaryDataAccessor accessor)
                     {
                         PokemonIndex = accessor.ReadInt16(0x00);
-                        SpawnRate = accessor.ReadByte(0x02);
+                        byte spawnRateAndSpecialFlag = accessor.ReadByte(0x02);
+                        SpawnRate = (byte) (spawnRateAndSpecialFlag >> 1);
+                        IsSpecial = (spawnRateAndSpecialFlag & 0b1) != 0;
                         RecruitmentLevel = accessor.ReadByte(0x0A);
                         Byte0B = accessor.ReadByte(0x0B);
                     }
@@ -449,7 +451,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
                         using var accessor = new BinaryFile(data);
                         accessor.WriteInt16(0x00, PokemonIndex);
-                        accessor.Write(0x02, SpawnRate);
+                        byte spawnRateAndSpecialFlag = (byte) ((SpawnRate << 1) | (IsSpecial ? 1 : 0));
+                        accessor.Write(0x02, spawnRateAndSpecialFlag);
                         accessor.Write(0x0A, RecruitmentLevel);
                         accessor.Write(0x0B, Byte0B);
 
@@ -458,6 +461,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
                     public short PokemonIndex { get; set; }
                     public byte SpawnRate { get; set; }
+
+                    // Some special Pokémon like Kecleon and Strong Foes don't spawn randomly
+                    public bool IsSpecial { get; set; }
                     public byte RecruitmentLevel { get; set; }
                     public byte Byte0B { get; set; }
                 }

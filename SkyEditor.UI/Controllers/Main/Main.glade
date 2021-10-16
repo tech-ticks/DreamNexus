@@ -961,9 +961,8 @@ the top-right of the main window.</property>
     <property name="attached-to">main_window</property>
     <property name="program-name">DreamNexus</property>
     <property name="comments" translatable="yes">Application to edit the ROM of Pokémon Mystery Dungeon Rescue Team DX.</property>
-    <property name="website">https://github.com/tech-ticks/SkyEditor.RomEditor.Rtdx</property>
-    <property name="website-label" translatable="yes">https://github.com/tech-ticks/SkyEditor.RomEditor.Rtdx
-</property>
+    <property name="website">https://github.com/tech-ticks/DreamNexus</property>
+    <property name="website-label" translatable="yes">https://github.com/tech-ticks/DreamNexus</property>
     <property name="authors">DreamNexus Developers:
 evandixon https://github.com/evandixon
 StrikerX3 https://github.com/StrikerX3

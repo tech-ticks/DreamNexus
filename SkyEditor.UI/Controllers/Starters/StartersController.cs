@@ -12,7 +12,6 @@ namespace SkyEditorUI.Controllers
     class StartersController : Widget
     {
         [UI] private ListStore? startersStore;
-        [UI] private ListStore? defaultStartersStore;
         [UI] private Entry? defaultPlayerSpecies;
         [UI] private ComboBox? defaultPlayerGender;
         [UI] private Entry? defaultPlayerName;
@@ -61,13 +60,6 @@ namespace SkyEditorUI.Controllers
                     AutocompleteHelpers.FormatMove(rom, starter.Move3),
                     AutocompleteHelpers.FormatMove(rom, starter.Move4)
                 );
-            }
-
-            // Load starters directly from the rom to figure out which ones are used by default
-            var defaultStarters = rom.GetMainExecutable().StarterFixedPokemonMaps;
-            foreach (var starter in defaultStarters)
-            {
-                defaultStartersStore!.AppendValues(AutocompleteHelpers.FormatPokemon(rom, starter.PokemonId));
             }
 
             defaultPlayerSpecies!.Text = AutocompleteHelpers.FormatPokemon(rom, starters.HeroCreature);

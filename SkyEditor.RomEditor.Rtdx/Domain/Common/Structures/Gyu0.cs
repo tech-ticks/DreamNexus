@@ -417,6 +417,12 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                 }
                 matchPos = (int)(pos - 1 - offset);
                 matchLength = longestMatchLength;
+
+                if (matchPos < -0x400)
+                {
+                    matchPos = 0;
+                    matchLength = 0;
+                }
             }
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]

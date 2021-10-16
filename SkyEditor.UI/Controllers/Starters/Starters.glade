@@ -24,26 +24,6 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkEntryCompletion" id="creaturesCompletionPartner">
-    <property name="model">defaultStartersStore</property>
-    <property name="text-column">0</property>
-    <child>
-      <object class="GtkCellRendererText"/>
-      <attributes>
-        <attribute name="text">0</attribute>
-      </attributes>
-    </child>
-  </object>
-  <object class="GtkEntryCompletion" id="creaturesCompletionPlayer">
-    <property name="model">defaultStartersStore</property>
-    <property name="text-column">0</property>
-    <child>
-      <object class="GtkCellRendererText"/>
-      <attributes>
-        <attribute name="text">0</attribute>
-      </attributes>
-    </child>
-  </object>
   <object class="GtkListStore" id="genderTypeStore">
     <columns>
       <!-- column-name value -->
@@ -105,6 +85,26 @@
       <!-- column-name move4 -->
       <column type="gchararray"/>
     </columns>
+  </object>
+  <object class="GtkEntryCompletion" id="creaturesCompletionPartner">
+    <property name="model">startersStore</property>
+    <property name="text-column">1</property>
+    <child>
+      <object class="GtkCellRendererText"/>
+      <attributes>
+        <attribute name="text">1</attribute>
+      </attributes>
+    </child>
+  </object>
+  <object class="GtkEntryCompletion" id="creaturesCompletionPlayer">
+    <property name="model">startersStore</property>
+    <property name="text-column">1</property>
+    <child>
+      <object class="GtkCellRendererText"/>
+      <attributes>
+        <attribute name="text">1</attribute>
+      </attributes>
+    </child>
   </object>
   <object class="GtkBox" id="main">
     <property name="visible">True</property>

@@ -513,6 +513,13 @@ namespace SkyEditorUI.Controllers
                     }
                     if (structure == BuildFileStructureType.Atmosphere)
                     {
+                        // HACK: hyperbeam 0.0.1 crashes if default_starters.bin doesn't exist, so make sure it's created
+                        // TODO: remove once it's fixed in hyperbeam
+                        if (modpack!.Metadata.EnableCodeInjection)
+                        {
+                            rom.GetDefaultStarters();
+                        }
+
                         var paths = BuildHelpers.CreateAtmosphereFolderStructure(Settings.Load(), folder, fileSystem);
                         await rom.Save(paths.ContentRoot, fileSystem, progressCallback);
                         if (codeInjectionDirectory != null)

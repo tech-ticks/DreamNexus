@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.2 -->
+<!-- Generated with glade 3.38.2 -->
 <interface>
   <requires lib="gtk+" version="3.22"/>
   <object class="GtkListStore" id="creatureSpawnsStore">
@@ -16,6 +16,8 @@
       <column type="gchararray"/>
       <!-- column-name byte0B -->
       <column type="gint"/>
+      <!-- column-name isSpecial -->
+      <column type="gboolean"/>
     </columns>
   </object>
   <object class="GtkListStore" id="creaturesStore">
@@ -26,7 +28,7 @@
   </object>
   <object class="GtkEntryCompletion" id="creaturesCompletion">
     <property name="model">creaturesStore</property>
-    <property name="text_column">0</property>
+    <property name="text-column">0</property>
     <child>
       <object class="GtkCellRendererText"/>
       <attributes>
@@ -46,7 +48,7 @@
   </object>
   <object class="GtkLabel" id="monster_spawns_chance_label">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="label" translatable="yes">Chance</property>
     <attributes>
       <attribute name="style" value="italic"/>
@@ -55,8 +57,8 @@
   </object>
   <object class="GtkAdjustment" id="sbNameIdAdjustment">
     <property name="upper">130</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
   </object>
   <object class="GtkListStore" id="trapSpawnsStore">
     <columns>
@@ -72,7 +74,7 @@
   </object>
   <object class="GtkLabel" id="trap_spawns_tree_chance_label">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="label" translatable="yes">Chance</property>
     <attributes>
       <attribute name="style" value="italic"/>
@@ -95,78 +97,79 @@
   </object>
   <object class="GtkBox" id="main">
     <property name="visible">True</property>
-    <property name="can_focus">False</property>
+    <property name="can-focus">False</property>
     <property name="spacing">5</property>
     <child>
+      <!-- n-columns=3 n-rows=9 -->
       <object class="GtkGrid">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="margin_start">10</property>
-        <property name="margin_end">5</property>
-        <property name="margin_top">5</property>
-        <property name="margin_bottom">5</property>
-        <property name="row_spacing">5</property>
-        <property name="column_spacing">5</property>
+        <property name="can-focus">False</property>
+        <property name="margin-start">10</property>
+        <property name="margin-end">5</property>
+        <property name="margin-top">5</property>
+        <property name="margin-bottom">5</property>
+        <property name="row-spacing">5</property>
+        <property name="column-spacing">5</property>
         <child>
           <object class="GtkLabel" id="labelDungeonName">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">Dungeon Name</property>
             <property name="justify">center</property>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel" id="labelFloorNumber">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">Floor Number</property>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">1</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">end</property>
             <property name="label" translatable="yes">Map Index:</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">4</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">4</property>
           </packing>
         </child>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">center</property>
             <property name="valign">end</property>
             <property name="vexpand">True</property>
             <property name="spacing">20</property>
             <child>
               <object class="GtkButton" id="btn_import">
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">5</property>
                     <child>
                       <object class="GtkImage">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="icon_name">skytemple-import-symbolic</property>
+                        <property name="can-focus">False</property>
+                        <property name="icon-name">skytemple-import-symbolic</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -177,7 +180,7 @@
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Import</property>
                       </object>
                       <packing>
@@ -197,19 +200,19 @@
             </child>
             <child>
               <object class="GtkButton" id="btn_export">
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="orientation">vertical</property>
                     <property name="spacing">5</property>
                     <child>
                       <object class="GtkImage">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="icon_name">skytemple-export-symbolic</property>
+                        <property name="can-focus">False</property>
+                        <property name="icon-name">skytemple-export-symbolic</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -220,7 +223,7 @@
                     <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
+                        <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Export</property>
                       </object>
                       <packing>
@@ -240,120 +243,120 @@
             </child>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">8</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">8</property>
             <property name="width">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkDrawingArea" id="draw_mini_preview">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">0</property>
             <property name="height">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="entryMapDataIndex">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="width_chars">12</property>
+            <property name="can-focus">True</property>
+            <property name="width-chars">12</property>
             <signal name="changed" handler="OnMapDataIndexChanged" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">4</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">4</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">3</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">3</property>
             <property name="width">3</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">end</property>
             <property name="label" translatable="yes">Event:</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">7</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">7</property>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="entryEvent">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="max_length">8</property>
-            <property name="width_chars">12</property>
-            <property name="placeholder_text" translatable="yes">(none)</property>
+            <property name="can-focus">True</property>
+            <property name="max-length">8</property>
+            <property name="width-chars">12</property>
+            <property name="placeholder-text" translatable="yes">(none)</property>
             <signal name="changed" handler="OnEventChanged" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">7</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">7</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">end</property>
             <property name="label" translatable="yes">Invitation Index:</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">6</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">6</property>
           </packing>
         </child>
         <child>
           <object class="GtkEntry" id="entryInvitationIndex">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="width_chars">12</property>
+            <property name="can-focus">True</property>
+            <property name="width-chars">12</property>
             <signal name="changed" handler="OnInvitationIndexChanged" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">6</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">6</property>
             <property name="width">2</property>
           </packing>
         </child>
         <child>
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="halign">end</property>
             <property name="label" translatable="yes">Boss floor:</property>
           </object>
           <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">5</property>
+            <property name="left-attach">0</property>
+            <property name="top-attach">5</property>
           </packing>
         </child>
         <child>
           <object class="GtkSwitch" id="switchBossFloor">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="can-focus">True</property>
             <property name="halign">start</property>
             <signal name="state-set" handler="OnSwitchBossFloorStateSet" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">5</property>
+            <property name="left-attach">1</property>
+            <property name="top-attach">5</property>
             <property name="width">2</property>
           </packing>
         </child>
@@ -377,46 +380,47 @@
     <child>
       <object class="GtkNotebook" id="floor_notebook">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="can-focus">True</property>
         <child>
           <object class="GtkAlignment">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="xscale">0.80000001192092896</property>
-            <property name="yscale">0.80000001192092896</property>
+            <property name="can-focus">False</property>
+            <property name="xscale">0.8000000119209289</property>
+            <property name="yscale">0.8000000119209289</property>
             <child>
+              <!-- n-columns=6 n-rows=23 -->
               <object class="GtkGrid" id="layout_grid">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_left">10</property>
-                <property name="margin_right">5</property>
-                <property name="margin_start">10</property>
-                <property name="margin_end">5</property>
-                <property name="margin_top">5</property>
-                <property name="margin_bottom">5</property>
-                <property name="row_spacing">5</property>
-                <property name="column_spacing">5</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">10</property>
+                <property name="margin-right">5</property>
+                <property name="margin-start">10</property>
+                <property name="margin-end">5</property>
+                <property name="margin-top">5</property>
+                <property name="margin-bottom">5</property>
+                <property name="row-spacing">5</property>
+                <property name="column-spacing">5</property>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin_top">5</property>
+                    <property name="margin-top">5</property>
                     <property name="label" translatable="yes">Unknowns</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">8</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">8</property>
                     <property name="width">6</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkComboBox" id="cbWeather">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="model">weatherStore</property>
                     <signal name="changed" handler="OnWeatherChanged" swapped="no"/>
                     <child>
@@ -427,21 +431,21 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">2</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkScrolledWindow">
-                    <property name="height_request">400</property>
+                    <property name="height-request">340</property>
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="shadow_type">in</property>
+                    <property name="can-focus">True</property>
+                    <property name="shadow-type">in</property>
                     <child>
                       <object class="GtkTreeView">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="can-focus">True</property>
                         <property name="model">unknownsStore</property>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection"/>
@@ -475,8 +479,8 @@
                     </child>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">9</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">9</property>
                     <property name="width">6</property>
                     <property name="height">14</property>
                   </packing>
@@ -484,94 +488,94 @@
                 <child>
                   <object class="GtkEntry" id="entryUnknownItemSetIndex">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">Might be related to item sets</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes">Might be related to item sets</property>
                     <signal name="changed" handler="OnUnknownItemSetChanged" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">3</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entryShort26">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <signal name="changed" handler="OnShort26Changed" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">4</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">4</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entryShort30">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <signal name="changed" handler="OnShort30Changed" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">5</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">5</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">end</property>
                     <property name="label" translatable="yes">Unk. Short26:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">4</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">end</property>
                     <property name="label" translatable="yes">Unk. Short30:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">5</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">5</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Might be related to item sets</property>
+                    <property name="can-focus">False</property>
+                    <property name="tooltip-text" translatable="yes">Might be related to item sets</property>
                     <property name="halign">end</property>
                     <property name="label" translatable="yes">Unknown item set index?:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Selects which dungeon name should be used (temporary; dungeon name editing will be improved later)</property>
+                    <property name="can-focus">False</property>
+                    <property name="tooltip-text" translatable="yes">Selects which dungeon name should be used (temporary; dungeon name editing will be improved later)</property>
                     <property name="halign">end</property>
                     <property name="label" translatable="yes">Place name ID:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">6</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">6</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkSpinButton" id="sbNameId">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <property name="text" translatable="yes">1</property>
                     <property name="adjustment">sbNameIdAdjustment</property>
                     <property name="numeric">True</property>
@@ -580,166 +584,166 @@
                     <signal name="value-changed" handler="OnNameIdChanged" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">6</property>
+                    <property name="left-attach">1</property>
+                    <property name="top-attach">6</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">end</property>
                     <property name="label" translatable="yes">Weather:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">end</property>
-                    <property name="margin_left">10</property>
+                    <property name="margin-left">10</property>
                     <property name="label" translatable="yes">Unk. Short02:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">3</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">3</property>
+                    <property name="top-attach">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entryShort02">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <signal name="changed" handler="OnShort02Changed" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="left_attach">4</property>
-                    <property name="top_attach">2</property>
+                    <property name="left-attach">4</property>
+                    <property name="top-attach">2</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entryShort24">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">Max number of turns?</property>
-                    <property name="width_chars">4</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes">Max number of turns?</property>
+                    <property name="width-chars">4</property>
                     <signal name="changed" handler="OnShort24Changed" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="left_attach">4</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">4</property>
+                    <property name="top-attach">3</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entryShort28">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">Max money stack size?</property>
+                    <property name="can-focus">True</property>
+                    <property name="tooltip-text" translatable="yes">Max money stack size?</property>
                     <signal name="changed" handler="OnShort28Changed" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="left_attach">4</property>
-                    <property name="top_attach">4</property>
+                    <property name="left-attach">4</property>
+                    <property name="top-attach">4</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="entryShort32">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
+                    <property name="can-focus">True</property>
                     <signal name="changed" handler="OnShort32Changed" swapped="no"/>
                   </object>
                   <packing>
-                    <property name="left_attach">4</property>
-                    <property name="top_attach">5</property>
+                    <property name="left-attach">4</property>
+                    <property name="top-attach">5</property>
                     <property name="width">2</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Max number of turns?</property>
+                    <property name="can-focus">False</property>
+                    <property name="tooltip-text" translatable="yes">Max number of turns?</property>
                     <property name="halign">end</property>
                     <property name="label" translatable="yes">Unk. Short24:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">3</property>
-                    <property name="top_attach">3</property>
+                    <property name="left-attach">3</property>
+                    <property name="top-attach">3</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Max money stack size?</property>
+                    <property name="can-focus">False</property>
+                    <property name="tooltip-text" translatable="yes">Max money stack size?</property>
                     <property name="halign">end</property>
                     <property name="label" translatable="yes">Unk. Short28:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">3</property>
-                    <property name="top_attach">4</property>
+                    <property name="left-attach">3</property>
+                    <property name="top-attach">4</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">end</property>
                     <property name="label" translatable="yes">Unk. Short32:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">3</property>
-                    <property name="top_attach">5</property>
+                    <property name="left-attach">3</property>
+                    <property name="top-attach">5</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkLabel">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">start</property>
-                    <property name="margin_top">5</property>
+                    <property name="margin-top">5</property>
                     <property name="label" translatable="yes">Properties</property>
                     <attributes>
                       <attribute name="weight" value="bold"/>
                     </attributes>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">1</property>
                   </packing>
                 </child>
                 <child>
                   <object class="GtkFrame">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="halign">center</property>
-                    <property name="margin_top">12</property>
-                    <property name="label_xalign">0</property>
-                    <property name="shadow_type">none</property>
+                    <property name="margin-top">12</property>
+                    <property name="label-xalign">0</property>
+                    <property name="shadow-type">none</property>
                     <child>
                       <object class="GtkAlignment">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="left_padding">12</property>
+                        <property name="can-focus">False</property>
+                        <property name="left-padding">12</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkLabel">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <property name="halign">start</property>
-                                <property name="margin_top">5</property>
-                                <property name="margin_bottom">9</property>
+                                <property name="margin-top">5</property>
+                                <property name="margin-bottom">9</property>
                                 <property name="label" translatable="yes">Place names affect all dungeons and floors with the same place name ID.
 The place name and extra place names seem to be the same in all languages except Japanese.</property>
                               </object>
@@ -750,15 +754,16 @@ The place name and extra place names seem to be the same in all languages except
                               </packing>
                             </child>
                             <child>
+                              <!-- n-columns=5 n-rows=3 -->
                               <object class="GtkGrid">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="row_spacing">5</property>
-                                <property name="column_spacing">5</property>
+                                <property name="can-focus">False</property>
+                                <property name="row-spacing">5</property>
+                                <property name="column-spacing">5</property>
                                 <child>
                                   <object class="GtkComboBoxText" id="cbNameLanguage">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can-focus">False</property>
                                     <property name="active">1</property>
                                     <items>
                                       <item id="0" translatable="yes">Japanese</item>
@@ -771,97 +776,112 @@ The place name and extra place names seem to be the same in all languages except
                                     <signal name="changed" handler="OnNameLanguageChanged" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="left_attach">0</property>
-                                    <property name="top_attach">1</property>
+                                    <property name="left-attach">0</property>
+                                    <property name="top-attach">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkLabel">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can-focus">False</property>
                                     <property name="label" translatable="yes">Place name</property>
                                   </object>
                                   <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">0</property>
+                                    <property name="left-attach">1</property>
+                                    <property name="top-attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkEntry" id="entryPlaceName0">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
+                                    <property name="can-focus">True</property>
                                     <signal name="changed" handler="OnPlaceName0Changed" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="left_attach">1</property>
-                                    <property name="top_attach">1</property>
+                                    <property name="left-attach">1</property>
+                                    <property name="top-attach">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkLabel">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can-focus">False</property>
                                     <property name="label" translatable="yes">Extra place name 1</property>
                                   </object>
                                   <packing>
-                                    <property name="left_attach">2</property>
-                                    <property name="top_attach">0</property>
+                                    <property name="left-attach">2</property>
+                                    <property name="top-attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkLabel">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can-focus">False</property>
                                     <property name="label" translatable="yes">Extra place name 2</property>
                                   </object>
                                   <packing>
-                                    <property name="left_attach">3</property>
-                                    <property name="top_attach">0</property>
+                                    <property name="left-attach">3</property>
+                                    <property name="top-attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkEntry" id="entryPlaceName1">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
+                                    <property name="can-focus">True</property>
                                     <signal name="changed" handler="OnPlaceName1Changed" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="left_attach">2</property>
-                                    <property name="top_attach">1</property>
+                                    <property name="left-attach">2</property>
+                                    <property name="top-attach">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkEntry" id="entryPlaceName2">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
+                                    <property name="can-focus">True</property>
                                     <signal name="changed" handler="OnPlaceName2Changed" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="left_attach">3</property>
-                                    <property name="top_attach">1</property>
+                                    <property name="left-attach">3</property>
+                                    <property name="top-attach">1</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkLabel">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
+                                    <property name="can-focus">False</property>
                                     <property name="label" translatable="yes">Extra place name 3</property>
                                   </object>
                                   <packing>
-                                    <property name="left_attach">4</property>
-                                    <property name="top_attach">0</property>
+                                    <property name="left-attach">4</property>
+                                    <property name="top-attach">0</property>
                                   </packing>
                                 </child>
                                 <child>
                                   <object class="GtkEntry" id="entryPlaceName3">
                                     <property name="visible">True</property>
-                                    <property name="can_focus">True</property>
+                                    <property name="can-focus">True</property>
                                     <signal name="changed" handler="OnPlaceName3Changed" swapped="no"/>
                                   </object>
                                   <packing>
-                                    <property name="left_attach">4</property>
-                                    <property name="top_attach">1</property>
+                                    <property name="left-attach">4</property>
+                                    <property name="top-attach">1</property>
                                   </packing>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
                                 </child>
                                 <child>
                                   <placeholder/>
@@ -880,8 +900,8 @@ The place name and extra place names seem to be the same in all languages except
                     <child type="label">
                       <object class="GtkLabel">
                         <property name="visible">True</property>
-                        <property name="can_focus">False</property>
-                        <property name="margin_bottom">5</property>
+                        <property name="can-focus">False</property>
+                        <property name="margin-bottom">5</property>
                         <property name="label" translatable="yes">Names</property>
                         <attributes>
                           <attribute name="weight" value="bold"/>
@@ -890,8 +910,8 @@ The place name and extra place names seem to be the same in all languages except
                     </child>
                   </object>
                   <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">0</property>
+                    <property name="left-attach">0</property>
+                    <property name="top-attach">0</property>
                     <property name="width">6</property>
                   </packing>
                 </child>
@@ -944,34 +964,34 @@ The place name and extra place names seem to be the same in all languages except
         <child type="tab">
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">General</property>
           </object>
           <packing>
-            <property name="tab_fill">False</property>
+            <property name="tab-fill">False</property>
           </packing>
         </child>
         <child>
           <object class="GtkAlignment">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="xscale">0.80000001192092896</property>
-            <property name="yscale">0.80000001192092896</property>
+            <property name="can-focus">False</property>
+            <property name="xscale">0.8000000119209289</property>
+            <property name="yscale">0.8000000119209289</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">10</property>
                 <child>
                   <object class="GtkScrolledWindow">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="shadow_type">in</property>
+                    <property name="can-focus">True</property>
+                    <property name="shadow-type">in</property>
                     <child>
                       <object class="GtkTreeView" id="creatureSpawnsTree">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="can-focus">True</property>
                         <property name="model">creatureSpawnsStore</property>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection"/>
@@ -1019,6 +1039,19 @@ The place name and extra place names seem to be the same in all languages except
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn">
+                            <property name="title" translatable="yes">Special?</property>
+                            <child>
+                              <object class="GtkCellRendererToggle">
+                                <signal name="toggled" handler="OnIsSpecialToggled" swapped="no"/>
+                              </object>
+                              <attributes>
+                                <attribute name="active">6</attribute>
+                              </attributes>
+                            </child>
+                          </object>
+                        </child>
+                        <child>
+                          <object class="GtkTreeViewColumn">
                             <property name="title" translatable="yes">Weight</property>
                             <child>
                               <object class="GtkCellRendererText" id="cr_monster_spawns_weight">
@@ -1055,7 +1088,7 @@ The place name and extra place names seem to be the same in all languages except
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <property name="spacing">10</property>
                     <child>
                       <placeholder/>
@@ -1066,21 +1099,21 @@ The place name and extra place names seem to be the same in all languages except
                     <child>
                       <object class="GtkButton" id="monster_spawns_add">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
                         <signal name="clicked" handler="OnAddSpawnClicked" swapped="no"/>
                         <child>
                           <object class="GtkImage">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="icon_name">skytemple-list-add-symbolic</property>
+                            <property name="can-focus">False</property>
+                            <property name="icon-name">skytemple-list-add-symbolic</property>
                           </object>
                         </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="pack_type">end</property>
+                        <property name="pack-type">end</property>
                         <property name="position">2</property>
                       </packing>
                     </child>
@@ -1090,21 +1123,21 @@ The place name and extra place names seem to be the same in all languages except
                     <child>
                       <object class="GtkButton" id="monster_spawns_remove">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
                         <signal name="clicked" handler="OnRemoveSpawnClicked" swapped="no"/>
                         <child>
                           <object class="GtkImage">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="icon_name">skytemple-list-remove-symbolic</property>
+                            <property name="can-focus">False</property>
+                            <property name="icon-name">skytemple-list-remove-symbolic</property>
                           </object>
                         </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">True</property>
-                        <property name="pack_type">end</property>
+                        <property name="pack-type">end</property>
                         <property name="position">4</property>
                       </packing>
                     </child>
@@ -1131,37 +1164,37 @@ The place name and extra place names seem to be the same in all languages except
         <child type="tab">
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">Pokémon Spawns</property>
           </object>
           <packing>
             <property name="position">1</property>
-            <property name="tab_fill">False</property>
+            <property name="tab-fill">False</property>
           </packing>
         </child>
         <child>
           <object class="GtkAlignment">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="xscale">0.80000001192092896</property>
-            <property name="yscale">0.80000001192092896</property>
+            <property name="can-focus">False</property>
+            <property name="xscale">0.8000000119209289</property>
+            <property name="yscale">0.8000000119209289</property>
             <child>
               <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="can-focus">False</property>
                 <property name="orientation">vertical</property>
                 <property name="spacing">10</property>
                 <child>
                   <object class="GtkScrolledWindow">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="shadow_type">in</property>
+                    <property name="can-focus">True</property>
+                    <property name="shadow-type">in</property>
                     <child>
                       <object class="GtkTreeView" id="trap_spawns_tree">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="can-focus">True</property>
                         <property name="model">trapSpawnsStore</property>
-                        <property name="search_column">0</property>
+                        <property name="search-column">0</property>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection"/>
                         </child>
@@ -1215,25 +1248,25 @@ The place name and extra place names seem to be the same in all languages except
                 <child>
                   <object class="GtkBox">
                     <property name="visible">True</property>
-                    <property name="can_focus">False</property>
+                    <property name="can-focus">False</property>
                     <child>
                       <object class="GtkButton" id="btn_help_trap_spawn_table">
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="receives-default">True</property>
                         <property name="halign">start</property>
                         <property name="valign">center</property>
-                        <property name="margin_right">10</property>
-                        <property name="margin_end">10</property>
+                        <property name="margin-right">10</property>
+                        <property name="margin-end">10</property>
                         <child>
                           <object class="GtkBox">
                             <property name="visible">True</property>
-                            <property name="can_focus">False</property>
+                            <property name="can-focus">False</property>
                             <property name="spacing">5</property>
                             <child>
                               <object class="GtkImage">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
-                                <property name="icon_name">skytemple-help-about-symbolic</property>
+                                <property name="can-focus">False</property>
+                                <property name="icon-name">skytemple-help-about-symbolic</property>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -1244,7 +1277,7 @@ The place name and extra place names seem to be the same in all languages except
                             <child>
                               <object class="GtkLabel">
                                 <property name="visible">True</property>
-                                <property name="can_focus">False</property>
+                                <property name="can-focus">False</property>
                                 <property name="label" translatable="yes">Help</property>
                               </object>
                               <packing>
@@ -1279,12 +1312,12 @@ The place name and extra place names seem to be the same in all languages except
         <child type="tab">
           <object class="GtkLabel">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="can-focus">False</property>
             <property name="label" translatable="yes">Traps</property>
           </object>
           <packing>
             <property name="position">2</property>
-            <property name="tab_fill">False</property>
+            <property name="tab-fill">False</property>
           </packing>
         </child>
       </object>
