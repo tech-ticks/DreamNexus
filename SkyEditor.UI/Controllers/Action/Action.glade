@@ -311,6 +311,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="width-chars">10</property>
+                <signal name="changed" handler="OnBaseAccuracyChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -323,6 +324,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="width-chars">10</property>
+                <signal name="changed" handler="OnMaxAccuracyChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -359,6 +361,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="width-chars">10</property>
+                <signal name="changed" handler="OnRangeChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -444,6 +447,7 @@
               <object class="GtkEntry" id="entryBasePP">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <signal name="changed" handler="OnBasePPChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -467,6 +471,7 @@
               <object class="GtkEntry" id="entryMaxPP">
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
+                <signal name="changed" handler="OnMaxPPChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -955,7 +960,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">True</property>
                 <property name="width-chars">10</property>
-                <signal name="changed" handler="OnByte91Changed" swapped="no"/>
+                <signal name="changed" handler="OnByte90Changed" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">5</property>
