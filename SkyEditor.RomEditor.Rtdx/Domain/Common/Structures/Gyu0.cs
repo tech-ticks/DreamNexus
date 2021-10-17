@@ -100,6 +100,12 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
         public static IBinaryDataAccessor Compress(IReadOnlyBinaryDataAccessor input)
         {
             var output = new MemoryStream((int)input.Length / 2);
+            Compress(input, output);
+            return new BinaryFile(output.ToArray());
+        }
+
+        public static void Compress(IReadOnlyBinaryDataAccessor input, Stream output)
+        {
             var inputData = input.ReadArray();
             var compPrevState = new CompressPreviousState();
 
@@ -148,7 +154,6 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             output.WriteByte(0xFF);
             // Trim any excess bytes that may have been written by the TryCompress* methods
             output.SetLength(output.Position);
-            return new BinaryFile(output.ToArray());
         }
 
         private class CompressionResult
@@ -166,7 +171,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             }
         }
 
-        private static void TryCompress(byte[] data, long offset, MemoryStream output, ref CompressPreviousState compPrevState, ref CompressionResult result)
+        private static void TryCompress(byte[] data, long offset, Stream output, ref CompressPreviousState compPrevState, ref CompressionResult result)
         {
             var outputPos = output.Position;
             result.InputByteCount = 0;
@@ -185,7 +190,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             if (result.Valid) output.Position += result.OutputByteCount;
         }
 
-        private static void TryCompressSplitCopy(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
+        private static void TryCompressSplitCopy(byte[] data, long offset, Stream output, ref CompressionResult result)
         {
             var sep = data[offset];
             var count = 1;
@@ -211,7 +216,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             }
         }
 
-        private static void TryCompressFill(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
+        private static void TryCompressFill(byte[] data, long offset, Stream output, ref CompressionResult result)
         {
             var fill = data[offset];
             var count = 1;
@@ -233,7 +238,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             }
         }
 
-        private static void TryCompressSkip(byte[] data, long offset, MemoryStream output, ref CompressionResult result)
+        private static void TryCompressSkip(byte[] data, long offset, Stream output, ref CompressionResult result)
         {
             var count = 0;
             while (count < 0x11F && offset + count < data.Length && data[offset + count] == 0)
@@ -420,7 +425,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
             }
         }
 
-        private static void TryCompressPrevious(byte[] data, long offset, MemoryStream output, ref CompressPreviousState state, ref CompressionResult result)
+        private static void TryCompressPrevious(byte[] data, long offset, Stream output, ref CompressPreviousState state, ref CompressionResult result)
         {
             state.Search(data, offset, out int matchPos, out int matchLength);
 
