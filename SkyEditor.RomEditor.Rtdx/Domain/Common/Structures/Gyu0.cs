@@ -128,6 +128,7 @@ namespace SkyEditor.RomEditor.Domain.Common.Structures
                     {
                         output.WriteByte(inputData[copyOffset]);
                         copyOffset++;
+                        if (copyOffset == inputData.LongLength) break;
                         TryCompress(inputData, copyOffset, output, ref compPrevState, ref compressionResult);
                     }
                     var currPos = output.Position;
