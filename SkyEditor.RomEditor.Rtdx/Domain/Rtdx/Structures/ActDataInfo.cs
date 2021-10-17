@@ -255,7 +255,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 for (var i = 0; i < 8; i++)
                 {
                     data.WriteUInt16(0x18 + i * 2 + index * 0x10, Params[i]);
-                    data.Write(0x5C + i * 2 + index * 0x8, (byte)ParamTypes[i]);
+                    data.Write(0x5C + i + index * 0x8, (byte)ParamTypes[i]);
                 }
             }
 
