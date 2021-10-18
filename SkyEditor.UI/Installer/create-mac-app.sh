@@ -16,7 +16,8 @@ cp -r ../bin/Release/net5.0/osx-x64/publish/* DreamNexus.app/Contents/MacOS
 cat > DreamNexus.app/Contents/MacOS/run_dreamnexus << EOF
 #!/bin/sh
 export DYLD_LIBRARY_PATH="\$DYLD_LIBRARY_PATH:\$(dirname \$0)"
-export GTK_DATA_PREFIX="" # Required to resolve themes relative to the current directory for some reason
+export GTK_DATA_PREFIX="\$(dirname \$0)" # Required to resolve themes for some reason
+export XDG_DATA_DIRS="\$(dirname \$0)/share"
 
 cd "\$(dirname \$0)"
 # Run the DreamNexus binary
@@ -66,6 +67,11 @@ cp -r /usr/local/Cellar/gtk+3/*/share/* DreamNexus.app/Contents/MacOS/share/
 cp -r /usr/local/Cellar/gdk-pixbuf/*/lib/gdk-pixbuf-2.0/2.10.0/loaders/* DreamNexus.app/Contents/MacOS/lib/gdk-pixbuf/loaders/
 cp -r /usr/local/Cellar/gtk+3/*/etc/* DreamNexus.app/Contents/MacOS/etc/
 cp -r /usr/local/Cellar/gtksourceview4/*/share/* DreamNexus.app/Contents/MacOS/share/
+cp -r /usr/local/Cellar/adwaita-icon-theme/*/share/* DreamNexus.app/Contents/MacOS/share/
+cp -r /usr/local/Cellar/hicolor-icon-theme/*/share/* DreamNexus.app/Contents/MacOS/share/
+
+# I have no idea what this file is and why we need it but all file dialogs crash if we don't add it ¯\_(ツ)_/¯
+cp -r gschemas.compiled DreamNexus.app/Contents/MacOS/share/glib-2.0/schemas/
 
 # Create the icon
 # https://www.codingforentrepreneurs.com/blog/create-icns-icons-for-macos-apps

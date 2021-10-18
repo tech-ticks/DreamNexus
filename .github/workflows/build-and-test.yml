@@ -102,7 +102,7 @@ jobs:
         dotnet-version: 5.0.x
  
     - name: Install GTK with Homebrew
-      run: brew install gtk+3 gtksourceview4 librsvg graphicsmagick imagemagick
+      run: brew install gtk+3 gtksourceview4 librsvg graphicsmagick imagemagick hicolor-icon-theme adwaita-icon-theme
 
     - name: Install Nuget dependencies
       run: |

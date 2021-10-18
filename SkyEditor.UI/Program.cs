@@ -33,8 +33,8 @@ namespace SkyEditorUI
             StyleContext.AddProviderForScreen(Gdk.Screen.Default, cssProvider, StyleProviderPriorityApplication);
 
             // Setup icons
-            IconTheme.Default.AppendSearchPath("Assets/Icons");
-            IconTheme.Default.AppendSearchPath("Assets/External/skytemple-icons/skytemple_icons");
+            IconTheme.Default.AppendSearchPath(Path.Combine(AppContext.BaseDirectory, "Assets/Icons"));
+            IconTheme.Default.AppendSearchPath(Path.Combine(AppContext.BaseDirectory, "Assets/External/skytemple-icons/skytemple_icons"));
             IconTheme.Default.RescanIfNeeded();
 
             // Setup application and main window
