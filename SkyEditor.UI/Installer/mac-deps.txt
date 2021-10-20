@@ -10,11 +10,11 @@
 /usr/local/Cellar/glib/*/lib/libglib-2.0.0.dylib
 /usr/local/Cellar/glib/*/lib/libgmodule-2.0.0.dylib
 /usr/local/Cellar/glib/*/lib/libgobject-2.0.0.dylib
-/usr/local/Cellar/graphite2/*/lib/libgraphite2.3.2.1.dylib
+/usr/local/Cellar/graphite2/*/lib/libgraphite2.3.dylib
 /usr/local/Cellar/gtk+3/*/lib/gtk-3.0/3.0.0/immodules/im-quartz.so
 /usr/local/Cellar/gtk+3/*/lib/libgdk-3.0.dylib
 /usr/local/Cellar/gtk+3/*/lib/libgtk-3.0.dylib
-/usr/local/Cellar/gtksourceview4/*/lib/libgtksourceview-4.0.dylib
+/usr/local/Cellar/gtksourceview4/*/lib/libgtksourceview-4.dylib
 /usr/local/Cellar/harfbuzz/*/lib/libharfbuzz.0.dylib
 /usr/local/Cellar/jpeg/*/lib/libjpeg.9.dylib
 /usr/local/Cellar/libepoxy/*/lib/libepoxy.0.dylib
@@ -23,9 +23,9 @@
 /usr/local/Cellar/librsvg/*/lib/librsvg-2.2.dylib
 /usr/local/Cellar/libx11/*/lib/libX11.6.dylib
 /usr/local/Cellar/libxau/*/lib/libXau.6.dylib
-/usr/local/Cellar/libxcb/*/lib/libxcb-render.0.0.0.dylib
-/usr/local/Cellar/libxcb/*/lib/libxcb-shm.0.0.0.dylib
-/usr/local/Cellar/libxcb/*/lib/libxcb.1.1.0.dylib
+/usr/local/Cellar/libxcb/*/lib/libxcb-render.0.dylib
+/usr/local/Cellar/libxcb/*/lib/libxcb-shm.0.dylib
+/usr/local/Cellar/libxcb/*/lib/libxcb.1.dylib
 /usr/local/Cellar/libxdmcp/*/lib/libXdmcp.6.dylib
 /usr/local/Cellar/libxext/*/lib/libXext.6.dylib
 /usr/local/Cellar/libxrender/*/lib/libXrender.1.dylib
@@ -33,4 +33,4 @@
 /usr/local/Cellar/pango/*/lib/libpangocairo-1.0.0.dylib
 /usr/local/Cellar/pango/*/lib/libpangoft2-1.0.0.dylib
 /usr/local/Cellar/pcre/*/lib/libpcre.1.dylib
-/usr/local/Cellar/pixman/*/lib/libpixman-1.0.40.0.dylib
+/usr/local/Cellar/pixman/*/lib/libpixman-1.0.dylib
