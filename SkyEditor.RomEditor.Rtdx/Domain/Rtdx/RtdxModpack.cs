@@ -74,14 +74,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 }
 
                 var items = rom.GetItems();
-                foreach (var path in mod.GetModelFilesInDirectory("items"))
+                foreach (var path in mod.GetModelFilesInDirectory("item"))
                 {
                     var model = await mod.LoadModel<ItemDataInfo.Entry>(path);
                     items.SetItem(model.Index, model);
                 }
 
                 var moves = rom.GetMoves();
-                foreach (var path in mod.GetModelFilesInDirectory("moves"))
+                foreach (var path in mod.GetModelFilesInDirectory("move"))
                 {
                     var model = await mod.LoadModel<WazaDataInfo.Entry>(path);
                     moves.SetMove(model.Index, model);

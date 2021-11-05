@@ -122,9 +122,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
         public void Flush(IRtdxRom rom)
         {
+            var pokemonIndexLookup = rom.GetPokemonDataInfo().Entries.ToDictionary(entry => entry.Id);
             foreach (var pokemon in LoadedPokemon.Values)
             {
-                var data = dataInfoEntries[pokemon.Id];
+                var data = pokemonIndexLookup[pokemon.Id];
                 var evolution = rom.GetPokemonEvolution().Entries[pokemon.Id];
 
                 // Convert list of TM indices to bitfield

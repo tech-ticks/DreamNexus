@@ -1127,6 +1127,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 () => stringCollection?.Flush(),
                 () => starterCollection?.Flush(this),
                 () => actorCollection?.Flush(this),
+                () => pokemonCollection?.Flush(this),
                 () => dungeonCollection?.Flush(this),
                 () => itemCollection?.Flush(this),
                 () => moveCollection?.Flush(this),

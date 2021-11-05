@@ -64,7 +64,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             var romMoves = rom.GetWazaDataInfo().Entries;
             foreach (var move in LoadedMoves)
             {
-                romMoves[(int) move.Key] = move.Value;
+                romMoves[(int) move.Key] = move.Value.Clone();
             }
         }
     }    
