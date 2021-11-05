@@ -13,6 +13,7 @@ using AssetStudio;
 using SkyEditorUI.Infrastructure.AssetFormats;
 using Cairo;
 using System.Threading;
+using System.IO;
 
 namespace SkyEditorUI.Controllers
 {
@@ -41,6 +42,8 @@ namespace SkyEditorUI.Controllers
         private Modpack modpack;
         private Builder builder;
         private ImageSurface? portraitSurface;
+        private double portraitZoomFactor = 1;
+        private bool nearestNeighborFiltering = false;
 
         public PokemonController(IRtdxRom rom, Modpack modpack, ControllerContext context)
             : this(new Builder("Pokemon.glade"), rom, modpack, context)
@@ -149,8 +152,25 @@ namespace SkyEditorUI.Controllers
 
             new Thread(() =>
             {
-                assetBundles.LoadFiles(PhysicalFileSystem.Instance, IOPath.Combine(rom.RomDirectory,
-                    "romfs/Data/StreamingAssets/ab", $"{portraitSheetName}.ab"));
+                var relativePortraitPath = IOPath.Combine("ab", $"{portraitSheetName}.ab");
+                string? assetBundlePath = null;
+                foreach (var mod in modpack!.Mods ?? Enumerable.Empty<Mod>())
+                {
+                    var bundlePathInMod = IOPath.Combine(mod.GetAssetsDirectory(), relativePortraitPath);
+                    if (File.Exists(bundlePathInMod))
+                    {
+                        assetBundlePath = bundlePathInMod;
+                        break;
+                    }
+                }
+                if (assetBundlePath == null)
+                {
+                    // Load from the ROM if it's not overwritten in any mods
+                    assetBundlePath = IOPath.Combine(rom.RomDirectory, "romfs/Data/StreamingAssets/", relativePortraitPath);
+                }
+                assetBundles.LoadFiles(PhysicalFileSystem.Instance, assetBundlePath);
+
+                System.Console.WriteLine($"Loading {assetBundlePath}");
                 var file = assetBundles.assetsFileList[0];
                 var texture = file.Objects.OfType<Texture2D>().FirstOrDefault();
                 if (texture == null)
@@ -163,12 +183,31 @@ namespace SkyEditorUI.Controllers
                 var encodedData = texture.image_data.GetData();
                 assetBundles.Clear();
 
-                if (texture.m_TextureFormat != TextureFormat.ASTC_RGBA_4x4)
+                byte[] decoded;
+                if (texture.m_TextureFormat == TextureFormat.ASTC_RGBA_4x4)
+                {
+                    decoded = AstcDecoder.DecodeASTC(encodedData, texture.m_Width, texture.m_Height, 4, 4);
+                }
+                else if (texture.m_TextureFormat == TextureFormat.DXT1)
+                {
+                    decoded = new byte[texture.m_Width * texture.m_Height * 4]; // RGBA
+                    DxtDecoder.DecompressDXT1(encodedData, texture.m_Width, texture.m_Height, decoded);
+                }
+                else if (texture.m_TextureFormat == TextureFormat.RGB24)
+                {
+                    decoded = new byte[texture.m_Width * texture.m_Height * 4]; // RGBA
+                    RgbConverter.RGB24ToBGRA32(encodedData, texture.m_Width, texture.m_Height, decoded);
+                }
+                else if (texture.m_TextureFormat == TextureFormat.RGBA32)
+                {
+                    decoded = new byte[texture.m_Width * texture.m_Height * 4]; // RGBA
+                    RgbConverter.RGBA32ToBGRA32(encodedData, texture.m_Width, texture.m_Height, decoded);
+                }
+                else
                 {
                     Console.WriteLine($"Unexpected texture format: {texture.m_TextureFormat}");
                     return;
                 }
-                var decoded = AstcDecoder.DecodeASTC(encodedData, texture.m_Width, texture.m_Height, 4, 4);
 
                 if (portraitSurface != null)
                 {
@@ -176,6 +215,12 @@ namespace SkyEditorUI.Controllers
                 }
                 portraitSurface = new ImageSurface(decoded, Format.ARGB32, texture.m_Width, texture.m_Height,
                     4 * texture.m_Width);
+
+                // The expected size is 1024x1024, but portraits can be bigger or smaller
+                portraitZoomFactor = 1024 / texture.m_Width;
+                System.Console.WriteLine(portraitZoomFactor);
+                System.Console.WriteLine(texture.m_Width);
+                nearestNeighborFiltering = texture.m_TextureSettings.m_FilterMode == 0;
 
                 GLib.Idle.Add(() => 
                 {
@@ -199,12 +244,18 @@ namespace SkyEditorUI.Controllers
 
             args.Cr.Save();
             args.Cr.Scale(0.5, 0.5);
+            args.Cr.Scale(portraitZoomFactor, portraitZoomFactor);
 
             // The image is flipped vertically
             args.Cr.Translate(0, portraitSurface.Height);
             args.Cr.Scale(1, -1);
 
             args.Cr.SetSourceSurface(portraitSurface, 0, 0);
+            using var pattern = args.Cr.GetSource() as SurfacePattern;
+            if (pattern != null)
+            {
+                pattern.Filter = nearestNeighborFiltering ? Filter.Nearest : Filter.Good;
+            }
             args.Cr.Paint();
             args.Cr.Restore();
 
