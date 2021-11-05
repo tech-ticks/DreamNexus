@@ -171,7 +171,14 @@ namespace SkyEditorUI.Controllers
                 assetBundles.LoadFiles(PhysicalFileSystem.Instance, assetBundlePath);
 
                 System.Console.WriteLine($"Loading {assetBundlePath}");
-                var file = assetBundles.assetsFileList[0];
+                var file = assetBundles.assetsFileList.FirstOrDefault();
+                if (file == null)
+                {
+                    Console.WriteLine($"Failed to load portrait AssetBundle");
+                    assetBundles.Clear();
+                    return;
+                }
+                
                 var texture = file.Objects.OfType<Texture2D>().FirstOrDefault();
                 if (texture == null)
                 {

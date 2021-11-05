@@ -211,7 +211,7 @@ namespace SkyEditorUI.Controllers
         {
             if (short.TryParse(entryShort32!.Text, out short value))
             {
-                floor.BalanceFloorInfoShort24 = value;
+                floor.BalanceFloorInfoShort32 = value;
             }
             else if (!string.IsNullOrEmpty(entryShort32!.Text))
             {

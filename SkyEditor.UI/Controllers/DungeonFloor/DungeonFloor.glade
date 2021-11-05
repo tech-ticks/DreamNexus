@@ -671,7 +671,7 @@
                     <property name="can-focus">False</property>
                     <property name="tooltip-text" translatable="yes">Max number of turns?</property>
                     <property name="halign">end</property>
-                    <property name="label" translatable="yes">Unk. Short24:</property>
+                    <property name="label" translatable="yes">Turn limit:</property>
                   </object>
                   <packing>
                     <property name="left-attach">3</property>
