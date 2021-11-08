@@ -43,7 +43,7 @@ namespace SkyEditorUI.Controllers
 
             creatureSpawnsStore!.Clear();
             // HACK: exclude CreatureIndex.WANTED_LV from the weights since it doesn't seem like a "real" entry
-            int weightSum = floor.Spawns.Where(spawn => !spawn.IsSpecial && spawn.StatsIndex != CreatureIndex.WANTED_LV)
+            int weightSum = floor.Spawns.Where(spawn => spawn.StatsIndex != CreatureIndex.WANTED_LV)
                 .Sum(spawn => spawn.SpawnRate);
             foreach (var spawn in floor.Spawns)
             {
@@ -53,7 +53,7 @@ namespace SkyEditorUI.Controllers
                     AutocompleteHelpers.FormatPokemon(rom, spawn.StatsIndex),
                     (int) spawn.RecruitmentLevel,
                     (int) spawn.SpawnRate,
-                    !spawn.IsSpecial && spawn.StatsIndex != CreatureIndex.WANTED_LV ? $"{percentage:F2}%" : "-",
+                    spawn.StatsIndex != CreatureIndex.WANTED_LV ? $"{percentage:F2}%" : "-",
                     (int) spawn.Byte0B,
                     spawn.IsSpecial
                 );
