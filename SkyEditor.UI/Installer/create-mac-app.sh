@@ -10,7 +10,7 @@ mkdir -p DreamNexus.app/Contents/MacOS
 mkdir -p DreamNexus.app/Contents/Resources
 
 # Copy contents
-cp -r ../bin/Release/net5.0/osx-x64/publish/* DreamNexus.app/Contents/MacOS
+cp -r ../bin/Release/net6.0/osx-x64/publish/* DreamNexus.app/Contents/MacOS
 
 # Stupid library search path workaround with a shell script
 cat > DreamNexus.app/Contents/MacOS/run_dreamnexus << EOF
