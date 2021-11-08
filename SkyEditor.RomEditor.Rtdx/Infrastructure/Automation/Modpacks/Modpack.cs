@@ -7,11 +7,9 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
-using IYamlSerializer = YamlDotNet.Serialization.ISerializer;
-using IYamlDeserializer = YamlDotNet.Serialization.IDeserializer;
-using YamlSerializerBuilder = YamlDotNet.Serialization.SerializerBuilder;
-using YamlDeserializerBuilder = YamlDotNet.Serialization.DeserializerBuilder;
+using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using YamlDotNet.Serialization.TypeInspectors;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
@@ -163,12 +161,29 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 
         private static readonly Regex idRegex = new Regex("^[a-zA-Z0-9]+\\.[a-zA-Z0-9]+[a-zA-Z0-9.]*$");
 
-        public static IYamlSerializer YamlSerializer { get; } = new YamlSerializerBuilder()
+        private class CustomTypeInspector : TypeInspectorSkeleton
+        {
+            private readonly ITypeInspector innerTypeInspector;
+
+            public CustomTypeInspector(ITypeInspector innerTypeInspector)
+            {
+                this.innerTypeInspector = innerTypeInspector;
+            }
+
+            public override IEnumerable<IPropertyDescriptor> GetProperties(Type type, object? container)
+            {
+                return innerTypeInspector.GetProperties(type, container).Where(prop => prop.
+                    GetCustomAttribute<DeserializeOnlyAttribute>() == null);
+            }
+        }
+
+        public static ISerializer YamlSerializer { get; } = new SerializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
-            .ConfigureDefaultValuesHandling(YamlDotNet.Serialization.DefaultValuesHandling.OmitNull)
+            .ConfigureDefaultValuesHandling(DefaultValuesHandling.OmitNull)
+            .WithTypeInspector<CustomTypeInspector>((inner) => new CustomTypeInspector(inner))
             .Build();
 
-        public static IYamlDeserializer YamlDeserializer { get; } = new YamlDeserializerBuilder()
+        public static IDeserializer YamlDeserializer { get; } = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .IgnoreUnmatchedProperties()
             .Build();

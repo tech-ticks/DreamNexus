@@ -1,5 +1,7 @@
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using System;
 using System.Collections.Generic;
+using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 {
@@ -9,7 +11,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public short Index { get; set; }
         public short BalanceFloorInfoShort02 { get; set; } // Same as RequestLevel Short4
         public string Event { get; set; } = "";
-        public short BalanceFloorInfoShort24 { get; set; }
+
+        [Obsolete($"Renamed to {nameof(TurnLimit)}"), DeserializeOnly]
+        public short BalanceFloorInfoShort24 { get => TurnLimit; set => TurnLimit = value; }
+        public short TurnLimit { get; set; }
         public short BalanceFloorInfoShort26 { get; set; } // Same as RequestLevel Short6
         public short BalanceFloorInfoShort28 { get; set; }  // Same as RequestLevel Short8
         public short DungeonMapDataInfoIndex { get; set; }

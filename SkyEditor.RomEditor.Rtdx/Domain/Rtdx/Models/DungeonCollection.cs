@@ -187,7 +187,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     Index = entry.Index,
                     BalanceFloorInfoShort02 = entry.Short02,
                     Event = entry.Event,
-                    BalanceFloorInfoShort24 = entry.TurnLimit,
+                    TurnLimit = entry.TurnLimit,
                     BalanceFloorInfoShort26 = entry.Short26,
                     BalanceFloorInfoShort28 = entry.Short28,
                     DungeonMapDataInfoIndex = entry.DungeonMapDataInfoIndex,
@@ -375,7 +375,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
                 floorInfo.Short02 = model.BalanceFloorInfoShort02;
                 floorInfo.Event = model.Event;
-                floorInfo.TurnLimit = model.BalanceFloorInfoShort24;
+                floorInfo.TurnLimit = model.TurnLimit;
                 floorInfo.Short26 = model.BalanceFloorInfoShort26;
                 floorInfo.Short28 = model.BalanceFloorInfoShort28;
                 floorInfo.DungeonMapDataInfoIndex = model.DungeonMapDataInfoIndex;

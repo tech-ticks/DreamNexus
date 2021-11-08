@@ -69,7 +69,7 @@ namespace SkyEditorUI.Controllers
             cbWeather!.Active = (int) floor.Weather;
             entryShort02!.Text = floor.BalanceFloorInfoShort02.ToString();
             entryUnknownItemSetIndex!.Text = floor.UnknownItemSetIndex.ToString();
-            entryShort24!.Text = floor.BalanceFloorInfoShort24.ToString();
+            entryShort24!.Text = floor.TurnLimit.ToString();
             entryShort26!.Text = floor.BalanceFloorInfoShort26.ToString();
             entryShort28!.Text = floor.BalanceFloorInfoShort28.ToString();
             entryShort30!.Text = floor.BalanceFloorInfoShort30.ToString();
@@ -166,11 +166,11 @@ namespace SkyEditorUI.Controllers
         {
             if (short.TryParse(entryShort24!.Text, out short value))
             {
-                floor.BalanceFloorInfoShort24 = value;
+                floor.TurnLimit = value;
             }
             else if (!string.IsNullOrEmpty(entryShort24!.Text))
             {
-                entryShort24!.Text = floor.BalanceFloorInfoShort24.ToString();
+                entryShort24!.Text = floor.TurnLimit.ToString();
             }
         }
         private void OnShort26Changed(object sender, EventArgs args)
