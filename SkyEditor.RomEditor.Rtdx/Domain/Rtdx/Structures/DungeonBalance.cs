@@ -187,7 +187,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Index = data.ReadInt16(0x00);
                 Short02 = data.ReadInt16(0x02);
                 Event = data.ReadString(0x04, 32, Encoding.ASCII).Trim('\0');
-                Short24 = data.ReadInt16(0x24);
+                TurnLimit = data.ReadInt16(0x24);
                 Short26 = data.ReadInt16(0x26);
                 Short28 = data.ReadInt16(0x28);
                 DungeonMapDataInfoIndex = data.ReadInt16(0x2A);
@@ -218,7 +218,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 accessor.WriteInt16(0x00, Index);
                 accessor.WriteInt16(0x02, Short02);
                 accessor.WriteString(0x04, Encoding.ASCII, Event);
-                accessor.WriteInt16(0x24, Short24);
+                accessor.WriteInt16(0x24, TurnLimit);
                 accessor.WriteInt16(0x26, Short26);
                 accessor.WriteInt16(0x28, Short28);
                 accessor.WriteInt16(0x2A, DungeonMapDataInfoIndex);
@@ -246,7 +246,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public short Index { get; set; }
             public short Short02 { get; set; }
             public string Event { get; set; }
-            public short Short24 { get; set; }   // possibly the max number of turns?
+            public short TurnLimit { get; set; }
             public short Short26 { get; set; }
             public short Short28 { get; set; } // Max money stack size?
             public short DungeonMapDataInfoIndex { get; set; }

@@ -95,7 +95,7 @@ foreach (var dungeon in dungeons)
         + $"{data.NameID,3}    {data.Short0A,3}      {data.DungeonBalanceIndex,3}       {data.Byte13,3}    {data.Byte17,3}    {data.Byte18,3}    {data.Byte19,3}");
 
     // Print floor infos
-    Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"Weather",-9} {"S02",5}  {"S24",5}  {"S26",5}  {"S28",5}  {"MapDat",6}  {"NameID",7}  "
+    Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"Weather",-9} {"S02",5}  {"Turns",5}  {"S26",5}  {"S28",5}  {"MapDat",6}  {"NameID",7}  "
             + $"{"B2D",3}  {"B2E",3}  {"B2F",3}  {"B20",5}  {"B32",5}  {"B34",3}  {"B35",3}  {"ItemSet",7}  {"B35",5}  {"B56",3}  {"B57",3}  {"B58",3}");
     foreach (var info in floorInfos)
     {
@@ -109,7 +109,7 @@ foreach (var dungeon in dungeons)
             + $"{info.InvitationIndex,5}  "
             + $"{weather,-9} "
             + $"{info.Short02,5}  "
-            + $"{info.Short24,5}  "
+            + $"{info.TurnLimit,5}  "
             + $"{info.Short26,5}  "
             + $"{info.Short28,5}  "
             + $"{info.DungeonMapDataInfoIndex,6}  "
@@ -255,7 +255,7 @@ foreach (var dungeon in dungeons)
                         continue;
                     }
 
-                    var itemIndex = ItemIndex.TRAP_MIN + i;
+                    var itemIndex = ItemIndexConstants.TRAP_MIN + i;
                     string trapName = strings.GetItemName(itemIndex);
                     if (string.IsNullOrEmpty(trapName))
                     {

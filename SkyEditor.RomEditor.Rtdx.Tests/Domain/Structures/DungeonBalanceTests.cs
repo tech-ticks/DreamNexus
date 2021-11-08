@@ -17,7 +17,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             var d001 = db.Entries[(int)DungeonIndex.D001] = new DungeonBalance.Entry(2);
             d001.FloorInfos[0].Short02 = 0x02;
             d001.FloorInfos[0].Event = "@BOSS#0";
-            d001.FloorInfos[0].Short24 = 0x24;
+            d001.FloorInfos[0].TurnLimit = 0x24;
             d001.FloorInfos[0].Short26 = 0x26;
             d001.FloorInfos[0].Short28 = 0x28;
             d001.FloorInfos[0].DungeonMapDataInfoIndex = 0x2A;
@@ -34,7 +34,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
 
             d001.FloorInfos[1].Short02 = 0x202;
             d001.FloorInfos[1].Event = "@END";
-            d001.FloorInfos[1].Short24 = 0x224;
+            d001.FloorInfos[1].TurnLimit = 0x224;
             d001.FloorInfos[1].Short26 = 0x226;
             d001.FloorInfos[1].Short28 = 0x228;
             d001.FloorInfos[1].DungeonMapDataInfoIndex = 0x22A;
@@ -104,7 +104,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             var d002 = db.Entries[(int)DungeonIndex.D002] = new DungeonBalance.Entry(1);
             d002.FloorInfos[0].Short02 = 0x302;
             d002.FloorInfos[0].Event = "@END";
-            d002.FloorInfos[0].Short24 = 0x324;
+            d002.FloorInfos[0].TurnLimit = 0x324;
             d002.FloorInfos[0].Short26 = 0x326;
             d002.FloorInfos[0].Short28 = 0x328;
             d002.FloorInfos[0].DungeonMapDataInfoIndex = 0x32A;
@@ -129,7 +129,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             rebuiltD001.FloorInfos.Should().HaveCount(2);
             rebuiltD001.FloorInfos[0].Short02.Should().Be(0x02);
             rebuiltD001.FloorInfos[0].Event.Should().Be("@BOSS#0");
-            rebuiltD001.FloorInfos[0].Short24.Should().Be(0x24);
+            rebuiltD001.FloorInfos[0].TurnLimit.Should().Be(0x24);
             rebuiltD001.FloorInfos[0].Short26.Should().Be(0x26);
             rebuiltD001.FloorInfos[0].Short28.Should().Be(0x28);
             rebuiltD001.FloorInfos[0].DungeonMapDataInfoIndex.Should().Be(0x2A);
@@ -211,7 +211,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             rebuiltD002.FloorInfos.Should().HaveCount(1);
             rebuiltD002.FloorInfos[0].Short02.Should().Be(0x302);
             rebuiltD002.FloorInfos[0].Event.Should().Be("@END");
-            rebuiltD002.FloorInfos[0].Short24.Should().Be(0x324);
+            rebuiltD002.FloorInfos[0].TurnLimit.Should().Be(0x324);
             rebuiltD002.FloorInfos[0].Short26.Should().Be(0x326);
             rebuiltD002.FloorInfos[0].Short28.Should().Be(0x328);
             rebuiltD002.FloorInfos[0].DungeonMapDataInfoIndex.Should().Be(0x32A);
