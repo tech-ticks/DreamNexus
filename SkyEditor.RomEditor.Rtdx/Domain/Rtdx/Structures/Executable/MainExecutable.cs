@@ -13,6 +13,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
     {
         IReadOnlyList<StarterFixedPokemonMap> StarterFixedPokemonMaps { get; }
         PegasusActDatabase ActorDatabase { get; }
+        bool ActorDatabaseLoaded { get; }
         public ExecutableVersion Version { get; }
         public byte[] Data { get; set; }
         int GetPlaceName0HashForNameId(int nameId);
@@ -185,6 +186,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 return actorDatabase;
             }
         }
+
+        public bool ActorDatabaseLoaded => actorDatabase != null;
     }
 
     [DebuggerDisplay("StarterFixedPokemonMap: {PokemonId} -> {FixedPokemonId}")]

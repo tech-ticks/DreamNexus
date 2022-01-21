@@ -17,6 +17,9 @@ using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System.Runtime.ExceptionServices;
 using Gdk;
 using Window = Gtk.Window;
+using SkyEditor.RomEditor.Infrastructure.Interfaces;
+using SkyEditor.RomEditor.Domain.Common.Structures;
+using SkyEditor.RomEditor.Infrastructure;
 
 namespace SkyEditorUI.Controllers
 {
@@ -31,7 +34,7 @@ namespace SkyEditorUI.Controllers
         [UI] private Label? openFileDialogLabel;
         [UI] private Widget? updateInfo;
         [UI] private TreeStore? itemStore;
-        [UI] private Stack? editorStack;
+        [UI] private Stack? editorStack;
 
         [UI] private Button? saveButton;
         [UI] private Button? buildButton;
@@ -255,7 +258,8 @@ namespace SkyEditorUI.Controllers
                                     Enabled = true,
                                     Scripts = new List<string>(),
                                 }
-                            }
+                            },
+                            EnableCodeInjection = true
                         };
                         modpack?.Dispose();
                         modpack = RtdxModpack.CreateInDirectory(metadata, folder, PhysicalFileSystem.Instance);
@@ -464,37 +468,23 @@ namespace SkyEditorUI.Controllers
             if (response == ResponseType.Accept)
             {
                 BuildRom(dialog.Filename, PhysicalFileSystem.Instance, Settings.Load().BuildFileStructure,
-                    () => UIUtils.OpenInFileBrowser(dialog.Filename));
+                    (_) => UIUtils.OpenInFileBrowser(dialog.Filename));
             }
 
             dialog.Destroy();
         }
 
-        private void BuildRom(string folder, IFileSystem fileSystem, BuildFileStructureType structure, System.Action? onFinished = null)
+        private void BuildRom(string folder, IFileSystem fileSystem, OutputStructureType structure, System.Action<BuildManifest?>? onFinished = null)
         {
             SetTopButtonsEnabled(false);
 
             new Thread(async () =>
             {
                 Exception? exception = null;
+                BuildManifest? manifest = null;
                 try
                 {
-                    string? codeInjectionDirectory = null;
-                    if (modpack!.Metadata.EnableCodeInjection)
-                    {
-                        codeInjectionDirectory = CodeInjectionHelpers.GetDirectoryForVersion(
-                            Settings.DataPath,
-                            modpack!.Metadata.CodeInjectionVersion,
-                            modpack!.Metadata.CodeInjectionReleaseType ?? "debug");
-
-                        if (codeInjectionDirectory == null)
-                        {
-                            throw new Exception($"The code injection version is not available."
-                                + "Click \"Update code injection binaries\" in modpack settings to fix this.");
-                        }
-                    }
-
-                    rom!.EnableCustomFiles = modpack.Metadata.EnableCodeInjection;
+                    rom!.EnableCustomFiles = modpack!.Metadata.EnableCodeInjection;
 
                     await SaveSourceFiles();
 
@@ -511,34 +501,16 @@ namespace SkyEditorUI.Controllers
                         // Write changed source files to the ROM
                         await modpack!.GetDefaultMod()!.WriteAssets(rom);
                     }
-                    if (structure == BuildFileStructureType.Atmosphere)
-                    {
-                        // HACK: hyperbeam 0.0.1 crashes if default_starters.bin doesn't exist, so make sure it's created
-                        // TODO: remove once it's fixed in hyperbeam
-                        if (modpack!.Metadata.EnableCodeInjection)
-                        {
-                            rom.GetDefaultStarters();
-                        }
 
-                        var paths = BuildHelpers.CreateAtmosphereFolderStructure(Settings.Load(), folder, fileSystem);
-                        await rom.Save(paths.ContentRoot, fileSystem, progressCallback);
-                        if (codeInjectionDirectory != null)
-                        {
-                            BuildHelpers.CopyCodeInjectionBinariesForAtmosphere(paths, codeInjectionDirectory);
-                        }
-                    }
-                    else if (structure == BuildFileStructureType.Emulator)
+                    var saveSettings = new RomBuildSettings
                     {
-                        await rom.Save(folder, fileSystem, progressCallback);
-                        if (codeInjectionDirectory != null)
-                        {
-                            BuildHelpers.CopyCodeInjectionBinariesForEmulator(folder, codeInjectionDirectory);
-                        }
-                    }
-                    else
-                    {
-                        throw new ArgumentException("unknown structure", nameof(structure));
-                    }
+                        CompressionType = modpack!.Metadata.EnableCodeInjection
+                            ? CompressionType.Deflate
+                            : CompressionType.Gyu0,
+                        OutputStructureType = structure,
+                        ModpackMetadata = modpack.Metadata
+                    };
+                    manifest = await rom.Save(folder, fileSystem, saveSettings, progressCallback);
                 }
                 catch (Exception e)
                 {
@@ -555,7 +527,7 @@ namespace SkyEditorUI.Controllers
                     }
                     if (onFinished != null)
                     {
-                        onFinished();
+                        onFinished(manifest);
                     }
                     return false;
                 });
@@ -579,7 +551,7 @@ namespace SkyEditorUI.Controllers
             var tempDir = IOPath.Combine(IOPath.GetTempPath(), IOPath.GetRandomFileName());
             Directory.CreateDirectory(tempDir);
 
-            BuildRom(tempDir, PhysicalFileSystem.Instance, BuildFileStructureType.Atmosphere, () =>
+            BuildRom(tempDir, PhysicalFileSystem.Instance, OutputStructureType.Atmosphere, (manifest) =>
             {
                 Console.WriteLine($"Built to temp dir '{tempDir}', starting deployment");
                 SetTopButtonsEnabled(false);
@@ -589,7 +561,11 @@ namespace SkyEditorUI.Controllers
                     Exception? exception = null;
                     try
                     {
-                        FTPDeployment.Deploy(settings, tempDir, progress =>
+                        if (manifest == null)
+                        {
+                            throw new InvalidOperationException("Cannot deploy via FTP without manifest");
+                        }
+                        FTPDeployment.Deploy(settings, manifest, tempDir, progress =>
                         {
                             GLib.Idle.Add(() =>
                             {
@@ -829,6 +805,7 @@ namespace SkyEditorUI.Controllers
                     {
                         throw new Exception("Failed to load rom");
                     }
+                    rom.GetDungeonBalance(); // Preload dungeon data
                 }
                 catch (Exception e)
                 {
@@ -1030,13 +1007,13 @@ namespace SkyEditorUI.Controllers
 
             var strings = rom.GetStrings().English;
             var dungeons = rom.GetDungeons();
-            for (int i = 1; i <= (int) DungeonIndex.D100; i++)
+            for (DungeonIndex i = DungeonIndex.D001; i <= DungeonIndex.D100; i++)
             {
                 var dungeon = dungeons.GetDungeonById((DungeonIndex) i, false);
-                var dungeonIter = AddMainListItem<DungeonController>(parent, $"{dungeon!.Id}: {strings.GetDungeonName(dungeon!.Id)}",
-                    "skytemple-e-dungeon-symbolic", new DungeonControllerContext((DungeonIndex) i));
+                var dungeonIter = AddMainListItem<DungeonController>(parent, $"{i}: {strings.GetDungeonName(i)}",
+                    "skytemple-e-dungeon-symbolic", new DungeonControllerContext(i));
 
-                foreach (var floor in dungeon.Floors)
+                foreach (var floor in dungeon!.Floors)
                 {
                     bool unused = floor.Index <= 0 || floor.Index > dungeon.AccessibleFloorCount;
                     AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor {floor.Index}{(unused ? " (unused)" : "")}", 
@@ -1048,7 +1025,7 @@ namespace SkyEditorUI.Controllers
 
         private void AddGameScripts(TreeIter parent)
         {
-            if (rom == null || modpack == null)
+            if (rom == null || modpack == null)
             {
                 return;
             }
@@ -1089,7 +1066,7 @@ namespace SkyEditorUI.Controllers
 
         private void CheckRomAndModpackLoaded()
         {
-            if (modpack == null || rom == null)
+            if (modpack == null || rom == null)
             {
                 throw new Exception("The modpack or rom is not loaded");
             }

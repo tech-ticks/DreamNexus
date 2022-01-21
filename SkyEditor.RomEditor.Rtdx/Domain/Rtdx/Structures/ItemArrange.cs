@@ -11,7 +11,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
     {
         public ItemArrange.Entry[] Entries { get; set; }
 
-        public (byte[] bin, byte[] ent) Build();
+        public (byte[] bin, byte[] ent) Build(CompressionType compressionType);
     }
 
     public class ItemArrange : IItemArrange
@@ -40,7 +40,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
         }
         
-        public (byte[] bin, byte[] ent) Build()
+        public (byte[] bin, byte[] ent) Build(CompressionType compressionType)
         {
             MemoryStream bin = new MemoryStream();
             var entryPointers = new List<int>();
@@ -49,9 +49,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             entryPointers.Add(0);
             foreach (var entry in Entries)
             {
-                // Build SIR0 and compress to GYU0
+                // Build SIR0 and compress to GYU0/deflate
                 var sir0 = entry.ToSir0();
-                var data = Gyu0.Compress(sir0.Data);
+                var data = CompressionHelpers.Compress(sir0.Data, compressionType);
 
                 // Write data to .bin and the pointer to .ent
                 // Align data to 16 bytes

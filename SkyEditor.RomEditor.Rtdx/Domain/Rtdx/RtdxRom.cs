@@ -21,10 +21,13 @@ using System.Linq;
 using System.Data;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures.Custom;
 using NsoElfConverterDotNet;
+using SkyEditor.RomEditor.Infrastructure;
+using YamlDotNet.Serialization;
+using System.Security.Cryptography;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx
 {
-    public interface IRtdxRom : IModTarget, ISaveable, ISaveableToDirectory, ICSharpChangeScriptGenerator, ILuaChangeScriptGenerator
+    public interface IRtdxRom : IModTarget, ISaveable, ISaveableToDirectory
     {        
         /// <summary>
         /// Whether custom files that can be used with code injection projects should be preferred over
@@ -865,9 +868,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             if (starterCollection == null)
             {
                 var sp = GetServiceProvider();
-                starterCollection = new StarterCollection(this,
-                    sp.GetRequiredService<ILuaGenerator>(),
-                    sp.GetRequiredService<ICSharpGenerator>());
+                starterCollection = new StarterCollection(this);
             }
             StartersModified = true;
             return starterCollection;
@@ -1110,7 +1111,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// <summary>
         /// Saves all loaded files to disk
         /// </summary>
-        public async Task Save(string directory, IFileSystem fileSystem, Action<string>? onProgress = null)
+        public async Task<BuildManifest?> Save(string directory, IFileSystem fileSystem, RomBuildSettings settings, Action<string>? onProgress = null)
         {
             void EnsureDirectoryExists(string path)
             {
@@ -1120,8 +1121,24 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     Directory.CreateDirectory(dir);
                 }
             }
+            
+            var manifest = settings.GenerateManifest ? new BuildManifest() : null;
 
-            onProgress?.Invoke("Applying models (1/3) - 0%");
+            void WriteBytes(string path, byte[] data)
+            {
+                fileSystem.WriteAllBytes(path, data);
+                if (manifest != null)
+                {
+                    string sha1 = Convert.ToHexString(SHA1.HashData(data));
+                    manifest.HashToFilename.Add(sha1, path.Replace(directory, "").Replace("\\", "/"));
+                }
+            }
+
+            var outputPaths = SwitchBuildHelpers.CreateDirectoryStructure(directory,
+                settings.ModpackMetadata?.Id ?? "unknown.modpack", settings.OutputStructureType, EnableCustomFiles);
+            string modpackRoot = outputPaths.ModpackRoot!;
+
+            onProgress?.Invoke("Applying models (1/4) - 0%");
             // Save wrappers around files
             var modelActions = new List<Action> {
                 () => stringCollection?.Flush(),
@@ -1143,31 +1160,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             {
                 float progress = (float) i / modelActions.Count;
                 modelActions[i]();
-                onProgress?.Invoke($"Applying models (1/3) - {(int) (progress * 100)}%");
+                onProgress?.Invoke($"Applying models (1/4) - {(int) (progress * 100)}%");
             }
 
-            onProgress?.Invoke("Writing data (2/3)");
-            // Save the files themselves
-            if (EnableCustomFiles)
-            {
-                // Write custom files. actor_database.bin must exist even if
-                // the actor database was not modified.
-                GetMainExecutable();
-                var startersPath = GetStartersBinPath(directory);
-                EnsureDirectoryExists(startersPath);
-                fileSystem.WriteAllBytes(startersPath, mainExecutable!.StartersToByteArray());
-
-                var actorDatabasePath = GetActorDatabasePath(directory);
-                EnsureDirectoryExists(actorDatabasePath);
-                fileSystem.WriteAllBytes(actorDatabasePath, mainExecutable.ActorDatabase.ToByteArray());
-            }
-            else if (mainExecutable != null)
-            {
-                // Edit the executable instead
-                var path = GetNsoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, mainExecutable!.ToNso());
-            }
+            onProgress?.Invoke("Writing data (2/4)");
 
             var jobs = new List<Action>();
          
@@ -1176,188 +1172,212 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 jobs!.Add(() =>
                 {
                     EnsureDirectoryExists(path);
-                    fileSystem.WriteAllBytes(path, action());
+                    WriteBytes(path, action());
                 });
             }
             void addCustomJob(Action action)
             {
                 jobs!.Add(action);
             }
+
+            if (EnableCustomFiles && mainExecutable != null)
+            {
+                addJob(GetStartersBinPath(modpackRoot), () => mainExecutable.StartersToByteArray());
+
+                if (mainExecutable.ActorDatabaseLoaded)
+                {
+                    addJob(GetActorDatabasePath(modpackRoot), () => mainExecutable.ActorDatabase.ToByteArray());
+                }
+            }
             
             if (natureDiagnosis != null)
             {
-                addJob(GetNatureDiagnosisPath(directory), () => Encoding.Unicode.GetBytes(
+                addJob(GetNatureDiagnosisPath(modpackRoot), () => Encoding.Unicode.GetBytes(
                     JsonConvert.SerializeObject(natureDiagnosis)));
             }
             if (fixedPokemon != null)
             {
-                addJob(GetFixedPokemonPath(directory), () => fixedPokemon.Build().Data.ReadArray());
+                addJob(GetFixedPokemonPath(modpackRoot), () => fixedPokemon.Build().Data.ReadArray());
             }
             if (pokemonDataInfo != null)
             {
-                addJob(GetPokemonDataInfoPath(directory), () => pokemonDataInfo.ToByteArray());
+                addJob(GetPokemonDataInfoPath(modpackRoot), () => pokemonDataInfo.ToByteArray());
             }
             if (experience != null)
             {
                 addCustomJob(() =>
                 {
-                    var path = GetExperiencePath(directory);
+                    var path = GetExperiencePath(modpackRoot);
                     EnsureDirectoryExists(path);
                     var (binData, entData) = experience.Build();
-                    fileSystem.WriteAllBytes(path + ".bin", binData);
-                    fileSystem.WriteAllBytes(path + ".ent", entData);
+                    WriteBytes(path + ".bin", binData);
+                    WriteBytes(path + ".ent", entData);
                 });
             }
             if (wazaDataInfo != null)
             {
-                addJob(GetWazaDataInfoPath(directory), () => wazaDataInfo.ToByteArray());
+                addJob(GetWazaDataInfoPath(modpackRoot), () => wazaDataInfo.ToByteArray());
             }
 
             foreach (var messageBin in loadedMessageBins)
             {
-                addJob(GetMessageBinPath(directory, messageBin.Key), () => messageBin.Value.ToByteArray());
+                addJob(GetMessageBinPath(modpackRoot, messageBin.Key), () => messageBin.Value.ToByteArray());
             }
             if (dungeonDataInfo != null)
             {
-                addJob(GetDungeonDataInfoPath(directory), () => dungeonDataInfo.ToByteArray());
+                addJob(GetDungeonDataInfoPath(modpackRoot), () => dungeonDataInfo.ToByteArray());
             }
             if (fixedMap != null)
             {
                 addCustomJob(() =>
                 {
-                    var path = GetFixedMapPath(directory);
+                    var path = GetFixedMapPath(modpackRoot);
                     EnsureDirectoryExists(path);
                     var (binData, entData) = fixedMap.Build();
-                    fileSystem.WriteAllBytes(path + ".bin", binData);
-                    fileSystem.WriteAllBytes(path + ".ent", entData);
+                    WriteBytes(path + ".bin", binData);
+                    WriteBytes(path + ".ent", entData);
                 });
             }
             if (fixedItem != null)
             {
-                addJob(GetFixedItemPath(directory), () => fixedItem.ToByteArray());
+                addJob(GetFixedItemPath(modpackRoot), () => fixedItem.ToByteArray());
             }
             if (randomParts != null)
             {
                 addCustomJob(() =>
                 {
-                    var path = GetRandomPartsPath(directory);
+                    var path = GetRandomPartsPath(modpackRoot);
                     EnsureDirectoryExists(path);
                     var (binData, entData) = randomParts.Build();
-                    fileSystem.WriteAllBytes(path + ".bin", binData);
-                    fileSystem.WriteAllBytes(path + ".ent", entData);
+                    WriteBytes(path + ".bin", binData);
+                    WriteBytes(path + ".ent", entData);
                 });
             }
             if (actDataInfo != null)
             {
-                addJob(GetActDataInfoPath(directory), () => actDataInfo.ToByteArray());
+                addJob(GetActDataInfoPath(modpackRoot), () => actDataInfo.ToByteArray());
             }
             if (actEffectDataInfo != null)
             {
-                addJob(GetActEffectDataInfoPath(directory), () => actEffectDataInfo.ToByteArray());
+                addJob(GetActEffectDataInfoPath(modpackRoot), () => actEffectDataInfo.ToByteArray());
             }
             if (actHitCountTableDataInfo != null)
             {
-                addJob(GetActHitCountTableDataInfoPath(directory), () => actHitCountTableDataInfo.Build());
+                addJob(GetActHitCountTableDataInfoPath(modpackRoot), () => actHitCountTableDataInfo.Build());
             }
             if (actParamDataInfo != null)
             {
-                addJob(GetActParamDataInfoPath(directory), () => actParamDataInfo.Build());
+                addJob(GetActParamDataInfoPath(modpackRoot), () => actParamDataInfo.Build());
             }
             if (actStatusTableDataInfo != null)
             {
-                addJob(GetActStatusTableDataInfoPath(directory), () => actStatusTableDataInfo.Build());
+                addJob(GetActStatusTableDataInfoPath(modpackRoot), () => actStatusTableDataInfo.Build());
             }
             if (chargedMoves != null)
             {
-                addJob(GetChargedMovesPath(directory), () => chargedMoves.ToByteArray());
+                addJob(GetChargedMovesPath(modpackRoot), () => chargedMoves.ToByteArray());
             }
             if (extraLargeMoves != null)
             {
-                addJob(GetExtraLargeMovesPath(directory), () => extraLargeMoves.ToByteArray());
+                addJob(GetExtraLargeMovesPath(modpackRoot), () => extraLargeMoves.ToByteArray());
             }
             if (statusDataInfo != null)
             {
-                addJob(GetStatusDataInfoPath(directory), () => statusDataInfo.ToByteArray());
+                addJob(GetStatusDataInfoPath(modpackRoot), () => statusDataInfo.ToByteArray());
             }
 
             if (itemArrange != null)
             {
                 addCustomJob(() =>
                 {
-                    var path = GetItemArrangePath(directory);
+                    var path = GetItemArrangePath(modpackRoot);
                     EnsureDirectoryExists(path);
-                    var (binData, entData) = itemArrange.Build();
-                    fileSystem.WriteAllBytes(path + ".bin", binData);
-                    fileSystem.WriteAllBytes(path + ".ent", entData);
+                    var (binData, entData) = itemArrange.Build(settings.CompressionType);
+                    WriteBytes(path + ".bin", binData);
+                    WriteBytes(path + ".ent", entData);
                 });
             }
             if (dungeonMapDataInfo != null)
             {
-                addJob(GetDungeonMapDataInfoPath(directory), () => dungeonMapDataInfo.ToByteArray());
+                addJob(GetDungeonMapDataInfoPath(modpackRoot), () => dungeonMapDataInfo.ToByteArray());
             }
             if (dungeonExtra != null)
             {
-                addJob(GetDungeonExtraPath(directory), () => dungeonExtra.ToByteArray());
+                addJob(GetDungeonExtraPath(modpackRoot), () => dungeonExtra.ToByteArray());
             }
             if (requestLevel != null)
             {
-                addJob(GetRequestLevel(directory), () => requestLevel.ToByteArray());
+                addJob(GetRequestLevel(modpackRoot), () => requestLevel.ToByteArray());
             }
             if (pokemonFormDatabase != null)
             {
-                addJob(GetPokemonFormDatabasePath(directory), () => pokemonFormDatabase.ToByteArray());
+                addJob(GetPokemonFormDatabasePath(modpackRoot), () => pokemonFormDatabase.ToByteArray());
             }
             if (pokemonGraphicsDatabase != null)
             {
-                addJob(GetPokemonGraphicsDatabasePath(directory), () => pokemonGraphicsDatabase.ToByteArray());
+                addJob(GetPokemonGraphicsDatabasePath(modpackRoot), () => pokemonGraphicsDatabase.ToByteArray());
             }
             if (dungeonMapSymbol != null)
             {
-                addJob(GetDungeonMapSymbolPath(directory), () => dungeonMapSymbol.ToByteArray());
+                addJob(GetDungeonMapSymbolPath(modpackRoot), () => dungeonMapSymbol.ToByteArray());
             }
             if (dungeonBgmSymbol != null)
             {
-                addJob(GetDungeonBgmSymbolPath(directory), () => dungeonBgmSymbol.ToByteArray());
+                addJob(GetDungeonBgmSymbolPath(modpackRoot), () => dungeonBgmSymbol.ToByteArray());
             }
             if (dungeonSeSymbol != null)
             {
-                addJob(GetDungeonSeSymbolPath(directory), () => dungeonSeSymbol.ToByteArray());
+                addJob(GetDungeonSeSymbolPath(modpackRoot), () => dungeonSeSymbol.ToByteArray());
             }
             if (effectSymbol != null)
             {
-                addJob(GetEffectSymbolPath(directory), () => effectSymbol.ToByteArray());
+                addJob(GetEffectSymbolPath(modpackRoot), () => effectSymbol.ToByteArray());
             }
             if (mapRandomGraphics != null)
             {
-                addJob(GetMapRandomGraphicsPath(directory), () => mapRandomGraphics.ToByteArray());
+                addJob(GetMapRandomGraphicsPath(modpackRoot), () => mapRandomGraphics.ToByteArray());
             }
             if (itemGraphics != null)
             {
-                addJob(GetItemGraphicsPath(directory), () => itemGraphics.ToByteArray());
+                addJob(GetItemGraphicsPath(modpackRoot), () => itemGraphics.ToByteArray());
             }
             if (itemDataInfo != null)
             {
-                addJob(GetItemDataInfoPath(directory), () => itemDataInfo.ToByteArray());
+                addJob(GetItemDataInfoPath(modpackRoot), () => itemDataInfo.ToByteArray());
             }
             if (camps != null)
             {
-                addJob(GetCampPath(directory), () => camps.ToByteArray());
+                addJob(GetCampPath(modpackRoot), () => camps.ToByteArray());
             }
             if (campHabitat != null)
             {
-                addJob(GetCampHabitatPath(directory), () => campHabitat.ToByteArray());
+                addJob(GetCampHabitatPath(modpackRoot), () => campHabitat.ToByteArray());
             }
             if (pokemonEvolution != null)
             {
-                addJob(GetPokemonEvolutionPath(directory), () => pokemonEvolution.ToByteArray());
+                addJob(GetPokemonEvolutionPath(modpackRoot), () => pokemonEvolution.ToByteArray());
             }
             if (ranks != null)
             {
-                addJob(GetRankPath(directory), () => ranks.ToByteArray());
+                addJob(GetRankPath(modpackRoot), () => ranks.ToByteArray());
             }
             if (defaultStarters != null && EnableCustomFiles)
             {
-                addJob(GetDefaultStartersPath(directory), () => defaultStarters.ToByteArray());
+                addJob(GetDefaultStartersPath(modpackRoot), () => defaultStarters.ToByteArray());
+            }
+
+            if (dungeonBalance != null)
+            {
+                addCustomJob(() =>
+                {
+                    var path = GetDungeonBalancePath(modpackRoot);
+                    EnsureDirectoryExists(path);
+                    var task = dungeonBalance.Build(settings.CompressionType);
+                    task.Wait();
+                    var (binData, entData) = task.Result;
+                    WriteBytes(path + ".bin", binData);
+                    WriteBytes(path + ".ent", entData);
+                });
             }
 
             var tasks = jobs.Select(job => Task.Run(() =>
@@ -1367,29 +1387,38 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
             await Task.WhenAll(tasks);
 
-            if (dungeonBalance != null)
-            {
-                onProgress?.Invoke("Writing data (2/3) - Writing dungeon_balance.bin");
-                var path = GetDungeonBalancePath(directory);
-                EnsureDirectoryExists(path);
-
-                var (binData, entData) = await dungeonBalance.Build();
-                fileSystem.WriteAllBytes(path + ".bin", binData);
-                fileSystem.WriteAllBytes(path + ".ent", entData);
-            }
-
-            onProgress?.Invoke("Copying assets and source files (3/3)");
+            onProgress?.Invoke("Copying assets and source files (3/4)");
+            var assetTasks = new List<Task>();
             foreach (var (relativePath, data) in filesToWrite)
             {
-                var path = Path.Combine(directory, relativePath);
+                var path = Path.Combine(modpackRoot, relativePath);
                 var pathDirectory = Path.GetDirectoryName(path);
                 if (!string.IsNullOrEmpty(pathDirectory) && !fileSystem.DirectoryExists(pathDirectory))
                 {
                     fileSystem.CreateDirectory(pathDirectory);
                 }
-                fileSystem.WriteAllBytes(path, data);
+                assetTasks.Add(fileSystem.WriteAllBytesAsync(path, data));
             }
+            await Task.WhenAll(assetTasks);
+
+            if (EnableCustomFiles && settings.ModpackMetadata != null)
+            {
+                var metadata = Modpack.YamlSerializer.Serialize(settings.ModpackMetadata);
+                // Disable BOM by passing false to the UTF8Encoding constructor
+                WriteBytes(Path.Combine(modpackRoot, "modpack.yaml"), new UTF8Encoding(false).GetBytes(metadata));
+            }
+
+            onProgress?.Invoke("Copying binaries (4/4)");
+            SwitchBuildHelpers.CopyCodeInjectionBinaries(modpackRoot, settings.OutputStructureType);
             filesToWrite.Clear();
+
+            if (manifest != null)
+            {
+                fileSystem.WriteAllText(Path.Combine(directory, ".dreamnexus-build.manifest.yaml"),
+                    Modpack.YamlSerializer.Serialize(manifest), new UTF8Encoding(false));
+            }
+
+            return manifest;
         }
 
         /// <summary>
@@ -1397,21 +1426,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         /// </summary>
         public async Task Save()
         {
-            await this.Save(this.RomDirectory, this.FileSystem);
-        }
-
-        [Obsolete]
-        public string GenerateLuaChangeScript(int indentLevel = 0)
-        {
-            // TODO: remove
-            throw new InvalidOperationException("Change scripts are no longer supported");
-        }
-
-        [Obsolete]
-        public string GenerateCSharpChangeScript(int indentLevel = 0)
-        {
-            // TODO: remove
-            throw new InvalidOperationException("Change scripts are no longer supported");
+            await this.Save(this.RomDirectory, this.FileSystem, new RomBuildSettings { CompressionType = CompressionType.Gyu0 });
         }
     }
 }

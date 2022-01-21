@@ -3,18 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using SkyEditor.RomEditor.Infrastructure.Interfaces;
 
 namespace SkyEditorUI.Infrastructure
 {
-    public enum BuildFileStructureType
-    {
-        Atmosphere,
-        Emulator
-    }
-
     public class Settings
     {
-
         public static string DataPath
         {
             get
@@ -37,7 +31,7 @@ namespace SkyEditorUI.Infrastructure
         public string? SwitchFtpPassword { get; set; }
 
         public string? RtdxRomPath { get; set; }
-        public BuildFileStructureType BuildFileStructure { get; set; } = BuildFileStructureType.Atmosphere;
+        public OutputStructureType BuildFileStructure { get; set; } = OutputStructureType.Atmosphere;
 
         public bool EnableHactoolLogging { get; set; } = true;
 

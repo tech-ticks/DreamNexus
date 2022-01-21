@@ -1,5 +1,6 @@
 ﻿using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Domain;
+using SkyEditor.RomEditor.Domain.Common.Structures;
 using SkyEditor.RomEditor.Domain.Library;
 using SkyEditor.RomEditor.Domain.Psmd;
 using SkyEditor.RomEditor.Domain.Rtdx;
@@ -66,9 +67,26 @@ namespace SkyEditor.RomEditor.ConsoleApp
                 VerboseLogging = args.Any(arg => arg == "--verbose")
             };
 
+            var outputStructure = OutputStructureType.Atmosphere;
+            ModpackMetadata? modpackMetadata = null;
+
             while (arguments.TryDequeue(out var arg))
             {
-                if (string.Equals(arg, "--save", StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(arg, "--output-structure", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (!arguments.TryDequeue(out var target))
+                    {
+                        throw new ArgumentException("Argument '--output-structure' must be followed by 'atmosphere' or 'ryujinx'.");
+                    }
+
+                    outputStructure = target.ToLowerInvariant() switch
+                    {
+                        "atmosphere" => OutputStructureType.Atmosphere,
+                        "ryujinx" => OutputStructureType.Ryujinx,
+                        _ => throw new ArgumentException($"Invalid output structure type '{outputStructure}'")
+                    };
+                }
+                else if (string.Equals(arg, "--save", StringComparison.OrdinalIgnoreCase))
                 {
                     if (context.Rom == null)
                     {
@@ -106,7 +124,17 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     {
                         progressAction = (progress) => Console.WriteLine(progress);
                     }
-                    await saveableRom.Save(targetDirectory, fileSystem, progressAction);
+
+                    var settings = new RomBuildSettings
+                    {
+                        OutputStructureType = outputStructure,
+                        ModpackMetadata = modpackMetadata
+                    };
+                    if (saveableRom is IRtdxRom rtdxRom)
+                    {
+                        settings.CompressionType = rtdxRom.EnableCustomFiles ? CompressionType.Deflate : CompressionType.Gyu0;
+                    }
+                    await saveableRom.Save(targetDirectory, fileSystem, settings, progressAction);
                     if (context.VerboseLogging) Console.WriteLine("Saved to " + targetDirectory);
                 }
                 else if (arg.StartsWith("library:"))
@@ -131,9 +159,10 @@ namespace SkyEditor.RomEditor.ConsoleApp
                 }
                 else if (Directory.Exists(arg))
                 {
-                    if (File.Exists(Path.Combine(arg, "modpack.json")) || File.Exists(Path.Combine(arg, "mod.json")))
+                    if (File.Exists(Path.Combine(arg, "modpack.yaml")) || File.Exists(Path.Combine(arg, "modpack.json"))
+                        || File.Exists(Path.Combine(arg, "mod.yaml")) || File.Exists(Path.Combine(arg, "mod.json")))
                     {
-                        await ApplyMod(arg, context);
+                        modpackMetadata = await ApplyMod(arg, context);
                     }
                     else
                     {
@@ -160,7 +189,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
                     else
                     {
                         // Assume it's a mod
-                        await ApplyMod(arg, context);
+                        modpackMetadata = await ApplyMod(arg, context);
                     }
                 }
                 else if (Commands.TryGetValue(arg, out var command))
@@ -179,7 +208,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
             }
         }
 
-        private static async Task ApplyMod(string modPath, ConsoleContext context)
+        private static async Task<ModpackMetadata> ApplyMod(string modPath, ConsoleContext context)
         {
             if (context.Rom == null)
             {
@@ -190,12 +219,14 @@ namespace SkyEditor.RomEditor.ConsoleApp
             {
                 using var modpack = new RtdxModpack(modPath, context.FileSystem);
                 await modpack.Apply<IRtdxRom>(rtdx);
+                return modpack.Metadata;
                 // TODO: copy assets. How do we want to do that? We don't have a path here
             }
             else if (context.Rom is IPsmdRom psmd)
             {
                 // TODO: re-introduce support
                 // await modpack.Apply<IPsmdRom>(psmd);
+                throw new NotImplementedException("PSMD modpacks are currently not supported.");
             }
             else
             {
@@ -210,8 +241,6 @@ namespace SkyEditor.RomEditor.ConsoleApp
         {
             { "Import", Import },
             { "ListLibrary", ListLibrary },
-            { "LuaGen", GenerateLuaChangeScript }, { "GenerateLuaChangeScript", GenerateLuaChangeScript },
-            { "CSGen", GenerateCSharpChangeScript },
             { "Pack", BuildModpack }, { "BuildModpack", BuildModpack },
             { "Unfarc", Unfarc },
             { "Refarc", Refarc }
@@ -253,57 +282,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
                 Console.WriteLine(item.Name);
             }
             return Task.CompletedTask;
-        }
-
-        private static Task GenerateLuaChangeScript(Queue<string> arguments, ConsoleContext context)
-        {
-            if (context.Rom == null)
-            {
-                throw new InvalidOperationException("Import must follow a ROM argument");
-            }
-
-            if (!(context.Rom is ILuaChangeScriptGenerator changeScriptGenerator))
-            {
-                throw new NotSupportedException($"ROM of type {context.Rom.GetType().Name} does not implement ILuaChangeScriptGenerator");
-            }
-
-            var script = changeScriptGenerator.GenerateLuaChangeScript();
-
-            if (context.VerboseLogging) Console.WriteLine("Change script:");
-            Console.WriteLine(script);
-
-            if (arguments.TryDequeue(out var targetFileName))
-            {
-                File.WriteAllText(targetFileName, script);
-            }
-
-            return Task.CompletedTask;
-        }
-
-        private static Task GenerateCSharpChangeScript(Queue<string> arguments, ConsoleContext context)
-        {
-            if (context.Rom == null)
-            {
-                throw new InvalidOperationException("Import must follow a ROM argument");
-            }
-
-            if (!(context.Rom is ICSharpChangeScriptGenerator changeScriptGenerator))
-            {
-                throw new NotSupportedException($"ROM of type {context.Rom.GetType().Name} does not implement ICSharpChangeScriptGenerator");
-            }
-
-            var script = changeScriptGenerator.GenerateCSharpChangeScript();
-
-            if (context.VerboseLogging) Console.WriteLine("Change script:");
-            Console.WriteLine(script);
-
-            if (arguments.TryDequeue(out var targetFileName))
-            {
-                File.WriteAllText(targetFileName, script);
-            }
-
-            return Task.CompletedTask;
-        }        
+        }     
 
         /// <summary>
         /// Creates a modpack from one or more modpacks, mods, or scripts

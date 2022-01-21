@@ -51,20 +51,5 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
         /// This is only used in the GUI. On the CLI, pass the --enable-custom-files flag instead.
         /// </summary>
         public bool EnableCodeInjection { get; set; }
-
-        /// <summary>
-        /// The GitHub repository that should be used to download code injection binaries from
-        /// </summary>
-        public string? CodeInjectionRepository { get; set; } = DefaultCodeInjectionRepository;
-
-        /// <summary>
-        /// The version of the code injection binary
-        /// </summary>
-        public string? CodeInjectionVersion { get; set; }
-
-        /// <summary>
-        /// "debug" or "release"
-        /// </summary>
-        public string? CodeInjectionReleaseType { get; set; } = "debug";
     }
 }

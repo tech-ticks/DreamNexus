@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,24 +15,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
     public interface IDungeonBalance
     {
         DungeonBalance.Entry[] Entries { get; }
-        Task<(byte[] bin, byte[] ent)> Build();
+        Task<(byte[] bin, byte[] ent)> Build(CompressionType compressionType);
     }
 
     public class DungeonBalance : IDungeonBalance
     {
         public DungeonBalance(byte[] binData, byte[] entData)
         {
-            IReadOnlyBinaryDataAccessor binFile = new BinaryFile(binData);
-            IReadOnlyBinaryDataAccessor entFile = new BinaryFile(entData);
-
-            var entCount = entFile.Length / sizeof(uint) - 1;
-            Entries = new Entry[entCount];
-            for (var i = 0; i < entCount; i++)
-            {
-                var curr = entFile.ReadInt32(i * sizeof(int));
-                var next = entFile.ReadInt32((i + 1) * sizeof(int));
-                Entries[i] = new Entry(binFile.Slice(curr, next - curr));
-            }
+            Entries = new Entry[] {};
+            Load(binData, entData).Wait();
         }
 
         public DungeonBalance()
@@ -43,7 +35,32 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             }
         }
 
-        public async Task<(byte[] bin, byte[] ent)> Build()
+        private async Task Load(byte[] binData, byte[] entData)
+        {
+            IReadOnlyBinaryDataAccessor binFile = new BinaryFile(binData);
+            IReadOnlyBinaryDataAccessor entFile = new BinaryFile(entData);
+
+            var entCount = entFile.Length / sizeof(uint) - 1;
+            Entries = new Entry[entCount];
+
+            var tasks = new List<Task>((int) entCount);
+
+            for (var i = 0; i < entCount; i++)
+            {
+                var curr = entFile.ReadInt32(i * sizeof(int));
+                var next = entFile.ReadInt32((i + 1) * sizeof(int));
+                var slice = binFile.Slice(curr, next - curr);
+                int idx = i;
+
+                tasks.Add(Task.Run(() =>
+                {
+                    Entries[idx] = new Entry(slice);
+                }));
+            }
+            await Task.WhenAll(tasks);
+        }
+
+        public async Task<(byte[] bin, byte[] ent)> Build(CompressionType compressionType)
         {
             MemoryStream bin = new MemoryStream();
             var entryPointers = new List<int>();
@@ -52,7 +69,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             var compressedEntries = await Task.WhenAll(Entries.Select(entry => Task.Run(() =>
             {
                 var sir0 = entry.ToSir0();
-                return Gyu0.Compress(sir0.Data);
+                return CompressionHelpers.Compress(sir0.Data, compressionType);
             })));
 
             // Build the .bin file data

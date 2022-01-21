@@ -402,7 +402,7 @@ Please don't enter a password you use elsewhere since it's stored in clear text.
                             <property name="hexpand">True</property>
                             <items>
                               <item id="0" translatable="yes">Atmosphère</item>
-                              <item id="1" translatable="yes">Yuzu emulator</item>
+                              <item id="1" translatable="yes">Ryujinx emulator</item>
                             </items>
                           </object>
                           <packing>

@@ -5,6 +5,7 @@ using Settings = SkyEditorUI.Infrastructure.Settings;
 using SkyEditorUI.Infrastructure;
 using System.Threading;
 using System.Runtime.ExceptionServices;
+using SkyEditor.RomEditor.Infrastructure.Interfaces;
 
 namespace SkyEditorUI.Controllers
 {
@@ -145,7 +146,7 @@ namespace SkyEditorUI.Controllers
             settings.SwitchFtpPort = portEntry!.Text;
             settings.SwitchFtpUser = ftpUserEntry!.Text;
             settings.SwitchFtpPassword = ftpPasswordEntry!.Text;
-            settings.BuildFileStructure = (BuildFileStructureType) buildFileStructureComboBox!.Active;
+            settings.BuildFileStructure = (OutputStructureType) buildFileStructureComboBox!.Active;
 
             settings.Save();
             Respond(ResponseType.Accept);
