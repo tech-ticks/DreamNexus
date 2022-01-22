@@ -188,8 +188,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     BalanceFloorInfoShort02 = entry.Short02,
                     Event = entry.Event,
                     TurnLimit = entry.TurnLimit,
-                    BalanceFloorInfoShort26 = entry.Short26,
-                    BalanceFloorInfoShort28 = entry.Short28,
+                    MinMoneyStackSize = entry.MinMoneyStackSize,
+                    MaxMoneyStackSize = entry.MaxMoneyStackSize,
                     DungeonMapDataInfoIndex = entry.DungeonMapDataInfoIndex,
                     NameId = entry.NameID,
                     BalanceFloorInfoByte2D = entry.Byte2D,
@@ -200,15 +200,31 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     BalanceFloorInfoByte34 = entry.Byte34,
                     BalanceFloorInfoByte35 = entry.Byte35,
                     UnknownItemSetIndex = entry.ItemSetIndex,
+                    BuriedItemSetIndex = entry.BuriedItemSetIndex,
+                    MaxBuriedItems = entry.MaxBuriedItems,
+                    BalanceFloorInfoByte46 = entry.Byte46,
+                    BalanceFloorInfoByte47 = entry.Byte47,
+                    KecleonShopChance = entry.KecleonShopChance,
+                    BalanceFloorInfoByte49 = entry.Byte49,
+                    BalanceFloorInfoByte4A = entry.Byte4A,
+                    MinTrapDensity = entry.MinTrapDensity,
+                    MaxTrapDensity = entry.MaxTrapDensity,
+                    MinEnemyDensity = entry.MinEnemyDensity,
+                    MaxEnemyDensity = entry.MaxEnemyDensity,
+                    BalanceFloorInfoByte4F = entry.Byte4F,
+                    BalanceFloorInfoByte50 = entry.Byte50,
+                    BalanceFloorInfoByte51 = entry.Byte51,
+                    MysteryHouseChance = entry.MysteryHouseChance,
+                    MysteryHouseSize = entry.MysteryHouseSize,
                     InvitationIndex = entry.InvitationIndex,
-                    BalanceFloorInfoByte55 = entry.Byte55,
+                    MonsterHouseChance = entry.MonsterHouseChance,
                     BalanceFloorInfoByte56 = entry.Byte56,
                     BalanceFloorInfoByte57 = entry.Byte57,
                     BalanceFloorInfoByte58 = entry.Byte58,
                     Weather = entry.Weather,
-                    BalanceFloorInfoBytes37to53 = entry.Bytes37to53,
+                    BalanceFloorInfoBytes37to43 = entry.Bytes37to43,
                     BalanceFloorInfoBytes5Ato61 = entry.Bytes5Ato61,
-                    IsBossFloor = requestLevelData?.IsBossFloor != null ? requestLevelData.IsBossFloor != 0 : false,
+                    IsBossFloor = requestLevelData?.IsBossFloor != null && requestLevelData.IsBossFloor != 0,
 
                     TrapWeights = trapWeightsEntry != null ? LoadTrapWeights(trapWeightsEntry) : null,
                     Spawns = spawnsEntry != null ? LoadSpawns(spawnsEntry) : null,
@@ -376,8 +392,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 floorInfo.Short02 = model.BalanceFloorInfoShort02;
                 floorInfo.Event = model.Event;
                 floorInfo.TurnLimit = model.TurnLimit;
-                floorInfo.Short26 = model.BalanceFloorInfoShort26;
-                floorInfo.Short28 = model.BalanceFloorInfoShort28;
+                floorInfo.MinMoneyStackSize = model.MinMoneyStackSize;
+                floorInfo.MaxMoneyStackSize = model.MaxMoneyStackSize;
                 floorInfo.DungeonMapDataInfoIndex = model.DungeonMapDataInfoIndex;
                 floorInfo.NameID = model.NameId;
                 floorInfo.Byte2D = model.BalanceFloorInfoByte2D;
@@ -388,20 +404,36 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 floorInfo.Byte34 = model.BalanceFloorInfoByte34;
                 floorInfo.Byte35 = model.BalanceFloorInfoByte35;
                 floorInfo.ItemSetIndex = model.UnknownItemSetIndex;
+                floorInfo.BuriedItemSetIndex = model.BuriedItemSetIndex;
+                floorInfo.MaxBuriedItems = model.MaxBuriedItems;
+                floorInfo.Byte46 = model.BalanceFloorInfoByte46;
+                floorInfo.Byte47 = model.BalanceFloorInfoByte47;
+                floorInfo.KecleonShopChance = model.KecleonShopChance;
+                floorInfo.Byte49 = model.BalanceFloorInfoByte49;
+                floorInfo.Byte4A = model.BalanceFloorInfoByte4A;
+                floorInfo.MinTrapDensity = model.MinTrapDensity;
+                floorInfo.MaxTrapDensity = model.MaxTrapDensity;
+                floorInfo.MinEnemyDensity = model.MinEnemyDensity;
+                floorInfo.MaxEnemyDensity = model.MaxEnemyDensity;
+                floorInfo.Byte4F = model.BalanceFloorInfoByte4F;
+                floorInfo.Byte50 = model.BalanceFloorInfoByte50;
+                floorInfo.Byte51 = model.BalanceFloorInfoByte51;
+                floorInfo.MysteryHouseChance = model.MysteryHouseChance;
+                floorInfo.MysteryHouseSize = model.MysteryHouseSize;
                 floorInfo.InvitationIndex = model.InvitationIndex;
-                floorInfo.Byte55 = model.BalanceFloorInfoByte55;
+                floorInfo.MonsterHouseChance = model.MonsterHouseChance;
                 floorInfo.Byte56 = model.BalanceFloorInfoByte56;
                 floorInfo.Byte57 = model.BalanceFloorInfoByte57;
                 floorInfo.Byte58 = model.BalanceFloorInfoByte58;
                 floorInfo.Weather = model.Weather;
-                floorInfo.Bytes37to53 = model.BalanceFloorInfoBytes37to53;
+                floorInfo.Bytes37to43 = model.BalanceFloorInfoBytes37to43;
                 floorInfo.Bytes5Ato61 = model.BalanceFloorInfoBytes5Ato61;
 
                 if (requestLevelEntry != null)
                 {
                     requestLevelEntry.Short4 = model.BalanceFloorInfoShort02;
-                    requestLevelEntry.Short6 = model.BalanceFloorInfoShort26;
-                    requestLevelEntry.Short8 = model.BalanceFloorInfoShort28;
+                    requestLevelEntry.Short6 = model.MinMoneyStackSize;
+                    requestLevelEntry.Short8 = model.MaxMoneyStackSize;
                     requestLevelEntry.NameID = model.NameId;
                     requestLevelEntry.IsBossFloor = model.IsBossFloor ? (short) 1 : (short) 0;
                 }

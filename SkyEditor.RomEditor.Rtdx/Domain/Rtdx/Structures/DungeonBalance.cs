@@ -178,7 +178,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 Index = index;
                 Event = "";
-                Bytes37to53 = new byte[0x53 - 0x37 + 1];
+                Bytes37to43 = new byte[0x43 - 0x37 + 1];
                 Bytes5Ato61 = new byte[0x61 - 0x5A + 1];
             }
 
@@ -188,8 +188,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Short02 = data.ReadInt16(0x02);
                 Event = data.ReadString(0x04, 32, Encoding.ASCII).Trim('\0');
                 TurnLimit = data.ReadInt16(0x24);
-                Short26 = data.ReadInt16(0x26);
-                Short28 = data.ReadInt16(0x28);
+                MinMoneyStackSize = data.ReadInt16(0x26);
+                MaxMoneyStackSize = data.ReadInt16(0x28);
                 DungeonMapDataInfoIndex = data.ReadInt16(0x2A);
                 NameID = data.ReadByte(0x2C);
                 Byte2D = data.ReadByte(0x2D);
@@ -200,13 +200,29 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Byte34 = data.ReadByte(0x34);
                 Byte35 = data.ReadByte(0x35);
                 ItemSetIndex = data.ReadByte(0x36);
+                Bytes37to43 = data.ReadArray(0x37, 0x43 - 0x37 + 1);
+                BuriedItemSetIndex = data.ReadByte(0x44);
+                MaxBuriedItems = data.ReadByte(0x45);
+                Byte46 = data.ReadByte(0x46);
+                Byte47 = data.ReadByte(0x47);
+                KecleonShopChance = data.ReadByte(0x48);
+                Byte49 = data.ReadByte(0x49);
+                Byte4A = data.ReadByte(0x4A);
+                MinTrapDensity = data.ReadByte(0x4B);
+                MaxTrapDensity = data.ReadByte(0x4C);
+                MinEnemyDensity = data.ReadByte(0x4D);
+                MaxEnemyDensity = data.ReadByte(0x4E);
+                Byte4F = data.ReadByte(0x4F);
+                Byte50 = data.ReadByte(0x50);
+                Byte51 = data.ReadByte(0x51);
+                MysteryHouseChance = data.ReadByte(0x52);
+                MysteryHouseSize = data.ReadByte(0x53);
                 InvitationIndex = data.ReadByte(0x54);
-                Byte55 = data.ReadByte(0x55);
+                MonsterHouseChance = data.ReadByte(0x55);
                 Byte56 = data.ReadByte(0x56);
                 Byte57 = data.ReadByte(0x57);
                 Byte58 = data.ReadByte(0x58);
-                Weather = (DungeonStatusIndex) data.ReadByte(0x59);
-                Bytes37to53 = data.ReadArray(0x37, 0x53 - 0x37 + 1);
+                Weather = (DungeonStatusIndex)data.ReadByte(0x59);
                 Bytes5Ato61 = data.ReadArray(0x5A, 0x61 - 0x5A + 1);
             }
 
@@ -219,8 +235,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 accessor.WriteInt16(0x02, Short02);
                 accessor.WriteString(0x04, Encoding.ASCII, Event);
                 accessor.WriteInt16(0x24, TurnLimit);
-                accessor.WriteInt16(0x26, Short26);
-                accessor.WriteInt16(0x28, Short28);
+                accessor.WriteInt16(0x26, MinMoneyStackSize);
+                accessor.WriteInt16(0x28, MaxMoneyStackSize);
                 accessor.WriteInt16(0x2A, DungeonMapDataInfoIndex);
                 accessor.Write(0x2C, NameID);
                 accessor.Write(0x2D, Byte2D);
@@ -231,13 +247,29 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 accessor.Write(0x34, Byte34);
                 accessor.Write(0x35, Byte35);
                 accessor.Write(0x36, ItemSetIndex);
-                accessor.Write(0x37, Bytes37to53);
+                accessor.Write(0x37, Bytes37to43);
+                accessor.Write(0x44, BuriedItemSetIndex);
+                accessor.Write(0x45, MaxBuriedItems);
+                accessor.Write(0x46, Byte46);
+                accessor.Write(0x47, Byte47);
+                accessor.Write(0x48, KecleonShopChance);
+                accessor.Write(0x49, Byte49);
+                accessor.Write(0x4A, Byte4A);
+                accessor.Write(0x4B, MinTrapDensity);
+                accessor.Write(0x4C, MaxTrapDensity);
+                accessor.Write(0x4D, MinEnemyDensity);
+                accessor.Write(0x4E, MaxEnemyDensity);
+                accessor.Write(0x4F, Byte4F);
+                accessor.Write(0x50, Byte50);
+                accessor.Write(0x51, Byte51);
+                accessor.Write(0x52, MysteryHouseChance);
+                accessor.Write(0x53, MysteryHouseSize);
                 accessor.Write(0x54, InvitationIndex);
-                accessor.Write(0x55, Byte55);
+                accessor.Write(0x55, MonsterHouseChance);
                 accessor.Write(0x56, Byte56);
                 accessor.Write(0x57, Byte57);
                 accessor.Write(0x58, Byte58);
-                accessor.Write(0x59, (byte) Weather);
+                accessor.Write(0x59, (byte)Weather);
                 accessor.Write(0x5A, Bytes5Ato61);
 
                 return data;
@@ -247,8 +279,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public short Short02 { get; set; }
             public string Event { get; set; }
             public short TurnLimit { get; set; }
-            public short Short26 { get; set; }
-            public short Short28 { get; set; } // Max money stack size?
+            public short MinMoneyStackSize { get; set; }
+            public short MaxMoneyStackSize { get; set; }
             public short DungeonMapDataInfoIndex { get; set; }
 
             // Index of the hash in the list at 0x4BAADE0 in the v1.0.2 executable
@@ -261,17 +293,32 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public short Short32 { get; set; }
             public byte Byte34 { get; set; }
             public byte Byte35 { get; set; }
-
             // An index into a ItemArrange subentry. What exactly this is used for is unknown.
             // TODO: there has to be more to this (Kecleon shops, monster house items etc.)
             public byte ItemSetIndex { get; set; }
+            public byte[] Bytes37to43 { get; set; }
+            public byte BuriedItemSetIndex { get; set; }
+            public byte MaxBuriedItems { get; set; }
+            public byte Byte46 { get; set; }
+            public byte Byte47 { get; set; }
+            public byte KecleonShopChance { get; set; }
+            public byte Byte49 { get; set; }
+            public byte Byte4A { get; set; }
+            public byte MinTrapDensity { get; set; }
+            public byte MaxTrapDensity { get; set; }
+            public byte MinEnemyDensity { get; set; }
+            public byte MaxEnemyDensity { get; set; }
+            public byte Byte4F { get; set; }
+            public byte Byte50 { get; set; }
+            public byte Byte51 { get; set; }
+            public byte MysteryHouseChance { get; set; }
+            public byte MysteryHouseSize { get; set; } // 0 = small, 1 = large
             public byte InvitationIndex { get; set; }
-            public byte Byte55 { get; set; }
+            public byte MonsterHouseChance { get; set; }
             public byte Byte56 { get; set; }
             public byte Byte57 { get; set; }
             public byte Byte58 { get; set; }
             public DungeonStatusIndex Weather { get; set; }
-            public byte[] Bytes37to53 { get; set; }
             public byte[] Bytes5Ato61 { get; set; }
 
         }
@@ -322,8 +369,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public Sir0 ToSir0()
             {
                 var sir0 = new Sir0Builder(8);
-                
-                                // Write the stats
+
+                // Write the stats
                 foreach (var stats in Stats)
                 {
                     stats.Pointer = sir0.Length;
@@ -437,7 +484,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     {
                         PokemonIndex = accessor.ReadInt16(0x00);
                         byte spawnRateAndSpecialFlag = accessor.ReadByte(0x02);
-                        SpawnRate = (byte) (spawnRateAndSpecialFlag >> 1);
+                        SpawnRate = (byte)(spawnRateAndSpecialFlag >> 1);
                         IsSpecial = (spawnRateAndSpecialFlag & 0b1) != 0;
                         RecruitmentLevel = accessor.ReadByte(0x0A);
                         Byte0B = accessor.ReadByte(0x0B);
@@ -451,7 +498,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
                         using var accessor = new BinaryFile(data);
                         accessor.WriteInt16(0x00, PokemonIndex);
-                        byte spawnRateAndSpecialFlag = (byte) ((SpawnRate << 1) | (IsSpecial ? 1 : 0));
+                        byte spawnRateAndSpecialFlag = (byte)((SpawnRate << 1) | (IsSpecial ? 1 : 0));
                         accessor.Write(0x02, spawnRateAndSpecialFlag);
                         accessor.Write(0x0A, RecruitmentLevel);
                         accessor.Write(0x0B, Byte0B);
@@ -511,7 +558,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 var sir0 = new Sir0Builder(8);
 
-                                // Write the records
+                // Write the records
                 foreach (var record in Records)
                 {
                     record.Pointer = sir0.Length;
@@ -615,7 +662,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 var sir0 = new Sir0Builder(8);
 
-                                // Write the records
+                // Write the records
                 foreach (var record in Records)
                 {
                     record.Pointer = sir0.Length;

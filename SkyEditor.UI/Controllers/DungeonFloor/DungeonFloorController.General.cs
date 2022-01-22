@@ -28,9 +28,19 @@ namespace SkyEditorUI.Controllers
         [UI] private ComboBox? cbWeather;
         [UI] private Entry? entryShort02;
         [UI] private Entry? entryUnknownItemSetIndex;
-        [UI] private Entry? entryShort24;
-        [UI] private Entry? entryShort26;
-        [UI] private Entry? entryShort28;
+        [UI] private Entry? entryBuriedItemSetIndex;
+        [UI] private Entry? entryMaxBuriedItems;
+        [UI] private Entry? entryMinTrapDensity;
+        [UI] private Entry? entryMaxTrapDensity;
+        [UI] private Entry? entryMinEnemyDensity;
+        [UI] private Entry? entryMaxEnemyDensity;
+        [UI] private Entry? entryMysteryHouseChance;
+        [UI] private Entry? entryMysteryHouseSize;
+        [UI] private Entry? entryMonsterHouseChance;
+        [UI] private Entry? entryKecleonShopChance;
+        [UI] private Entry? entryTurnLimit;
+        [UI] private Entry? entryMinMoneyStackSize;
+        [UI] private Entry? entryMaxMoneyStackSize;
         [UI] private Entry? entryShort30;
         [UI] private Entry? entryShort32;
         [UI] private SpinButton? sbNameId;
@@ -66,12 +76,22 @@ namespace SkyEditorUI.Controllers
             switchBossFloor!.Active = floor.IsBossFloor;
             entryInvitationIndex!.Text = floor.InvitationIndex.ToString();
             entryEvent!.Text = floor.Event;
-            cbWeather!.Active = (int) floor.Weather;
+            cbWeather!.Active = (int)floor.Weather;
             entryShort02!.Text = floor.BalanceFloorInfoShort02.ToString();
             entryUnknownItemSetIndex!.Text = floor.UnknownItemSetIndex.ToString();
-            entryShort24!.Text = floor.TurnLimit.ToString();
-            entryShort26!.Text = floor.BalanceFloorInfoShort26.ToString();
-            entryShort28!.Text = floor.BalanceFloorInfoShort28.ToString();
+            entryBuriedItemSetIndex!.Text = floor.BuriedItemSetIndex.ToString();
+            entryMaxBuriedItems!.Text = floor.MaxBuriedItems.ToString();
+            entryMinTrapDensity!.Text = floor.MinTrapDensity.ToString();
+            entryMaxTrapDensity!.Text = floor.MaxTrapDensity.ToString();
+            entryMinEnemyDensity!.Text = floor.MinEnemyDensity.ToString();
+            entryMaxEnemyDensity!.Text = floor.MaxEnemyDensity.ToString();
+            entryMysteryHouseChance!.Text = floor.MysteryHouseChance.ToString();
+            entryMysteryHouseSize!.Text = floor.MysteryHouseSize.ToString();
+            entryMonsterHouseChance!.Text = floor.MonsterHouseChance.ToString();
+            entryKecleonShopChance!.Text = floor.KecleonShopChance.ToString();
+            entryTurnLimit!.Text = floor.TurnLimit.ToString();
+            entryMinMoneyStackSize!.Text = floor.MinMoneyStackSize.ToString();
+            entryMaxMoneyStackSize!.Text = floor.MaxMoneyStackSize.ToString();
             entryShort30!.Text = floor.BalanceFloorInfoShort30.ToString();
             entryShort32!.Text = floor.BalanceFloorInfoShort32.ToString();
             sbNameId!.Value = floor.NameId;
@@ -81,19 +101,24 @@ namespace SkyEditorUI.Controllers
             unknownsStore.AppendValues("Byte2F", floor.BalanceFloorInfoByte2F);
             unknownsStore.AppendValues("Byte34", floor.BalanceFloorInfoByte34);
             unknownsStore.AppendValues("Byte35", floor.BalanceFloorInfoByte35);
-            for (int i = 0; i < floor.BalanceFloorInfoBytes37to53.Length; i++)
+            for (int i = 0x37; i <= 0x43; i++)
             {
-                unknownsStore.AppendValues($"Byte{(i+0x37).ToString("X")}", floor.BalanceFloorInfoBytes37to53[i]);
+                unknownsStore.AppendValues($"Byte{i:X}", floor.BalanceFloorInfoBytes37to43[i - 0x37]);
             }
-
-            unknownsStore.AppendValues("Byte55", floor.BalanceFloorInfoByte55);
+            unknownsStore.AppendValues("Byte46", floor.BalanceFloorInfoByte46);
+            unknownsStore.AppendValues("Byte47", floor.BalanceFloorInfoByte47);
+            unknownsStore.AppendValues("Byte49", floor.BalanceFloorInfoByte49);
+            unknownsStore.AppendValues("Byte4A", floor.BalanceFloorInfoByte4A);
+            unknownsStore.AppendValues("Byte4F", floor.BalanceFloorInfoByte4F);
+            unknownsStore.AppendValues("Byte50", floor.BalanceFloorInfoByte50);
+            unknownsStore.AppendValues("Byte51", floor.BalanceFloorInfoByte51);
             unknownsStore.AppendValues("Byte56", floor.BalanceFloorInfoByte56);
             unknownsStore.AppendValues("Byte57", floor.BalanceFloorInfoByte57);
             unknownsStore.AppendValues("Byte58", floor.BalanceFloorInfoByte58);
 
-            for (int i = 0; i < floor.BalanceFloorInfoBytes5Ato61.Length; i++)
+            for (int i = 0x5A; i <= 0x61; i++)
             {
-                unknownsStore.AppendValues($"Byte{(i+0x5A).ToString("X")}", floor.BalanceFloorInfoBytes5Ato61[i]);
+                unknownsStore.AppendValues($"Byte{i:X}", floor.BalanceFloorInfoBytes5Ato61[i - 0x5A]);
             }
 
             LoadNames(LanguageType.EN);
@@ -135,7 +160,7 @@ namespace SkyEditorUI.Controllers
 
         private void OnWeatherChanged(object sender, EventArgs args)
         {
-            floor.Weather = (DungeonStatusIndex) cbWeather!.Active;
+            floor.Weather = (DungeonStatusIndex)cbWeather!.Active;
         }
 
         private void OnShort02Changed(object sender, EventArgs args)
@@ -162,37 +187,157 @@ namespace SkyEditorUI.Controllers
             }
         }
 
+        private void OnBuriedItemSetChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryBuriedItemSetIndex!.Text, out byte value))
+            {
+                floor.BuriedItemSetIndex = value;
+            }
+            else if (!string.IsNullOrEmpty(entryBuriedItemSetIndex!.Text))
+            {
+                entryBuriedItemSetIndex!.Text = floor.BuriedItemSetIndex.ToString();
+            }
+        }
+
+        private void OnMaxBuriedItemsChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryMaxBuriedItems!.Text, out byte value))
+            {
+                floor.MaxBuriedItems = value;
+            }
+            else if (!string.IsNullOrEmpty(entryMaxBuriedItems!.Text))
+            {
+                entryMaxBuriedItems!.Text = floor.MaxBuriedItems.ToString();
+            }
+        }
+
+        private void OnMinTrapDensityChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryMinTrapDensity!.Text, out byte value))
+            {
+                floor.MinTrapDensity = value;
+            }
+            else if (!string.IsNullOrEmpty(entryMinTrapDensity!.Text))
+            {
+                entryMinTrapDensity!.Text = floor.MinTrapDensity.ToString();
+            }
+        }
+
+        private void OnMaxTrapDensityChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryMaxTrapDensity!.Text, out byte value))
+            {
+                floor.MaxTrapDensity = value;
+            }
+            else if (!string.IsNullOrEmpty(entryMaxTrapDensity!.Text))
+            {
+                entryMaxTrapDensity!.Text = floor.MaxTrapDensity.ToString();
+            }
+        }
+
+        private void OnMinEnemyDensityChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryMinEnemyDensity!.Text, out byte value))
+            {
+                floor.MinEnemyDensity = value;
+            }
+            else if (!string.IsNullOrEmpty(entryMinEnemyDensity!.Text))
+            {
+                entryMinEnemyDensity!.Text = floor.MinEnemyDensity.ToString();
+            }
+        }
+
+        private void OnMaxEnemyDensityChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryMaxEnemyDensity!.Text, out byte value))
+            {
+                floor.MaxEnemyDensity = value;
+            }
+            else if (!string.IsNullOrEmpty(entryMaxEnemyDensity!.Text))
+            {
+                entryMaxEnemyDensity!.Text = floor.MaxEnemyDensity.ToString();
+            }
+        }
+
+        private void OnMysteryHouseChanceChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryMysteryHouseChance!.Text, out byte value))
+            {
+                floor.MysteryHouseChance = value;
+            }
+            else if (!string.IsNullOrEmpty(entryMysteryHouseChance!.Text))
+            {
+                entryMysteryHouseChance!.Text = floor.MysteryHouseChance.ToString();
+            }
+        }
+
+        private void OnMysteryHouseSizeChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryMysteryHouseSize!.Text, out byte value))
+            {
+                floor.MysteryHouseSize = value;
+            }
+            else if (!string.IsNullOrEmpty(entryMysteryHouseSize!.Text))
+            {
+                entryMysteryHouseSize!.Text = floor.MysteryHouseSize.ToString();
+            }
+        }
+
+        private void OnMonsterHouseChanceChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryMonsterHouseChance!.Text, out byte value))
+            {
+                floor.MonsterHouseChance = value;
+            }
+            else if (!string.IsNullOrEmpty(entryMonsterHouseChance!.Text))
+            {
+                entryMonsterHouseChance!.Text = floor.MonsterHouseChance.ToString();
+            }
+        }
+
+        private void OnKecleonShopChanceChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryKecleonShopChance!.Text, out byte value))
+            {
+                floor.KecleonShopChance = value;
+            }
+            else if (!string.IsNullOrEmpty(entryKecleonShopChance!.Text))
+            {
+                entryKecleonShopChance!.Text = floor.KecleonShopChance.ToString();
+            }
+        }
+
         private void OnShort24Changed(object sender, EventArgs args)
         {
-            if (short.TryParse(entryShort24!.Text, out short value))
+            if (short.TryParse(entryTurnLimit!.Text, out short value))
             {
                 floor.TurnLimit = value;
             }
-            else if (!string.IsNullOrEmpty(entryShort24!.Text))
+            else if (!string.IsNullOrEmpty(entryTurnLimit!.Text))
             {
-                entryShort24!.Text = floor.TurnLimit.ToString();
+                entryTurnLimit!.Text = floor.TurnLimit.ToString();
             }
         }
-        private void OnShort26Changed(object sender, EventArgs args)
+        private void OnMinMoneyStackSizeChanged(object sender, EventArgs args)
         {
-            if (short.TryParse(entryShort26!.Text, out short value))
+            if (short.TryParse(entryMinMoneyStackSize!.Text, out short value))
             {
-                floor.BalanceFloorInfoShort26 = value;
+                floor.MinMoneyStackSize = value;
             }
-            else if (!string.IsNullOrEmpty(entryShort26!.Text))
+            else if (!string.IsNullOrEmpty(entryMinMoneyStackSize!.Text))
             {
-                entryShort26!.Text = floor.BalanceFloorInfoShort26.ToString();
+                entryMinMoneyStackSize!.Text = floor.MinMoneyStackSize.ToString();
             }
         }
-        private void OnShort28Changed(object sender, EventArgs args)
+        private void OnMaxMoneyStackSizeChanged(object sender, EventArgs args)
         {
-            if (short.TryParse(entryShort28!.Text, out short value))
+            if (short.TryParse(entryMaxMoneyStackSize!.Text, out short value))
             {
-                floor.BalanceFloorInfoShort28 = value;
+                floor.MaxMoneyStackSize = value;
             }
-            else if (!string.IsNullOrEmpty(entryShort28!.Text))
+            else if (!string.IsNullOrEmpty(entryMaxMoneyStackSize!.Text))
             {
-                entryShort28!.Text = floor.BalanceFloorInfoShort28.ToString();
+                entryMaxMoneyStackSize!.Text = floor.MaxMoneyStackSize.ToString();
             }
         }
         private void OnShort30Changed(object sender, EventArgs args)
@@ -221,8 +366,8 @@ namespace SkyEditorUI.Controllers
 
         private void OnNameIdChanged(object sender, EventArgs args)
         {
-            floor.NameId = (byte) sbNameId!.ValueAsInt;
-            LoadNames((LanguageType) cbNameLanguage!.Active);
+            floor.NameId = (byte)sbNameId!.ValueAsInt;
+            LoadNames((LanguageType)cbNameLanguage!.Active);
         }
 
         private void OnUnknownValueEdited(object sender, EditedArgs args)
@@ -237,15 +382,15 @@ namespace SkyEditorUI.Controllers
             {
                 return;
             }
-            
-            var name = (string) unknownsStore!.GetValue(iter, UnknownLocationColumn);
+
+            var name = (string)unknownsStore!.GetValue(iter, UnknownLocationColumn);
             unknownsStore.SetValue(iter, UnknownValueColumn, value);
 
             // Strip "Byte" prefix and parse as int
             var location = int.Parse(name.Substring(4), NumberStyles.HexNumber);
-            if (location >= 0x37 && location <= 0x53)
+            if (location >= 0x37 && location <= 0x43)
             {
-                floor.BalanceFloorInfoBytes37to53[location - 0x37] = value;
+                floor.BalanceFloorInfoBytes37to43[location - 0x37] = value;
             }
             else if (location >= 0x5A && location <= 0x61)
             {
@@ -270,8 +415,26 @@ namespace SkyEditorUI.Controllers
                     case 0x35:
                         floor.BalanceFloorInfoByte35 = value;
                         break;
-                    case 0x55:
-                        floor.BalanceFloorInfoByte55 = value;
+                    case 0x46:
+                        floor.BalanceFloorInfoByte46 = value;
+                        break;
+                    case 0x47:
+                        floor.BalanceFloorInfoByte47 = value;
+                        break;
+                    case 0x49:
+                        floor.BalanceFloorInfoByte49 = value;
+                        break;
+                    case 0x4A:
+                        floor.BalanceFloorInfoByte4A = value;
+                        break;
+                    case 0x4F:
+                        floor.BalanceFloorInfoByte4F = value;
+                        break;
+                    case 0x50:
+                        floor.BalanceFloorInfoByte50 = value;
+                        break;
+                    case 0x51:
+                        floor.BalanceFloorInfoByte51 = value;
                         break;
                     case 0x56:
                         floor.BalanceFloorInfoByte56 = value;
@@ -314,7 +477,7 @@ namespace SkyEditorUI.Controllers
 
         private void OnNameLanguageChanged(object sender, EventArgs args)
         {
-            LoadNames((LanguageType) cbNameLanguage!.Active);
+            LoadNames((LanguageType)cbNameLanguage!.Active);
         }
 
         private void LoadNames(LanguageType language)

@@ -95,8 +95,9 @@ foreach (var dungeon in dungeons)
         + $"{data.NameID,3}    {data.Short0A,3}      {data.DungeonBalanceIndex,3}       {data.Byte13,3}    {data.Byte17,3}    {data.Byte18,3}    {data.Byte19,3}");
 
     // Print floor infos
-    Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"Weather",-9} {"S02",5}  {"Turns",5}  {"S26",5}  {"S28",5}  {"MapDat",6}  {"NameID",7}  "
-            + $"{"B2D",3}  {"B2E",3}  {"B2F",3}  {"B20",5}  {"B32",5}  {"B34",3}  {"B35",3}  {"ItemSet",7}  {"B35",5}  {"B56",3}  {"B57",3}  {"B58",3}");
+    Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"Weather",-9} {"S02",5}  {"Turns",5}  {"Money",12}  {"MapDat",6}  {"NameID",7}  {"B2D",3}  {"B2E",3}  "
+            + $"{"B2F",3}  {"B30",5}  {"B32",5}  {"B34",3}  {"B35",3}  {"Enemies",9}  {"Traps",9}  {"B46",3}  {"B47",3}  {"B49",3}  {"B4A",3}  {"B4F",3}  {"B50",3}  {"B51",3}  "
+            + $"{"ItemSet",7}  {"BuriedSet",9}  {"KecShop%",8}  {"MonHouse%",9}  {"MysHouse%",9}  {"MysHsSize",9}  {"B56",3}  {"B57",3}  {"B58",3}");
     foreach (var info in floorInfos)
     {
         string weather = info.Weather != DungeonStatusIndex.NONE ? strings.DungeonStatuses[info.Weather] : "(none)";
@@ -104,14 +105,16 @@ foreach (var dungeon in dungeons)
         {
             weather = $"(\"{info.Weather}\")";
         }
+        string mysteryHouseSize = info.MysteryHouseSize == 0 ? "small"
+            : info.MysteryHouseSize == 1 ? "large"
+            : $"({info.MysteryHouseSize})";
 
         Console.WriteLine($"   {info.Index,5}  "
             + $"{info.InvitationIndex,5}  "
             + $"{weather,-9} "
             + $"{info.Short02,5}  "
             + $"{info.TurnLimit,5}  "
-            + $"{info.Short26,5}  "
-            + $"{info.Short28,5}  "
+            + $"{$"{info.MinMoneyStackSize}..{info.MaxMoneyStackSize}",12}  "
             + $"{info.DungeonMapDataInfoIndex,6}  "
             + $"{info.NameID,7}  "
             + $"{info.Byte2D,3}  "
@@ -121,13 +124,26 @@ foreach (var dungeon in dungeons)
             + $"{info.Short32,5}  "
             + $"{info.Byte34,3}  "
             + $"{info.Byte35,3}  "
+            + $"{$"{info.MinEnemyDensity}..{info.MaxEnemyDensity}",9}  "
+            + $"{$"{info.MinTrapDensity}..{info.MaxTrapDensity}",9}  "
+            + $"{info.Byte46,3}  "
+            + $"{info.Byte47,3}  "
+            + $"{info.Byte49,3}  "
+            + $"{info.Byte4A,3}  "
+            + $"{info.Byte4F,3}  "
+            + $"{info.Byte50,3}  "
+            + $"{info.Byte51,3}  "
             + $"{info.ItemSetIndex,7}  "
-            + $"{info.Byte55,3}  "
+            + $"{info.BuriedItemSetIndex,9}  "
+            + $"{info.KecleonShopChance,8}  "
+            + $"{info.MonsterHouseChance,9}  "
+            + $"{info.MysteryHouseChance,9}  "
+            + $"{mysteryHouseSize,9}  "
             + $"{info.Byte56,3}  "
             + $"{info.Byte57,3}  "
             + $"{info.Byte58,3}  "
             + $"{info.Event,3}  "
-            + $"{string.Join(",", info.Bytes37to53)}  "
+            + $"{string.Join(",", info.Bytes37to43)}  "
             + $"{string.Join(",", info.Bytes5Ato61)}");
 
         // Print floor items
@@ -221,7 +237,7 @@ foreach (var dungeon in dungeons)
     }*/
 
     // Print trap weights
-    if (trapWeights != null)
+    /*if (trapWeights != null)
     {
         var records = trapWeights.Records;
         int prevIndex = -1;
@@ -273,7 +289,7 @@ foreach (var dungeon in dungeons)
         if (prevIndex != -1 && prevIndex != len) {
             Console.WriteLine($"..{FormatFloor(dungeon, len)}: *");
         }
-    }
+    }*/
 
     // Print unknown (and mostly uninteresting) data from the fourth SIR0 file in dungeon_balance.bin
     /*if (data4 != null)
