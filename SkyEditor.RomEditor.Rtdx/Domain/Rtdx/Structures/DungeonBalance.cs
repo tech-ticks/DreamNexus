@@ -312,7 +312,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte Byte50 { get; set; }
             public byte Byte51 { get; set; }
             public byte MysteryHouseChance { get; set; }
-            public byte MysteryHouseSize { get; set; } // 0 = small, 1 = large
+            public byte MysteryHouseSize { get; set; } // 0 = large, 1 = small
             public byte InvitationIndex { get; set; }
             public byte MonsterHouseChance { get; set; }
             public byte Byte56 { get; set; }

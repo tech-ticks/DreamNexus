@@ -105,8 +105,8 @@ foreach (var dungeon in dungeons)
         {
             weather = $"(\"{info.Weather}\")";
         }
-        string mysteryHouseSize = info.MysteryHouseSize == 0 ? "small"
-            : info.MysteryHouseSize == 1 ? "large"
+        string mysteryHouseSize = info.MysteryHouseSize == 0 ? "large"
+            : info.MysteryHouseSize == 1 ? "small"
             : $"({info.MysteryHouseSize})";
 
         Console.WriteLine($"   {info.Index,5}  "
