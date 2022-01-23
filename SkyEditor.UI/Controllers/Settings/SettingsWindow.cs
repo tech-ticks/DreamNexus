@@ -57,7 +57,7 @@ namespace SkyEditorUI.Controllers
             using (var keysDialog = new FileChooserNative("Select prod.keys/keys.txt file", this, FileChooserAction.Open, null, null))
             {
                 var response = (ResponseType)keysDialog.Run();
-                var filter = new FileFilter();
+                using var filter = new FileFilter();
                 filter.AddPattern("*.keys");
                 filter.AddPattern("*.txt");
                 keysDialog.AddFilter(filter);
@@ -78,7 +78,7 @@ namespace SkyEditorUI.Controllers
             using (var romDialog = new FileChooserNative("Select ROM file", this, FileChooserAction.Open, null, null))
             {
                 var response = (ResponseType)romDialog.Run();
-                var filter = new FileFilter();
+                using var filter = new FileFilter();
                 filter.AddPattern("*.xci");
                 filter.AddPattern("*.nsp");
                 romDialog.AddFilter(filter);

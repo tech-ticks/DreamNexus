@@ -1,6 +1,6 @@
 namespace SkyEditor.RomEditor.Domain.Rtdx.Constants
 {
-    public enum CampIndex
+    public enum CampIndex : uint
     {
         KAMINARI_KOUGEN = 0,
         ARETA_DAICHI = 1,
@@ -59,6 +59,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Constants
         AOZORA_SOUGEN = 54,
         SEINARU_DAICHI = 55,
         KOORINO_DOUKUTSU = 56,
-        MAX = 57
+        MAX = 57,
+        NONE = 0xFFFFFFFF
     }
 }

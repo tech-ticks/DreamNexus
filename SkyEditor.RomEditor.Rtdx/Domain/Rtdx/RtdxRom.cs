@@ -143,6 +143,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IPokemonCollection GetPokemon();
         bool PokemonModified { get; set; }
 
+        IPokemonGraphicsCollection GetPokemonGraphics();
+        bool PokemonGraphicsModified { get; set; }
+
         IDungeonCollection GetDungeons();
         bool DungeonsModified { get; set; }
 
@@ -893,6 +896,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public bool PokemonModified { get; set; }
         private IPokemonCollection? pokemonCollection;
 
+        public IPokemonGraphicsCollection GetPokemonGraphics()
+        {
+            if (pokemonGraphicsCollection == null)
+            {
+                pokemonGraphicsCollection = new PokemonGraphicsCollection(this);
+            }
+            PokemonGraphicsModified = true;
+            return pokemonGraphicsCollection;
+        }
+
+        public bool PokemonGraphicsModified { get; set; }
+        private IPokemonGraphicsCollection? pokemonGraphicsCollection;
+
         public IDungeonCollection GetDungeons()
         {
             if (dungeonCollection == null)
@@ -1128,6 +1144,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 () => starterCollection?.Flush(this),
                 () => actorCollection?.Flush(this),
                 () => pokemonCollection?.Flush(this),
+                () => pokemonGraphicsCollection?.Flush(this),
                 () => dungeonCollection?.Flush(this),
                 () => itemCollection?.Flush(this),
                 () => moveCollection?.Flush(this),

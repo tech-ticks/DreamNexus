@@ -1,8 +1,5 @@
 using System;
 using Gtk;
-using SkyEditor.RomEditor.Domain.Rtdx.Constants;
-using SkyEditor.RomEditor.Domain.Rtdx.Structures;
-using SkyEditor.RomEditor.Infrastructure;
 using UI = Gtk.Builder.ObjectAttribute;
 
 namespace SkyEditorUI.Controllers

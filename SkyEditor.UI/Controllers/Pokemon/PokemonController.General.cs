@@ -12,23 +12,38 @@ namespace SkyEditorUI.Controllers
         [UI] private ComboBox? cbAbility1;
         [UI] private ComboBox? cbAbility2;
         [UI] private ComboBox? cbHiddenAbility;
+        [UI] private ComboBox? cbCamp;
         [UI] private Entry? entryBaseRecruitRate;
         [UI] private Entry? entryBoostedRecruitRate;
         [UI] private Entry? entryRecruitPrereq;
         [UI] private Entry? entrySize;
 
         [UI] private ListStore? abilitiesStore;
+        [UI] private ListStore? campsStore;
 
         private void LoadGeneralTab()
         {
             for (AbilityIndex i = 0; i < AbilityIndex.ABILITY_END; i++)
             {
-                abilitiesStore!.AppendValues((int) i, englishStrings.GetAbilityName(i) ?? $"({i.ToString()})");
+                abilitiesStore!.AppendValues((int) i, $"#{((int) i).ToString("000")}: "
+                    + (englishStrings.GetAbilityName(i) ?? $"({i.ToString()})"));
+            }
+
+            campsStore!.AppendValues((uint) CampIndex.NONE, "(NONE)");
+            for (CampIndex i = 0; i < CampIndex.MAX; i++)
+            {
+                campsStore!.AppendValues((uint) i, $"#{((int) i).ToString("000")}: "
+                    + (englishStrings.GetCampName(i) ?? $"({i.ToString()})"));
             }
 
             cbAbility1!.Active = (int) pokemon.Ability1;
             cbAbility2!.Active = (int) pokemon.Ability2;
             cbHiddenAbility!.Active = (int) pokemon.HiddenAbility;
+
+            // Requires conversion since CampIndex.NONE is index 0 in the list, but 0xFFFFFFFF in-game
+            var campIndex = pokemon.CampIndex ?? CampIndex.NONE;
+            cbCamp!.Active = (int) (campIndex != CampIndex.NONE ? campIndex + 1 : 0);
+
             entryBaseRecruitRate!.Text = pokemon.BaseRecruitRate.ToString();
             entryBoostedRecruitRate!.Text = pokemon.BoostedRecruitRate.ToString();
             entryRecruitPrereq!.Text = pokemon.RecruitPrereq;
@@ -66,6 +81,11 @@ namespace SkyEditorUI.Controllers
         private void OnHiddenAbilityChanged(object sender, EventArgs args)
         {
             pokemon.HiddenAbility = (AbilityIndex) cbHiddenAbility!.Active;
+        }
+
+        private void OnCampChanged(object sender, EventArgs args)
+        {
+            pokemon.CampIndex = cbCamp!.Active > 0 ? (CampIndex) cbCamp.Active - 1 : CampIndex.NONE;
         }
 
         private void OnBaseRecruitRateChanged(object sender, EventArgs args)

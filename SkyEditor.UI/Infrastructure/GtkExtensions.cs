@@ -68,6 +68,19 @@ namespace SkyEditorUI.Infrastructure
             return defaultValue;
         }
 
+        public static float ParseFloat(this Entry entry, float defaultValue)
+        {
+            if (float.TryParse(entry!.Text, out var parsed))
+            {
+                return parsed;
+            }
+            else if (!string.IsNullOrEmpty(entry!.Text))
+            {
+                entry!.Text = defaultValue.ToString();
+            }
+            return defaultValue;
+        }
+
         public static void FixIndices(this ListStore store, int indexColumn, int startIndex = 0)
         {
             if (!store.GetIterFirst(out var iter))

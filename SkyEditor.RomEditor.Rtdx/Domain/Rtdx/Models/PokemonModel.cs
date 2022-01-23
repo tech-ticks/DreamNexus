@@ -80,5 +80,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
         public List<PokemonEvolution.PokemonEvolutionBranch> EvolutionBranches { get; set; }
             = new List<PokemonEvolution.PokemonEvolutionBranch>();
+
+        // From pokemon_graphics_database.bin
+        public short[]? PokemonGraphicsDatabaseEntryIds { get; set; }
+        
+        // From camp_habitat.bin
+        public CampIndex? CampIndex { get; set; }
     }
 }

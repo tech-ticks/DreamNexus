@@ -111,14 +111,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 RescueCampSheetName = rawDataAccessor.ReadNullTerminatedUnicodeString(RescueCampSheetNamePointer);
                 RescueCampSheetReverseName = rawDataAccessor.ReadNullTerminatedUnicodeString(RescueCampSheetReverseNamePointer);
 
-                UnkX30 = entryAccessor.ReadSingle(0x30);
-                UnkX34 = entryAccessor.ReadSingle(0x34);
+                BaseScale = entryAccessor.ReadSingle(0x30);
+                DungeonBaseScale = entryAccessor.ReadSingle(0x34);
                 UnkX38 = entryAccessor.ReadSingle(0x38);
                 UnkX3C = entryAccessor.ReadSingle(0x3C);
 
                 UnkX40 = entryAccessor.ReadSingle(0x40);
                 UnkX44 = entryAccessor.ReadSingle(0x44);
-                UnkX48 = entryAccessor.ReadSingle(0x48);
+                YOffset = entryAccessor.ReadSingle(0x48);
                 WalkSpeedDistance = entryAccessor.ReadSingle(0x4C); // Referenced by PokemonDatabase_GetWalkSpeed()
 
                 UnkX50 = entryAccessor.ReadSingle(0x50);
@@ -174,14 +174,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 accessor.WriteInt64(32, RescueCampSheetNamePointer);
                 accessor.WriteInt64(40, RescueCampSheetReverseNamePointer);
 
-                accessor.WriteSingle(0x30, UnkX30);
-                accessor.WriteSingle(0x34, UnkX34);
+                accessor.WriteSingle(0x30, BaseScale);
+                accessor.WriteSingle(0x34, DungeonBaseScale);
                 accessor.WriteSingle(0x38, UnkX38);
                 accessor.WriteSingle(0x3C, UnkX3C);
 
                 accessor.WriteSingle(0x40, UnkX40);
                 accessor.WriteSingle(0x44, UnkX44);
-                accessor.WriteSingle(0x48, UnkX48);
+                accessor.WriteSingle(0x48, YOffset);
                 accessor.WriteSingle(0x4C, WalkSpeedDistance);
 
                 accessor.WriteSingle(0x50, UnkX50);
@@ -231,14 +231,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public string RescueCampSheetName { get; set; }
             public string RescueCampSheetReverseName { get; set; }
 
-            public float UnkX30 { get; set; } // Possibly BaseScale
-            public float UnkX34 { get; set; } // Possibly DungeonBaseScale
+            public float BaseScale { get; set; }
+            public float DungeonBaseScale { get; set; }
             public float UnkX38 { get; set; } // Possibly DotOffsetX
             public float UnkX3C { get; set; } // Possibly DotOffsetY
 
             public float UnkX40 { get; set; }
             public float UnkX44 { get; set; }
-            public float UnkX48 { get; set; }
+            public float YOffset { get; set; }
             public float WalkSpeedDistance { get; set; }
 
             public float UnkX50 { get; set; } // Possibly WalkSpeedDistanceGround

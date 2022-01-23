@@ -67,6 +67,21 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     pokemon.SetPokemon(model.Id, model);
                 }
 
+                var pokemonGraphics = rom.GetPokemonGraphics();
+                foreach (var path in mod.GetModelFilesInDirectory("pokemon_graphics"))
+                {
+                    var model = await mod.LoadModel<PokemonGraphicsModel>(path);
+                    var indexStr = Path.GetFileNameWithoutExtension(path);
+                    if (int.TryParse(indexStr, out int index))
+                    {
+                        pokemonGraphics.SetEntry(index, model);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Ignoring invalid Pokémon graphics model file name: {path}");
+                    }
+                }
+
                 var dungeons = rom.GetDungeons();
                 for (int i = 1; i < (int) DungeonIndex.END; i++)
                 {
@@ -224,6 +239,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     foreach (var model in pokemon.LoadedPokemon.Where(model => pokemon.IsPokemonDirty(model.Key)))
                     {
                         string path = Path.Combine("pokemon", $"{model.Key.ToString()}.yaml");
+                        tasks.Add(mod.SaveModel(model.Value, path));
+                    }
+                }
+
+                if (rom.PokemonGraphicsModified)
+                {
+                    var collection = rom.GetPokemonGraphics();
+                    foreach (var model in collection.LoadedEntries.Where(model => collection.IsEntryDirty(model.Key)))
+                    {
+                        string path = Path.Combine("pokemon_graphics", $"{model.Key.ToString()}.yaml");
                         tasks.Add(mod.SaveModel(model.Value, path));
                     }
                 }

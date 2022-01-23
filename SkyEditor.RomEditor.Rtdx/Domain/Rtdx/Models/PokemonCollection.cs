@@ -33,6 +33,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         {
             var data = dataInfoEntries[index];
             var evolution = rom.GetPokemonEvolution().Entries[index];
+            var campHabitats = rom.GetCampHabitat().Entries;
+
+            var formDatabase = rom.GetPokemonFormDatabase();
+            short[]? forms = null;
+            if (index > 0 && (int) index - 1 < formDatabase.Entries.Count)
+            {
+                forms = formDatabase.Entries[(int) index - 1].PokemonGraphicsDatabaseEntryIds;
+            }
 
             // Convert learnable TMs bitfield to list
             var learnableTMs = new List<ItemIndex>();
@@ -97,6 +105,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
                 MegaEvolutions = evolution.MegaEvos,
                 EvolutionBranches = evolution.Branches.Select(branch => branch.Clone()).ToList(),
+                PokemonGraphicsDatabaseEntryIds = forms != null ? forms.ToArray() : null,
+                CampIndex = campHabitats.ContainsKey(data.Id) ? campHabitats[data.Id] : null,
             };
         }
 
@@ -113,6 +123,25 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public void SetPokemon(CreatureIndex id, PokemonModel model)
         {
             LoadedPokemon[id] = model;
+
+            // Load form database values from ROM since they are missing in the model in older DN versions
+            // TODO: remove once probably everyone has migrated
+            if (model.PokemonGraphicsDatabaseEntryIds == null)
+            {
+                var formDatabase = rom.GetPokemonFormDatabase();
+                if (id > 0 && (int) id - 1 < formDatabase.Entries.Count)
+                {
+                    var forms = formDatabase.Entries[(int) id - 1].PokemonGraphicsDatabaseEntryIds;
+                    model.PokemonGraphicsDatabaseEntryIds = forms.ToArray();
+                }
+            }
+
+            /// Load camp habitat from ROM since they are missing in the model in older DN versions
+            // TODO: remove once probably everyone has migrated
+            if (model.CampIndex == null)
+            {
+                model.CampIndex = rom.GetCampHabitat().Entries[id];
+            }
         }
 
         public bool IsPokemonDirty(CreatureIndex id)
@@ -122,11 +151,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
         public void Flush(IRtdxRom rom)
         {
+            var formDatabase = rom.GetPokemonFormDatabase();
             var pokemonIndexLookup = rom.GetPokemonDataInfo().Entries.ToDictionary(entry => entry.Id);
+            var campHabitats = rom.GetCampHabitat().Entries;
             foreach (var pokemon in LoadedPokemon.Values)
             {
                 var data = pokemonIndexLookup[pokemon.Id];
                 var evolution = rom.GetPokemonEvolution().Entries[pokemon.Id];
+                
+                short[]? forms = null;
+                if (pokemon.Id > 0 && (int) pokemon.Id - 1 < formDatabase.Entries.Count)
+                {
+                    forms = formDatabase.Entries[(int) pokemon.Id - 1].PokemonGraphicsDatabaseEntryIds;
+                }
 
                 // Convert list of TM indices to bitfield
                 var tmsSet = new HashSet<ItemIndex>(pokemon.LearnableTMs);
@@ -185,6 +222,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
                 evolution.MegaEvos = pokemon.MegaEvolutions;
                 evolution.Branches = pokemon.EvolutionBranches.Select(branch => branch.Clone()).ToList();
+
+                if (forms != null && pokemon.PokemonGraphicsDatabaseEntryIds != null)
+                {
+                   Array.Copy(pokemon.PokemonGraphicsDatabaseEntryIds, forms, forms.Length);
+                }
+
+                if (pokemon.CampIndex != null)
+                {
+                    campHabitats[pokemon.Id] = pokemon.CampIndex.Value;
+                }
             }
         }
     }    
