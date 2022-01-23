@@ -2743,7 +2743,6 @@ Base Stats can be edited in the Settings tab. They will be applied for level 1.<
                         <child>
                           <object class="GtkTreeView" id="statGrowthTree">
                             <property name="visible">True</property>
-                            <property name="sensitive">False</property>
                             <property name="can-focus">True</property>
                             <property name="model">statGrowthStore</property>
                             <property name="search-column">0</property>
@@ -2767,6 +2766,7 @@ Base Stats can be edited in the Settings tab. They will be applied for level 1.<
                                 <child>
                                   <object class="GtkCellRendererText" id="stats_exp">
                                     <property name="editable">True</property>
+                                    <signal name="edited" handler="OnStatGrowthExpEdited" swapped="no"/>
                                   </object>
                                   <attributes>
                                     <attribute name="text">1</attribute>
@@ -2780,6 +2780,7 @@ Base Stats can be edited in the Settings tab. They will be applied for level 1.<
                                 <child>
                                   <object class="GtkCellRendererText" id="stats_hp">
                                     <property name="editable">True</property>
+                                    <signal name="edited" handler="OnStatGrowthHpEdited" swapped="no"/>
                                   </object>
                                   <attributes>
                                     <attribute name="text">2</attribute>
@@ -2793,6 +2794,7 @@ Base Stats can be edited in the Settings tab. They will be applied for level 1.<
                                 <child>
                                   <object class="GtkCellRendererText" id="stats_atk">
                                     <property name="editable">True</property>
+                                    <signal name="edited" handler="OnStatGrowthAtkEdited" swapped="no"/>
                                   </object>
                                   <attributes>
                                     <attribute name="text">3</attribute>
@@ -2806,6 +2808,7 @@ Base Stats can be edited in the Settings tab. They will be applied for level 1.<
                                 <child>
                                   <object class="GtkCellRendererText" id="stats_sp_atk">
                                     <property name="editable">True</property>
+                                    <signal name="edited" handler="OnStatGrowthSpAtkEdited" swapped="no"/>
                                   </object>
                                   <attributes>
                                     <attribute name="text">4</attribute>
@@ -2819,6 +2822,7 @@ Base Stats can be edited in the Settings tab. They will be applied for level 1.<
                                 <child>
                                   <object class="GtkCellRendererText" id="stats_def">
                                     <property name="editable">True</property>
+                                    <signal name="edited" handler="OnStatGrowthDefEdited" swapped="no"/>
                                   </object>
                                   <attributes>
                                     <attribute name="text">5</attribute>
@@ -2832,6 +2836,7 @@ Base Stats can be edited in the Settings tab. They will be applied for level 1.<
                                 <child>
                                   <object class="GtkCellRendererText" id="stats_sp_def">
                                     <property name="editable">True</property>
+                                    <signal name="edited" handler="OnStatGrowthSpDefEdited" swapped="no"/>
                                   </object>
                                   <attributes>
                                     <attribute name="text">6</attribute>
@@ -2843,7 +2848,10 @@ Base Stats can be edited in the Settings tab. They will be applied for level 1.<
                               <object class="GtkTreeViewColumn">
                                 <property name="title" translatable="yes">Speed+</property>
                                 <child>
-                                  <object class="GtkCellRendererText" id="stats_speed"/>
+                                  <object class="GtkCellRendererText" id="stats_speed">
+                                    <property name="editable">True</property>
+                                    <signal name="edited" handler="OnStatGrowthSpeedEdited" swapped="no"/>
+                                  </object>
                                   <attributes>
                                     <attribute name="text">7</attribute>
                                   </attributes>

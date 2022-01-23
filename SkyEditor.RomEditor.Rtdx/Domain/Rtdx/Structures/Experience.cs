@@ -9,13 +9,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
     public interface IExperience
     {
-        IReadOnlyList<Experience.ExperienceEntry> Entries { get; }
+        IList<Experience.ExperienceEntry> Entries { get; }
         (byte[] bin, byte[] ent) Build();
     }
 
     public class Experience : IExperience
     {
-        public IReadOnlyList<ExperienceEntry> Entries { get; }
+        public IList<ExperienceEntry> Entries { get; }
 
         public Experience(byte[] data, byte[] entryList) : this(new BinaryFile(data), new BinaryFile(entryList))
         {
@@ -71,7 +71,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
         {
             private const int EntrySize = 0x0C;
 
-            public IReadOnlyList<Level> Levels { get; }
+            public IList<Level> Levels { get; }
 
             public ExperienceEntry(IReadOnlyBinaryDataAccessor data)
             {
@@ -84,14 +84,18 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
             public class Level
             {
-                public int MinimumExperience { get; }
-                public byte HitPointsGained { get; }
-                public byte AttackGained { get; }
-                public byte SpecialAttackGained { get; }
-                public byte DefenseGained { get; }
-                public byte SpecialDefenseGained { get; }
-                public byte SpeedGained { get; }
-                public byte LevelsGained { get; }
+                public int MinimumExperience { get; set; }
+                public byte HitPointsGained { get; set; }
+                public byte AttackGained { get; set; }
+                public byte SpecialAttackGained { get; set; }
+                public byte DefenseGained { get; set; }
+                public byte SpecialDefenseGained { get; set; }
+                public byte SpeedGained { get; set; }
+                public byte LevelsGained { get; set; }
+
+                public Level()
+                {
+                }
 
                 public Level(IReadOnlyBinaryDataAccessor data)
                 {

@@ -143,6 +143,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         IPokemonCollection GetPokemon();
         bool PokemonModified { get; set; }
 
+        IStatGrowthCollection GetStatGrowth();
+        bool StatGrowthModified { get; set; }
+
         IPokemonGraphicsCollection GetPokemonGraphics();
         bool PokemonGraphicsModified { get; set; }
 
@@ -909,6 +912,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public bool PokemonGraphicsModified { get; set; }
         private IPokemonGraphicsCollection? pokemonGraphicsCollection;
 
+        public IStatGrowthCollection GetStatGrowth()
+        {
+            if (statGrowthCollection == null)
+            {
+                statGrowthCollection = new StatGrowthCollection(this);
+            }
+            StatGrowthModified = true;
+            return statGrowthCollection;
+        }
+
+        public bool StatGrowthModified { get; set; }
+        private IStatGrowthCollection? statGrowthCollection;
+
         public IDungeonCollection GetDungeons()
         {
             if (dungeonCollection == null)
@@ -1139,11 +1155,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
             onProgress?.Invoke("Applying models (1/3) - 0%");
             // Save wrappers around files
-            var modelActions = new List<Action> {
+            var modelActions = new List<Action>
+            {
                 () => stringCollection?.Flush(),
                 () => starterCollection?.Flush(this),
                 () => actorCollection?.Flush(this),
                 () => pokemonCollection?.Flush(this),
+                () => statGrowthCollection?.Flush(this),
                 () => pokemonGraphicsCollection?.Flush(this),
                 () => dungeonCollection?.Flush(this),
                 () => itemCollection?.Flush(this),

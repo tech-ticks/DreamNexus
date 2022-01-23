@@ -67,6 +67,21 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     pokemon.SetPokemon(model.Id, model);
                 }
 
+                var statGrowth = rom.GetStatGrowth();
+                foreach (var path in mod.GetModelFilesInDirectory("stat_growth"))
+                {
+                    var model = await mod.LoadModel<StatGrowthModel>(path);
+                    var indexStr = Path.GetFileNameWithoutExtension(path);
+                    if (int.TryParse(indexStr, out int index))
+                    {
+                        statGrowth.SetEntry(index, model);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Ignoring invalid stat growth model file name: {path}");
+                    }
+                }
+
                 var pokemonGraphics = rom.GetPokemonGraphics();
                 foreach (var path in mod.GetModelFilesInDirectory("pokemon_graphics"))
                 {
@@ -239,6 +254,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     foreach (var model in pokemon.LoadedPokemon.Where(model => pokemon.IsPokemonDirty(model.Key)))
                     {
                         string path = Path.Combine("pokemon", $"{model.Key.ToString()}.yaml");
+                        tasks.Add(mod.SaveModel(model.Value, path));
+                    }
+                }
+
+                if (rom.StatGrowthModified)
+                {
+                    var collection = rom.GetStatGrowth();
+                    foreach (var model in collection.LoadedEntries.Where(model => collection.IsEntryDirty(model.Key)))
+                    {
+                        string path = Path.Combine("stat_growth", $"{model.Key.ToString()}.yaml");
                         tasks.Add(mod.SaveModel(model.Value, path));
                     }
                 }
