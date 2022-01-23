@@ -9,7 +9,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
     public interface IFixedPokemon
     {
-        IReadOnlyList<FixedPokemonEntry> Entries { get; }
+        IList<FixedPokemonEntry> Entries { get; }
         Sir0 Build();
     }
 
@@ -28,7 +28,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             this.Entries = entries;
         }
 
-        public IReadOnlyList<FixedPokemonEntry> Entries { get; }
+        public IList<FixedPokemonEntry> Entries { get; }
 
         public Sir0 Build()
         {
@@ -52,6 +52,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
     [DebuggerDisplay("{FixedCreatureId} -> {PokemonId} : {Move1}|{Move2}|{Move3}|{Move4}")]
     public class FixedPokemonEntry
     {
+        public FixedPokemonEntry(int index)
+        {
+            FixedCreatureId = (FixedCreatureIndex)index;
+            Data = new byte[FixedPokemon.EntrySize];
+        }
+
         public FixedPokemonEntry(int index, byte[] data, int offset)
         {
             FixedCreatureId = (FixedCreatureIndex)index;

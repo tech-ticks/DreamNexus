@@ -24,7 +24,7 @@ using NsoElfConverterDotNet;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx
 {
-    public interface IRtdxRom : IModTarget, ISaveable, ISaveableToDirectory, ICSharpChangeScriptGenerator, ILuaChangeScriptGenerator
+    public interface IRtdxRom : IModTarget, ISaveable, ISaveableToDirectory
     {        
         /// <summary>
         /// Whether custom files that can be used with code injection projects should be preferred over
@@ -148,6 +148,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         IPokemonGraphicsCollection GetPokemonGraphics();
         bool PokemonGraphicsModified { get; set; }
+
+        IFixedPokemonCollection GetFixedPokemonCollection();
+        void SetFixedPokemonCollection(IFixedPokemonCollection collection);
+        bool FixedPokemonModified { get; set; }
 
         IDungeonCollection GetDungeons();
         bool DungeonsModified { get; set; }
@@ -925,6 +929,23 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public bool StatGrowthModified { get; set; }
         private IStatGrowthCollection? statGrowthCollection;
 
+        public IFixedPokemonCollection GetFixedPokemonCollection()
+        {
+            if (fixedPokemonCollection == null)
+            {
+                fixedPokemonCollection = new FixedPokemonCollection(this);
+            }
+            FixedPokemonModified = true;
+            return fixedPokemonCollection;
+        }
+        public void SetFixedPokemonCollection(IFixedPokemonCollection collection)
+        {
+            fixedPokemonCollection = collection;
+        }
+        public bool FixedPokemonModified { get; set; }
+
+        private IFixedPokemonCollection? fixedPokemonCollection;
+
         public IDungeonCollection GetDungeons()
         {
             if (dungeonCollection == null)
@@ -1162,6 +1183,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 () => actorCollection?.Flush(this),
                 () => pokemonCollection?.Flush(this),
                 () => statGrowthCollection?.Flush(this),
+                () => fixedPokemonCollection?.Flush(this),
                 () => pokemonGraphicsCollection?.Flush(this),
                 () => dungeonCollection?.Flush(this),
                 () => itemCollection?.Flush(this),
@@ -1433,20 +1455,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         public async Task Save()
         {
             await this.Save(this.RomDirectory, this.FileSystem);
-        }
-
-        [Obsolete]
-        public string GenerateLuaChangeScript(int indentLevel = 0)
-        {
-            // TODO: remove
-            throw new InvalidOperationException("Change scripts are no longer supported");
-        }
-
-        [Obsolete]
-        public string GenerateCSharpChangeScript(int indentLevel = 0)
-        {
-            // TODO: remove
-            throw new InvalidOperationException("Change scripts are no longer supported");
         }
     }
 }

@@ -151,6 +151,10 @@ namespace SkyEditorUI.Infrastructure
                         controllerInfo = "Editing Strings";
                         controllerState = breadcrumbs[0];
                         break;
+                    case FixedPokemonController v:
+                        controllerInfo = "Editing Fixed Pokémon";
+                        controllerState = breadcrumbs[0];
+                        break;
                     default:
                         controllerInfo = $"Editing modpack '{modpackName}'";
                         controllerState = view.GetType().Name;

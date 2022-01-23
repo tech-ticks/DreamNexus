@@ -886,6 +886,7 @@ namespace SkyEditorUI.Controllers
 
             AddMainListItem<StartersController>(root, "Starters", "skytemple-e-monster-symbolic");
             AddMainListItem<ActorListController>(root, "Actors", "skytemple-e-actor-symbolic");
+            AddMainListItem<FixedPokemonController>(root, "Fixed Pokémon", "skytemple-view-list-symbolic");
 
             var stringsIter = AddMainListItem(root, "Strings", "skytemple-e-string-symbolic");
             for (LanguageType i = (LanguageType) 0; i < LanguageType.MAX; i++)

@@ -210,8 +210,6 @@ namespace SkyEditor.RomEditor.ConsoleApp
         {
             { "Import", Import },
             { "ListLibrary", ListLibrary },
-            { "LuaGen", GenerateLuaChangeScript }, { "GenerateLuaChangeScript", GenerateLuaChangeScript },
-            { "CSGen", GenerateCSharpChangeScript },
             { "Pack", BuildModpack }, { "BuildModpack", BuildModpack },
             { "Unfarc", Unfarc },
             { "Refarc", Refarc }
@@ -253,57 +251,7 @@ namespace SkyEditor.RomEditor.ConsoleApp
                 Console.WriteLine(item.Name);
             }
             return Task.CompletedTask;
-        }
-
-        private static Task GenerateLuaChangeScript(Queue<string> arguments, ConsoleContext context)
-        {
-            if (context.Rom == null)
-            {
-                throw new InvalidOperationException("Import must follow a ROM argument");
-            }
-
-            if (!(context.Rom is ILuaChangeScriptGenerator changeScriptGenerator))
-            {
-                throw new NotSupportedException($"ROM of type {context.Rom.GetType().Name} does not implement ILuaChangeScriptGenerator");
-            }
-
-            var script = changeScriptGenerator.GenerateLuaChangeScript();
-
-            if (context.VerboseLogging) Console.WriteLine("Change script:");
-            Console.WriteLine(script);
-
-            if (arguments.TryDequeue(out var targetFileName))
-            {
-                File.WriteAllText(targetFileName, script);
-            }
-
-            return Task.CompletedTask;
-        }
-
-        private static Task GenerateCSharpChangeScript(Queue<string> arguments, ConsoleContext context)
-        {
-            if (context.Rom == null)
-            {
-                throw new InvalidOperationException("Import must follow a ROM argument");
-            }
-
-            if (!(context.Rom is ICSharpChangeScriptGenerator changeScriptGenerator))
-            {
-                throw new NotSupportedException($"ROM of type {context.Rom.GetType().Name} does not implement ICSharpChangeScriptGenerator");
-            }
-
-            var script = changeScriptGenerator.GenerateCSharpChangeScript();
-
-            if (context.VerboseLogging) Console.WriteLine("Change script:");
-            Console.WriteLine(script);
-
-            if (arguments.TryDequeue(out var targetFileName))
-            {
-                File.WriteAllText(targetFileName, script);
-            }
-
-            return Task.CompletedTask;
-        }        
+        } 
 
         /// <summary>
         /// Creates a modpack from one or more modpacks, mods, or scripts

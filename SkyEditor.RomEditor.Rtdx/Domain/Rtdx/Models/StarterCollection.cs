@@ -12,7 +12,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
     {
         StarterModel[] Starters { get; }
         StarterModel? GetStarterById(CreatureIndex id);
-        string GenerateLuaChangeScript(int indentLevel = 0);
         void Flush(IRtdxRom rom);
 
         CreatureIndex HeroCreature { get; set; }
@@ -83,20 +82,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 });
             }
             return starters.ToArray();
-        }
-
-        [Obsolete]
-        public string GenerateLuaChangeScript(int indentLevel = 0)
-        {
-            // TODO: remove
-            throw new NotImplementedException("Change scripts are no longer supported");
-        }
-
-        [Obsolete]
-        public string GenerateCSharpChangeScript(int indentLevel = 0)
-        {
-            // TODO: remove
-            throw new NotImplementedException("Change scripts are no longer supported");
         }
 
         /// <summary>
