@@ -97,8 +97,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public void Flush(IRtdxRom rom)
         {
             var romEntries = rom.GetPokemonGraphicsDatabase().Entries;
-            foreach (var (id, entry) in LoadedEntries)
+            foreach (var kv in LoadedEntries)
             {
+                var id = kv.Key;
+                var entry = kv.Value;
                 romEntries[id + 1] = new PokemonGraphicsDatabase.PokemonGraphicsDatabaseEntry
                 {
                     ModelName = entry.ModelName,
