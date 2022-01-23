@@ -317,7 +317,7 @@
                     </child>
                     <child>
                       <object class="GtkTreeViewColumn">
-                        <property name="title" translatable="yes">Invitation ID</property>
+                        <property name="title" translatable="yes">Mystery House ID</property>
                         <child>
                           <object class="GtkCellRendererText">
                             <property name="editable">True</property>

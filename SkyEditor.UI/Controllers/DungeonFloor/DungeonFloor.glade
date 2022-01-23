@@ -292,7 +292,7 @@
           </object>
           <packing>
             <property name="left-attach">0</property>
-            <property name="top-attach">7</property>
+            <property name="top-attach">6</property>
           </packing>
         </child>
         <child>
@@ -303,31 +303,6 @@
             <property name="width-chars">12</property>
             <property name="placeholder-text" translatable="yes">(none)</property>
             <signal name="changed" handler="OnEventChanged" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left-attach">1</property>
-            <property name="top-attach">7</property>
-            <property name="width">2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkLabel">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <property name="halign">end</property>
-            <property name="label" translatable="yes">Invitation Index:</property>
-          </object>
-          <packing>
-            <property name="left-attach">0</property>
-            <property name="top-attach">6</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkEntry" id="entryInvitationIndex">
-            <property name="visible">True</property>
-            <property name="can-focus">True</property>
-            <property name="width-chars">12</property>
-            <signal name="changed" handler="OnInvitationIndexChanged" swapped="no"/>
           </object>
           <packing>
             <property name="left-attach">1</property>
@@ -359,6 +334,15 @@
             <property name="top-attach">5</property>
             <property name="width">2</property>
           </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <placeholder/>
@@ -1024,7 +1008,7 @@ The place name and extra place names seem to be the same in all languages except
                       </object>
                       <packing>
                         <property name="left-attach">0</property>
-                        <property name="top-attach">3</property>
+                        <property name="top-attach">4</property>
                       </packing>
                     </child>
                     <child>
@@ -1036,7 +1020,7 @@ The place name and extra place names seem to be the same in all languages except
                       </object>
                       <packing>
                         <property name="left-attach">1</property>
-                        <property name="top-attach">3</property>
+                        <property name="top-attach">4</property>
                       </packing>
                     </child>
                     <child>
@@ -1047,7 +1031,7 @@ The place name and extra place names seem to be the same in all languages except
                         <property name="label" translatable="yes">Monster house chance:</property>
                       </object>
                       <packing>
-                        <property name="left-attach">2</property>
+                        <property name="left-attach">0</property>
                         <property name="top-attach">3</property>
                       </packing>
                     </child>
@@ -1059,7 +1043,7 @@ The place name and extra place names seem to be the same in all languages except
                         <signal name="changed" handler="OnMonsterHouseChanceChanged" swapped="no"/>
                       </object>
                       <packing>
-                        <property name="left-attach">3</property>
+                        <property name="left-attach">1</property>
                         <property name="top-attach">3</property>
                       </packing>
                     </child>
@@ -1071,7 +1055,7 @@ The place name and extra place names seem to be the same in all languages except
                         <property name="label" translatable="yes">Mystery house size:</property>
                       </object>
                       <packing>
-                        <property name="left-attach">0</property>
+                        <property name="left-attach">4</property>
                         <property name="top-attach">4</property>
                       </packing>
                     </child>
@@ -1083,7 +1067,7 @@ The place name and extra place names seem to be the same in all languages except
                         <property name="label" translatable="yes">Kecleon shop chance:</property>
                       </object>
                       <packing>
-                        <property name="left-attach">4</property>
+                        <property name="left-attach">2</property>
                         <property name="top-attach">3</property>
                       </packing>
                     </child>
@@ -1095,7 +1079,7 @@ The place name and extra place names seem to be the same in all languages except
                         <signal name="changed" handler="OnKecleonShopChanceChanged" swapped="no"/>
                       </object>
                       <packing>
-                        <property name="left-attach">5</property>
+                        <property name="left-attach">3</property>
                         <property name="top-attach">3</property>
                       </packing>
                     </child>
@@ -1178,21 +1162,39 @@ The place name and extra place names seem to be the same in all languages except
                         <property name="can-focus">False</property>
                         <property name="active">0</property>
                         <items>
-                          <item id="0" translatable="yes">Big</item>
+                          <item id="0" translatable="yes">Large</item>
                           <item id="1" translatable="yes">Small</item>
                         </items>
                         <signal name="changed" handler="OnMysteryHouseSizeChanged" swapped="no"/>
                       </object>
                       <packing>
-                        <property name="left-attach">1</property>
+                        <property name="left-attach">5</property>
                         <property name="top-attach">4</property>
                       </packing>
                     </child>
                     <child>
-                      <placeholder/>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Mystery House Index:</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">2</property>
+                        <property name="top-attach">4</property>
+                      </packing>
                     </child>
                     <child>
-                      <placeholder/>
+                      <object class="GtkEntry" id="entryInvitationIndex">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="width-chars">12</property>
+                        <signal name="changed" handler="OnInvitationIndexChanged" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left-attach">3</property>
+                        <property name="top-attach">4</property>
+                      </packing>
                     </child>
                     <child>
                       <placeholder/>
