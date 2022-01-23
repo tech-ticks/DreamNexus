@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using SkyEditor.IO.Binary;
-using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {

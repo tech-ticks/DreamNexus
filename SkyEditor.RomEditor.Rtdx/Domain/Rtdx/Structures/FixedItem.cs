@@ -76,6 +76,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public ushort Short04 { get; set; } // Used with chests, unsure what that means
             public byte Byte06 { get; set; } // Set to 1 for traps, also unsure what that means
 
+            public Entry()
+            {
+            }
+
             public Entry(ItemIndex index)
             {
                 Index = index;

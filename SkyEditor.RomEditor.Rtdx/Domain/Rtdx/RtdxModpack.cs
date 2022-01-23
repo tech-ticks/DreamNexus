@@ -102,6 +102,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     rom.SetFixedPokemonCollection(await mod.LoadModel<FixedPokemonCollection>("fixed_pokemon.yaml"));
                 }
 
+                if (mod.ModelExists("fixed_items.yaml"))
+                {
+                    rom.SetFixedPokemonCollection(await mod.LoadModel<FixedPokemonCollection>("fixed_items.yaml"));
+                }
+
                 var dungeons = rom.GetDungeons();
                 for (int i = 1; i < (int) DungeonIndex.END; i++)
                 {
@@ -286,6 +291,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 if (rom.FixedPokemonModified)
                 {
                     tasks.Add(mod.SaveModel(rom.GetFixedPokemonCollection(), "fixed_pokemon.yaml"));
+                }
+
+                if (rom.FixedItemsModified)
+                {
+                    tasks.Add(mod.SaveModel(rom.GetFixedItemCollection(), "fixed_items.yaml"));
                 }
 
                 if (rom.ItemsModified)
