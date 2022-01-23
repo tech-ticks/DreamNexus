@@ -1076,18 +1076,6 @@ The place name and extra place names seem to be the same in all languages except
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="entryMysteryHouseSize">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="width-chars">5</property>
-                        <signal name="changed" handler="OnMysteryHouseSizeChanged" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left-attach">1</property>
-                        <property name="top-attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
@@ -1182,6 +1170,22 @@ The place name and extra place names seem to be the same in all languages except
                       <packing>
                         <property name="left-attach">5</property>
                         <property name="top-attach">5</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkComboBoxText" id="cbMysteryHouseSize">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="active">0</property>
+                        <items>
+                          <item id="0" translatable="yes">Big</item>
+                          <item id="1" translatable="yes">Small</item>
+                        </items>
+                        <signal name="changed" handler="OnMysteryHouseSizeChanged" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left-attach">1</property>
+                        <property name="top-attach">4</property>
                       </packing>
                     </child>
                     <child>

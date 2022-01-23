@@ -35,7 +35,7 @@ namespace SkyEditorUI.Controllers
         [UI] private Entry? entryMinEnemyDensity;
         [UI] private Entry? entryMaxEnemyDensity;
         [UI] private Entry? entryMysteryHouseChance;
-        [UI] private Entry? entryMysteryHouseSize;
+        [UI] private ComboBoxText? cbMysteryHouseSize;
         [UI] private Entry? entryMonsterHouseChance;
         [UI] private Entry? entryKecleonShopChance;
         [UI] private Entry? entryTurnLimit;
@@ -86,7 +86,7 @@ namespace SkyEditorUI.Controllers
             entryMinEnemyDensity!.Text = floor.MinEnemyDensity.ToString();
             entryMaxEnemyDensity!.Text = floor.MaxEnemyDensity.ToString();
             entryMysteryHouseChance!.Text = floor.MysteryHouseChance.ToString();
-            entryMysteryHouseSize!.Text = floor.MysteryHouseSize.ToString();
+            cbMysteryHouseSize!.Active = floor.MysteryHouseSize;
             entryMonsterHouseChance!.Text = floor.MonsterHouseChance.ToString();
             entryKecleonShopChance!.Text = floor.KecleonShopChance.ToString();
             entryTurnLimit!.Text = floor.TurnLimit.ToString();
@@ -273,14 +273,7 @@ namespace SkyEditorUI.Controllers
 
         private void OnMysteryHouseSizeChanged(object sender, EventArgs args)
         {
-            if (byte.TryParse(entryMysteryHouseSize!.Text, out byte value))
-            {
-                floor.MysteryHouseSize = value;
-            }
-            else if (!string.IsNullOrEmpty(entryMysteryHouseSize!.Text))
-            {
-                entryMysteryHouseSize!.Text = floor.MysteryHouseSize.ToString();
-            }
+            floor.MysteryHouseSize = (byte) cbMysteryHouseSize!.Active;
         }
 
         private void OnMonsterHouseChanceChanged(object sender, EventArgs args)
