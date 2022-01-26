@@ -21,7 +21,7 @@
     <PackageReference Include="NLua" Version="1.5.11" />
     <PackageReference Include="YamlDotNet" Version="11.2.1" />
     <PackageReference Include="NsoElfConverterDotNet" Version="1.0.0" />
-    <PackageReference Include="SkyEditor.IO" Version="5.1.16" />
+    <PackageReference Include="SkyEditor.IO" Version="5.1.17" />
   </ItemGroup>
 
   <ItemGroup>

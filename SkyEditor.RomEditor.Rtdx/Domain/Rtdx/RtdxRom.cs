@@ -1265,7 +1265,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             
             if (natureDiagnosis != null)
             {
-                addJob(GetNatureDiagnosisPath(directory), () => Encoding.Unicode.GetBytes(
+                addJob(GetNatureDiagnosisPath(directory), () => Encoding.UTF8.GetBytes(
                     JsonConvert.SerializeObject(natureDiagnosis)));
             }
             if (fixedPokemon != null)
