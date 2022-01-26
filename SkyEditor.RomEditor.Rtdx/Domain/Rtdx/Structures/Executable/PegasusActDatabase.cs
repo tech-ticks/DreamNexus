@@ -92,7 +92,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
 
         private ulong AbsolutePokemonIndexOffset(ActorData actorData)
         {
-            return actorData.PokemonIndexOffset + TextOffset + firstCreatureIdOffset;;
+            return actorData.PokemonIndexOffset + TextOffset + firstCreatureIdOffset;
         }
 
         public byte[] ToByteArray()
