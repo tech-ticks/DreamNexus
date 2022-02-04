@@ -1,5 +1,4 @@
-﻿using AssetStudio;
-using SkyEditor.IO.Binary;
+﻿using SkyEditor.IO.Binary;
 using SkyEditor.RomEditor.Domain.Common.Structures;
 using System;
 using System.Buffers.Binary;

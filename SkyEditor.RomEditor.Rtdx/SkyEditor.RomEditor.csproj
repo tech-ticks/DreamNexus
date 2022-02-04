@@ -29,10 +29,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AssetStudio\AssetStudio.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Resources\Strings\ActionArea.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

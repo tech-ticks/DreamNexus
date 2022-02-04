@@ -14,8 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyEditor.RomEditor.ConsoleApp", "SkyEditor.RomEditor.Rtdx.ConsoleApp\SkyEditor.RomEditor.ConsoleApp.csproj", "{E4CBCFD7-3D11-490E-BA72-6A5F5F50917D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssetStudio", "AssetStudio\AssetStudio.csproj", "{E1E955DC-F2DA-40A3-966B-176D7F700EB3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SkyEditor.RomEditor.Rtdx.Reverse", "SkyEditor.RomEditor.Rtdx.Reverse\SkyEditor.RomEditor.Rtdx.Reverse.csproj", "{FEA5D961-1213-4501-AA47-A76DC57824FE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkyEditor.UI", "SkyEditor.UI\SkyEditor.UI.csproj", "{624E7733-CB0A-4BC8-A03D-1E92B77E9114}"

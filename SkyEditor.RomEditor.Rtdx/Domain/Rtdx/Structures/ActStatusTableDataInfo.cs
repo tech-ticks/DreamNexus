@@ -1,5 +1,4 @@
-﻿using AssetStudio;
-using SkyEditor.IO.Binary;
+﻿using SkyEditor.IO.Binary;
 using System;
 using System.Buffers.Binary;
 using System.Collections.Generic;

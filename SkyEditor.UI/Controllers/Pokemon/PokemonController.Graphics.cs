@@ -7,7 +7,7 @@ using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using UI = Gtk.Builder.ObjectAttribute;
 using SkyEditor.IO.FileSystem;
 using IOPath = System.IO.Path;
-using AssetStudio;
+using AssetsTools.NET;
 using SkyEditorUI.Infrastructure.AssetFormats;
 using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
 using Cairo;
@@ -15,6 +15,9 @@ using Flags = SkyEditor.RomEditor.Domain.Rtdx.Structures.PokemonGraphicsDatabase
 using SkyEditor.RomEditor.Infrastructure;
 using SkyEditorUI.Infrastructure;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
+using AssetsTools.NET.Extra;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SkyEditorUI.Controllers
 {
@@ -353,7 +356,74 @@ namespace SkyEditorUI.Controllers
 
         private void OnImportPortraitClicked(object sender, EventArgs args)
         {
-            throw new NotImplementedException();
+            if (modpack.ReadOnly)
+            {
+                throw new Exception("Not supported with read-only modpacks.");
+            }
+
+            var fileDialog = new FileChooserNative("Select a portrait to import (.png)", MainWindow.Instance,
+                FileChooserAction.Open, null, null);
+            using var filter = new FileFilter();
+            filter.AddPattern("*.png");
+            fileDialog.AddFilter(filter);
+
+            var response = (ResponseType) fileDialog.Run();
+
+            if (response != ResponseType.Accept)
+            {
+                fileDialog.Destroy();
+                return;
+            }
+
+            var path = fileDialog.Filename;
+            fileDialog.Destroy();
+
+            string fileName;
+            do
+            {
+                var bundleNameDialog = new MessageDialog(MainWindow.Instance, DialogFlags.Modal, MessageType.Other, ButtonsType.Ok,
+                    "Enter a file name for the asset bundle that will be generated.\n"
+                    + "Only alphanumeric characters and '_' are allowed.\n"
+                    + "Any other asset bundles with this name will be REPLACED, including bundles that don't contain portraits.\n"
+                    + "A unique name such as 'portrait_[Pokédex number]_[form]' is recommended.\n"
+                    + "To delete the generated bundle, open the modpack in a file browser and delete the file "
+                    + "'Assets/ab/[bundle name].ab'.");
+                bundleNameDialog.Title = "Portrait import";
+
+                var entry = new Entry();
+                entry.Text = $"portrait_{pokemon.PokedexNumber}_form{currentFormType}";
+                bundleNameDialog.ContentArea.PackEnd(entry, false, false, 0);
+
+                bundleNameDialog.ShowAll();
+                response = (ResponseType) bundleNameDialog.Run();
+                fileName = entry.Text;
+                bundleNameDialog.Destroy();
+
+                if (response != ResponseType.Ok)
+                {
+                    return;
+                }
+
+                if (Regex.IsMatch(fileName, "^\\w+$"))
+                {
+                    break;
+                }
+                else
+                {
+                    UIUtils.ShowErrorDialog(MainWindow.Instance, "Portrait import",
+                        "The file name must only contain alphanumeric characters or '_'.");
+                }
+            }
+            while (true);
+
+            CreatePortraitBundle(path, fileName);
+
+            if (graphicsModel != null)
+            {
+                graphicsModel.PortraitSheetName = fileName;
+                entryPortraitSheetName!.Text = fileName;
+                LoadPortrait();
+            }
         }
 
         private void OnExportPortraitClicked(object sender, EventArgs args)
@@ -382,20 +452,27 @@ namespace SkyEditorUI.Controllers
 
             lock (this)
             {
-                using (var pngSurface = new ImageSurface(Format.Argb32, portraitSurface!.Width, portraitSurface!.Height))
+                // The image is flipped vertically
+                using (var pngSurface = CreateFlippedSurface(portraitSurface))
                 {
-                    using var cr = new Context(pngSurface);
-
-                    // The image is flipped vertically
-                    cr.Translate(0, portraitSurface!.Height);
-                    cr.Scale(1, -1);
-
-                    cr.SetSourceSurface(portraitSurface, 0, 0);
-                    cr.Paint();
-
                     pngSurface.WriteToPng(path);
                 }
             }
+        }
+
+        private ImageSurface CreateFlippedSurface(ImageSurface inSurface)
+        {
+            var outSurface = new ImageSurface(Format.Argb32, inSurface.Width, inSurface.Height);
+
+            using var cr = new Context(outSurface);
+
+            cr.Translate(0, inSurface.Height);
+            cr.Scale(1, -1);
+
+            cr.SetSourceSurface(inSurface, 0, 0);
+            cr.Paint();
+
+            return outSurface;
         }
 
         private void LoadPortrait()
@@ -411,8 +488,6 @@ namespace SkyEditorUI.Controllers
                 // Already displayed
                 return;
             }
-
-            var assetBundles = rom.GetAssetBundles(false);
 
             new Thread(() =>
             {
@@ -434,79 +509,172 @@ namespace SkyEditorUI.Controllers
                         // Load from the ROM if it's not overwritten in any mods
                         assetBundlePath = IOPath.Combine(rom.RomDirectory, "romfs/Data/StreamingAssets/", relativePortraitPath);
                     }
-                    assetBundles.LoadFiles(PhysicalFileSystem.Instance, assetBundlePath);
-                    loadedPortraitBundleName = portraitSheetName;
 
-                    Console.WriteLine($"Loading {assetBundlePath}");
-                    var file = assetBundles.assetsFileList.FirstOrDefault();
-                    if (file == null)
+                    var manager = new AssetsManager();
+                    try
                     {
-                        Console.WriteLine($"Failed to load portrait AssetBundle");
-                        assetBundles.Clear();
+                        var bundle = manager.LoadBundleFile(assetBundlePath);
+                        var texture = AssetBundleHelpers.LoadFirstTextureFromBundle(manager, bundle);
+
+                        if (texture == null)
+                        {
+                            Console.WriteLine($"Failed to load texture from bundle.");
+                            manager.UnloadAll(true);
+                            HidePortraitsIdle();
+                            return;
+                        }
+
+                        loadedPortraitBundleName = portraitSheetName;
+                        var encodedData = texture.GetTextureDataRaw(bundle.file);
+                        if (encodedData == null)
+                        {
+                            Console.WriteLine($"Failed to load texture file.");
+                            manager.UnloadAll(true);
+                            HidePortraitsIdle();
+                            return;
+                        }
+                        byte[] decoded;
+                        if ((TextureFormat) texture.m_TextureFormat == TextureFormat.ASTC_RGBA_4x4)
+                        {
+                            decoded = AstcDecoder.DecodeASTC(encodedData, texture.m_Width, texture.m_Height, 4, 4);
+                        }
+                        else if ((TextureFormat) texture.m_TextureFormat == TextureFormat.DXT1)
+                        {
+                            decoded = new byte[texture.m_Width * texture.m_Height * 4]; // RGBA
+                            DxtDecoder.DecompressDXT1(encodedData, texture.m_Width, texture.m_Height, decoded);
+                        }
+                        else if ((TextureFormat) texture.m_TextureFormat == TextureFormat.RGB24)
+                        {
+                            decoded = new byte[texture.m_Width * texture.m_Height * 4]; // RGBA
+                            RgbConverter.RGB24ToBGRA32(encodedData, texture.m_Width, texture.m_Height, decoded);
+                        }
+                        else if ((TextureFormat) texture.m_TextureFormat == TextureFormat.RGBA32)
+                        {
+                            decoded = new byte[texture.m_Width * texture.m_Height * 4]; // RGBA
+                            RgbConverter.RGBA32ToBGRA32(encodedData, texture.m_Width, texture.m_Height, decoded);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Unexpected texture format: {texture.m_TextureFormat}");
+                            HidePortraitsIdle();
+                            return;
+                        }
+
+                        if (portraitSurface != null)
+                        {
+                            portraitSurface.Dispose();
+                        }
+                        portraitSurface = new ImageSurface(decoded, Format.ARGB32, texture.m_Width, texture.m_Height,
+                            4 * texture.m_Width);
+
+                        // The expected size is 1024x1024, but portraits can be bigger or smaller
+                        portraitZoomFactor = 1024 / texture.m_Width;
+                        nearestNeighborFiltering = texture.m_TextureSettings.m_FilterMode == 0;
+
+                        GLib.Idle.Add(() => 
+                        {
+                            drawAreaPortrait!.Visible = true;
+                            drawAreaPortraitFull!.Visible = true;
+                            drawAreaPortrait!.QueueDraw();
+                            drawAreaPortraitFull!.QueueDraw();
+                            return false;
+                        });           
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Failed to load portrait AssetBundle: {e}");
+                        manager.UnloadAll(true);
                         HidePortraitsIdle();
                         return;
                     }
-                    
-                    var texture = file.Objects.OfType<Texture2D>().FirstOrDefault();
-                    if (texture == null)
-                    {
-                        Console.WriteLine($"Couldn't find Texture2D in portrait AssetBundle");
-                        assetBundles.Clear();
-                        HidePortraitsIdle();
-                        return;
-                    }
-                    
-                    var encodedData = texture.image_data.GetData();
-                    assetBundles.Clear();
-
-                    byte[] decoded;
-                    if (texture.m_TextureFormat == TextureFormat.ASTC_RGBA_4x4)
-                    {
-                        decoded = AstcDecoder.DecodeASTC(encodedData, texture.m_Width, texture.m_Height, 4, 4);
-                    }
-                    else if (texture.m_TextureFormat == TextureFormat.DXT1)
-                    {
-                        decoded = new byte[texture.m_Width * texture.m_Height * 4]; // RGBA
-                        DxtDecoder.DecompressDXT1(encodedData, texture.m_Width, texture.m_Height, decoded);
-                    }
-                    else if (texture.m_TextureFormat == TextureFormat.RGB24)
-                    {
-                        decoded = new byte[texture.m_Width * texture.m_Height * 4]; // RGBA
-                        RgbConverter.RGB24ToBGRA32(encodedData, texture.m_Width, texture.m_Height, decoded);
-                    }
-                    else if (texture.m_TextureFormat == TextureFormat.RGBA32)
-                    {
-                        decoded = new byte[texture.m_Width * texture.m_Height * 4]; // RGBA
-                        RgbConverter.RGBA32ToBGRA32(encodedData, texture.m_Width, texture.m_Height, decoded);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Unexpected texture format: {texture.m_TextureFormat}");
-                        HidePortraitsIdle();
-                        return;
-                    }
-
-                    if (portraitSurface != null)
-                    {
-                        portraitSurface.Dispose();
-                    }
-                    portraitSurface = new ImageSurface(decoded, Format.ARGB32, texture.m_Width, texture.m_Height,
-                        4 * texture.m_Width);
-
-                    // The expected size is 1024x1024, but portraits can be bigger or smaller
-                    portraitZoomFactor = 1024 / texture.m_Width;
-                    nearestNeighborFiltering = texture.m_TextureSettings.m_FilterMode == 0;
-
-                    GLib.Idle.Add(() => 
-                    {
-                        drawAreaPortrait!.Visible = true;
-                        drawAreaPortraitFull!.Visible = true;
-                        drawAreaPortrait!.QueueDraw();
-                        drawAreaPortraitFull!.QueueDraw();
-                        return false;
-                    });
                 }
             }).Start();
+        }
+
+        private void CreatePortraitBundle(string imageFilePath, string bundleName)
+        {
+            var manager = new AssetsManager();
+
+            try
+            {
+                using var surface = new ImageSurface(imageFilePath);
+
+                if (surface.Width != surface.Height || surface.Width <= 0)
+                {
+                    UIUtils.ShowErrorDialog(MainWindow.Instance, "Portrait import error", "Portrait width and height "
+                        + "must be the same. In-game portraits are 1024x1024, but other sizes are also supported.");
+                    return;
+                }
+
+                bool isPowerOfTwo(int x)
+                {
+                    return (x & (x - 1)) == 0;
+                }
+
+                if (!isPowerOfTwo(surface.Width))
+                {
+                    UIUtils.ShowErrorDialog(MainWindow.Instance, "Portrait import error", "Portrait size must be a "
+                        + "power of two. In-game portraits are 1024x1024, but other sizes are also supported.");
+                    return;
+                }
+
+                // Flip the image first
+                using var flippedSurface = CreateFlippedSurface(surface);
+
+                var pikachuPortraitsPath = IOPath.Combine(rom.GetAssetBundlesPath(), "pikachuu.ab");
+                var bundle = manager.LoadBundleFile(pikachuPortraitsPath);
+                var assetsFile = manager.LoadAssetsFileFromBundle(bundle, 0);
+
+                var asset = assetsFile.table.GetAssetsOfType((int) AssetClassID.Texture2D).First();
+                var textureReplacer = new CustomTextureReplacer(manager, assetsFile.file, asset, bundleName,
+                    flippedSurface.Data, flippedSurface.Width, flippedSurface.Height);
+
+                // The AssetBundle name in the metadata needs to be changed too
+                var assetBundleAsset = assetsFile.table.GetAssetsOfType((int) AssetClassID.AssetBundle).First();
+                var baseField = manager.GetTypeInstance(assetsFile, assetBundleAsset).GetBaseField();
+                baseField["m_Name"].GetValue().Set($"{bundleName}.ab");
+                baseField["m_AssetBundleName"].GetValue().Set($"{bundleName}.ab");
+                var assetBundleAssetBytes = baseField.WriteToByteArray();
+
+                var assetBundleAssetReplacer = new AssetsReplacerFromMemory(0, assetBundleAsset.index,
+                    (int) AssetClassID.AssetBundle, 0xffff, baseField.WriteToByteArray());
+                
+                // Rebuild the main asset bundle file
+                var assetsFileBytes = assetsFile.file.Build(textureReplacer, assetBundleAssetReplacer);
+                
+                var bundleReplacer = new BundleReplacerFromMemory(assetsFile.name, assetsFile.name, true, assetsFileBytes, -1);
+                
+                // The asset bundle normally contains a second ".resS" file which raw data, which is read based on
+                // an offset in the main file. However, new portrait is written directly into the main file,
+                // so we can get rid of the second file.
+                bundle.file.bundleInf6.dirInf = bundle.file.bundleInf6.dirInf.Take(1).ToArray();
+                bundle.file.bundleInf6.directoryCount = 1;
+
+                var assetDir = modpack.GetDefaultMod()?.GetAssetsDirectory();
+                if (assetDir == null)
+                {
+                    throw new Exception("Failed to retrieve assets directory.");
+                }
+
+                var targetDir = IOPath.Combine(assetDir, "ab");
+                Directory.CreateDirectory(targetDir);
+
+                using var outMemoryStream = new MemoryStream();
+                using var memoryBundleWriter = new AssetsFileWriter(outMemoryStream);
+                bundle.file.Write(memoryBundleWriter, new List<BundleReplacer>() { bundleReplacer });
+
+                // Compress the bundle
+                outMemoryStream.Flush();
+                outMemoryStream.Position = 0;
+                var targetPath = IOPath.Combine(targetDir, $"{bundleName}.ab");
+                var newBundle = manager.LoadBundleFile(outMemoryStream, targetPath);
+                using var bundleWriter = new AssetsFileWriter(targetPath);
+                bundle.file.Pack(newBundle.file.reader, bundleWriter, AssetBundleCompressionType.LZMA);
+            }
+            finally
+            {
+                manager.UnloadAll(true);
+            }
         }
 
         private void HidePortraitsIdle()

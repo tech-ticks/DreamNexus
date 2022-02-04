@@ -1,5 +1,4 @@
-﻿using AssetStudio;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using SkyEditor.IO.FileSystem;
 using SkyEditor.RomEditor.Infrastructure.Automation.CSharp;
@@ -44,9 +43,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         #endregion
 
         #region StreamingAssets/data/ab
-
-        AssetsManager GetAssetBundles(bool loadAll = false);
-        string[] ListAssetBundles();
+        string GetAssetBundlesPath();
 
         #endregion
 
@@ -295,24 +292,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         #region StreamingAssets/data/ab
         public static string GetAssetBundlesPath(string directory) => Path.Combine(directory, "romfs/Data/StreamingAssets/ab");
-
-        /// <summary>
-        /// Loads asset bundles
-        /// Note: If the ROM is not a physical file system, exceptions may occur.
-        /// </summary>
-        public AssetsManager GetAssetBundles(bool loadAll = false)
-        {
-            if (_assetBundles == null)
-            {
-                _assetBundles = new AssetsManager();
-                if (loadAll)
-                {
-                    _assetBundles.LoadFolder(this.FileSystem, GetAssetBundlesPath(this.RomDirectory));
-                }
-            }
-            return _assetBundles;
-        }
-        private AssetsManager? _assetBundles;
+        public string GetAssetBundlesPath() => GetAssetBundlesPath(this.RomDirectory);
 
         public string[] ListAssetBundles()
         {

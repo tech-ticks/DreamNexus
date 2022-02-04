@@ -4753,6 +4753,7 @@ Base Stats can be edited in the Settings tab. They will be applied for level 1.<
                             <property name="layout-style">start</property>
                             <child>
                               <object class="GtkButton" id="btnImportPortrait">
+                                <property name="visible">True</property>
                                 <property name="can-focus">True</property>
                                 <property name="receives-default">True</property>
                                 <signal name="clicked" handler="OnImportPortraitClicked" swapped="no"/>

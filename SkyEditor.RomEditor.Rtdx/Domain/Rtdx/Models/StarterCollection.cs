@@ -54,7 +54,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         {
             var mainExecutable = rom.GetMainExecutable();
             var natureDiagnosis = rom.GetNatureDiagnosis();
-            var fixedPokemon = rom.GetFixedPokemon();
+            var fixedPokemon = rom.GetFixedPokemonCollection();
 
             var starters = new List<StarterModel>();
             foreach (var starter in natureDiagnosis.m_pokemonNatureAndTypeList)
@@ -92,7 +92,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             var originalStarters = LoadStarters(rom);
             var mainExecutable = rom.GetMainExecutable();
             var natureDiagnosis = rom.GetNatureDiagnosis();
-            var fixedPokemon = rom.GetFixedPokemon();
+            var fixedPokemon = rom.GetFixedPokemonCollection();
 
             var natureDiagnosisActorMaleLookup = mainExecutable.ActorDatabase.ActorDataList
                 .ToLookup(actor => actor.SymbolName);
