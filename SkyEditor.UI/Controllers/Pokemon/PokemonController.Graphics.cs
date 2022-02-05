@@ -5,7 +5,6 @@ using System.IO;
 using Gtk;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using UI = Gtk.Builder.ObjectAttribute;
-using SkyEditor.IO.FileSystem;
 using IOPath = System.IO.Path;
 using AssetsTools.NET;
 using SkyEditorUI.Infrastructure.AssetFormats;
@@ -18,6 +17,10 @@ using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using AssetsTools.NET.Extra;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using System.Runtime.InteropServices;
 
 namespace SkyEditorUI.Controllers
 {
@@ -416,9 +419,9 @@ namespace SkyEditorUI.Controllers
             }
             while (true);
 
-            CreatePortraitBundle(path, fileName);
+            bool created = CreatePortraitBundle(path, fileName);
 
-            if (graphicsModel != null)
+            if (graphicsModel != null && created)
             {
                 graphicsModel.PortraitSheetName = fileName;
                 entryPortraitSheetName!.Text = fileName;
@@ -452,29 +455,13 @@ namespace SkyEditorUI.Controllers
 
             lock (this)
             {
-                // The image is flipped vertically
-                using (var pngSurface = CreateFlippedSurface(portraitSurface))
-                {
-                    pngSurface.WriteToPng(path);
-                }
+                // portraitSurface.SaveAsPng() leads to corrupted transparency for some reason
+                using var image = SixLabors.ImageSharp.Image.LoadPixelData<Bgra32>(portraitSurface.Data,
+                    portraitSurface.Width, portraitSurface.Height);
+                image.Mutate(x => x.Flip(FlipMode.Vertical));
+                image.SaveAsPng(path);
             }
         }
-
-        private ImageSurface CreateFlippedSurface(ImageSurface inSurface)
-        {
-            var outSurface = new ImageSurface(Format.Argb32, inSurface.Width, inSurface.Height);
-
-            using var cr = new Context(outSurface);
-
-            cr.Translate(0, inSurface.Height);
-            cr.Scale(1, -1);
-
-            cr.SetSourceSurface(inSurface, 0, 0);
-            cr.Paint();
-
-            return outSurface;
-        }
-
         private void LoadPortrait()
         {
             string portraitSheetName = "dummy";
@@ -591,19 +578,19 @@ namespace SkyEditorUI.Controllers
             }).Start();
         }
 
-        private void CreatePortraitBundle(string imageFilePath, string bundleName)
+        private bool CreatePortraitBundle(string imageFilePath, string bundleName)
         {
             var manager = new AssetsManager();
 
             try
             {
-                using var surface = new ImageSurface(imageFilePath);
+                using var image = SixLabors.ImageSharp.Image.Load<Bgra32>(imageFilePath);
 
-                if (surface.Width != surface.Height || surface.Width <= 0)
+                if (image.Width != image.Height || image.Width <= 0)
                 {
                     UIUtils.ShowErrorDialog(MainWindow.Instance, "Portrait import error", "Portrait width and height "
                         + "must be the same. In-game portraits are 1024x1024, but other sizes are also supported.");
-                    return;
+                    return false;
                 }
 
                 bool isPowerOfTwo(int x)
@@ -611,15 +598,21 @@ namespace SkyEditorUI.Controllers
                     return (x & (x - 1)) == 0;
                 }
 
-                if (!isPowerOfTwo(surface.Width))
+                if (!isPowerOfTwo(image.Width))
                 {
                     UIUtils.ShowErrorDialog(MainWindow.Instance, "Portrait import error", "Portrait size must be a "
                         + "power of two. In-game portraits are 1024x1024, but other sizes are also supported.");
-                    return;
+                    return false;
                 }
 
                 // Flip the image first
-                using var flippedSurface = CreateFlippedSurface(surface);
+                image.Mutate(x => x.Flip(FlipMode.Vertical));
+                using var imageDataStream = new MemoryStream();
+                for (int i = 0; i < image.Height; i++) 
+                {
+                    // Convert to bytes
+                    imageDataStream.Write(MemoryMarshal.AsBytes(image.GetPixelRowSpan(i)));
+                }
 
                 var pikachuPortraitsPath = IOPath.Combine(rom.GetAssetBundlesPath(), "pikachuu.ab");
                 var bundle = manager.LoadBundleFile(pikachuPortraitsPath);
@@ -627,13 +620,16 @@ namespace SkyEditorUI.Controllers
 
                 var asset = assetsFile.table.GetAssetsOfType((int) AssetClassID.Texture2D).First();
                 var textureReplacer = new CustomTextureReplacer(manager, assetsFile.file, asset, bundleName,
-                    flippedSurface.Data, flippedSurface.Width, flippedSurface.Height);
+                    imageDataStream.GetBuffer(), image.Width, image.Height);
 
                 // The AssetBundle name in the metadata needs to be changed too
                 var assetBundleAsset = assetsFile.table.GetAssetsOfType((int) AssetClassID.AssetBundle).First();
                 var baseField = manager.GetTypeInstance(assetsFile, assetBundleAsset).GetBaseField();
                 baseField["m_Name"].GetValue().Set($"{bundleName}.ab");
                 baseField["m_AssetBundleName"].GetValue().Set($"{bundleName}.ab");
+                // Replace the file name in the asset path for correct loading
+                baseField["m_Container"].children[0]["data"]["first"].GetValue()
+                    .Set($"assets/postre/graphic/ui/face_size160/{bundleName}.png");
                 var assetBundleAssetBytes = baseField.WriteToByteArray();
 
                 var assetBundleAssetReplacer = new AssetsReplacerFromMemory(0, assetBundleAsset.index,
@@ -642,7 +638,12 @@ namespace SkyEditorUI.Controllers
                 // Rebuild the main asset bundle file
                 var assetsFileBytes = assetsFile.file.Build(textureReplacer, assetBundleAssetReplacer);
                 
-                var bundleReplacer = new BundleReplacerFromMemory(assetsFile.name, assetsFile.name, true, assetsFileBytes, -1);
+                // Generate a random file name for the file inside the asset bundle since Unity
+                // refuses to load the same file twice
+                var randomBytes = new byte[16];
+                new Random().NextBytes(randomBytes);
+                var bundleReplacer = new BundleReplacerFromMemory(assetsFile.name,
+                    "CAB-" + Convert.ToHexString(randomBytes).ToLower(), true, assetsFileBytes, -1);
                 
                 // The asset bundle normally contains a second ".resS" file which raw data, which is read based on
                 // an offset in the main file. However, new portrait is written directly into the main file,
@@ -670,6 +671,7 @@ namespace SkyEditorUI.Controllers
                 var newBundle = manager.LoadBundleFile(outMemoryStream, targetPath);
                 using var bundleWriter = new AssetsFileWriter(targetPath);
                 bundle.file.Pack(newBundle.file.reader, bundleWriter, AssetBundleCompressionType.LZMA);
+                return true;
             }
             finally
             {
