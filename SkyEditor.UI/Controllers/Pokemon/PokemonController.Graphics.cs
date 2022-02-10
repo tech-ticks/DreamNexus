@@ -21,6 +21,7 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp.Processing;
 using System.Runtime.InteropServices;
+using System.Runtime.ExceptionServices;
 
 namespace SkyEditorUI.Controllers
 {
@@ -66,6 +67,14 @@ namespace SkyEditorUI.Controllers
         [UI] private ComboBoxText? cbUnkSize1;
         [UI] private ComboBoxText? cbUnkSize2;
 
+        [UI] private Dialog? dialogSpriteBotImport;
+        [UI] private Entry? entrySpriteBotPokedexId;
+        [UI] private Label? labelSpriteBotEntryName;
+        [UI] private Label? labelSpriteBotPortraitCredits;
+        [UI] private ComboBox? cbSpriteBotForm;
+        [UI] private Button? btnSpriteBotImportOk;
+        [UI] private ListStore? spriteBotFormsStore;
+
         private int currentFormType;
         private IPokemonGraphicsCollection? graphicsCollection;
         private PokemonGraphicsModel? graphicsModel = null;
@@ -74,6 +83,11 @@ namespace SkyEditorUI.Controllers
         private ImageSurface? portraitSurface;
         private double portraitZoomFactor = 1;
         private bool nearestNeighborFiltering = false;
+
+        private Dictionary<int, SpriteBotTrackerEntry>? spriteBotTracker;
+        private int spriteBotPokedexId;
+        private SpriteBotTrackerEntry? selectedTrackerEntry;
+        private string? trackerEntryPath;
 
         private void LoadGraphicsTab()
         {
@@ -111,7 +125,7 @@ namespace SkyEditorUI.Controllers
 
             if (!string.IsNullOrWhiteSpace(graphicsModel!.PortraitSheetName))
             {
-                LoadPortrait();
+                LoadPortrait(false);
             }
 
             entryGroundBaseScale!.Text = graphicsModel.BaseScale.ToString();
@@ -198,7 +212,7 @@ namespace SkyEditorUI.Controllers
 
         private void OnPortraitSheetNameFocusOut(object sender, FocusOutEventArgs args)
         {
-            LoadPortrait();
+            LoadPortrait(false);
         }
 
         private void OnCampImageNameChanged(object sender, EventArgs args)
@@ -381,51 +395,155 @@ namespace SkyEditorUI.Controllers
             var path = fileDialog.Filename;
             fileDialog.Destroy();
 
-            string fileName;
-            do
+            using var image = SixLabors.ImageSharp.Image.Load<Bgra32>(path);
+
+            ImportPortrait(image, false);
+        }
+
+        private void OnSpriteBotPortraitImportClicked(object sender, EventArgs args)
+        {
+            MainWindow.Instance?.ShowLoadingDialog("Downloading SpriteBot metadata...");
+            new Thread(() =>
             {
-                var bundleNameDialog = new MessageDialog(MainWindow.Instance, DialogFlags.Modal, MessageType.Other, ButtonsType.Ok,
-                    "Enter a file name for the asset bundle that will be generated.\n"
-                    + "Only alphanumeric characters and '_' are allowed.\n"
-                    + "Any other asset bundles with this name will be REPLACED, including bundles that don't contain portraits.\n"
-                    + "A unique name such as 'portrait_[Pokédex number]_[form]' is recommended.\n"
-                    + "To delete the generated bundle, open the modpack in a file browser and delete the file "
-                    + "'Assets/ab/[bundle name].ab'.");
-                bundleNameDialog.Title = "Portrait import";
-
-                var entry = new Entry();
-                entry.Text = $"portrait_{pokemon.PokedexNumber}_form{currentFormType}";
-                bundleNameDialog.ContentArea.PackEnd(entry, false, false, 0);
-
-                bundleNameDialog.ShowAll();
-                response = (ResponseType) bundleNameDialog.Run();
-                fileName = entry.Text;
-                bundleNameDialog.Destroy();
-
-                if (response != ResponseType.Ok)
+                try
                 {
-                    return;
+                    if (spriteBotTracker == null)
+                    {
+                        var trackerTask = SpriteBotImport.DownloadTracker();
+                        trackerTask.Wait();
+                        spriteBotTracker = trackerTask.Result;
+                    }
+                    GLib.Idle.Add(() =>
+                    {
+                        MainWindow.Instance?.HideLoadingDialog();
+                        ShowSpriteBotDialog();
+                        return false;
+                    });
+                }
+                catch (Exception e)
+                {
+                    GLib.Idle.Add(() =>
+                    {
+                        MainWindow.Instance?.HideLoadingDialog();
+                        ExceptionDispatchInfo.Capture(e).Throw();
+                        return false;
+                    });
+                }
+            }).Start();
+        }
+
+        private void ShowSpriteBotDialog()
+        {
+            entrySpriteBotPokedexId!.Text = pokemon.PokedexNumber.ToString();
+            var response = (ResponseType) dialogSpriteBotImport!.Run();
+            dialogSpriteBotImport!.Hide();
+            if (response != ResponseType.Ok || selectedTrackerEntry == null || trackerEntryPath == null)
+            {
+                return;
+            }
+
+            new Thread(() =>
+            {
+                try
+                {
+                    var downloadTask = SpriteBotImport.DownloadPortraitSheet(selectedTrackerEntry, trackerEntryPath, (progress) =>
+                    {
+                        GLib.Idle.Add(() =>
+                        {
+                            MainWindow.Instance?.ShowLoadingDialog(progress);
+                            return false;
+                        });
+                    });
+                    downloadTask.Wait();
+                    GLib.Idle.Add(() =>
+                    {
+                        MainWindow.Instance?.HideLoadingDialog();
+                        ImportPortrait(downloadTask.Result, true);
+                        downloadTask.Result.Dispose();
+                        return false;
+                    });
+                }
+                catch (Exception e)
+                {
+                    GLib.Idle.Add(() =>
+                    {
+                        MainWindow.Instance?.HideLoadingDialog();
+                        ExceptionDispatchInfo.Capture(e).Throw();
+                        return false;
+                    });
+                }
+            }).Start();
+        }
+
+        private void OnSpriteBotPokedexIdChanged(object sender, EventArgs args)
+        {
+            spriteBotPokedexId = entrySpriteBotPokedexId!.ParseInt(spriteBotPokedexId);
+            spriteBotFormsStore!.Clear();
+
+            if (spriteBotTracker!.TryGetValue(spriteBotPokedexId, out var trackerEntry))
+            {
+                cbSpriteBotForm!.Sensitive = true;
+                btnSpriteBotImportOk!.Sensitive = true;
+                labelSpriteBotEntryName!.Text = trackerEntry.Name;
+                string path = spriteBotPokedexId.ToString("0000");
+                spriteBotFormsStore.AppendValues(-1, "Default", trackerEntry, path);
+                if (trackerEntry.Subgroups != null)
+                {
+                    AddSubgroups(trackerEntry.Subgroups, null, path);
                 }
 
-                if (Regex.IsMatch(fileName, "^\\w+$"))
+                cbSpriteBotForm.Active = 0;
+            }
+            else
+            {
+                cbSpriteBotForm!.Sensitive = false;
+                btnSpriteBotImportOk!.Sensitive = false;
+                labelSpriteBotEntryName!.Text = "";
+                labelSpriteBotPortraitCredits!.Text = "No portraits available for the selected Pokédex ID.";
+            }
+        }
+
+        private void AddSubgroups(Dictionary<int, SpriteBotTrackerEntry> subgroups, string? currentName, string path)
+        {
+            foreach (var subgroup in subgroups)
+            {
+                string newName = !string.IsNullOrWhiteSpace(subgroup.Value.Name)
+                    ? $"{currentName} {subgroup.Value.Name}" : currentName ?? "";
+                path += '/' + subgroup.Key.ToString("0000");
+
+                if (subgroup.Value.PortraitFiles!.Count > 0)
                 {
-                    break;
+                    spriteBotFormsStore!.AppendValues(subgroup.Key, newName.Trim() ?? "", subgroup.Value, path);
                 }
-                else
+                if (subgroup.Value.Subgroups != null && subgroup.Value.Subgroups.Count > 0)
                 {
-                    UIUtils.ShowErrorDialog(MainWindow.Instance, "Portrait import",
-                        "The file name must only contain alphanumeric characters or '_'.");
+                    AddSubgroups(subgroup.Value.Subgroups, newName, path);
                 }
             }
-            while (true);
+        }
 
-            bool created = CreatePortraitBundle(path, fileName);
-
-            if (graphicsModel != null && created)
+        private void OnSpriteBotFormChanged(object sender, EventArgs args)
+        {
+            if (!spriteBotTracker!.ContainsKey(spriteBotPokedexId))
             {
-                graphicsModel.PortraitSheetName = fileName;
-                entryPortraitSheetName!.Text = fileName;
-                LoadPortrait();
+                return;
+            }
+            var baseFormEntry = spriteBotTracker![spriteBotPokedexId];
+
+            if (cbSpriteBotForm!.GetActiveIter(out var iter))
+            {
+                var name = (string) spriteBotFormsStore!.GetValue(iter, 1);
+                selectedTrackerEntry = (SpriteBotTrackerEntry) spriteBotFormsStore!.GetValue(iter, 2);
+                trackerEntryPath = (string) spriteBotFormsStore!.GetValue(iter, 3);
+
+                string fullName = baseFormEntry.Name ?? "";
+                if (name != "Default")
+                {
+                    fullName += " " + name;
+                }
+
+                labelSpriteBotPortraitCredits!.Markup = $"Use the SpriteBot command <tt>!portrait {fullName}</tt>\n"
+                    + "to view credits for this portrait.";
             }
         }
 
@@ -462,7 +580,22 @@ namespace SkyEditorUI.Controllers
                 image.SaveAsPng(path);
             }
         }
-        private void LoadPortrait()
+
+        private void OnDrawPortraitFull(object sender, DrawnArgs args)
+        {
+            lock (this)
+            {
+                if (portraitSurface == null)
+                {
+                    return;
+                }
+
+                DrawPortrait(args.Cr);
+                drawAreaPortraitFull!.SetSizeRequest(512, 512);
+            }
+        }
+
+        private void LoadPortrait(bool forceReload)
         {
             string portraitSheetName = "dummy";
             if (graphicsModel != null)
@@ -470,7 +603,7 @@ namespace SkyEditorUI.Controllers
                 portraitSheetName = graphicsModel.PortraitSheetName;
             }
 
-            if (portraitSheetName == loadedPortraitBundleName)
+            if (portraitSheetName == loadedPortraitBundleName && !forceReload)
             {
                 // Already displayed
                 return;
@@ -578,14 +711,62 @@ namespace SkyEditorUI.Controllers
             }).Start();
         }
 
-        private bool CreatePortraitBundle(string imageFilePath, string bundleName)
+        private void ImportPortrait(SixLabors.ImageSharp.Image<Bgra32> image, bool pointFilter)
+        {
+            string fileName;
+            do
+            {
+                var bundleNameDialog = new MessageDialog(MainWindow.Instance, DialogFlags.Modal, MessageType.Other, ButtonsType.Ok,
+                    "Enter a file name for the asset bundle that will be generated.\n"
+                    + "Only alphanumeric characters and '_' are allowed.\n"
+                    + "Any other asset bundles with this name will be REPLACED, including bundles that don't contain portraits.\n"
+                    + "A unique name such as 'portrait_[Pokédex number]_[form]' is recommended.\n"
+                    + "To delete the generated bundle, open the modpack in a file browser and delete the file "
+                    + "'Assets/ab/[bundle name].ab'.");
+                bundleNameDialog.Title = "Portrait import";
+
+                var entry = new Entry();
+                entry.Text = $"portrait_{pokemon.PokedexNumber}_form{currentFormType}";
+                bundleNameDialog.ContentArea.PackEnd(entry, false, false, 0);
+
+                bundleNameDialog.ShowAll();
+                var response = (ResponseType) bundleNameDialog.Run();
+                fileName = entry.Text;
+                bundleNameDialog.Destroy();
+
+                if (response != ResponseType.Ok)
+                {
+                    return;
+                }
+
+                if (Regex.IsMatch(fileName, "^\\w+$"))
+                {
+                    break;
+                }
+                else
+                {
+                    UIUtils.ShowErrorDialog(MainWindow.Instance, "Portrait import",
+                        "The file name must only contain alphanumeric characters or '_'.");
+                }
+            }
+            while (true);
+
+            bool created = CreatePortraitBundle(image, fileName, pointFilter);
+
+            if (graphicsModel != null && created)
+            {
+                graphicsModel.PortraitSheetName = fileName;
+                entryPortraitSheetName!.Text = fileName;
+                LoadPortrait(true);
+            }
+        }
+
+        private bool CreatePortraitBundle(SixLabors.ImageSharp.Image<Bgra32> image, string bundleName, bool pointFilter)
         {
             var manager = new AssetsManager();
 
             try
             {
-                using var image = SixLabors.ImageSharp.Image.Load<Bgra32>(imageFilePath);
-
                 if (image.Width != image.Height || image.Width <= 0)
                 {
                     UIUtils.ShowErrorDialog(MainWindow.Instance, "Portrait import error", "Portrait width and height "
@@ -620,7 +801,7 @@ namespace SkyEditorUI.Controllers
 
                 var asset = assetsFile.table.GetAssetsOfType((int) AssetClassID.Texture2D).First();
                 var textureReplacer = new CustomTextureReplacer(manager, assetsFile.file, asset, bundleName,
-                    imageDataStream.GetBuffer(), image.Width, image.Height);
+                    imageDataStream.GetBuffer(), image.Width, image.Height, pointFilter);
 
                 // The AssetBundle name in the metadata needs to be changed too
                 var assetBundleAsset = assetsFile.table.GetAssetsOfType((int) AssetClassID.AssetBundle).First();
@@ -687,20 +868,6 @@ namespace SkyEditorUI.Controllers
                 drawAreaPortraitFull!.Visible = false;
                 return false;
             });
-        }
-
-        private void OnDrawPortraitFull(object sender, DrawnArgs args)
-        {
-            lock (this)
-            {
-                if (portraitSurface == null)
-                {
-                    return;
-                }
-
-                DrawPortrait(args.Cr);
-                drawAreaPortraitFull!.SetSizeRequest(512, 512);
-            }
         }
     }
 }

@@ -352,8 +352,7 @@ namespace SkyEditorUI.Controllers
                     });
                 }).Start();
 
-                openFileDialogLabel!.Text = $"Loading {path}";
-                loadingDialog!.Show();
+                ShowLoadingDialog($"Loading {path}");
             });
         }
 
@@ -423,8 +422,7 @@ namespace SkyEditorUI.Controllers
                 });
             }).Start();
 
-            openFileDialogLabel!.Text = "Saving modpack...";
-            loadingDialog!.Show();
+            ShowLoadingDialog("Saving modpack...");
         }
 
         private async Task SaveModpack(string? directory = null)
@@ -561,8 +559,7 @@ namespace SkyEditorUI.Controllers
                 });
             }).Start();
             
-            openFileDialogLabel!.Text = "Building modpack...";
-            loadingDialog!.Show();
+            ShowLoadingDialog("Building modpack...");
         }
 
         private void OnDeployClicked(object sender, EventArgs args)
@@ -619,8 +616,7 @@ namespace SkyEditorUI.Controllers
                     });
                 }).Start();
                 
-                openFileDialogLabel!.Text = $"Deploying to {settings.SwitchIp}...";
-                loadingDialog!.Show();
+                ShowLoadingDialog($"Deploying to {settings.SwitchIp}...");
             });
         }
 
@@ -850,8 +846,7 @@ namespace SkyEditorUI.Controllers
                 });
             }).Start();
 
-            openFileDialogLabel!.Text = $"Loading ROM \"{romFolder}\"";
-            loadingDialog!.Show();
+            ShowLoadingDialog($"Loading ROM \"{romFolder}\"");
         }
 
         private void OnModpackLoaded()
@@ -1160,6 +1155,17 @@ namespace SkyEditorUI.Controllers
         public TreeIter AddMainListItem(TreeIter parent, string name, string icon, ControllerContext? context = null)
         {
             return itemStore!.AppendValues(parent, icon, name, null, context ?? ControllerContext.Null, false, true);
+        }
+
+        public void ShowLoadingDialog(string text)
+        {
+            openFileDialogLabel!.Text = text;
+            loadingDialog!.Show();
+        }
+
+        public void HideLoadingDialog()
+        {
+            loadingDialog!.Hide();
         }
     }
 }

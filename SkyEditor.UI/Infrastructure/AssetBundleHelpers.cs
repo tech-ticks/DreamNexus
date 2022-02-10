@@ -86,14 +86,16 @@ namespace SkyEditorUI.Infrastructure
         private int width;
         private int height;
         private string name;
+        private bool pointFilter;
 
         public CustomTextureReplacer(AssetsManager manager, AssetsFile assetsFile, AssetFileInfoEx asset,
-            string name, byte[] bgra, int width, int height) : base(manager, assetsFile, asset)
+            string name, byte[] bgra, int width, int height, bool pointFilter) : base(manager, assetsFile, asset)
         {
             this.bgra = bgra;
             this.width = width;
             this.height = height;
             this.name = name;
+            this.pointFilter = pointFilter;
         }
 
         protected override void GetNewTextureData(out byte[] bgra, out int width, out int height)
@@ -108,6 +110,7 @@ namespace SkyEditorUI.Infrastructure
             var texture = TextureFile.ReadTextureFile(baseField);
             texture.m_Name = name;
             texture.m_TextureFormat = (int) TextureFormat.RGBA32;
+            texture.m_TextureSettings.m_FilterMode = pointFilter ? 0 : 1;
             GetNewTextureData(out byte[] bgra, out int width, out int height);
             SetTextureData(texture, bgra, width, height);
 
