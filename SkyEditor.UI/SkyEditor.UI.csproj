@@ -46,7 +46,7 @@
     <PackageReference Include="GtkSharp" Version="3.24.24.*" />
     <PackageReference Include="GtkSourceSharp" Version="3.24.24.*" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.0.0" />
     <PackageReference Include="SkyEditor.IO" Version="5.1.17" />
   </ItemGroup>
 
