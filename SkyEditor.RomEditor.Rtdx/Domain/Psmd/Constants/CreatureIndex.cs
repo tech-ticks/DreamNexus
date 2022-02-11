@@ -1,7 +1,6 @@
-﻿namespace SkyEditor.RomEditor.Domain.Psmd.Constants
+namespace SkyEditor.RomEditor.Domain.Psmd.Constants
 {
-    // We don't have the source to PSMD, so this is largely guesswork based on RTDX
-    // pokemon_data_info doesn't seem to have all megas, so those are excluded
+    // Mega Evolutions introduced in Omega Ruby and Alpha Sapphire are near the end.
 
     public enum CreatureIndex
     {
@@ -102,11 +101,6 @@
         /// </summary>
         SUPIAA,
 
-        // // <summary>
-        // // Beedrill
-        // // </summary>
-        // SUPIAA_MEGA,
-
         /// <summary>
         /// Pidgey
         /// </summary>
@@ -121,11 +115,6 @@
         /// Pidgeot
         /// </summary>
         PIJOTTO,
-
-        // /// <summary>
-        // /// Pidgeot
-        // /// </summary>
-        // PIJOTTO_MEGA,
 
         /// <summary>
         /// Rattata
@@ -472,11 +461,6 @@
         /// </summary>
         YADORAN,
 
-        // /// <summary>
-        // /// Slowbro
-        // /// </summary>
-        // YADORAN_MEGA,
-
         /// <summary>
         /// Slowking
         /// </summary>
@@ -557,10 +541,10 @@
         /// </summary>
         GENGAA,
 
-        // /// <summary>
-        // /// Gengar
-        // /// </summary>
-        // GENGAA_MEGA,
+        /// <summary>
+        /// Gengar
+        /// </summary>
+        GENGAA_MEGA,
 
         /// <summary>
         /// Onix
@@ -571,11 +555,6 @@
         /// Steelix
         /// </summary>
         HAGANEERU,
-
-        /// <summary>
-        /// Steelix
-        /// </summary>
-        HAGANEERU_MEGA,
 
         /// <summary>
         /// Drowzee
@@ -1647,11 +1626,6 @@
         /// </summary>
         JUKAIN,
 
-        // /// <summary>
-        // /// Sceptile
-        // /// </summary>
-        // JUKAIN_MEGA,
-
         /// <summary>
         /// Torchic
         /// </summary>
@@ -1686,11 +1660,6 @@
         /// Swampert
         /// </summary>
         RAGURAAJI,
-
-        // /// <summary>
-        // /// Swampert
-        // /// </summary>
-        // RAGURAAJI_MEGA,
 
         /// <summary>
         /// Poochyena
@@ -1807,20 +1776,10 @@
         /// </summary>
         SAANAITO,
 
-        // /// <summary>
-        // /// Gardevoir
-        // /// </summary>
-        // SAANAITO_MEGA,
-
         /// <summary>
         /// Gallade
         /// </summary>
         ERUREIDO,
-
-        // /// <summary>
-        // /// Gallade
-        // /// </summary>
-        // ERUREIDO_MEGA,
 
         /// <summary>
         /// Gardevoir
@@ -1926,11 +1885,6 @@
         /// Sableye
         /// </summary>
         YAMIRAMI,
-
-        // /// <summary>
-        // /// Sableye
-        // /// </summary>
-        // YAMIRAMI_MEGA,
 
         /// <summary>
         /// Mawile
@@ -2047,11 +2001,6 @@
         /// </summary>
         SAMEHADAA,
 
-        // /// <summary>
-        // /// Sharpedo
-        // /// </summary>
-        // SAMEHADAA_MEGA,
-
         /// <summary>
         /// Wailmer
         /// </summary>
@@ -2071,11 +2020,6 @@
         /// Camerupt
         /// </summary>
         BAKUUDA,
-
-        // /// <summary>
-        // /// Camerupt
-        // /// </summary>
-        // BAKUUDA_MEGA,
 
         /// <summary>
         /// Torkoal
@@ -2131,11 +2075,6 @@
         /// Altaria
         /// </summary>
         CHIRUTARISU,
-
-        // /// <summary>
-        // /// Altaria
-        // /// </summary>
-        // CHIRUTARISU_MEGA,
 
         /// <summary>
         /// Zangoose
@@ -2307,11 +2246,6 @@
         /// </summary>
         ONIGOORI,
 
-        // /// <summary>
-        // /// Glalie
-        // /// </summary>
-        // ONIGOORI_MEGA,
-
         /// <summary>
         /// Froslass
         /// </summary>
@@ -2372,11 +2306,6 @@
         /// </summary>
         BOOMANDA,
 
-        // /// <summary>
-        // /// Salamence
-        // /// </summary>
-        // BOOMANDA_MEGA,
-
         /// <summary>
         /// Beldum
         /// </summary>
@@ -2391,11 +2320,6 @@
         /// Metagross
         /// </summary>
         METAGUROSU,
-
-        // /// <summary>
-        // /// Metagross
-        // /// </summary>
-        // METAGUROSU_MEGA,
 
         /// <summary>
         /// Regirock
@@ -2437,30 +2361,15 @@
         /// </summary>
         KAIOOGA,
 
-        // /// <summary>
-        // /// Kyogre
-        // /// </summary>
-        // KAIOOGA_SP,
-
         /// <summary>
         /// Groudon
         /// </summary>
         GURAADON,
 
-        // /// <summary>
-        // /// Groudon
-        // /// </summary>
-        // GURAADON_SP,
-
         /// <summary>
         /// Rayquaza
         /// </summary>
         REKKUUZA,
-
-        // /// <summary>
-        // /// Rayquaza
-        // /// </summary>
-        // REKKUUZA_MEGA,
 
         /// <summary>
         /// Jirachi
@@ -2716,11 +2625,6 @@
         /// Lopunny
         /// </summary>
         MIMIROPPU,
-
-        // /// <summary>
-        // /// Lopunny
-        // /// </summary>
-        // MIMIROPPU_MEGA,
 
         /// <summary>
         /// Glameow
@@ -3241,11 +3145,6 @@
         /// Audino
         /// </summary>
         TABUNNE,
-
-        // /// <summary>
-        // /// Audino
-        // /// </summary>
-        // TABUNNE_MEGA,
 
         /// <summary>
         /// Timburr
@@ -3857,20 +3756,10 @@
         /// </summary>
         RESHIRAMU,
 
-        // /// <summary>
-        // /// Reshiram
-        // /// </summary>
-        // RESHIRAMU_N,
-
         /// <summary>
         /// Zekrom
         /// </summary>
         ZEKUROMU,
-
-        // /// <summary>
-        // /// Zekrom
-        // /// </summary>
-        // ZEKUROMU_N,
 
         /// <summary>
         /// Landorus
@@ -4753,201 +4642,124 @@
         FUUPA_MEGA,
 
         /// <summary>
-        /// Butterfree
-        /// </summary>
-        YOBI_01,
-
-        /// <summary>
-        /// Ninetales
-        /// </summary>
-        YOBI_02,
-
-        /// <summary>
-        /// Rapidash
-        /// </summary>
-        YOBI_03,
-
-        /// <summary>
-        /// Electrode
-        /// </summary>
-        YOBI_04,
-
-        /// <summary>
-        /// Exeggcute
+        /// Spare 05
         /// </summary>
         YOBI_05,
 
         /// <summary>
-        /// Exeggutor
+        /// Spare 06
         /// </summary>
         YOBI_06,
 
         /// <summary>
-        /// Lickilicky
+        /// Spare 07
         /// </summary>
         YOBI_07,
 
         /// <summary>
-        /// Starmie
+        /// Spare 08
         /// </summary>
         YOBI_08,
 
         /// <summary>
-        /// Magikarp
+        /// Spare 09
         /// </summary>
         YOBI_09,
 
         /// <summary>
-        /// Gyarados
+        /// Spare 10
         /// </summary>
         YOBI_10,
 
         /// <summary>
-        /// Gyarados
+        /// Spare 11
         /// </summary>
         YOBI_11,
 
         /// <summary>
-        /// Ditto
+        /// Spare 12
         /// </summary>
         YOBI_12,
 
         /// <summary>
-        /// Espeon
+        /// Spare 13
         /// </summary>
         YOBI_13,
 
         /// <summary>
-        /// Dragonite
+        /// Spare 14
         /// </summary>
         YOBI_14,
 
         /// <summary>
-        /// Hoothoot
+        /// Spare 15
         /// </summary>
         YOBI_15,
 
         /// <summary>
-        /// Noctowl
+        /// Spare 16
         /// </summary>
         YOBI_16,
 
         /// <summary>
-        /// Ampharos
+        /// Murkrow
         /// </summary>
-        YOBI_17,
+        YAMIKARASU_TOWN,
 
         /// <summary>
-        /// Ampharos
+        /// Void Shadows
         /// </summary>
-        YOBI_18,
+        SHADOW_OF_NIHIL,
 
         /// <summary>
-        /// Azumarill
+        /// Dark Matter
         /// </summary>
-        YOBI_19,
+        DARKMATTER,
 
         /// <summary>
-        /// Sudowoodo
+        /// Dark Matter
         /// </summary>
-        YOBI_20,
+        DARKMATTER_01,
 
         /// <summary>
-        /// Aipom
+        /// Dark Matter
         /// </summary>
-        YOBI_21,
+        DARKMATTER_02,
 
         /// <summary>
-        /// Ambipom
+        /// Dark Matter
         /// </summary>
-        YOBI_22,
+        DARKMATTER_03,
 
         /// <summary>
-        /// Wobbuffet
+        /// Dark Matter
         /// </summary>
-        YOBI_23,
+        DARKMATTER_04,
 
         /// <summary>
-        /// Shuckle
+        /// Dark Matter
         /// </summary>
-        YOBI_24,
+        DARKMATTER_05,
 
         /// <summary>
-        /// Corsola
+        /// Dark Matter
         /// </summary>
-        YOBI_25,
+        DARKMATTER_06,
 
         /// <summary>
-        /// Ho-Oh
+        /// Dark Matter
         /// </summary>
-        YOBI_26,
+        DARKMATTER_07,
 
         /// <summary>
-        /// Celebi
+        /// Dark Matter
         /// </summary>
-        YOBI_27,
+        DARKMATTER_08,
 
         /// <summary>
-        /// Spinda
+        /// Dark Matter
         /// </summary>
-        YOBI_28,
-
-        /// <summary>
-        /// Altaria
-        /// </summary>
-        YOBI_29,
-
-        /// <summary>
-        /// Altaria
-        /// </summary>
-        YOBI_30,
-
-        /// <summary>
-        /// Zangoose
-        /// </summary>
-        YOBI_31,
-
-        /// <summary>
-        /// Metagross
-        /// </summary>
-        YOBI_32,
-
-        /// <summary>
-        /// Metagross
-        /// </summary>
-        YOBI_33,
-
-        YOBI_34,
-        YOBI_35,
-        YOBI_36,
-        YOBI_37,
-        YOBI_38,
-        YOBI_39,
-        YOBI_40,
-        YOBI_41,
-        YOBI_42,
-        YOBI_43,
-        YOBI_44,
-        YOBI_45,
-        YOBI_46,
-        YOBI_47,
-        YOBI_48,
-        YOBI_49,
-
-        /// <summary>
-        /// Rayquaza
-        /// </summary>
-        YOBI_50,
-
-        /// <summary>
-        /// Rayquaza
-        /// </summary>
-        REKKUUZA_BOSS,
-
-        /// <summary>
-        /// Kecleon
-        /// </summary>
-        KAKUREON_AZUKI,
+        DARKMATTER_09,
 
         /// <summary>
         /// Kangaskhan
@@ -4968,6 +4780,116 @@
         /// Outlaw Bottom Up HP
         /// </summary>
         WANTED_HP,
+
+        /// <summary>
+        /// Beedrill
+        /// </summary>
+        SUPIAA_MEGA,
+
+        /// <summary>
+        /// Pidgeot
+        /// </summary>
+        PIJOTTO_MEGA,
+
+        /// <summary>
+        /// Slowbro
+        /// </summary>
+        YADORAN_MEGA,
+
+        /// <summary>
+        /// Steelix
+        /// </summary>
+        HAGANEERU_MEGA,
+
+        /// <summary>
+        /// Sceptile
+        /// </summary>
+        JUKAIN_MEGA,
+
+        /// <summary>
+        /// Swampert
+        /// </summary>
+        RAGURAAJI_MEGA,
+
+        /// <summary>
+        /// Sableye
+        /// </summary>
+        YAMIRAMI_MEGA,
+
+        /// <summary>
+        /// Sharpedo
+        /// </summary>
+        SAMEHADAA_MEGA,
+
+        /// <summary>
+        /// Camerupt
+        /// </summary>
+        BAKUUDA_MEGA,
+
+        /// <summary>
+        /// Altaria
+        /// </summary>
+        CHIRUTARISU_MEGA,
+
+        /// <summary>
+        /// Glalie
+        /// </summary>
+        ONIGOORI_MEGA,
+
+        /// <summary>
+        /// Salamence
+        /// </summary>
+        BOOMANDA_MEGA,
+
+        /// <summary>
+        /// Metagross
+        /// </summary>
+        METAGUROSU_MEGA,
+
+        /// <summary>
+        /// Rayquaza
+        /// </summary>
+        REKKUUZA_MEGA,
+
+        /// <summary>
+        /// Lopunny
+        /// </summary>
+        MIMIROPPU_MEGA,
+
+        /// <summary>
+        /// Gallade
+        /// </summary>
+        ERUREIDO_MEGA,
+
+        /// <summary>
+        /// Audino
+        /// </summary>
+        TABUNNE_MEGA,
+
+        /// <summary>
+        /// Kyogre
+        /// </summary>
+        KAIOOGA_SP,
+
+        /// <summary>
+        /// Groudon
+        /// </summary>
+        GURAADON_SP,
+
+        /// <summary>
+        /// Charizard
+        /// </summary>
+        REZARDON_TOWN,
+
+        /// <summary>
+        /// Reshiram
+        /// </summary>
+        RESHIRAMU_N,
+
+        /// <summary>
+        /// Zekrom
+        /// </summary>
+        ZEKUROMU_N,
 
         /// <summary>
         /// Black Kyurem
