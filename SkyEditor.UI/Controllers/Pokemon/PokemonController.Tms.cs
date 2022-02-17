@@ -50,20 +50,17 @@ namespace SkyEditorUI.Controllers
 
         private void OnAddTmClicked(object sender, EventArgs args)
         {
-            if (tmTree!.Selection.GetSelected(out var _, out var iter))
+            var newTm = Enum.GetValues<ItemIndex>().FirstOrDefault(item => item >= ItemIndexConstants.BROKENMACHINE_MIN
+                && item <= ItemIndexConstants.BROKENMACHINE_MAX && !pokemon.LearnableTMs.Contains(item));
+
+            if (newTm == default)
             {
-                var newTm = Enum.GetValues<ItemIndex>().FirstOrDefault(item => item >= ItemIndexConstants.BROKENMACHINE_MIN
-                    && item <= ItemIndexConstants.BROKENMACHINE_MAX && !pokemon.LearnableTMs.Contains(item));
-
-                if (newTm == default)
-                {
-                    UIUtils.ShowInfoDialog(MainWindow.Instance, "Cannot add TM", "All TMs were already added.");
-                    return;
-                }
-
-                tmStore!.AppendValues((int) newTm, AutocompleteHelpers.FormatItem(rom, newTm));
-                pokemon.LearnableTMs.Add(newTm);
+                UIUtils.ShowInfoDialog(MainWindow.Instance, "Cannot add TM", "All TMs were already added.");
+                return;
             }
+
+            tmStore!.AppendValues((int) newTm, AutocompleteHelpers.FormatItem(rom, newTm));
+            pokemon.LearnableTMs.Add(newTm);
         }
 
         private void OnRemoveTmClicked(object sender, EventArgs args)
