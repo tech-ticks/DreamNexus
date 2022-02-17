@@ -34,6 +34,22 @@ namespace SkyEditorUI.Infrastructure
             return response;
         }
 
+        public static ResponseType ShowExceptionDialog(Window? parent, string title, string text)
+        {
+            using var dialog = new MessageDialog(parent, DialogFlags.Modal, MessageType.Error, ButtonsType.Ok, false, text);
+            dialog.AddButton("Copy to clipboard", ResponseType.Help);
+
+            dialog.Title = title;
+            var response = (ResponseType) dialog.Run();
+            if (response == ResponseType.Help)
+            {
+                Clipboard.Get(Gdk.Selection.Clipboard).Text = text;
+            }
+            dialog.Destroy();
+
+            return response;
+        }
+
         public static void OpenInFileBrowser(string path)
         {
             Process.Start(new ProcessStartInfo

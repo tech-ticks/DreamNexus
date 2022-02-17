@@ -63,13 +63,6 @@ jobs:
         cp -r Arc-Dark SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/share/themes/
         chmod +x SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/DreamNexus
 
-    - name: Download hactool
-      run: |
-        # Linux
-        curl https://cdn.discordapp.com/attachments/830753390824783875/894197154665599057/hactool -L -o SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/hactool
-        chmod +x SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/hactool
-        zip -r DreamNexus-linux.zip SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/
-
     - name: Upload Linux build
       uses: actions/upload-artifact@v2
       with:
@@ -136,12 +129,6 @@ jobs:
         cp -r Arc SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/share/themes/
         cp -r Arc-Dark SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/share/themes/
         chmod +x SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/DreamNexus
-
-    - name: Download hactool
-      run: |
-        # Mac
-        curl https://cdn.discordapp.com/attachments/830753390824783875/894197312937668709/hactool -L -o SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/hactool
-        chmod +x SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/hactool
     
     - name: Create Mac .app
       run: | # sudo is required to access some dependency libraries
@@ -226,11 +213,6 @@ jobs:
         mkdir -p gtk
         unzip /c/Users/runneradmin/AppData/Local/Gtk/3.24.24/gtk.zip -d gtk
         cp -r gtk/* SkyEditor.UI/bin/Release/net6.0/win-x64/publish/
-
-    - name: Download hactool
-      run: |
-        curl https://github.com/SciresM/hactool/releases/download/1.4.0/hactool-1.4.0-win.zip -L -o hactool.zip
-        unzip hactool.zip -d SkyEditor.UI/bin/Release/net6.0/win-x64/publish/
 
     - name: Create installer
       uses: joncloud/makensis-action@v3.6

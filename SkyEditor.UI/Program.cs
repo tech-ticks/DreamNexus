@@ -47,7 +47,7 @@ namespace SkyEditorUI
             GLib.ExceptionManager.UnhandledException += (args) => 
             {
                 Console.WriteLine(args.ExceptionObject?.ToString());
-                UIUtils.ShowErrorDialog(win, "An error occured", args.ExceptionObject?.ToString() ?? "Unknown exception");
+                UIUtils.ShowExceptionDialog(win, "An error occured", args.ExceptionObject?.ToString() ?? "Unknown exception");
                 args.ExitApplication = false;
             };
 
