@@ -68,10 +68,12 @@ namespace SkyEditor.RomEditor.Infrastructure.Automation.Modpacks
 
         public async Task Apply(IScriptHost context)
         {
+            Console.WriteLine($"Applying mod '{Metadata.Id}'");
             await WriteAssets(context.Target);
 
             foreach (var script in Scripts)
             {
+                Console.WriteLine($"Executing script '{script.RelativePath}'...");
                 switch (script.Type) 
                 {
                     case ScriptType.CSharp:

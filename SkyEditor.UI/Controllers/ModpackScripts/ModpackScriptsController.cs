@@ -53,7 +53,8 @@ namespace SkyEditorUI.Controllers
 
             if (!lowerFileName.StartsWith("scripts/") || lowerFileName.StartsWith("scripts\\"))
             {
-                fileName = IOPath.Combine("scripts", fileName);
+                // The path must use "/" to be portable across platforms
+                fileName = IOPath.Combine("scripts", fileName).Replace("\\", "/");
             }
 
             var defaultMod = modpack.GetDefaultMod();

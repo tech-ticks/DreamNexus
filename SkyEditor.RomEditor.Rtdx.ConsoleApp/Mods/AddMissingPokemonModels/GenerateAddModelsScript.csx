@@ -17,14 +17,18 @@ using System;
 using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
+using SkyEditor.RomEditor.Domain.Rtdx.Models;
 
-if (Mod == null)
+var pokemon = Rom.GetPokemon();
+var graphics = Rom.GetPokemonGraphics();
+
+PokemonGraphicsModel GetGraphicsModelByCreatureAndForm(CreatureIndex creatureIndex, PokemonFormType formType)
 {
-    throw new InvalidOperationException(""Script must be run in the context of a mod"");
+    int graphicsDatabaseId = pokemon.GetPokemonById(creatureIndex).PokemonGraphicsDatabaseEntryIds[(int) formType];
+    return graphics.GetEntryById(graphicsDatabaseId);
 }
 
-var graphics = Rom.GetPokemonGraphicsDatabase();
-PokemonGraphicsDatabase.PokemonGraphicsDatabaseEntry graphicsEntry;
+PokemonGraphicsModel graphicsEntry;
 ");
 
 var json = new StringBuilder();
@@ -83,7 +87,7 @@ foreach (var rtdxEntry in rtdxStats.Entries)
 
             var modelName = formData.BchName.Replace(".bch", "");
 
-            Console.WriteLine($@"graphicsEntry = Rom.FindGraphicsDatabaseEntryByCreature(CreatureIndex.{pokemonId:f}, PokemonFormType.{formId:f});
+            Console.WriteLine($@"graphicsEntry = GetGraphicsModelByCreatureAndForm(CreatureIndex.{pokemonId:f}, PokemonFormType.{formId:f});
 graphicsEntry.ModelName = ""{modelName}"";
 graphicsEntry.AnimationName = ""{animation}"";");
             Console.WriteLine($@"Rom.WriteFile(""romfs/Data/StreamingAssets/ab/{modelName}.ab"", Mod.ReadResourceArray(""Resources/{modelName}.ab""));");
