@@ -17,7 +17,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
         }
 
-        public static Modpack CreateInDirectory(ModpackMetadata metadata, string directory, IFileSystem fileSystem)
+        public static async Task<Modpack> CreateInDirectory(ModpackMetadata metadata, string directory, IFileSystem fileSystem)
         {
             void ensureDirectoryExists(string directory)
             {
@@ -39,7 +39,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             ensureDirectoryExists(basePath);
             ensureDirectoryExists(Path.Combine(basePath, "Scripts"));
 
-            SaveMetadata(metadata, basePath, fileSystem).Wait();
+            await SaveMetadata(metadata, basePath, fileSystem);
 
             return new RtdxModpack(basePath, fileSystem);
         }

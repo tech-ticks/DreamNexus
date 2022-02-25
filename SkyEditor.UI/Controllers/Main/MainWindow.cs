@@ -258,9 +258,9 @@ namespace SkyEditorUI.Controllers
                             }
                         };
                         modpack?.Dispose();
-                        modpack = RtdxModpack.CreateInDirectory(metadata, folder, PhysicalFileSystem.Instance);
+                        modpack = await RtdxModpack.CreateInDirectory(metadata, folder, PhysicalFileSystem.Instance);
 
-                        await modpack.Apply(rom!).ConfigureAwait(false);
+                        await modpack.Apply(rom!);
                         OnModpackLoaded();
                     }
 
