@@ -51,6 +51,8 @@ jobs:
       run: |
         if [ ! -z $DREAMNEXUS_VERSION_SUFFIX ]; then
           echo "$DREAMNEXUS_VERSION-$DREAMNEXUS_VERSION_SUFFIX" > SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/version.txt
+        else
+          echo "$DREAMNEXUS_VERSION" > SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/version.txt
         fi
 
     - name: Post-process builds, copy themes
@@ -118,6 +120,8 @@ jobs:
       run: |
         if [ ! -z $DREAMNEXUS_VERSION_SUFFIX ]; then
           echo "$DREAMNEXUS_VERSION-$DREAMNEXUS_VERSION_SUFFIX" > SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/version.txt
+        else
+          echo "$DREAMNEXUS_VERSION" > SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/version.txt
         fi
 
     - name: Post-process builds, copy themes
@@ -195,6 +199,8 @@ jobs:
       run: |
         if [ ! -z $DREAMNEXUS_VERSION_SUFFIX ]; then
           echo "$DREAMNEXUS_VERSION-$DREAMNEXUS_VERSION_SUFFIX" > SkyEditor.UI/bin/Release/net6.0/win-x64/publish/version.txt
+        else
+          echo "$DREAMNEXUS_VERSION" > SkyEditor.UI/bin/Release/net6.0/win-x64/publish/version.txt
         fi
 
     - name: Post-process build, copy themes
