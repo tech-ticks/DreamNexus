@@ -52,6 +52,54 @@
       <column type="gint"/>
       <!-- column-name invitationIndex -->
       <column type="gint"/>
+      <!-- column-name short04 -->
+      <column type="gint"/>
+      <!-- column-name short06 -->
+      <column type="gint"/>
+      <!-- column-name short12 -->
+      <column type="gint"/>
+      <!-- column-name byte14 -->
+      <column type="gint"/>
+      <!-- column-name byte15 -->
+      <column type="gint"/>
+      <!-- column-name byte16 -->
+      <column type="gint"/>
+      <!-- column-name byte17 -->
+      <column type="gint"/>
+      <!-- column-name byte18 -->
+      <column type="gint"/>
+      <!-- column-name byte19 -->
+      <column type="gint"/>
+      <!-- column-name byte20 -->
+      <column type="gint"/>
+      <!-- column-name byte21 -->
+      <column type="gint"/>
+      <!-- column-name byte22 -->
+      <column type="gint"/>
+      <!-- column-name byte23 -->
+      <column type="gint"/>
+      <!-- column-name byte24 -->
+      <column type="gint"/>
+      <!-- column-name byte25 -->
+      <column type="gint"/>
+      <!-- column-name byte26 -->
+      <column type="gint"/>
+      <!-- column-name byte28 -->
+      <column type="gint"/>
+      <!-- column-name byte29 -->
+      <column type="gint"/>
+      <!-- column-name byte2A -->
+      <column type="gint"/>
+      <!-- column-name byte2B -->
+      <column type="gint"/>
+      <!-- column-name byte2C -->
+      <column type="gint"/>
+      <!-- column-name byte2D -->
+      <column type="gint"/>
+      <!-- column-name byte2E -->
+      <column type="gint"/>
+      <!-- column-name byte2F -->
+      <column type="gint"/>
     </columns>
   </object>
   <object class="GtkBox" id="main">
@@ -340,6 +388,230 @@
                           </object>
                           <attributes>
                             <attribute name="text">7</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.S04</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnShort04Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">16</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.S06</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnShort06Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">17</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.S12</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnShort12Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">18</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B14</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte14Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">19</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B15</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte15Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">20</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B16</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte16Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">21</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B17</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte17Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">22</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B18</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte18Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">23</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B19</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte19Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">24</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B20</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte20Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">25</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B21</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte21Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">26</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B22</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte22Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">27</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B23</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte23Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">28</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B24</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte24Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">29</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B25</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte25Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">30</attribute>
+                          </attributes>
+                        </child>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkTreeViewColumn">
+                        <property name="title" translatable="yes">Unk.B26</property>
+                        <child>
+                          <object class="GtkCellRendererText">
+                            <property name="editable">True</property>
+                            <signal name="edited" handler="OnByte26Edited" swapped="no"/>
+                          </object>
+                          <attributes>
+                            <attribute name="text">31</attribute>
                           </attributes>
                         </child>
                       </object>
