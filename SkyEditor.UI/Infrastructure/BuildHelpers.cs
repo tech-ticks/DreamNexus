@@ -57,7 +57,7 @@ namespace SkyEditorUI.Infrastructure
       System.Console.WriteLine(patchTargetPath);
 
       var subsdk1Source = Path.Combine(codeInjectionDirectory, "subsdk1");
-      File.Copy(subsdk1Source, Path.Combine(exefsPath, "subsdk1"));
+      File.Copy(subsdk1Source, Path.Combine(exefsPath, "subsdk1"), true);
 
       foreach (var directory in new DirectoryInfo(codeInjectionDirectory).EnumerateDirectories())
       {
