@@ -24,7 +24,7 @@ using NsoElfConverterDotNet;
 namespace SkyEditor.RomEditor.Domain.Rtdx
 {
     public interface IRtdxRom : IModTarget, ISaveable, ISaveableToDirectory
-    {        
+    {
         /// <summary>
         /// Whether custom files that can be used with code injection projects should be preferred over
         /// directly editing the ROM's binary. This setting is experimental but required for some functionality.
@@ -180,11 +180,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         IActorCollection GetActors();
         void SetActors(IActorCollection collection);
-        bool ActorsModified { get; set;}
+        bool ActorsModified { get; set; }
 
         IDungeonMapCollection GetDungeonMaps();
         void SetDungeonMaps(IDungeonMapCollection collection);
         bool DungeonMapsModified { get; set; }
+
+        IEffectSymbolCollection GetEffectSymbolCollection();
+        void SetEffectSymbolCollection(IEffectSymbolCollection collection);
+        bool EffectSymbolsModified { get; set; }
+
+        ISoundEffectSymbolCollection GetSoundEffectSymbolCollection();
+        void SetSoundEffectSymbolCollection(ISoundEffectSymbolCollection collection);
+        bool SoundEffectSymbolsModified { get; set; }
 
         IDungeonMusicCollection GetDungeonMusic();
         void SetDungeonMusic(IDungeonMusicCollection collection);
@@ -1067,7 +1075,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         {
             this.actorCollection = collection;
         }
-        public bool ActorsModified  { get; set; }
+        public bool ActorsModified { get; set; }
 
         private IActorCollection? actorCollection;
 
@@ -1118,8 +1126,40 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         public bool StringsModified { get; set; }
 
+        public IEffectSymbolCollection GetEffectSymbolCollection()
+        {
+            if (effectSymbolCollection == null)
+            {
+                effectSymbolCollection = new EffectSymbolCollection(this);
+            }
+            EffectSymbolsModified = true;
+            return effectSymbolCollection;
+        }
+        public void SetEffectSymbolCollection(IEffectSymbolCollection collection)
+        {
+            this.effectSymbolCollection = collection;
+        }
+        public bool EffectSymbolsModified { get; set; }
+        private IEffectSymbolCollection? effectSymbolCollection;
+
+        public ISoundEffectSymbolCollection GetSoundEffectSymbolCollection()
+        {
+            if (soundEffectSymbolCollection == null)
+            {
+                soundEffectSymbolCollection = new SoundEffectSymbolCollection(this);
+            }
+            SoundEffectSymbolsModified = true;
+            return soundEffectSymbolCollection;
+        }
+        public void SetSoundEffectSymbolCollection(ISoundEffectSymbolCollection collection)
+        {
+            this.soundEffectSymbolCollection = collection;
+        }
+        public bool SoundEffectSymbolsModified { get; set; }
+        private ISoundEffectSymbolCollection? soundEffectSymbolCollection;
+
         public bool Modified => StartersModified || DungeonsModified || ActorsModified
-            || DungeonMapsModified || DungeonMusicModified || StringsModified;
+            || DungeonMapsModified || DungeonMusicModified || StringsModified;
 
         #endregion
 
@@ -1195,14 +1235,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 () => actionCollection?.Flush(this),
                 () => actionStatModifierCollection?.Flush(this),
                 () => dungeonMapCollection?.Flush(this),
-                () => dungeonMusicCollection?.Flush(this)
+                () => dungeonMusicCollection?.Flush(this),
+                () => effectSymbolCollection?.Flush(this),
+                () => soundEffectSymbolCollection?.Flush(this),
             };
-            
+
             for (int i = 0; i < modelActions.Count; i++)
             {
-                float progress = (float) i / modelActions.Count;
+                float progress = (float)i / modelActions.Count;
                 modelActions[i]();
-                onProgress?.Invoke($"Applying models (1/3) - {(int) (progress * 100)}%");
+                onProgress?.Invoke($"Applying models (1/3) - {(int)(progress * 100)}%");
             }
 
             onProgress?.Invoke("Writing data (2/3)");
@@ -1229,7 +1271,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             }
 
             var jobs = new List<Action>();
-         
+
             void addJob(string path, Func<byte[]> action)
             {
                 jobs!.Add(() =>
@@ -1242,7 +1284,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
             {
                 jobs!.Add(action);
             }
-            
+
             if (natureDiagnosis != null)
             {
                 addJob(GetNatureDiagnosisPath(directory), () => Encoding.UTF8.GetBytes(

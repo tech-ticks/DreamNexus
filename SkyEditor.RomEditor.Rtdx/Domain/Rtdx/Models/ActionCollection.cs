@@ -27,11 +27,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
         private IRtdxRom rom;
         private Dictionary<int, ActDataInfo.Entry> actDataInfoEntries;
+        private Dictionary<int, ActEffectDataInfo.Entry> actEffectDataInfoEntries;
 
         public ActionCollection(IRtdxRom rom)
         {
             this.rom = rom;
             this.actDataInfoEntries = rom.GetActDataInfo().Entries
+                .Select((entry, i) => new { Entry = entry, Index = i })
+                .ToDictionary(pair => pair.Index, pair => pair.Entry);
+            this.actEffectDataInfoEntries = rom.GetActEffectDataInfo().Entries
                 .Select((entry, i) => new { Entry = entry, Index = i })
                 .ToDictionary(pair => pair.Index, pair => pair.Entry);
 
@@ -69,19 +73,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public ActionModel LoadAction(int index)
         {
             var data = actDataInfoEntries[index];
+            var graphicsData = actEffectDataInfoEntries[index];
 
             var effectModels = new EffectModel[4];
             for (int i = 0; i < data.Effects.Length; i++)
             {
                 var effect = data.Effects[i];
-                var model = new EffectModel();
-                model.Type = effect.Type;
+                var effectModel = new EffectModel();
+                effectModel.Type = effect.Type;
 
                 for (int j = 0; j < effect.Params.Length && j < effect.ParamTypes.Length; j++)
                 {
-                    if (model.Type != EffectType.None)
+                    if (effectModel.Type != EffectType.None)
                     {
-                        model.Parameters.Add(new ParameterModel
+                        effectModel.Parameters.Add(new ParameterModel
                         {
                             Type = effect.ParamTypes[j],
                             Value = effect.Params[j],
@@ -89,10 +94,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     }
                 }
 
-                effectModels[i] = model;
+                effectModels[i] = effectModel;
             }
 
-            return new ActionModel
+            var model = new ActionModel
             {
                 Id = index,
                 Flags = data.Flags,
@@ -138,6 +143,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 ActDataInfoByte9E = data.Byte9E,
                 ActDataInfoByte9F = data.Byte9F,
             };
+            ApplyGraphicsData(model, graphicsData);
+            return model;
         }
 
         public ActionModel GetActionById(int id)
@@ -153,6 +160,15 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public void SetAction(int id, ActionModel model)
         {
             LoadedActions[id] = model;
+            if (model.AllyInvokeGfxSymbol == 0 && model.EnemyInvokeGfxSymbol == 0 && model.UserGfxSymbol == 0
+                && model.ImpactGfxSymbol == 0 && model.ActEffectDataInfoShort34 == 0
+                && actEffectDataInfoEntries.ContainsKey(id))
+            {
+                // If these are zero, the modpack was probably opened with an earlier DN version.
+                // Load from ROM in this case.
+                // TODO: Remove once most people have migrated to 0.2.0
+                ApplyGraphicsData(model, actEffectDataInfoEntries[id]);
+            }
         }
 
         public string GetUsedByString(int actionId)
@@ -181,6 +197,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             foreach (var pair in LoadedActions)
             {
                 var data = actDataInfoEntries[pair.Key];
+                var effectData = actEffectDataInfoEntries[pair.Key];
                 var model = pair.Value;
 
                 data.Flags = model.Flags;
@@ -249,7 +266,68 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 data.Byte9D = model.ActDataInfoByte9D;
                 data.Byte9E = model.ActDataInfoByte9E;
                 data.Byte9F = model.ActDataInfoByte9F;
+
+                effectData.Byte00 = model.ActEffectDataInfoByte00;
+                effectData.Byte01 = model.ActEffectDataInfoByte01;
+                effectData.Short02 = model.ActEffectDataInfoShort02;
+                effectData.Float04 = model.ActEffectDataInfoFloat04;
+                effectData.Float08 = model.ActEffectDataInfoFloat08;
+                effectData.Int0C = model.ActEffectDataInfoInt0C;
+                effectData.Short10 = model.ActEffectDataInfoShort10;
+                effectData.Short12 = model.ActEffectDataInfoShort12;
+                effectData.Short14 = model.ActEffectDataInfoShort14;
+                effectData.Short16 = model.ActEffectDataInfoShort16;
+                effectData.AllyInvokeGfxSymbol = model.AllyInvokeGfxSymbol;
+                effectData.EnemyInvokeGfxSymbol = model.EnemyInvokeGfxSymbol;
+                effectData.UserGfxSymbol = model.UserGfxSymbol;
+                effectData.Short1E = model.ActEffectDataInfoShort1E;
+                effectData.AreaGfxSymbol = model.AreaGfxSymbol;
+                effectData.ImpactGfxSymbol = model.ImpactGfxSymbol;
+                effectData.ProjectileGfxSymbol = model.ProjectileGfxSymbol;
+                effectData.ProjectileImpactGfxSymbol = model.ProjectileImpactGfxSymbol;
+                effectData.AllyInvokeSfxSymbol = model.AllyInvokeSfxSymbol;
+                effectData.EnemyInvokeSfxSymbol = model.EnemyInvokeSfxSymbol;
+                effectData.InitiateSfxSymbol = model.InitiateSfxSymbol;
+                effectData.ImpactSfxSymbol = model.ImpactSfxSymbol;
+                effectData.FireProjectileSfxSymbol = model.FireProjectileSfxSymbol;
+                effectData.Short32 = model.ActEffectDataInfoShort32;
+                effectData.Short34 = model.ActEffectDataInfoShort34;
+                effectData.Short36 = model.ActEffectDataInfoShort36;
+                effectData.Short38 = model.ActEffectDataInfoShort38;
+                effectData.Int3C = model.ActEffectDataInfoInt3C;
             }
+        }
+
+        private void ApplyGraphicsData(ActionModel model, ActEffectDataInfo.Entry romEntry)
+        {
+            model.ActEffectDataInfoByte00 = romEntry.Byte00;
+            model.ActEffectDataInfoByte01 = romEntry.Byte01;
+            model.ActEffectDataInfoShort02 = romEntry.Short02;
+            model.ActEffectDataInfoFloat04 = romEntry.Float04;
+            model.ActEffectDataInfoFloat08 = romEntry.Float08;
+            model.ActEffectDataInfoInt0C = romEntry.Int0C;
+            model.ActEffectDataInfoShort10 = romEntry.Short10;
+            model.ActEffectDataInfoShort12 = romEntry.Short12;
+            model.ActEffectDataInfoShort14 = romEntry.Short14;
+            model.ActEffectDataInfoShort16 = romEntry.Short16;
+            model.AllyInvokeGfxSymbol = romEntry.AllyInvokeGfxSymbol;
+            model.EnemyInvokeGfxSymbol = romEntry.EnemyInvokeGfxSymbol;
+            model.UserGfxSymbol = romEntry.UserGfxSymbol;
+            model.ActEffectDataInfoShort1E = romEntry.Short1E;
+            model.AreaGfxSymbol = romEntry.AreaGfxSymbol;
+            model.ImpactGfxSymbol = romEntry.ImpactGfxSymbol;
+            model.ProjectileGfxSymbol = romEntry.ProjectileGfxSymbol;
+            model.ProjectileImpactGfxSymbol = romEntry.ProjectileImpactGfxSymbol;
+            model.AllyInvokeSfxSymbol = romEntry.AllyInvokeSfxSymbol;
+            model.EnemyInvokeSfxSymbol = romEntry.EnemyInvokeSfxSymbol;
+            model.InitiateSfxSymbol = romEntry.InitiateSfxSymbol;
+            model.ImpactSfxSymbol = romEntry.ImpactSfxSymbol;
+            model.FireProjectileSfxSymbol = romEntry.FireProjectileSfxSymbol;
+            model.ActEffectDataInfoShort32 = romEntry.Short32;
+            model.ActEffectDataInfoShort34 = romEntry.Short34;
+            model.ActEffectDataInfoShort36 = romEntry.Short36;
+            model.ActEffectDataInfoShort38 = romEntry.Short38;
+            model.ActEffectDataInfoInt3C = romEntry.Int3C;
         }
     }    
 }

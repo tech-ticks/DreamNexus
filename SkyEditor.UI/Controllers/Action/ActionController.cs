@@ -29,11 +29,11 @@ namespace SkyEditorUI.Controllers
         {
         }
 
-        private ActionController(Builder builder, IRtdxRom rom, Modpack modpack, ControllerContext context) 
+        private ActionController(Builder builder, IRtdxRom rom, Modpack modpack, ControllerContext context)
             : base(builder.GetRawOwnedObject("main"))
         {
             builder.Autoconnect(this);
-            
+
             var actionId = (context as ActionControllerContext)!.Index;
 
             this.action = rom.GetActions().GetActionById(actionId)
@@ -50,32 +50,33 @@ namespace SkyEditorUI.Controllers
 
             for (PokemonType i = 0; i <= PokemonType.NASHI; i++)
             {
-                typesStore!.AppendValues((int) i, englishStrings.GetPokemonTypeName(i) ?? $"({i.ToString()})");
+                typesStore!.AppendValues((int)i, englishStrings.GetPokemonTypeName(i) ?? $"({i.ToString()})");
             }
 
-            cbKind!.Active = (int) action.Kind;
-            cbCategory!.Active = (int) action.MoveCategory;
-            cbType!.Active = (int) action.MoveType;
+            cbKind!.Active = (int)action.Kind;
+            cbCategory!.Active = (int)action.MoveCategory;
+            cbType!.Active = (int)action.MoveType;
 
             LoadGeneralTab();
             LoadEffectsTab();
             LoadFlagsTab();
             LoadTextTab();
+            LoadVisualsTab();
         }
 
         private void OnKindChanged(object sender, EventArgs args)
         {
-            action.Kind = (ActionKind) cbKind!.Active;
+            action.Kind = (ActionKind)cbKind!.Active;
         }
 
         private void OnCategoryChanged(object sender, EventArgs args)
         {
-            action.MoveCategory = (MoveCategory) cbCategory!.Active;
+            action.MoveCategory = (MoveCategory)cbCategory!.Active;
         }
 
         private void OnTypeChanged(object sender, EventArgs args)
         {
-            action.MoveType = (PokemonType) cbType!.Active;
+            action.MoveType = (PokemonType)cbType!.Active;
         }
     }
 }

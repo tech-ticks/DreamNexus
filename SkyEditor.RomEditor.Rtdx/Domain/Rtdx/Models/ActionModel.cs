@@ -79,5 +79,35 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public byte ActDataInfoByte9D { get; set; }
         public byte ActDataInfoByte9E { get; set; }
         public byte ActDataInfoByte9F { get; set; }
+
+        // From act_effect_data_info.bin
+        public byte ActEffectDataInfoByte00 { get; set; }
+        public byte ActEffectDataInfoByte01 { get; set; }
+        public ushort ActEffectDataInfoShort02 { get; set; }
+        public float ActEffectDataInfoFloat04 { get; set; }
+        public float ActEffectDataInfoFloat08 { get; set; }
+        public int ActEffectDataInfoInt0C { get; set; }
+        public ushort ActEffectDataInfoShort10 { get; set; }
+        public ushort ActEffectDataInfoShort12 { get; set; }
+        public ushort ActEffectDataInfoShort14 { get; set; }
+        public ushort ActEffectDataInfoShort16 { get; set; }
+        public ushort AllyInvokeGfxSymbol { get; set; }
+        public ushort EnemyInvokeGfxSymbol { get; set; }
+        public ushort UserGfxSymbol { get; set; }
+        public ushort ActEffectDataInfoShort1E { get; set; }
+        public ushort AreaGfxSymbol { get; set; }
+        public ushort ImpactGfxSymbol { get; set; }
+        public ushort ProjectileGfxSymbol { get; set; }
+        public ushort ProjectileImpactGfxSymbol { get; set; }
+        public ushort AllyInvokeSfxSymbol { get; set; }
+        public ushort EnemyInvokeSfxSymbol { get; set; }
+        public ushort InitiateSfxSymbol { get; set; }
+        public ushort ImpactSfxSymbol { get; set; }
+        public ushort FireProjectileSfxSymbol { get; set; }
+        public ushort ActEffectDataInfoShort32 { get; set; }
+        public ushort ActEffectDataInfoShort34 { get; set; }
+        public ushort ActEffectDataInfoShort36 { get; set; }
+        public ushort ActEffectDataInfoShort38 { get; set; }
+        public int ActEffectDataInfoInt3C { get; set; }
     }
 }

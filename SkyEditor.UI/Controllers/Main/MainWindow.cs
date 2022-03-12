@@ -31,7 +31,7 @@ namespace SkyEditorUI.Controllers
         [UI] private Label? openFileDialogLabel;
         [UI] private Widget? updateInfo;
         [UI] private TreeStore? itemStore;
-        [UI] private Stack? editorStack;
+        [UI] private Stack? editorStack;
 
         [UI] private Button? saveButton;
         [UI] private Button? buildButton;
@@ -103,6 +103,23 @@ namespace SkyEditorUI.Controllers
                     + "want to fix them manually, otherwise your settings will be overwritten once they are saved).\n"
                     + "Exception message:\n\n" + e.ToString());
             }
+
+            // If a modpack was passed via a command line argument, open it.
+            var modpackFromCommandLine = Environment.GetCommandLineArgs().FirstOrDefault((env) =>
+            {
+                try
+                {
+                    return File.GetAttributes(env).HasFlag(FileAttributes.Directory);
+                }
+                catch
+                {
+                    return false;
+                }
+            });
+            if (modpackFromCommandLine != null)
+            {
+                LoadModpack(modpackFromCommandLine);
+            }
         }
 
         private void OnWindowStateEvent(object sender, WindowStateEventArgs args)
@@ -134,14 +151,14 @@ namespace SkyEditorUI.Controllers
                     + "If you don't save, your changes will be lost.");
 
                 dialog.Title = "Unsaved changes";
-                
+
                 var dontSaveButton = dialog.AddButton("Don't Save", ResponseType.No);
                 dontSaveButton.StyleContext.AddClass("destructive-action");
 
                 dialog.AddButton("Cancel", ResponseType.Cancel);
                 dialog.AddButton("Save", ResponseType.Yes);
 
-                var response = (ResponseType) dialog.Run();
+                var response = (ResponseType)dialog.Run();
                 dialog.Destroy();
 
                 if (response == ResponseType.Yes)
@@ -223,7 +240,7 @@ namespace SkyEditorUI.Controllers
             LoadRtdxRom(async () =>
             {
                 var createWizard = new CreateModpackWizard();
-                var response = (ResponseType) createWizard.Run();
+                var response = (ResponseType)createWizard.Run();
                 var modpackId = createWizard.ModpackId;
                 var modpackName = createWizard.ModpackName;
                 var modpackAuthor = createWizard.ModpackAuthor;
@@ -232,7 +249,7 @@ namespace SkyEditorUI.Controllers
                 if (response == ResponseType.Accept)
                 {
                     var dialog = new FileChooserNative("Select the modpack directory", this, FileChooserAction.Save | FileChooserAction.CreateFolder, null, null);
-                    response = (ResponseType) dialog.Run();
+                    response = (ResponseType)dialog.Run();
 
                     if (response == ResponseType.Accept)
                     {
@@ -272,7 +289,7 @@ namespace SkyEditorUI.Controllers
         private void OnOpenModpackClicked(object sender, EventArgs args)
         {
             var dialog = new FileChooserNative("Select Modpack", this, FileChooserAction.Open | FileChooserAction.SelectFolder, null, null);
-            var response = (ResponseType) dialog.Run();
+            var response = (ResponseType)dialog.Run();
 
             if (response == ResponseType.Accept)
             {
@@ -289,7 +306,7 @@ namespace SkyEditorUI.Controllers
                 return;
             }
 
-            var selection = (TreeSelection) sender;
+            var selection = (TreeSelection)sender;
             if (selection.GetSelected(out ITreeModel model, out TreeIter iter))
             {
                 var path = model.GetValue(iter, 1) as string;
@@ -372,7 +389,7 @@ namespace SkyEditorUI.Controllers
                             "This mod is read-only. Please select another directory to create a new modpack based on this mod.");
 
                 var dialog = new FileChooserNative("Save modpack", this, FileChooserAction.Save | FileChooserAction.SelectFolder, null, null);
-                var response = (ResponseType) dialog.Run();
+                var response = (ResponseType)dialog.Run();
                 string path = dialog.Filename;
                 dialog.Dispose();
 
@@ -427,13 +444,13 @@ namespace SkyEditorUI.Controllers
 
         private async Task SaveModpack(string? directory = null)
         {
-            if (rom == null || modpack == null)
+            if (rom == null || modpack == null)
             {
                 throw new InvalidOperationException("ROM or modpack is not loaded");
             }
 
             var saveModpackTask = directory != null ? modpack.SaveTo(rom, directory) : modpack.Save(rom);
-            
+
             Console.WriteLine($"Saving models and source files.");
             await Task.WhenAll(saveModpackTask, SaveSourceFiles());
         }
@@ -451,7 +468,7 @@ namespace SkyEditorUI.Controllers
             CheckRomAndModpackLoaded();
 
             var dialog = new FileChooserNative("Select a directory to save ROM files to...", this, FileChooserAction.Save | FileChooserAction.SelectFolder, null, null);
-            var response = (ResponseType) dialog.Run();
+            var response = (ResponseType)dialog.Run();
 
             if (modpack?.Metadata.Id == null)
             {
@@ -496,7 +513,7 @@ namespace SkyEditorUI.Controllers
 
                     await SaveSourceFiles();
 
-                    Action<string> progressCallback = progress => 
+                    Action<string> progressCallback = progress =>
                     {
                         GLib.Idle.Add(() =>
                         {
@@ -558,7 +575,7 @@ namespace SkyEditorUI.Controllers
                     return false;
                 });
             }).Start();
-            
+
             ShowLoadingDialog("Building modpack...");
         }
 
@@ -615,7 +632,7 @@ namespace SkyEditorUI.Controllers
                         return false;
                     });
                 }).Start();
-                
+
                 ShowLoadingDialog($"Deploying to {settings.SwitchIp}...");
             });
         }
@@ -628,7 +645,7 @@ namespace SkyEditorUI.Controllers
         private void OpenSettings()
         {
             var settings = new SettingsDialog();
-            var response = (ResponseType) settings.Run();
+            var response = (ResponseType)settings.Run();
             settings.Destroy();
         }
 
@@ -677,11 +694,11 @@ namespace SkyEditorUI.Controllers
                     var controllerType = model.GetValue(iter, 2) as Type;
                     if (controllerType != null)
                     {
-                        var context = (ControllerContext) model.GetValue(iter, 3);
+                        var context = (ControllerContext)model.GetValue(iter, 3);
 
                         LoadView(controllerType, context);
                         UpdateBreadcrumbs(iter, model);
-                
+
                         var path = model.GetPath(iter);
                         mainItemList.ExpandToPath(path); // Expand the node
                         mainItemList.Selection.SelectPath(path); // Expand the node
@@ -710,27 +727,27 @@ namespace SkyEditorUI.Controllers
                 Exception? exception = null;
                 try
                 {
-                    if (type.GetConstructor(new [] { typeof(IRtdxRom), typeof(Modpack), typeof(ControllerContext) }) != null)
+                    if (type.GetConstructor(new[] { typeof(IRtdxRom), typeof(Modpack), typeof(ControllerContext) }) != null)
                     {
                         // Constructor with ROM, modpack and context
                         currentController = Activator.CreateInstance(type, rom, modpack, context) as Widget;
                     }
-                    else if (type.GetConstructor(new [] { typeof(IRtdxRom), typeof(Modpack) }) != null)
+                    else if (type.GetConstructor(new[] { typeof(IRtdxRom), typeof(Modpack) }) != null)
                     {
                         // Constructor with ROM and modpack
                         currentController = Activator.CreateInstance(type, rom, modpack) as Widget;
                     }
-                    else if (type.GetConstructor(new [] { typeof(IRtdxRom), typeof(ControllerContext) }) != null)
+                    else if (type.GetConstructor(new[] { typeof(IRtdxRom), typeof(ControllerContext) }) != null)
                     {
                         // Constructor with ROM and context
                         currentController = Activator.CreateInstance(type, rom, context) as Widget;
                     }
-                    else if (type.GetConstructor(new [] { typeof(IRtdxRom)} ) != null)
+                    else if (type.GetConstructor(new[] { typeof(IRtdxRom) }) != null)
                     {
                         // Constructor with only the ROM
                         currentController = Activator.CreateInstance(type, rom) as Widget;
                     }
-                    else if (type.GetConstructor(new [] { typeof(ControllerContext)} ) != null)
+                    else if (type.GetConstructor(new[] { typeof(ControllerContext) }) != null)
                     {
                         // Constructor with only the context
                         currentController = Activator.CreateInstance(type, context) as Widget;
@@ -789,23 +806,23 @@ namespace SkyEditorUI.Controllers
 
             if (string.IsNullOrWhiteSpace(romFolder))
             {
-                UIUtils.ShowErrorDialog(this, "ROM not configured", 
+                UIUtils.ShowErrorDialog(this, "ROM not configured",
                     "Please specify a path to an unpacked ROM in the Settings menu.");
 
                 OpenSettings();
                 return;
             }
-            
+
             // Sanity checks if the path looks like an unpacked Rescue Team DX ROM
             var exefsFolder = IOPath.Combine(romFolder, "exefs");
             var romfsFolder = IOPath.Combine(romFolder, "romfs");
             var metadataFolder = IOPath.Combine(romfsFolder, "Data", "Managed", "Metadata");
             var dungeonFolder = IOPath.Combine(romfsFolder, "Data", "StreamingAssets", "native_data", "dungeon");
-            if (!Directory.Exists(exefsFolder) || !Directory.Exists(romfsFolder)|| !Directory.Exists(metadataFolder) ||
+            if (!Directory.Exists(exefsFolder) || !Directory.Exists(romfsFolder) || !Directory.Exists(metadataFolder) ||
                 !Directory.Exists(dungeonFolder))
             {
-                 UIUtils.ShowErrorDialog(this, "Invalid ROM directory", "Can't load Rescue Team DX files. Please make " 
-                    + "sure that the ROM path contains an unpacked Rescue Team DX ROM with a exefs and romfs directory.");
+                UIUtils.ShowErrorDialog(this, "Invalid ROM directory", "Can't load Rescue Team DX files. Please make "
+                   + "sure that the ROM path contains an unpacked Rescue Team DX ROM with a exefs and romfs directory.");
 
                 OpenSettings();
                 return;
@@ -854,7 +871,7 @@ namespace SkyEditorUI.Controllers
             Console.WriteLine("Loaded modpack.");
 
             AddModpackToRecents();
-            
+
             LoadView(typeof(ModpackSettingsController), ControllerContext.Null);
             InitMainList();
 
@@ -885,7 +902,7 @@ namespace SkyEditorUI.Controllers
             AddMainListItem<FixedItemsController>(root, "Fixed Items", "skytemple-view-list-symbolic");
 
             var stringsIter = AddMainListItem(root, "Strings", "skytemple-e-string-symbolic");
-            for (LanguageType i = (LanguageType) 0; i < LanguageType.MAX; i++)
+            for (LanguageType i = (LanguageType)0; i < LanguageType.MAX; i++)
             {
                 AddMainListItem<StringsController>(stringsIter, i.GetFriendlyName(), "skytemple-e-string-symbolic",
                     new StringsControllerContext(i));
@@ -894,7 +911,7 @@ namespace SkyEditorUI.Controllers
             var pokemonIter = AddMainListItem(root, "Pokémon", "skytemple-e-monster-base-symbolic");
             for (CreatureIndex i = CreatureIndex.NONE; i < CreatureIndex.END; i++)
             {
-                string formattedId = ((int) i).ToString("0000");
+                string formattedId = ((int)i).ToString("0000");
                 string? name = strings.GetPokemonName(i);
                 if (string.IsNullOrEmpty(name))
                 {
@@ -916,7 +933,7 @@ namespace SkyEditorUI.Controllers
                 }
 
                 var index = Enum.Parse<ItemIndex>(enumName);
-                string formattedId = ((int) index).ToString("0000");
+                string formattedId = ((int)index).ToString("0000");
                 string? name = strings.GetItemNameByInternalName(enumName);
                 if (string.IsNullOrEmpty(name))
                 {
@@ -932,7 +949,7 @@ namespace SkyEditorUI.Controllers
 
             for (WazaIndex i = WazaIndex.NONE; i < WazaIndex.END; i++)
             {
-                string formattedId = ((int) i).ToString("0000");
+                string formattedId = ((int)i).ToString("0000");
                 string? name = strings.GetMoveName(i);
                 if (string.IsNullOrEmpty(name))
                 {
@@ -948,7 +965,7 @@ namespace SkyEditorUI.Controllers
             var actions = rom.GetActions();
             for (int i = 0; i < actions.ActionCount; i++)
             {
-                string formattedId = ((int) i).ToString("0000");
+                string formattedId = ((int)i).ToString("0000");
                 string? name = actions.GetUsedByString(i);
                 if (string.IsNullOrEmpty(name))
                 {
@@ -996,13 +1013,13 @@ namespace SkyEditorUI.Controllers
 
         private void AddDefaultModScripts(TreeIter parent)
         {
-           var defaultMod = modpack!.GetDefaultMod();
-           if (defaultMod == null)
-           {
-               return;
-           }
+            var defaultMod = modpack!.GetDefaultMod();
+            if (defaultMod == null)
+            {
+                return;
+            }
 
-           AddModScripts(parent, defaultMod);
+            AddModScripts(parent, defaultMod);
         }
 
         private void AddModScripts(TreeIter parent, Mod mod)
@@ -1027,25 +1044,25 @@ namespace SkyEditorUI.Controllers
 
             var strings = rom.GetStrings().English;
             var dungeons = rom.GetDungeons();
-            for (int i = 1; i <= (int) DungeonIndex.D100; i++)
+            for (int i = 1; i <= (int)DungeonIndex.D100; i++)
             {
-                var dungeon = dungeons.GetDungeonById((DungeonIndex) i, false);
+                var dungeon = dungeons.GetDungeonById((DungeonIndex)i, false);
                 var dungeonIter = AddMainListItem<DungeonController>(parent, $"{dungeon!.Id}: {strings.GetDungeonName(dungeon!.Id)}",
-                    "skytemple-e-dungeon-symbolic", new DungeonControllerContext((DungeonIndex) i));
+                    "skytemple-e-dungeon-symbolic", new DungeonControllerContext((DungeonIndex)i));
 
                 foreach (var floor in dungeon.Floors)
                 {
                     bool unused = floor.Index <= 0 || floor.Index > dungeon.AccessibleFloorCount;
-                    AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor {floor.Index}{(unused ? " (unused)" : "")}", 
+                    AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor {floor.Index}{(unused ? " (unused)" : "")}",
                         "skytemple-e-dungeon-floor-symbolic",
-                        new DungeonFloorControllerContext((DungeonIndex) i, floor.Index));
+                        new DungeonFloorControllerContext((DungeonIndex)i, floor.Index));
                 }
             }
         }
 
         private void AddGameScripts(TreeIter parent)
         {
-            if (rom == null || modpack == null)
+            if (rom == null || modpack == null)
             {
                 return;
             }
@@ -1086,7 +1103,7 @@ namespace SkyEditorUI.Controllers
 
         private void CheckRomAndModpackLoaded()
         {
-            if (modpack == null || rom == null)
+            if (modpack == null || rom == null)
             {
                 throw new Exception("The modpack or rom is not loaded");
             }
@@ -1131,9 +1148,9 @@ namespace SkyEditorUI.Controllers
                 currentBreadcrumbs.Add(model.GetValue(current, 1) as string ?? "");
                 hasParent = model.IterParent(out current, current);
             }
-            
+
             var breadcrumbs = string.Join(" > ", currentBreadcrumbs.Reverse<string>());
-            ((HeaderBar) Titlebar).Subtitle = breadcrumbs;
+            ((HeaderBar)Titlebar).Subtitle = breadcrumbs;
         }
 
         public TreeIter AddMainListItem<T>(string name, string icon, ControllerContext? context = null) where T : Widget

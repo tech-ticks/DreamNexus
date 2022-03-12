@@ -46,7 +46,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         protected async override Task ApplyModels(IModTarget target)
         {
-            var rom = (IRtdxRom) target;
+            var rom = (IRtdxRom)target;
             foreach (var mod in Mods ?? Enumerable.Empty<Mod>())
             {
                 // TODO: create derived RtdxMod class and move this stuff there
@@ -108,9 +108,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 }
 
                 var dungeons = rom.GetDungeons();
-                for (int i = 1; i < (int) DungeonIndex.END; i++)
+                for (int i = 1; i < (int)DungeonIndex.END; i++)
                 {
-                    await LoadDungeon(mod, rom, (DungeonIndex) i, dungeons);
+                    await LoadDungeon(mod, rom, (DungeonIndex)i, dungeons);
                 }
 
                 var items = rom.GetItems();
@@ -166,6 +166,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 {
                     rom.SetDungeonMusic(await mod.LoadModel<DungeonMusicCollection>("dungeon_music.yaml"));
                 }
+                if (mod.ModelExists("effect_symbols.yaml"))
+                {
+                    rom.SetEffectSymbolCollection(await mod.LoadModel<EffectSymbolCollection>("effect_symbols.yaml"));
+                }
+                if (mod.ModelExists("sound_effect_symbols.yaml"))
+                {
+                    rom.SetSoundEffectSymbolCollection(await mod.LoadModel<SoundEffectSymbolCollection>("sound_effect_symbols.yaml"));
+                }
 
                 await LoadStrings(mod, rom);
             }
@@ -207,14 +215,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         private async Task LoadStrings(Mod mod, IRtdxRom rom)
         {
-            for (LanguageType i = (LanguageType) 0; i < LanguageType.MAX; i++)
+            for (LanguageType i = (LanguageType)0; i < LanguageType.MAX; i++)
             {
                 string languagePath = Path.Combine("strings", i.ToString().ToLower());
                 if (!mod.ModelDirectoryExists(languagePath))
                 {
                     continue;
                 }
-                
+
                 var strings = rom.GetStrings().GetStringsForLanguage(i);
 
                 string commonPath = Path.Combine(languagePath, "common.yaml");
@@ -222,13 +230,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 {
                     strings.CommonStringsOverride = await mod.LoadModel<Dictionary<TextIDHash, string>>(commonPath);
                 }
-            
+
                 string dungeonPath = Path.Combine(languagePath, "dungeon.yaml");
                 if (mod.ModelExists(dungeonPath))
                 {
                     strings.DungeonStringsOverride = await mod.LoadModel<Dictionary<int, string>>(dungeonPath);
                 }
-            
+
                 string scriptPath = Path.Combine(languagePath, "script.yaml");
                 if (mod.ModelExists(scriptPath))
                 {
@@ -239,7 +247,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         protected async override Task SaveModels(IModTarget target)
         {
-            var rom = (IRtdxRom) target;
+            var rom = (IRtdxRom)target;
 
             // Models can only be automatically applied to the first mod
             var mod = Mods?.FirstOrDefault();
@@ -377,18 +385,28 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     tasks.Add(mod.SaveModel(rom.GetDungeonMusic(), "dungeon_music.yaml"));
                 }
 
+                if (rom.EffectSymbolsModified)
+                {
+                    tasks.Add(mod.SaveModel(rom.GetEffectSymbolCollection(), "effect_symbols.yaml"));
+                }
+
+                if (rom.SoundEffectSymbolsModified)
+                {
+                    tasks.Add(mod.SaveModel(rom.GetSoundEffectSymbolCollection(), "sound_effect_symbols.yaml"));
+                }
+
                 if (rom.StringsModified)
                 {
                     foreach (var strings in rom.GetStrings().LoadedLanguages)
                     {
                         string languagePath = Path.Combine("strings", strings.Key.ToString().ToLower());
-                        
+
                         string commonPath = Path.Combine(languagePath, "common.yaml");
                         tasks.Add(mod.SaveModel(strings.Value.CommonStringsOverride, commonPath));
-                    
+
                         string dungeonPath = Path.Combine(languagePath, "dungeon.yaml");
                         tasks.Add(mod.SaveModel(strings.Value.DungeonStringsOverride, dungeonPath));
-                    
+
                         string scriptPath = Path.Combine(languagePath, "script.yaml");
                         tasks.Add(mod.SaveModel(strings.Value.ScriptStringsOverride, scriptPath));
                     }
