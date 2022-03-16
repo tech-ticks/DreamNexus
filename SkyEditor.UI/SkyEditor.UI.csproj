@@ -47,7 +47,7 @@
     <PackageReference Include="GtkSourceSharp" Version="3.24.24.*" />
     <PackageReference Include="LibHac" Version="0.16.0" />
     <PackageReference Include="Microsoft.Win32.Registry" Version="5.0.0" />
-    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.4" />
+    <PackageReference Include="SixLabors.ImageSharp" Version="2.1.0" />
     <PackageReference Include="SkyEditor.IO" Version="5.1.17" />
   </ItemGroup>
 
