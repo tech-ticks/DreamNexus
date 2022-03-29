@@ -146,8 +146,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 sir0.WriteInt16(sir0.Length, (short)Evolution);
                 sir0.WriteInt16(sir0.Length, (short)EvolutionItem);
                 sir0.WriteInt16(sir0.Length, ItemsRequired);
-                sir0.Write(sir0.Length, MinimumLevel);
                 sir0.WritePadding(sir0.Length, 0x6);
+                sir0.Write(sir0.Length, MinimumLevel);
                 sir0.Write(sir0.Length, (byte)RequirementFlags);
                 sir0.WritePadding(sir0.Length, 0x2);
             }
