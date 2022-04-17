@@ -95,9 +95,10 @@ foreach (var dungeon in dungeons)
         + $"{data.NameID,3}    {data.Short0A,3}      {data.DungeonBalanceIndex,3}       {data.Byte13,3}    {data.Byte17,3}    {data.Byte18,3}    {data.Byte19,3}");
 
     // Print floor infos
-    Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"Weather",-9} {"S02",5}  {"Turns",5}  {"Money",12}  {"MapDat",6}  {"NameID",7}  {"B2D",3}  {"B2E",3}  "
+    Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"Weather",-9} {"S02",5}  {"Turns",5}  {"Money",12}  {"Items",8}  {"MapDat",6}  {"NameID",7}  {"B2D",3}  {"B2E",3}  "
             + $"{"B2F",3}  {"B30",5}  {"B32",5}  {"B34",3}  {"B35",3}  {"Enemies",9}  {"Traps",9}  {"B46",3}  {"B47",3}  {"B49",3}  {"B4A",3}  {"B4F",3}  {"B50",3}  {"B51",3}  "
-            + $"{"ItemSet",7}  {"BuriedSet",9}  {"KecShop%",8}  {"MonHouse%",9}  {"MysHouse%",9}  {"MysHsSize",9}  {"B56",3}  {"B57",3}  {"B58",3}");
+            + $"{"MainItemSet",11}  {"KecShopSet",10}  {"ItemSet3C",9}  {"NmBoxSet",8}  {"DxBoxSet",8}  {"MonHouseSet",11}  {"BuriedSet",9}  {"KecShop%",8}  {"MonHouse%",9}  {"MysHouse%",9}  {"MysHsSize",9}  "
+            + $"{"B56",3}  {"B57",3}  {"B58",3}  {"B37",3}  {"B38",3}  {"B39",3}  {"B40",3}  {"B41",3}");
     foreach (var info in floorInfos)
     {
         string weather = info.Weather != DungeonStatusIndex.NONE ? strings.DungeonStatuses[info.Weather] : "(none)";
@@ -115,6 +116,7 @@ foreach (var dungeon in dungeons)
             + $"{info.Short02,5}  "
             + $"{info.TurnLimit,5}  "
             + $"{$"{info.MinMoneyStackSize}..{info.MaxMoneyStackSize}",12}  "
+            + $"{$"{info.MinItemDensity}..{info.MaxItemDensity}",8}  "
             + $"{info.DungeonMapDataInfoIndex,6}  "
             + $"{info.NameID,7}  "
             + $"{info.Byte2D,3}  "
@@ -133,7 +135,12 @@ foreach (var dungeon in dungeons)
             + $"{info.Byte4F,3}  "
             + $"{info.Byte50,3}  "
             + $"{info.Byte51,3}  "
-            + $"{info.ItemSetIndex,7}  "
+            + $"{info.FloorItemSetIndex,11}  "
+            + $"{info.KecleonShopItemSetIndex,10}  "
+            + $"{info.PossibleItemSetIndex3C,9}  "
+            + $"{info.NormalTreasureBoxItemSetIndex,8}  "
+            + $"{info.DeluxeTreasureBoxItemSetIndex,8}  "
+            + $"{info.MonsterHouseItemSetIndex,11}  "
             + $"{info.BuriedItemSetIndex,9}  "
             + $"{info.KecleonShopChance,8}  "
             + $"{info.MonsterHouseChance,9}  "
@@ -142,29 +149,30 @@ foreach (var dungeon in dungeons)
             + $"{info.Byte56,3}  "
             + $"{info.Byte57,3}  "
             + $"{info.Byte58,3}  "
+            + $"{info.Byte37,3}  "
+            + $"{info.Byte38,3}  "
+            + $"{info.Byte39,3}  "
+            + $"{info.Byte40,3}  "
+            + $"{info.Byte41,3}  "
             + $"{info.Event,3}  "
-            + $"{string.Join(",", info.Bytes37to43)}  "
             + $"{string.Join(",", info.Bytes5Ato61)}");
 
         // Print floor items
         /*Console.WriteLine($"   Floor {info.Index} items:");
-        Console.Write("     ");
-        int i = 0;
-        foreach (var itemWeight in items.ItemSets[info.ItemSetIndex].ItemWeights)
+        for (var i = 0; i < items.ItemSets.Count; i++)
         {
-            var itemName = strings.GetItemName(itemWeight.Index);
-            if (string.IsNullOrEmpty(itemName))
+            Console.WriteLine($"      Itemset {i}:");
+            Console.Write("         ");
+            foreach (var itemWeight in items.ItemSets[i].ItemWeights)
             {
-                itemName = itemWeight.Index.ToString();
+                var itemName = strings.GetItemName(itemWeight.Index);
+                if (string.IsNullOrEmpty(itemName))
+                {
+                    itemName = itemWeight.Index.ToString();
+                }
+                Console.Write($"{itemName} ({itemWeight.Weight}), ");
             }
-            Console.Write($"{itemName} ({itemWeight.Weight}), ");
-            if (i == 8)
-            {
-                Console.WriteLine();
-                Console.Write("     ");
-                i = 0;
-            }
-            i++;
+            Console.WriteLine();
         }
         Console.WriteLine();*/
     }

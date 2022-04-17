@@ -24,7 +24,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public short BalanceFloorInfoShort32 { get; set; }
         public byte BalanceFloorInfoByte34 { get; set; }
         public byte BalanceFloorInfoByte35 { get; set; }
-        public byte UnknownItemSetIndex { get; set; }
+        public byte RoomCount { get; set; }
+        public byte BalanceFloorInfoByte37 { get; set; }
+        public byte BalanceFloorInfoByte38 { get; set; }
+        public byte BalanceFloorInfoByte39 { get; set; }
+        public byte FloorItemSetIndex { get; set; }
+        public byte KecleonShopItemSetIndex { get; set; }
+        public byte PossibleItemSetIndex3C { get; set; }
+        public byte NormalTreasureBoxItemSetIndex { get; set; }
+        public byte MonsterHouseItemSetIndex { get; set; }
+        public byte DeluxeTreasureBoxItemSetIndex { get; set; }
+        public byte BalanceFloorInfoByte40 { get; set; }
+        public byte BalanceFloorInfoByte41 { get; set; }
+        public byte MinItemDensity { get; set; }
+        public byte MaxItemDensity { get; set; }
         public byte BuriedItemSetIndex { get; set; }
         public byte MaxBuriedItems { get; set; }
         public byte BalanceFloorInfoByte46 { get; set; }
@@ -47,7 +60,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public byte BalanceFloorInfoByte57 { get; set; }
         public byte BalanceFloorInfoByte58 { get; set; }
         public DungeonStatusIndex Weather { get; set; }
-        public byte[] BalanceFloorInfoBytes37to43 { get; set; } = new byte[0];
         public byte[] BalanceFloorInfoBytes5Ato61 { get; set; } = new byte[0];
 
         // From request_level.bin
@@ -64,14 +76,29 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public short BalanceFloorInfoShort26 { get => MinMoneyStackSize; set => MinMoneyStackSize = value; }
         [Obsolete($"Renamed to {nameof(MaxMoneyStackSize)}"), DeserializeOnly]
         public short BalanceFloorInfoShort28 { get => MaxMoneyStackSize; set => MaxMoneyStackSize = value; }
-        [Obsolete($"Renamed to {nameof(BalanceFloorInfoBytes37to43)}"), DeserializeOnly]
-        public byte[] BalanceFloorInfoBytes37to53
+        [Obsolete($"Renamed to {nameof(RoomCount)}"), DeserializeOnly]
+        public byte UnknownItemSetIndex { get => RoomCount; set => RoomCount = value; }
+        [Obsolete($"Replaced with {nameof(BalanceFloorInfoByte37)} and several others"), DeserializeOnly]
+        public byte[] BalanceFloorInfoBytes37to53 { get => BalanceFloorInfoBytes37to43; set => BalanceFloorInfoBytes37to43 = value; }
+        [Obsolete($"Replaced with {nameof(BalanceFloorInfoByte37)} and several others"), DeserializeOnly]
+        public byte[] BalanceFloorInfoBytes37to43
         {
-            get => BalanceFloorInfoBytes37to43;
+            get => Array.Empty<byte>();
             set
             {
-                BalanceFloorInfoBytes37to43 = new byte[0x43 - 0x37 + 1];
-                Array.Copy(value, BalanceFloorInfoBytes37to43, BalanceFloorInfoBytes37to43.Length);
+                BalanceFloorInfoByte37 = value[0x37 - 0x37];
+                BalanceFloorInfoByte38 = value[0x38 - 0x37];
+                BalanceFloorInfoByte39 = value[0x39 - 0x37];
+                FloorItemSetIndex = value[0x3A - 0x37];
+                KecleonShopItemSetIndex = value[0x3B - 0x37];
+                PossibleItemSetIndex3C = value[0x3C - 0x37];
+                NormalTreasureBoxItemSetIndex = value[0x3D - 0x37];
+                MonsterHouseItemSetIndex = value[0x3E - 0x37];
+                DeluxeTreasureBoxItemSetIndex = value[0x3F - 0x37];
+                BalanceFloorInfoByte40 = value[0x40 - 0x37];
+                BalanceFloorInfoByte41 = value[0x41 - 0x37];
+                MinItemDensity = value[0x42 - 0x37];
+                MaxItemDensity = value[0x43 - 0x37];
                 BuriedItemSetIndex = value[0x44 - 0x37];
                 MaxBuriedItems = value[0x45 - 0x37];
                 BalanceFloorInfoByte46 = value[0x46 - 0x37];

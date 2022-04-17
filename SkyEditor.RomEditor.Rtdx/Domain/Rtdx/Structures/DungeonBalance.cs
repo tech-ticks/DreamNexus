@@ -178,7 +178,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             {
                 Index = index;
                 Event = "";
-                Bytes37to43 = new byte[0x43 - 0x37 + 1];
                 Bytes5Ato61 = new byte[0x61 - 0x5A + 1];
             }
 
@@ -199,8 +198,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Short32 = data.ReadInt16(0x32);
                 Byte34 = data.ReadByte(0x34);
                 Byte35 = data.ReadByte(0x35);
-                ItemSetIndex = data.ReadByte(0x36);
-                Bytes37to43 = data.ReadArray(0x37, 0x43 - 0x37 + 1);
+                RoomCount = data.ReadByte(0x36);
+                Byte37 = data.ReadByte(0x37);
+                Byte38 = data.ReadByte(0x38);
+                Byte39 = data.ReadByte(0x39);
+                FloorItemSetIndex = data.ReadByte(0x3A);
+                KecleonShopItemSetIndex = data.ReadByte(0x3B);
+                PossibleItemSetIndex3C = data.ReadByte(0x3C);
+                NormalTreasureBoxItemSetIndex = data.ReadByte(0x3D);
+                MonsterHouseItemSetIndex = data.ReadByte(0x3E);
+                DeluxeTreasureBoxItemSetIndex = data.ReadByte(0x3F);
+                Byte40 = data.ReadByte(0x40);
+                Byte41 = data.ReadByte(0x41);
+                MinItemDensity = data.ReadByte(0x42);
+                MaxItemDensity = data.ReadByte(0x43);
                 BuriedItemSetIndex = data.ReadByte(0x44);
                 MaxBuriedItems = data.ReadByte(0x45);
                 Byte46 = data.ReadByte(0x46);
@@ -246,8 +257,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 accessor.WriteInt16(0x32, Short32);
                 accessor.Write(0x34, Byte34);
                 accessor.Write(0x35, Byte35);
-                accessor.Write(0x36, ItemSetIndex);
-                accessor.Write(0x37, Bytes37to43);
+                accessor.Write(0x36, RoomCount);
+                accessor.Write(0x37, Byte37);
+                accessor.Write(0x38, Byte38);
+                accessor.Write(0x39, Byte39);
+                accessor.Write(0x3A, FloorItemSetIndex);
+                accessor.Write(0x3B, KecleonShopItemSetIndex);
+                accessor.Write(0x3C, PossibleItemSetIndex3C);
+                accessor.Write(0x3D, NormalTreasureBoxItemSetIndex);
+                accessor.Write(0x3E, MonsterHouseItemSetIndex);
+                accessor.Write(0x3F, DeluxeTreasureBoxItemSetIndex);
+                accessor.Write(0x40, Byte40);
+                accessor.Write(0x41, Byte41);
+                accessor.Write(0x42, MinItemDensity);
+                accessor.Write(0x43, MaxItemDensity);
                 accessor.Write(0x44, BuriedItemSetIndex);
                 accessor.Write(0x45, MaxBuriedItems);
                 accessor.Write(0x46, Byte46);
@@ -293,10 +316,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public short Short32 { get; set; }
             public byte Byte34 { get; set; }
             public byte Byte35 { get; set; }
-            // An index into a ItemArrange subentry. What exactly this is used for is unknown.
-            // TODO: there has to be more to this (Kecleon shops, monster house items etc.)
-            public byte ItemSetIndex { get; set; }
-            public byte[] Bytes37to43 { get; set; }
+            public byte RoomCount { get; set; }
+            public byte Byte37 { get; set; }
+            public byte Byte38 { get; set; }
+            public byte Byte39 { get; set; }
+            public byte FloorItemSetIndex { get; set; }
+            public byte KecleonShopItemSetIndex { get; set; }
+            public byte PossibleItemSetIndex3C { get; set; }
+            public byte NormalTreasureBoxItemSetIndex { get; set; }
+            public byte MonsterHouseItemSetIndex { get; set; }
+            public byte DeluxeTreasureBoxItemSetIndex { get; set; }
+            public byte Byte40 { get; set; }
+            public byte Byte41 { get; set; }
+            public byte MinItemDensity { get; set; }
+            public byte MaxItemDensity { get; set; }
             public byte BuriedItemSetIndex { get; set; }
             public byte MaxBuriedItems { get; set; }
             public byte Byte46 { get; set; }

@@ -161,7 +161,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                         kindWeights.Add((ItemKind) tuple.index, tuple.weight);
                     }
                 }
-                
+
                 itemSets.Add(new ItemSetModel
                 {
                     ItemKindWeights = kindWeights,
@@ -199,7 +199,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     BalanceFloorInfoShort32 = entry.Short32,
                     BalanceFloorInfoByte34 = entry.Byte34,
                     BalanceFloorInfoByte35 = entry.Byte35,
-                    UnknownItemSetIndex = entry.ItemSetIndex,
+                    RoomCount = entry.RoomCount,
+                    BalanceFloorInfoByte37 = entry.Byte37,
+                    BalanceFloorInfoByte38 = entry.Byte38,
+                    BalanceFloorInfoByte39 = entry.Byte39,
+                    FloorItemSetIndex = entry.FloorItemSetIndex,
+                    KecleonShopItemSetIndex = entry.KecleonShopItemSetIndex,
+                    PossibleItemSetIndex3C = entry.PossibleItemSetIndex3C,
+                    NormalTreasureBoxItemSetIndex = entry.NormalTreasureBoxItemSetIndex,
+                    MonsterHouseItemSetIndex = entry.MonsterHouseItemSetIndex,
+                    DeluxeTreasureBoxItemSetIndex = entry.DeluxeTreasureBoxItemSetIndex,
+                    BalanceFloorInfoByte40 = entry.Byte40,
+                    BalanceFloorInfoByte41 = entry.Byte41,
+                    MinItemDensity = entry.MinItemDensity,
+                    MaxItemDensity = entry.MaxItemDensity,
                     BuriedItemSetIndex = entry.BuriedItemSetIndex,
                     MaxBuriedItems = entry.MaxBuriedItems,
                     BalanceFloorInfoByte46 = entry.Byte46,
@@ -222,7 +235,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     BalanceFloorInfoByte57 = entry.Byte57,
                     BalanceFloorInfoByte58 = entry.Byte58,
                     Weather = entry.Weather,
-                    BalanceFloorInfoBytes37to43 = entry.Bytes37to43,
                     BalanceFloorInfoBytes5Ato61 = entry.Bytes5Ato61,
                     IsBossFloor = requestLevelData?.IsBossFloor != null && requestLevelData.IsBossFloor != 0,
 
@@ -403,7 +415,20 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 floorInfo.Short32 = model.BalanceFloorInfoShort32;
                 floorInfo.Byte34 = model.BalanceFloorInfoByte34;
                 floorInfo.Byte35 = model.BalanceFloorInfoByte35;
-                floorInfo.ItemSetIndex = model.UnknownItemSetIndex;
+                floorInfo.RoomCount = model.RoomCount;
+                floorInfo.Byte37 = model.BalanceFloorInfoByte37;
+                floorInfo.Byte38 = model.BalanceFloorInfoByte38;
+                floorInfo.Byte39 = model.BalanceFloorInfoByte39;
+                floorInfo.FloorItemSetIndex = model.FloorItemSetIndex;
+                floorInfo.KecleonShopItemSetIndex = model.KecleonShopItemSetIndex;
+                floorInfo.PossibleItemSetIndex3C = model.PossibleItemSetIndex3C;
+                floorInfo.NormalTreasureBoxItemSetIndex = model.NormalTreasureBoxItemSetIndex;
+                floorInfo.MonsterHouseItemSetIndex = model.MonsterHouseItemSetIndex;
+                floorInfo.DeluxeTreasureBoxItemSetIndex = model.DeluxeTreasureBoxItemSetIndex;
+                floorInfo.Byte40 = model.BalanceFloorInfoByte40;
+                floorInfo.Byte41 = model.BalanceFloorInfoByte41;
+                floorInfo.MinItemDensity = model.MinItemDensity;
+                floorInfo.MaxItemDensity = model.MaxItemDensity;
                 floorInfo.BuriedItemSetIndex = model.BuriedItemSetIndex;
                 floorInfo.MaxBuriedItems = model.MaxBuriedItems;
                 floorInfo.Byte46 = model.BalanceFloorInfoByte46;
@@ -426,7 +451,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 floorInfo.Byte57 = model.BalanceFloorInfoByte57;
                 floorInfo.Byte58 = model.BalanceFloorInfoByte58;
                 floorInfo.Weather = model.Weather;
-                floorInfo.Bytes37to43 = model.BalanceFloorInfoBytes37to43;
                 floorInfo.Bytes5Ato61 = model.BalanceFloorInfoBytes5Ato61;
 
                 if (requestLevelEntry != null)

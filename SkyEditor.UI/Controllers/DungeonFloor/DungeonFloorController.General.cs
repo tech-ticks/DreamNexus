@@ -27,7 +27,15 @@ namespace SkyEditorUI.Controllers
         [UI] private Entry? entryEvent;
         [UI] private ComboBox? cbWeather;
         [UI] private Entry? entryShort02;
-        [UI] private Entry? entryUnknownItemSetIndex;
+        [UI] private Entry? entryRoomCount;
+        [UI] private Entry? entryFloorItemSetIndex;
+        [UI] private Entry? entryKecleonShopItemSetIndex;
+        [UI] private Entry? entryPossibleItemSetIndex3C;
+        [UI] private Entry? entryNormalTreasureBoxItemSetIndex;
+        [UI] private Entry? entryMonsterHouseItemSetIndex;
+        [UI] private Entry? entryDeluxeTreasureBoxItemSetIndex;
+        [UI] private Entry? entryMinItemDensity;
+        [UI] private Entry? entryMaxItemDensity;
         [UI] private Entry? entryBuriedItemSetIndex;
         [UI] private Entry? entryMaxBuriedItems;
         [UI] private Entry? entryMinTrapDensity;
@@ -78,7 +86,15 @@ namespace SkyEditorUI.Controllers
             entryEvent!.Text = floor.Event;
             cbWeather!.Active = (int)floor.Weather;
             entryShort02!.Text = floor.BalanceFloorInfoShort02.ToString();
-            entryUnknownItemSetIndex!.Text = floor.UnknownItemSetIndex.ToString();
+            entryRoomCount!.Text = floor.RoomCount.ToString();
+            entryFloorItemSetIndex!.Text = floor.FloorItemSetIndex.ToString();
+            entryKecleonShopItemSetIndex!.Text = floor.KecleonShopItemSetIndex.ToString();
+            entryPossibleItemSetIndex3C!.Text = floor.PossibleItemSetIndex3C.ToString();
+            entryNormalTreasureBoxItemSetIndex!.Text = floor.NormalTreasureBoxItemSetIndex.ToString();
+            entryMonsterHouseItemSetIndex!.Text = floor.MonsterHouseItemSetIndex.ToString();
+            entryDeluxeTreasureBoxItemSetIndex!.Text = floor.DeluxeTreasureBoxItemSetIndex.ToString();
+            entryMinItemDensity!.Text = floor.MinItemDensity.ToString();
+            entryMaxItemDensity!.Text = floor.MaxItemDensity.ToString();
             entryBuriedItemSetIndex!.Text = floor.BuriedItemSetIndex.ToString();
             entryMaxBuriedItems!.Text = floor.MaxBuriedItems.ToString();
             entryMinTrapDensity!.Text = floor.MinTrapDensity.ToString();
@@ -101,10 +117,11 @@ namespace SkyEditorUI.Controllers
             unknownsStore.AppendValues("Byte2F", floor.BalanceFloorInfoByte2F);
             unknownsStore.AppendValues("Byte34", floor.BalanceFloorInfoByte34);
             unknownsStore.AppendValues("Byte35", floor.BalanceFloorInfoByte35);
-            for (int i = 0x37; i <= 0x43; i++)
-            {
-                unknownsStore.AppendValues($"Byte{i:X}", floor.BalanceFloorInfoBytes37to43[i - 0x37]);
-            }
+            unknownsStore.AppendValues("Byte37", floor.BalanceFloorInfoByte37);
+            unknownsStore.AppendValues("Byte38", floor.BalanceFloorInfoByte38);
+            unknownsStore.AppendValues("Byte39", floor.BalanceFloorInfoByte39);
+            unknownsStore.AppendValues("Byte40", floor.BalanceFloorInfoByte40);
+            unknownsStore.AppendValues("Byte41", floor.BalanceFloorInfoByte41);
             unknownsStore.AppendValues("Byte46", floor.BalanceFloorInfoByte46);
             unknownsStore.AppendValues("Byte47", floor.BalanceFloorInfoByte47);
             unknownsStore.AppendValues("Byte49", floor.BalanceFloorInfoByte49);
@@ -175,15 +192,103 @@ namespace SkyEditorUI.Controllers
             }
         }
 
-        private void OnUnknownItemSetChanged(object sender, EventArgs args)
+        private void OnRoomCountChanged(object sender, EventArgs args)
         {
-            if (byte.TryParse(entryUnknownItemSetIndex!.Text, out byte value))
+            if (byte.TryParse(entryRoomCount!.Text, out byte value))
             {
-                floor.UnknownItemSetIndex = value;
+                floor.RoomCount = value;
             }
-            else if (!string.IsNullOrEmpty(entryUnknownItemSetIndex!.Text))
+            else if (!string.IsNullOrEmpty(entryRoomCount!.Text))
             {
-                entryUnknownItemSetIndex!.Text = floor.UnknownItemSetIndex.ToString();
+                entryRoomCount!.Text = floor.RoomCount.ToString();
+            }
+        }
+        private void OnFloorItemSetIndexChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryFloorItemSetIndex!.Text, out byte value))
+            {
+                floor.FloorItemSetIndex = value;
+            }
+            else if (!string.IsNullOrEmpty(entryFloorItemSetIndex!.Text))
+            {
+                entryFloorItemSetIndex!.Text = floor.FloorItemSetIndex.ToString();
+            }
+        }
+        private void OnKecleonShopItemSetIndexChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryKecleonShopItemSetIndex!.Text, out byte value))
+            {
+                floor.KecleonShopItemSetIndex = value;
+            }
+            else if (!string.IsNullOrEmpty(entryKecleonShopItemSetIndex!.Text))
+            {
+                entryKecleonShopItemSetIndex!.Text = floor.KecleonShopItemSetIndex.ToString();
+            }
+        }
+        private void OnPossibleItemSetIndex3CChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryPossibleItemSetIndex3C!.Text, out byte value))
+            {
+                floor.PossibleItemSetIndex3C = value;
+            }
+            else if (!string.IsNullOrEmpty(entryPossibleItemSetIndex3C!.Text))
+            {
+                entryPossibleItemSetIndex3C!.Text = floor.PossibleItemSetIndex3C.ToString();
+            }
+        }
+        private void OnNormalTreasureBoxItemSetIndexChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryNormalTreasureBoxItemSetIndex!.Text, out byte value))
+            {
+                floor.NormalTreasureBoxItemSetIndex = value;
+            }
+            else if (!string.IsNullOrEmpty(entryNormalTreasureBoxItemSetIndex!.Text))
+            {
+                entryNormalTreasureBoxItemSetIndex!.Text = floor.NormalTreasureBoxItemSetIndex.ToString();
+            }
+        }
+        private void OnMonsterHouseItemSetIndexChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryMonsterHouseItemSetIndex!.Text, out byte value))
+            {
+                floor.MonsterHouseItemSetIndex = value;
+            }
+            else if (!string.IsNullOrEmpty(entryMonsterHouseItemSetIndex!.Text))
+            {
+                entryMonsterHouseItemSetIndex!.Text = floor.MonsterHouseItemSetIndex.ToString();
+            }
+        }
+        private void OnDeluxeTreasureBoxItemSetIndexChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryDeluxeTreasureBoxItemSetIndex!.Text, out byte value))
+            {
+                floor.DeluxeTreasureBoxItemSetIndex = value;
+            }
+            else if (!string.IsNullOrEmpty(entryDeluxeTreasureBoxItemSetIndex!.Text))
+            {
+                entryDeluxeTreasureBoxItemSetIndex!.Text = floor.DeluxeTreasureBoxItemSetIndex.ToString();
+            }
+        }
+        private void OnMinItemDensityChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryMinItemDensity!.Text, out byte value))
+            {
+                floor.MinItemDensity = value;
+            }
+            else if (!string.IsNullOrEmpty(entryMinItemDensity!.Text))
+            {
+                entryMinItemDensity!.Text = floor.MinItemDensity.ToString();
+            }
+        }
+        private void OnMaxItemDensityChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryMaxItemDensity!.Text, out byte value))
+            {
+                floor.MaxItemDensity = value;
+            }
+            else if (!string.IsNullOrEmpty(entryMaxItemDensity!.Text))
+            {
+                entryMaxItemDensity!.Text = floor.MaxItemDensity.ToString();
             }
         }
 
@@ -381,11 +486,7 @@ namespace SkyEditorUI.Controllers
 
             // Strip "Byte" prefix and parse as int
             var location = int.Parse(name.Substring(4), NumberStyles.HexNumber);
-            if (location >= 0x37 && location <= 0x43)
-            {
-                floor.BalanceFloorInfoBytes37to43[location - 0x37] = value;
-            }
-            else if (location >= 0x5A && location <= 0x61)
+            if (location >= 0x5A && location <= 0x61)
             {
                 floor.BalanceFloorInfoBytes5Ato61[location - 0x5A] = value;
             }
@@ -407,6 +508,21 @@ namespace SkyEditorUI.Controllers
                         break;
                     case 0x35:
                         floor.BalanceFloorInfoByte35 = value;
+                        break;
+                    case 0x37:
+                        floor.BalanceFloorInfoByte37 = value;
+                        break;
+                    case 0x38:
+                        floor.BalanceFloorInfoByte38 = value;
+                        break;
+                    case 0x39:
+                        floor.BalanceFloorInfoByte39 = value;
+                        break;
+                    case 0x40:
+                        floor.BalanceFloorInfoByte40 = value;
+                        break;
+                    case 0x41:
+                        floor.BalanceFloorInfoByte41 = value;
                         break;
                     case 0x46:
                         floor.BalanceFloorInfoByte46 = value;
