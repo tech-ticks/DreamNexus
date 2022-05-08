@@ -3095,276 +3095,6 @@
         IJIGENRUSH,
 
         /// <summary>
-        /// Shore Up
-        /// </summary>
-        SUNAATSUME,
-
-        /// <summary>
-        /// First Impression
-        /// </summary>
-        DEAIGASHIRA,
-
-        /// <summary>
-        /// Baneful Bunker
-        /// </summary>
-        TOOCHIKA,
-
-        /// <summary>
-        /// Spirit Shackle
-        /// </summary>
-        KAGENUI,
-
-        /// <summary>
-        /// Darkest Lariat
-        /// </summary>
-        DDRARIATTO,
-
-        /// <summary>
-        /// Sparkling Aria
-        /// </summary>
-        UTAKATANOMARIA,
-
-        /// <summary>
-        /// Ice Hammer
-        /// </summary>
-        ICEHAMMER,
-
-        /// <summary>
-        /// Floral Healing
-        /// </summary>
-        FLOWERHEAL,
-
-        /// <summary>
-        /// High Horsepower
-        /// </summary>
-        JUUMANBARIKI,
-
-        /// <summary>
-        /// Strength Sap
-        /// </summary>
-        CHIKARAWOSUITORU,
-
-        /// <summary>
-        /// Solar Blade
-        /// </summary>
-        SOLARBLADE,
-
-        /// <summary>
-        /// Leafage
-        /// </summary>
-        KONOHA,
-
-        /// <summary>
-        /// Spotlight
-        /// </summary>
-        SPOTLIGHT,
-
-        /// <summary>
-        /// Toxic Thread
-        /// </summary>
-        DOKUNOITO,
-
-        /// <summary>
-        /// Laser Focus
-        /// </summary>
-        TOGISUMASU,
-
-        /// <summary>
-        /// Gear Up
-        /// </summary>
-        ASSISTGEAR,
-
-        /// <summary>
-        /// Throat Chop
-        /// </summary>
-        JIGOKUZUKI,
-
-        /// <summary>
-        /// Pollen Puff
-        /// </summary>
-        KAFUNDANGO,
-
-        /// <summary>
-        /// Anchor Shot
-        /// </summary>
-        ANCHORSHOT,
-
-        /// <summary>
-        /// Psychic Terrain
-        /// </summary>
-        PSYCHOFIERLD,
-
-        /// <summary>
-        /// Lunge
-        /// </summary>
-        TOBIKAKARU,
-
-        /// <summary>
-        /// Fire Lash
-        /// </summary>
-        HONOONOMUCHI,
-
-        /// <summary>
-        /// Power Trip
-        /// </summary>
-        TSUKEAGARU,
-
-        /// <summary>
-        /// Burn Up
-        /// </summary>
-        MOETSUKIRU,
-
-        /// <summary>
-        /// Speed Swap
-        /// </summary>
-        SPEEDSWAP,
-
-        /// <summary>
-        /// Smart Strike
-        /// </summary>
-        SMARTHORN,
-
-        /// <summary>
-        /// Purify
-        /// </summary>
-        JOUKA,
-
-        /// <summary>
-        /// Revelation Dance
-        /// </summary>
-        MEZAMERUDANCE,
-
-        /// <summary>
-        /// Core Enforcer
-        /// </summary>
-        COREPUNISHER,
-
-        /// <summary>
-        /// Trop Kick
-        /// </summary>
-        TROPICALKICK,
-
-        /// <summary>
-        /// Instruct
-        /// </summary>
-        SAIHAI,
-
-        /// <summary>
-        /// Beak Blast
-        /// </summary>
-        KUCHIBASHICANON,
-
-        /// <summary>
-        /// Clanging Scales
-        /// </summary>
-        SCALENOISE,
-
-        /// <summary>
-        /// Dragon Hammer
-        /// </summary>
-        DRAGONHAMMER,
-
-        /// <summary>
-        /// Brutal Swing
-        /// </summary>
-        BUNMAWASU,
-
-        /// <summary>
-        /// Aurora Veil
-        /// </summary>
-        AURORAVEIL,
-
-        /// <summary>
-        /// Shell Trap
-        /// </summary>
-        TRAPSHELL,
-
-        /// <summary>
-        /// Fleur Cannon
-        /// </summary>
-        FURUURUCANON,
-
-        /// <summary>
-        /// Psychic Fangs
-        /// </summary>
-        PSYCHOFANG,
-
-        /// <summary>
-        /// Stomping Tantrum
-        /// </summary>
-        JIDANDA,
-
-        /// <summary>
-        /// Shadow Bone
-        /// </summary>
-        SHADOWBONE,
-
-        /// <summary>
-        /// Accelerock
-        /// </summary>
-        ACCELLOCK,
-
-        /// <summary>
-        /// Liquidation
-        /// </summary>
-        AQUABREAK,
-
-        /// <summary>
-        /// Prismatic Laser
-        /// </summary>
-        PRISMLASER,
-
-        /// <summary>
-        /// Spectral Thief
-        /// </summary>
-        SHADOWSTEAL,
-
-        /// <summary>
-        /// Sunsteel Strike
-        /// </summary>
-        METEORDRIVE,
-
-        /// <summary>
-        /// Moongeist Beam
-        /// </summary>
-        SHADOWRAY,
-
-        /// <summary>
-        /// Tearful Look
-        /// </summary>
-        NAMIDAME,
-
-        /// <summary>
-        /// Zing Zap
-        /// </summary>
-        BIRIBIRICHIKUCHIKU,
-
-        /// <summary>
-        /// Nature's Madness
-        /// </summary>
-        SHIZENNOIKARI,
-
-        /// <summary>
-        /// Multi-Attack
-        /// </summary>
-        MULTIATTACK,
-
-        /// <summary>
-        /// Mind Blown
-        /// </summary>
-        BIKKURIHEAD,
-
-        /// <summary>
-        /// Plasma Fists
-        /// </summary>
-        PLASMAFIST,
-
-        /// <summary>
-        /// Photon Geyser
-        /// </summary>
-        PHOTONGEYSER,
-
-        /// <summary>
         /// Shadow Headbutt
         /// </summary>
         SHADOW_OF_NIHIL_01,
@@ -3415,11 +3145,6 @@
         DIASTORM,
 
         /// <summary>
-        /// Steam Eruption
-        /// </summary>
-        STEAMBURST,
-
-        /// <summary>
         /// Hyperspace Hole
         /// </summary>
         IJIGENHOLE,
@@ -3440,7 +3165,7 @@
         YOBI_05,
 
         /// <summary>
-        /// Attack
+        /// Attack (Mega Evolution)
         /// </summary>
         MEGA_KOUGEKI,
 
@@ -3450,17 +3175,7 @@
         TSUUJOU_KOUGEKI,
 
         /// <summary>
-        /// Attack
-        /// </summary>
-        TSUUJOU_KOUGEKI_FUMIKOMI,
-
-        /// <summary>
-        /// Trap Finder
-        /// </summary>
-        WANA_SAGASHI,
-
-        /// <summary>
-        /// 
+        /// Team Attack (Gates to Infinity leftover)
         /// </summary>
         MINNADE_ATTACK,
 
@@ -3889,16 +3604,511 @@
         /// </summary>
         XL_YOBI_24,
 
-        YOBI_10,
-        YOBI_11,
-        YOBI_12,
-        YOBI_13,
-        YOBI_14,
-        YOBI_15,
-        YOBI_16,
-        YOBI_17,
-        YOBI_18,
-        YOBI_19,
+        /// <summary>
+        /// Extra Big Spare 25
+        /// </summary>
+        XL_YOBI_25,
+
+        /// <summary>
+        /// Extra Big Spare 26
+        /// </summary>
+        XL_YOBI_26,
+
+        /// <summary>
+        /// Extra Big Spare 27
+        /// </summary>
+        XL_YOBI_27,
+
+        /// <summary>
+        /// Extra Big Spare 28
+        /// </summary>
+        XL_YOBI_28,
+
+        /// <summary>
+        /// Extra Big Spare 29
+        /// </summary>
+        XL_YOBI_29,
+
+        /// <summary>
+        /// Extra Big Spare 30
+        /// </summary>
+        XL_YOBI_30,
+
+        /// <summary>
+        /// Extra Big Spare 31
+        /// </summary>
+        XL_YOBI_31,
+
+        /// <summary>
+        /// Extra Big Spare 32
+        /// </summary>
+        XL_YOBI_32,
+
+        /// <summary>
+        /// Extra Big Spare 33
+        /// </summary>
+        XL_YOBI_33,
+
+        /// <summary>
+        /// Extra Big Spare 34
+        /// </summary>
+        XL_YOBI_34,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_ANANUKE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_WANAMIE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_WANAKOWASHI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_BASHOGAE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_FUTTOBI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_WARP,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_DONSOKU,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_SHUNSOKU,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_HIKARI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_SHIBARI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_SHINOGI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_TOBITSUKI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_HIKIYOSE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_SENTAKU,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_BAKUSUI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_FURAFURA,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_MOROHA,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_MONOMI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_TANCHI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_ATSUMARE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_ICHIGEKI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_TSUUKA,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_KAIDAN,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_KANTSUU,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_HARAINOKE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_TEKISHIBARI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_TEKIOBIE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_TEKIFUUJI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_KENKOU,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_TOKUSEI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_HOUI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_CHIKARA,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_KAIHI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_MUTEKI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_SOKOAGE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_CHUUMOKU,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_SOUKO,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_TEKISHINKA,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_TEKITAIKA,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_MONHAU,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_ARARE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_HIDERI,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_AME,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_SUNA,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_BUNSHIN,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_IYASHIYUKA,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_GISUGISU,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_MUYOKU,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_EXTEND,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_KUGIZUKE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_YOBI6,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_YOBI7,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_YOBI8,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_YOBI9,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_YOBI10,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_YOBI11,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_YOBI12,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_YOBI13,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_YOBI14,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ORB_YOBI15,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_PUPPET,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_FLICK,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_STEAL_ITEM,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_STEAL_MONEY,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_STEAL_MAGICAL,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_LV_UP,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_WAND_SWITCH,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_WAND_WARP,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_WAND_PETRIFY,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_WAND_QUARTER,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_WAND_NAMAKE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_FORGET,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_HEAL,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_SUMMON_BIIKUIN,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_SUMMON_KIRIKIZAN,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_SUMMON_NYOROTONO,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_SUMMON_IRUMIIZE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_SUMMON_DONKARASU,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_DIG,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_TUMBLE,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_SLEEP,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_DENT,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_YOBI_2,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_YOBI_3,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_YOBI_4,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_YOBI_5,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_YOBI_6,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_YOBI_7,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_YOBI_8,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_YOBI_9,
+
+        /// <summary>
+        /// 
+        /// </summary>
+        SHIREN_YOBI_10,
+
         END
     }
 }
