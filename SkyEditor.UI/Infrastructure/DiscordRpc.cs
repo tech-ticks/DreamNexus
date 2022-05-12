@@ -159,6 +159,10 @@ namespace SkyEditorUI.Infrastructure
                         controllerInfo = "Editing Fixed Map Items";
                         controllerState = breadcrumbs[0];
                         break;
+                    case FixedMapController v:
+                        controllerInfo = $"Editing {breadcrumbs[1]}";
+                        controllerState = breadcrumbs[0];
+                        break;
                     default:
                         controllerInfo = $"Editing modpack '{modpackName}'";
                         controllerState = view.GetType().Name;

@@ -154,6 +154,9 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
         void SetFixedItemCollection(IFixedItemCollection collection);
         bool FixedItemsModified { get; set; }
 
+        IFixedMapCollection GetFixedMapCollection();
+        bool FixedMapsModified { get; set; }
+
         IDungeonCollection GetDungeons();
         bool DungeonsModified { get; set; }
 
@@ -955,6 +958,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
         private IFixedItemCollection? fixedItemCollection;
 
+        public IFixedMapCollection GetFixedMapCollection()
+        {
+            if (fixedMapCollection == null)
+            {
+                fixedMapCollection = new FixedMapCollection(this);
+            }
+            FixedMapsModified = true;
+            return fixedMapCollection;
+        }
+        public bool FixedMapsModified { get; set; }
+
+        private IFixedMapCollection? fixedMapCollection;
+
         public IDungeonCollection GetDungeons()
         {
             if (dungeonCollection == null)
@@ -1227,6 +1243,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 () => pokemonGraphicsCollection?.Flush(this),
                 () => fixedPokemonCollection?.Flush(this),
                 () => fixedItemCollection?.Flush(this),
+                () => fixedMapCollection?.Flush(this),
                 () => dungeonCollection?.Flush(this),
                 () => itemCollection?.Flush(this),
                 () => moveCollection?.Flush(this),

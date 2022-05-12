@@ -104,7 +104,22 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
 
                 if (mod.ModelExists("fixed_items.yaml"))
                 {
-                    rom.SetFixedPokemonCollection(await mod.LoadModel<FixedPokemonCollection>("fixed_items.yaml"));
+                    rom.SetFixedItemCollection(await mod.LoadModel<FixedItemCollection>("fixed_items.yaml"));
+                }
+
+                var fixedMaps = rom.GetFixedMapCollection();
+                foreach (var path in mod.GetModelFilesInDirectory("fixed_maps"))
+                {
+                    var model = await mod.LoadModel<FixedMapModel>(path);
+                    var indexStr = Path.GetFileNameWithoutExtension(path);
+                    if (int.TryParse(indexStr, out int index))
+                    {
+                        fixedMaps.SetEntry(index, model);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Ignoring invalid fixed map model file name: {path}");
+                    }
                 }
 
                 var dungeons = rom.GetDungeons();
@@ -304,6 +319,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 if (rom.FixedItemsModified)
                 {
                     tasks.Add(mod.SaveModel(rom.GetFixedItemCollection(), "fixed_items.yaml"));
+                }
+
+                if (rom.FixedMapsModified)
+                {
+                    var fixedMaps = rom.GetFixedMapCollection();
+                    foreach (var model in fixedMaps.LoadedEntries.Where(model => fixedMaps.IsEntryDirty(model.Key)))
+                    {
+                        string path = Path.Combine("fixed_maps", $"{model.Key.ToString()}.yaml");
+                        tasks.Add(mod.SaveModel(model.Value, path));
+                    }
                 }
 
                 if (rom.ItemsModified)

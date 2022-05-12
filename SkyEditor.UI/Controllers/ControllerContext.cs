@@ -95,4 +95,14 @@ namespace SkyEditorUI.Controllers
             Language = language;
         }
     }
+
+    public class FixedMapControllerContext : ControllerContext
+    {
+        public int Index { get; }
+
+        public FixedMapControllerContext(int index)
+        {
+            Index = index;
+        }
+    }
 }

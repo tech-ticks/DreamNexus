@@ -238,8 +238,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Tiles[y * Width + x] = tile;
             }
 
-            public ushort Width { get; }
-            public ushort Height { get; }
+            public ushort Width { get; set; }
+            public ushort Height { get; set; }
 
             public List<FixedMapCreature> Creatures { get; set; }
             public List<FixedMapItem> Items { get; set; }

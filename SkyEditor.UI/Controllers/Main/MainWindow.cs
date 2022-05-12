@@ -980,6 +980,15 @@ namespace SkyEditorUI.Controllers
             AddMainListItem<DungeonMusicController>(dungeonsIter, "Dungeon Music", "skytemple-e-music-symbolic");
             AddDungeons(dungeonsIter);
 
+            var fixedMapsIter = AddMainListItem(root, "Fixed Maps", "skytemple-e-dungeon-fixed-floor-symbolic");
+            var fixedMaps = rom.GetFixedMapCollection();
+            for (int i = 0; i < fixedMaps.Count; i++)
+            {
+                string formattedId = ((int)i).ToString("000");
+                AddMainListItem<FixedMapController>(fixedMapsIter, $"Fixed Map #{formattedId}",
+                    "skytemple-e-dungeon-fixed-floor-symbolic", new FixedMapControllerContext(i));
+            }
+
             var gameScriptsIter = AddMainListItem(root, "Game Scripts", "skytemple-e-script-symbolic");
             AddGameScripts(gameScriptsIter);
 
