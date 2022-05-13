@@ -34,6 +34,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             Tiles[y * Width + x] = tile;
         }
 
+        public FixedMapCreatureModel? GetCreature(int x, int y)
+        {
+            return Creatures.Find(c => c.XPos == x && c.YPos == y);
+        }
+
+        public FixedMapItemModel? GetItem(int x, int y)
+        {
+            return Items.Find(i => i.XPos == x && i.YPos == y);
+        }
+
         public void Resize(ushort width, ushort height)
         {
             Width = width;

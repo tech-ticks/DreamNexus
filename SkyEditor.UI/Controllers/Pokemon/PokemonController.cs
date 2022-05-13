@@ -128,14 +128,14 @@ namespace SkyEditorUI.Controllers
 
         protected override void OnDestroyed()
         {
-            portraitSurface?.Dispose();
+            portrait?.Dispose();
         }
 
         private void OnDrawPortrait(object sender, DrawnArgs args)
         {
             lock (this)
             {
-                if (portraitSurface == null)
+                if (portrait == null)
                 {
                     return;
                 }
@@ -149,19 +149,9 @@ namespace SkyEditorUI.Controllers
         {
             cr.Save();
             cr.Scale(0.5, 0.5);
-            cr.Scale(portraitZoomFactor, portraitZoomFactor);
 
-            // The image is flipped vertically
-            cr.Translate(0, portraitSurface!.Height);
-            cr.Scale(1, -1);
+            portrait!.DrawSheet(cr);
 
-            cr.SetSourceSurface(portraitSurface, 0, 0);
-            using var pattern = cr.GetSource() as SurfacePattern;
-            if (pattern != null)
-            {
-                pattern.Filter = nearestNeighborFiltering ? Filter.Nearest : Filter.Good;
-            }
-            cr.Paint();
             cr.Restore();
         }
     }

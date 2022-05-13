@@ -80,9 +80,7 @@ namespace SkyEditorUI.Controllers
         private PokemonGraphicsModel? graphicsModel = null;
         private string? loadedPortraitBundleName;
 
-        private ImageSurface? portraitSurface;
-        private double portraitZoomFactor = 1;
-        private bool nearestNeighborFiltering = false;
+        private PortraitSheet? portrait;
 
         private Dictionary<int, SpriteBotTrackerEntry>? spriteBotTracker;
         private int spriteBotPokedexId;
@@ -549,7 +547,7 @@ namespace SkyEditorUI.Controllers
 
         private void OnExportPortraitClicked(object sender, EventArgs args)
         {
-            if (portraitSurface == null)
+            if (portrait == null)
             {
                 UIUtils.ShowErrorDialog(MainWindow.Instance, "Portrait export error", "No portrait loaded.");
                 return;
@@ -574,8 +572,8 @@ namespace SkyEditorUI.Controllers
             lock (this)
             {
                 // portraitSurface.SaveAsPng() leads to corrupted transparency for some reason
-                using var image = SixLabors.ImageSharp.Image.LoadPixelData<Bgra32>(portraitSurface.Data,
-                    portraitSurface.Width, portraitSurface.Height);
+                using var image = SixLabors.ImageSharp.Image.LoadPixelData<Bgra32>(portrait.Surface.Data,
+                    portrait.Width, portrait.Height);
                 image.Mutate(x => x.Flip(FlipMode.Vertical));
                 image.SaveAsPng(path);
             }
@@ -585,7 +583,7 @@ namespace SkyEditorUI.Controllers
         {
             lock (this)
             {
-                if (portraitSurface == null)
+                if (portrait == null)
                 {
                     return;
                 }
@@ -613,83 +611,12 @@ namespace SkyEditorUI.Controllers
             {
                 lock (this)
                 {
-                    var relativePortraitPath = IOPath.Combine("ab", $"{portraitSheetName}.ab");
-                    string? assetBundlePath = null;
-                    foreach (var mod in modpack!.Mods ?? Enumerable.Empty<Mod>())
-                    {
-                        var bundlePathInMod = IOPath.Combine(mod.GetAssetsDirectory(), relativePortraitPath);
-                        if (File.Exists(bundlePathInMod))
-                        {
-                            assetBundlePath = bundlePathInMod;
-                            break;
-                        }
-                    }
-                    if (assetBundlePath == null)
-                    {
-                        // Load from the ROM if it's not overwritten in any mods
-                        assetBundlePath = IOPath.Combine(rom.RomDirectory, "romfs/Data/StreamingAssets/", relativePortraitPath);
-                    }
-
-                    var manager = new AssetsManager();
                     try
                     {
-                        var bundle = manager.LoadBundleFile(assetBundlePath);
-                        var texture = AssetBundleHelpers.LoadFirstTextureFromBundle(manager, bundle);
-
-                        if (texture == null)
-                        {
-                            Console.WriteLine($"Failed to load texture from bundle.");
-                            manager.UnloadAll(true);
-                            HidePortraitsIdle();
-                            return;
-                        }
+                        portrait?.Dispose();
+                        portrait = PortraitSheet.LoadFromLayeredFs(portraitSheetName, rom, modpack);
 
                         loadedPortraitBundleName = portraitSheetName;
-                        var encodedData = texture.GetTextureDataRaw(bundle.file);
-                        if (encodedData == null)
-                        {
-                            Console.WriteLine($"Failed to load texture file.");
-                            manager.UnloadAll(true);
-                            HidePortraitsIdle();
-                            return;
-                        }
-                        byte[] decoded;
-                        if ((TextureFormat) texture.m_TextureFormat == TextureFormat.ASTC_RGBA_4x4)
-                        {
-                            decoded = AstcDecoder.DecodeASTC(encodedData, texture.m_Width, texture.m_Height, 4, 4);
-                        }
-                        else if ((TextureFormat) texture.m_TextureFormat == TextureFormat.DXT1)
-                        {
-                            decoded = new byte[texture.m_Width * texture.m_Height * 4]; // RGBA
-                            DxtDecoder.DecompressDXT1(encodedData, texture.m_Width, texture.m_Height, decoded);
-                        }
-                        else if ((TextureFormat) texture.m_TextureFormat == TextureFormat.RGB24)
-                        {
-                            decoded = new byte[texture.m_Width * texture.m_Height * 4]; // RGBA
-                            RgbConverter.RGB24ToBGRA32(encodedData, texture.m_Width, texture.m_Height, decoded);
-                        }
-                        else if ((TextureFormat) texture.m_TextureFormat == TextureFormat.RGBA32)
-                        {
-                            decoded = new byte[texture.m_Width * texture.m_Height * 4]; // RGBA
-                            RgbConverter.RGBA32ToBGRA32(encodedData, texture.m_Width, texture.m_Height, decoded);
-                        }
-                        else
-                        {
-                            Console.WriteLine($"Unexpected texture format: {texture.m_TextureFormat}");
-                            HidePortraitsIdle();
-                            return;
-                        }
-
-                        if (portraitSurface != null)
-                        {
-                            portraitSurface.Dispose();
-                        }
-                        portraitSurface = new ImageSurface(decoded, Format.ARGB32, texture.m_Width, texture.m_Height,
-                            4 * texture.m_Width);
-
-                        // The expected size is 1024x1024, but portraits can be bigger or smaller
-                        portraitZoomFactor = 1024 / texture.m_Width;
-                        nearestNeighborFiltering = texture.m_TextureSettings.m_FilterMode == 0;
 
                         GLib.Idle.Add(() => 
                         {
@@ -703,7 +630,6 @@ namespace SkyEditorUI.Controllers
                     catch (Exception e)
                     {
                         Console.WriteLine($"Failed to load portrait AssetBundle: {e}");
-                        manager.UnloadAll(true);
                         HidePortraitsIdle();
                         return;
                     }

@@ -11,7 +11,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         IDictionary<CreatureIndex, PokemonModel> LoadedPokemon { get; }
         void SetPokemon(CreatureIndex id, PokemonModel model);
         bool IsPokemonDirty(CreatureIndex id);
-        PokemonModel? GetPokemonById(CreatureIndex id);
+        PokemonModel? GetPokemonById(CreatureIndex id, bool markAsDirty = false);
         void Flush(IRtdxRom rom);
     }
 
@@ -110,9 +110,12 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             };
         }
 
-        public PokemonModel GetPokemonById(CreatureIndex id)
+        public PokemonModel GetPokemonById(CreatureIndex id, bool markAsDirty = false)
         {
-            DirtyPokemon.Add(id);
+            if (markAsDirty)
+            {
+                DirtyPokemon.Add(id);
+            }
             if (!LoadedPokemon.ContainsKey(id))
             {
                 LoadedPokemon.Add(id, LoadPokemon(id));

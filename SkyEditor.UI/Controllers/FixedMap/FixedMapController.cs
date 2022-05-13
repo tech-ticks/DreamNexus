@@ -10,6 +10,10 @@ using static SkyEditor.RomEditor.Domain.Rtdx.Structures.FixedMap.FixedMapItem;
 using System;
 using Cairo;
 using static SkyEditor.RomEditor.Domain.Rtdx.Structures.FixedMap.FixedMapTile;
+using System.Threading;
+using System.Collections.Generic;
+using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
+using static SkyEditor.RomEditor.Domain.Rtdx.Structures.FixedMap;
 
 namespace SkyEditorUI.Controllers
 {
@@ -25,6 +29,10 @@ namespace SkyEditorUI.Controllers
         private IFixedPokemonCollection fixedPokemon;
         private IFixedItemCollection fixedItems;
         private IRtdxRom rom;
+        private Modpack modpack;
+        private Thread loaderThread;
+
+        private Dictionary<CreatureIndex, PortraitSheet>? portraits;
 
         private const int IndexColumn = 0;
         private const int ItemColumn = 1;
@@ -34,23 +42,34 @@ namespace SkyEditorUI.Controllers
 
         private double zoomFactor = 24;
 
-        public FixedMapController(IRtdxRom rom, ControllerContext context) : this(new Builder("FixedMap.glade"), rom, context)
+        public FixedMapController(IRtdxRom rom, Modpack modpack, ControllerContext context)
+            : this(new Builder("FixedMap.glade"), rom, modpack, context)
         {
         }
 
-        private FixedMapController(Builder builder, IRtdxRom rom, ControllerContext context) : base(builder.GetRawOwnedObject("main"))
+        private FixedMapController(Builder builder, IRtdxRom rom, Modpack modpack, ControllerContext context)
+            : base(builder.GetRawOwnedObject("main"))
         {
             builder.Autoconnect(this);
 
             int fixedMapIndex = (context as FixedMapControllerContext)!.Index;
             this.rom = rom;
+            this.modpack = modpack;
             fixedMap = rom.GetFixedMapCollection().GetEntryById(fixedMapIndex)!;
             fixedPokemon = rom.GetFixedPokemonCollection();
             fixedItems = rom.GetFixedItemCollection();
 
+            var distinctCreatureIndexes = new HashSet<CreatureIndex>();
             foreach (var creature in fixedMap.Creatures)
             {
-                AddCreature(creature);
+                var fixedPokemonModel = fixedPokemon.Entries.ElementAtOrDefault((int) creature.Index);
+                AddCreature(creature, fixedPokemonModel);
+                if (fixedPokemonModel != null)
+                {
+                    // TODO: properly show player, partner and other members
+                    distinctCreatureIndexes.Add(fixedPokemonModel.PokemonId > 0 
+                        ? fixedPokemonModel.PokemonId : CreatureIndex.FUSHIGIDANE);
+                }
             }
             foreach (var item in fixedMap.Items)
             {
@@ -58,18 +77,55 @@ namespace SkyEditorUI.Controllers
             }
 
             ResizeDrawArea();
-            drawAreaFixedMap!.QueueDraw();
+
+            // Load Pokémon portraits
+            loaderThread = new Thread(() =>
+            {
+                var portraitSheetsByPokemonIndex = new Dictionary<CreatureIndex, PortraitSheet>();
+                var pokemon = rom.GetPokemon();
+                var graphics = rom.GetPokemonGraphics();
+
+                foreach (var creatureIndex in distinctCreatureIndexes)
+                {
+                    var graphicsDbId = pokemon.GetPokemonById(creatureIndex, false)?
+                        .PokemonGraphicsDatabaseEntryIds?.FirstOrDefault();
+                    if (graphicsDbId != null)
+                    {
+                        var portraitSheetName = graphics.GetEntryById(graphicsDbId.Value, false)?.PortraitSheetName;
+                        if (!string.IsNullOrEmpty(portraitSheetName))
+                        {
+                            var portraitSheet = PortraitSheet.LoadFromLayeredFs(portraitSheetName, rom, modpack);
+                            portraitSheetsByPokemonIndex.Add(creatureIndex, portraitSheet);
+                        }
+                    };
+                }
+                Gtk.Application.Invoke((sender, evt) =>
+                {
+                    this.portraits = portraitSheetsByPokemonIndex;
+                    drawAreaFixedMap!.QueueDraw();
+                });
+            });
+            loaderThread.Start();
         }
 
-        private void AddCreature(FixedMapCreatureModel model)
+        protected override void OnDestroyed()
+        {
+            loaderThread.Join();
+            foreach (var portrait in portraits?.Values ?? Enumerable.Empty<PortraitSheet>())
+            {
+                portrait?.Dispose();
+            }
+        }
+
+        private void AddCreature(FixedMapCreatureModel model, FixedPokemonModel? fixedPokemon)
         {
             var fixedCreatureName = ((FixedCreatureIndex) model.Index).ToString();
             var formattedId = $"#{((int) model.Index).ToString("000")}";
             var displayName = $"{formattedId} {fixedCreatureName}";
-
-            var fixedPokemonModel = fixedPokemon.Entries.ElementAtOrDefault((int) model.Index);
-            if (fixedPokemonModel != null) {
-                displayName += $" ({AutocompleteHelpers.FormatPokemon(rom, fixedPokemonModel.PokemonId)})";
+            
+            if (fixedPokemon != null)
+            {
+                displayName += $" ({AutocompleteHelpers.FormatPokemon(rom, fixedPokemon.PokemonId)})";
             }
 
             creaturesStore!.AppendValues(
@@ -148,6 +204,7 @@ namespace SkyEditorUI.Controllers
             cr.SetSourceColor(new Color(60, 60, 60));
             cr.Paint();
             DrawTiles(cr);
+            DrawCreatures(cr);
             DrawGrid(cr);
         }
 
@@ -159,27 +216,74 @@ namespace SkyEditorUI.Controllers
                 {
                     var tile = fixedMap.GetTile(x, y);
 
-                    // TODO: draw number of tile type if it's an unknown
+                    string? text = null;
+
                     var color = tile.Type switch
                     {
-                        TileType.Wall => new Color(0, 0, 0),
-                        TileType.Floor => new Color(255, 255, 255),
-                        TileType.MaybeSecondaryTerrain => new Color(0, 229, 255),
-                        TileType.Chasm => new Color(131, 145, 137),
-                        TileType.MysteryHouseDoor => new Color(55, 230, 134),
-                        _ => new Color(229, 52, 235),
+                        TileType.Wall => (0, 0, 0, 1.0),
+                        TileType.Floor => (1, 1, 1, 1.0),
+                        TileType.MaybeSecondaryTerrain => (0, 0.7, 1, 1.0),
+                        TileType.Chasm => (0.6, 0.6, 0.6, 1.0),
+                        TileType.MysteryHouseDoor => (0.1, 1, 0.5, 1.0),
+                        _ => (1, 0, 1, 1.0),
                     };
-                    cr.SetSourceColor(color);
+                    if (!Enum.IsDefined(typeof(TileType), tile.Type))
+                    {
+                        text = ((int) tile.Type).ToString();
+                    }
 
+                    var item = fixedMap.GetItem(x, y);
+                    if (item != null)
+                    {
+                        text = "I";
+                        color = (1, 0, 0, 0.3);
+                    }
+
+                    cr.SetSourceRGBA(color.Item1, color.Item2, color.Item3, color.Item4);
                     cr.Rectangle(x, y, 1, 1);
                     cr.Fill();
+
+                    if (text != null)
+                    {
+                        cr.Save();
+                        cr.MoveTo(x + 0.5, y + 0.5);
+                        cr.SetSourceRGB(0, 0, 0);
+                        cr.SetFontSize(1);
+
+                        var extents = cr.TextExtents(text);
+                        cr.RelMoveTo(-extents.Width / 2, extents.Height / 2);
+                        cr.ShowText(text);
+                        cr.Restore();
+                    }
                 }
+            }
+        }
+
+        private void DrawCreatures(Cairo.Context cr)
+        {
+            foreach (var creature in fixedMap.Creatures)
+            {
+                cr.SetSourceRGBA(1, 0, 0, 0.5);
+                cr.Rectangle(creature.XPos, creature.YPos, 1, 1);
+                cr.Fill();
+
+                cr.Save();
+                cr.MoveTo(creature.XPos + 0.5, creature.YPos + 0.5);
+                cr.SetSourceRGB(0, 0, 0);
+                cr.SetFontSize(1);
+
+                var extents = cr.TextExtents("P");
+                cr.RelMoveTo(-extents.Width / 2, extents.Height / 2);
+                cr.ShowText("P");
+                cr.Restore();
+
+                TryDrawPortrait(cr, creature);
             }
         }
 
         private void DrawGrid(Cairo.Context cr)
         {
-            cr.SetSourceColor(new Color(0, 0, 0));
+            cr.SetSourceRGBA(0.5, 0.5, 0.5, 0.5);
             cr.LineWidth = 1/zoomFactor;
             for (int y = 0; y <= fixedMap.Height; y++)
             {
@@ -195,6 +299,40 @@ namespace SkyEditorUI.Controllers
             cr.Stroke();
         }
 
+        private bool TryDrawPortrait(Cairo.Context cr, FixedMapCreatureModel creature)
+        {
+            lock (this)
+            {
+                if (portraits == null)
+                {
+                    return false;
+                }
+
+                var fixedPokemonModel = fixedPokemon.Entries.ElementAtOrDefault((int) creature.Index);
+                if (fixedPokemonModel == null)
+                {
+                    return false;
+                }
+
+                // TODO: properly show player, partner and other members
+                var creatureIndex = fixedPokemonModel.PokemonId > 0 
+                        ? fixedPokemonModel.PokemonId : CreatureIndex.FUSHIGIDANE;
+                
+                if (!portraits.TryGetValue(creatureIndex, out var portraitSheet))
+                {
+                    return false;
+                }
+
+                cr.Save();
+                cr.Translate(creature.XPos, creature.YPos);
+                cr.Scale(1.0 / 160.0, 1.0 / 160.0);
+                portraitSheet.DrawDefaultPortrait(cr, EntityDirectionToRadians(creature.Direction));
+                cr.Restore();
+
+                return true;
+            }
+        }
+
         private void ResizeDrawArea()
         {
             drawAreaFixedMap!.WidthRequest = (int) (fixedMap.Width * zoomFactor);
@@ -203,7 +341,8 @@ namespace SkyEditorUI.Controllers
 
         private string CreatureFactionToString(CreatureFaction faction)
         {
-            return faction switch {
+            return faction switch
+            {
                 (CreatureFaction) 0 => "(None)",
                 CreatureFaction.Player => "Player",
                 CreatureFaction.Ally => "Ally",
@@ -216,13 +355,26 @@ namespace SkyEditorUI.Controllers
 
         private string ItemVariationToString(ItemVariation variation)
         {
-            return variation switch {
+            return variation switch
+            {
                 (ItemVariation) 0 => "(None)",
                 ItemVariation.Item => "Item",
                 ItemVariation.Trap => "Trap",
                 ItemVariation.StairsDown => "Stairs (Down)",
                 ItemVariation.StairsUp => "Stairs (Up)",
                 _ => "Unknown",
+            };
+        }
+
+        private double EntityDirectionToRadians(EntityDirection direction)
+        {
+            return direction switch
+            {
+                EntityDirection.Down => 0,
+                EntityDirection.Right => 3 * (Math.PI / 2),
+                EntityDirection.Up => Math.PI,
+                EntityDirection.Left => Math.PI / 2,
+                _ => 0
             };
         }
     }
