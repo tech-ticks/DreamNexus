@@ -16,7 +16,7 @@ namespace SkyEditor.RomEditor.Rtdx.Reverse
             Timid,
             Hasty,
             Sassy,
-            Clam,
+            Calm,
             Relaxed,
             Lonely,
             Quirky,
