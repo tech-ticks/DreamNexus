@@ -15,7 +15,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Constants
         Timid,
         Hasty,
         Sassy,
-        Clam,
+        Calm,
         Relaxed,
         Lonely,
         Quirky,
