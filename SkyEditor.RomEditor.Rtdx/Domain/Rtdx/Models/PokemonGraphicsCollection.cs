@@ -101,7 +101,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             {
                 var id = kv.Key;
                 var entry = kv.Value;
-                romEntries[id + 1] = new PokemonGraphicsDatabase.PokemonGraphicsDatabaseEntry
+                romEntries[id - 1] = new PokemonGraphicsDatabase.PokemonGraphicsDatabaseEntry
                 {
                     ModelName = entry.ModelName,
                     AnimationName = entry.AnimationName,
