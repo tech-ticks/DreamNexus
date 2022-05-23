@@ -549,6 +549,7 @@
                 <property name="visible">True</property>
                 <property name="can-focus">False</property>
                 <property name="model">chainedHitsStore</property>
+                <signal name="changed" handler="OnChainedHitsChanged" swapped="no"/>
                 <child>
                   <object class="GtkCellRendererText"/>
                   <attributes>
@@ -599,6 +600,7 @@
                   <item id="9" translatable="yes">Ranged (piercing)</item>
                   <item id="10" translatable="yes">Other (special cases)</item>
                 </items>
+                <signal name="changed" handler="OnAreaChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
@@ -640,6 +642,7 @@
                   <item id="14" translatable="yes">Unknown 14</item>
                   <item id="15" translatable="yes">Other (traps, warp orbs etc.)</item>
                 </items>
+                <signal name="changed" handler="OnTargetChanged" swapped="no"/>
               </object>
               <packing>
                 <property name="left-attach">1</property>
