@@ -14,7 +14,6 @@ namespace SkyEditorUI.Controllers
         private const int SpawnCreatureIdColumn = 0;
         private const int SpawnRecruitmentLevelColumn = 2;
         private const int SpawnWeightColumn = 3;
-        private const int IsSpecialColumn = 6;
 
         [UI] private TreeView? creatureSpawnsTree;
         [UI] private ListStore? creaturesStore;
@@ -44,18 +43,17 @@ namespace SkyEditorUI.Controllers
             creatureSpawnsStore!.Clear();
             // HACK: exclude CreatureIndex.WANTED_LV from the weights since it doesn't seem like a "real" entry
             int weightSum = floor.Spawns.Where(spawn => spawn.StatsIndex != CreatureIndex.WANTED_LV)
-                .Sum(spawn => spawn.SpawnRate);
+                .Sum(spawn => spawn.SpawnWeight);
             foreach (var spawn in floor.Spawns)
             {
-                float percentage = ((float) spawn.SpawnRate / weightSum) * 100f;
+                float percentage = ((float) spawn.SpawnWeight / weightSum) * 100f;
                 creatureSpawnsStore!.AppendValues(
                     (int) spawn.StatsIndex,
                     AutocompleteHelpers.FormatPokemon(rom, spawn.StatsIndex),
                     (int) spawn.RecruitmentLevel,
-                    (int) spawn.SpawnRate,
+                    (int) spawn.SpawnWeight,
                     spawn.StatsIndex != CreatureIndex.WANTED_LV ? $"{percentage:F2}%" : "-",
-                    (int) spawn.Byte0B,
-                    spawn.IsSpecial
+                    (int) spawn.Byte0B
                 );
             }
         }
@@ -108,34 +106,18 @@ namespace SkyEditorUI.Controllers
             }
         }
 
-        private void OnIsSpecialToggled(object sender, ToggledArgs args)
-        {
-            var path = new TreePath(args.Path);
-            if (creatureSpawnsStore!.GetIter(out var iter, path))
-            {
-                var index = (CreatureIndex) creatureSpawnsStore.GetValue(iter, SpawnCreatureIdColumn);
-                var spawn = floor.Spawns!.Find(spawn => spawn.StatsIndex == index);
-                if (spawn != null)
-                {
-                    spawn.IsSpecial = !spawn.IsSpecial;
-                    creatureSpawnsStore.SetValue(iter, IsSpecialColumn, spawn.IsSpecial);
-                    RefreshSpawns();
-                }
-            }
-        }
-
         private void OnSpawnWeightEdited(object sender, EditedArgs args)
         {
             var path = new TreePath(args.Path);
             if (creatureSpawnsStore!.GetIter(out var iter, path))
             {
                 var index = (CreatureIndex) creatureSpawnsStore.GetValue(iter, SpawnCreatureIdColumn);
-                if (byte.TryParse(args.NewText, out byte value) && value <= 128)
+                if (byte.TryParse(args.NewText, out byte value))
                 {
                     var spawn = floor.Spawns!.Find(spawn => spawn.StatsIndex == index);
                     if (spawn != null)
                     {
-                        spawn.SpawnRate = value;
+                        spawn.SpawnWeight = value;
                     }
                     RefreshSpawns();
                 }
@@ -182,7 +164,7 @@ namespace SkyEditorUI.Controllers
             {
                 StatsIndex = nextSpecies,
                 RecruitmentLevel = 5,
-                SpawnRate = 10,
+                SpawnWeight = 10,
                 Byte0B = 0
             });
             RefreshSpawns();

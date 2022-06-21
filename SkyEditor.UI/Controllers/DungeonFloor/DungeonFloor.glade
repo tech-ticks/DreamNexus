@@ -16,8 +16,6 @@
       <column type="gchararray"/>
       <!-- column-name byte0B -->
       <column type="gint"/>
-      <!-- column-name isSpecial -->
-      <column type="gboolean"/>
     </columns>
   </object>
   <object class="GtkListStore" id="creaturesStore">
@@ -1499,19 +1497,6 @@ The place name and extra place names seem to be the same in all languages except
                               <object class="GtkCellRendererText"/>
                               <attributes>
                                 <attribute name="text">5</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn">
-                            <property name="title" translatable="yes">Special?</property>
-                            <child>
-                              <object class="GtkCellRendererToggle">
-                                <signal name="toggled" handler="OnIsSpecialToggled" swapped="no"/>
-                              </object>
-                              <attributes>
-                                <attribute name="active">6</attribute>
                               </attributes>
                             </child>
                           </object>

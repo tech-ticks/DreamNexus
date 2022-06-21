@@ -119,14 +119,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             // Only include stats that are actually used (every dungeon has empty stats for all unused Pokémon)
             var lookup = data.Floors
                 .SelectMany(floor => floor.Entries)
-                .Where(entry => entry.SpawnRate > 0 || entry.IsSpecial)
+                .Where(entry => entry.SpawnRate > 0)
                 // HACK: exclude creature 1003 since the spawn list data is currently interpreted as a Pokémon
                 // TODO: remove this once it's fixed in the DungeonBalance loader
                 .Where(entry => entry.PokemonIndex != (short) CreatureIndex.WANTED_LV)
                 .ToLookup(entry => entry.PokemonIndex);
 
             return data.Stats
-                .Where(stat => lookup.Contains((short) stat.CreatureIndex) || stat.StrongFoe != 0)
+                .Where(stat => lookup.Contains((short) stat.CreatureIndex) || stat.StrongFoe != 0)
                 .Select(stat => new DungeonPokemonStatsModel
                 {
                     CreatureIndex = stat.CreatureIndex,
@@ -263,12 +263,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
         private List<DungeonPokemonSpawnModel> LoadSpawns(DungeonBalance.WildPokemonInfo.FloorInfo data)
         {
-            return data.Entries.Where(entry => entry.SpawnRate > 0 || entry.IsSpecial)
+            return data.Entries.Where(entry => entry.SpawnRate > 0)
                 .Select(entry => new DungeonPokemonSpawnModel
                 {
                     StatsIndex = (CreatureIndex) entry.PokemonIndex,
-                    SpawnRate = entry.SpawnRate,
-                    IsSpecial = entry.IsSpecial,
+                    SpawnWeight = entry.SpawnRate,
                     RecruitmentLevel = entry.RecruitmentLevel,
                     Byte0B = entry.Byte0B,
                 }).ToList();
@@ -500,15 +499,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             {
                 if (modelsDict.TryGetValue((CreatureIndex) entry.PokemonIndex, out var model))
                 {
-                    entry.SpawnRate = model.SpawnRate;
-                    entry.IsSpecial = model.IsSpecial;
+                    entry.SpawnRate = model.SpawnWeight;
                     entry.RecruitmentLevel = model.RecruitmentLevel;
                     entry.Byte0B = model.Byte0B;
                 }
                 else
                 {
                     entry.SpawnRate = 0;
-                    entry.IsSpecial = false;
                     entry.RecruitmentLevel = 0;
                     entry.Byte0B = 0;
                 }
