@@ -145,13 +145,13 @@ namespace SkyEditorUI.Controllers
         private void OnAreaGfxIndexChanged(object sender, EventArgs args)
         {
             action.AreaGfxSymbol = (ushort)sbAreaGfxIndex!.ValueAsInt;
-            entryAreaGfxString!.Text = effectSymbols!.Entries.ElementAtOrDefault(sbUserGfxIndex!.ValueAsInt);
-            entryAreaGfxString.Sensitive = sbUserGfxIndex!.ValueAsInt > 0;
+            entryAreaGfxString!.Text = effectSymbols!.Entries.ElementAtOrDefault(sbAreaGfxIndex!.ValueAsInt);
+            entryAreaGfxString.Sensitive = sbAreaGfxIndex!.ValueAsInt > 0;
         }
 
         private void OnImpactGfxIndexChanged(object sender, EventArgs args)
         {
-            action.ImpactGfxSymbol = (ushort)sbAreaGfxIndex!.ValueAsInt;
+            action.ImpactGfxSymbol = (ushort)sbImpactGfxIndex!.ValueAsInt;
             entryImpactGfxString!.Text = effectSymbols!.Entries.ElementAtOrDefault(sbImpactGfxIndex!.ValueAsInt);
             entryImpactGfxString.Sensitive = sbImpactGfxIndex!.ValueAsInt > 0;
         }
@@ -165,7 +165,7 @@ namespace SkyEditorUI.Controllers
 
         private void OnProjectileImpactGfxIndexChanged(object sender, EventArgs args)
         {
-            action.ProjectileGfxSymbol = (ushort)sbProjectileGfxIndex!.ValueAsInt;
+            action.ProjectileImpactGfxSymbol = (ushort)sbProjectileImpactGfxIndex!.ValueAsInt;
             entryProjectileImpactGfxString!.Text = effectSymbols!.Entries.ElementAtOrDefault(sbProjectileImpactGfxIndex!.ValueAsInt);
             entryProjectileImpactGfxString.Sensitive = sbProjectileImpactGfxIndex!.ValueAsInt > 0;
         }
@@ -200,7 +200,7 @@ namespace SkyEditorUI.Controllers
 
         private void OnImpactSfxIndexChanged(object sender, EventArgs args)
         {
-            action.InitiateSfxSymbol = (ushort)sbInitiateSfxIndex!.ValueAsInt;
+            action.ImpactSfxSymbol = (ushort)sbImpactSfxIndex!.ValueAsInt;
             entryImpactSfxString!.Text = soundEffectSymbols!.Entries.ElementAtOrDefault(sbImpactSfxIndex!.ValueAsInt);
             entryImpactSfxString.Sensitive = sbImpactSfxIndex!.ValueAsInt > 0;
         }
