@@ -216,7 +216,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     BuriedItemSetIndex = entry.BuriedItemSetIndex,
                     MaxBuriedItems = entry.MaxBuriedItems,
                     BalanceFloorInfoByte46 = entry.Byte46,
-                    BalanceFloorInfoByte47 = entry.Byte47,
+                    StickyItemChance = entry.StickyItemChance,
                     KecleonShopChance = entry.KecleonShopChance,
                     BalanceFloorInfoByte49 = entry.Byte49,
                     BalanceFloorInfoByte4A = entry.Byte4A,
@@ -431,7 +431,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 floorInfo.BuriedItemSetIndex = model.BuriedItemSetIndex;
                 floorInfo.MaxBuriedItems = model.MaxBuriedItems;
                 floorInfo.Byte46 = model.BalanceFloorInfoByte46;
-                floorInfo.Byte47 = model.BalanceFloorInfoByte47;
+                floorInfo.StickyItemChance = model.StickyItemChance;
                 floorInfo.KecleonShopChance = model.KecleonShopChance;
                 floorInfo.Byte49 = model.BalanceFloorInfoByte49;
                 floorInfo.Byte4A = model.BalanceFloorInfoByte4A;

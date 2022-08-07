@@ -46,7 +46,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             d001.FloorInfos[0].BuriedItemSetIndex = 0x44;
             d001.FloorInfos[0].MaxBuriedItems = 0x45;
             d001.FloorInfos[0].Byte46 = 0x46;
-            d001.FloorInfos[0].Byte47 = 0x47;
+            d001.FloorInfos[0].StickyItemChance = 0x47;
             d001.FloorInfos[0].KecleonShopChance = 0x48;
             d001.FloorInfos[0].Byte49 = 0x49;
             d001.FloorInfos[0].Byte4A = 0x4A;
@@ -97,7 +97,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             d001.FloorInfos[1].BuriedItemSetIndex = 0xEB;
             d001.FloorInfos[1].MaxBuriedItems = 0xEA;
             d001.FloorInfos[1].Byte46 = 0xE9;
-            d001.FloorInfos[1].Byte47 = 0xE8;
+            d001.FloorInfos[1].StickyItemChance = 0xE8;
             d001.FloorInfos[1].KecleonShopChance = 0xE7;
             d001.FloorInfos[1].Byte49 = 0xE6;
             d001.FloorInfos[1].Byte4A = 0xE5;
@@ -201,7 +201,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             d002.FloorInfos[0].BuriedItemSetIndex = 0xC1;
             d002.FloorInfos[0].MaxBuriedItems = 0xC0;
             d002.FloorInfos[0].Byte46 = 0xBF;
-            d002.FloorInfos[0].Byte47 = 0xBE;
+            d002.FloorInfos[0].StickyItemChance = 0xBE;
             d002.FloorInfos[0].KecleonShopChance = 0xBD;
             d002.FloorInfos[0].Byte49 = 0xBC;
             d002.FloorInfos[0].Byte4A = 0xBB;
@@ -260,7 +260,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             rebuiltD001.FloorInfos[0].BuriedItemSetIndex.Should().Be(0x44);
             rebuiltD001.FloorInfos[0].MaxBuriedItems.Should().Be(0x45);
             rebuiltD001.FloorInfos[0].Byte46.Should().Be(0x46);
-            rebuiltD001.FloorInfos[0].Byte47.Should().Be(0x47);
+            rebuiltD001.FloorInfos[0].StickyItemChance.Should().Be(0x47);
             rebuiltD001.FloorInfos[0].KecleonShopChance.Should().Be(0x48);
             rebuiltD001.FloorInfos[0].Byte49.Should().Be(0x49);
             rebuiltD001.FloorInfos[0].Byte4A.Should().Be(0x4A);
@@ -312,7 +312,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             rebuiltD001.FloorInfos[1].BuriedItemSetIndex.Should().Be(0xEB);
             rebuiltD001.FloorInfos[1].MaxBuriedItems.Should().Be(0xEA);
             rebuiltD001.FloorInfos[1].Byte46.Should().Be(0xE9);
-            rebuiltD001.FloorInfos[1].Byte47.Should().Be(0xE8);
+            rebuiltD001.FloorInfos[1].StickyItemChance.Should().Be(0xE8);
             rebuiltD001.FloorInfos[1].KecleonShopChance.Should().Be(0xE7);
             rebuiltD001.FloorInfos[1].Byte49.Should().Be(0xE6);
             rebuiltD001.FloorInfos[1].Byte4A.Should().Be(0xE5);
@@ -428,7 +428,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             rebuiltD002.FloorInfos[0].BuriedItemSetIndex.Should().Be(0xC1);
             rebuiltD002.FloorInfos[0].MaxBuriedItems.Should().Be(0xC0);
             rebuiltD002.FloorInfos[0].Byte46.Should().Be(0xBF);
-            rebuiltD002.FloorInfos[0].Byte47.Should().Be(0xBE);
+            rebuiltD002.FloorInfos[0].StickyItemChance.Should().Be(0xBE);
             rebuiltD002.FloorInfos[0].KecleonShopChance.Should().Be(0xBD);
             rebuiltD002.FloorInfos[0].Byte49.Should().Be(0xBC);
             rebuiltD002.FloorInfos[0].Byte4A.Should().Be(0xBB);

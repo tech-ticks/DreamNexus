@@ -96,7 +96,7 @@ foreach (var dungeon in dungeons)
 
     // Print floor infos
     Console.WriteLine($"   {"Index",5}  {"Invit",5}  {"Weather",-9} {"S02",5}  {"Turns",5}  {"Money",12}  {"Items",8}  {"MapDat",6}  {"NameID",7}  {"B2D",3}  {"B2E",3}  "
-            + $"{"B2F",3}  {"B30",5}  {"B32",5}  {"B34",3}  {"B35",3}  {"Enemies",9}  {"Traps",9}  {"B46",3}  {"B47",3}  {"B49",3}  {"B4A",3}  {"B4F",3}  {"B50",3}  {"B51",3}  "
+            + $"{"B2F",3}  {"B30",5}  {"B32",5}  {"B34",3}  {"B35",3}  {"Enemies",9}  {"Traps",9}  {"B46",3}  {"Sticky%",7}  {"B49",3}  {"B4A",3}  {"B4F",3}  {"B50",3}  {"B51",3}  "
             + $"{"MainItemSet",11}  {"KecShopSet",10}  {"ItemSet3C",9}  {"NmBoxSet",8}  {"DxBoxSet",8}  {"MonHouseSet",11}  {"BuriedSet",9}  {"KecShop%",8}  {"MonHouse%",9}  {"MysHouse%",9}  {"MysHsSize",9}  "
             + $"{"B56",3}  {"B57",3}  {"B58",3}  {"B37",3}  {"B38",3}  {"B39",3}  {"B40",3}  {"B41",3}");
     foreach (var info in floorInfos)
@@ -129,7 +129,7 @@ foreach (var dungeon in dungeons)
             + $"{$"{info.MinEnemyDensity}..{info.MaxEnemyDensity}",9}  "
             + $"{$"{info.MinTrapDensity}..{info.MaxTrapDensity}",9}  "
             + $"{info.Byte46,3}  "
-            + $"{info.Byte47,3}  "
+            + $"{info.StickyItemChance,7}  "
             + $"{info.Byte49,3}  "
             + $"{info.Byte4A,3}  "
             + $"{info.Byte4F,3}  "

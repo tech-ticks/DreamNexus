@@ -41,7 +41,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public byte BuriedItemSetIndex { get; set; }
         public byte MaxBuriedItems { get; set; }
         public byte BalanceFloorInfoByte46 { get; set; }
-        public byte BalanceFloorInfoByte47 { get; set; }
+        public byte StickyItemChance { get; set; }
         public byte KecleonShopChance { get; set; }
         public byte BalanceFloorInfoByte49 { get; set; }
         public byte BalanceFloorInfoByte4A { get; set; }
@@ -102,7 +102,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 BuriedItemSetIndex = value[0x44 - 0x37];
                 MaxBuriedItems = value[0x45 - 0x37];
                 BalanceFloorInfoByte46 = value[0x46 - 0x37];
-                BalanceFloorInfoByte47 = value[0x47 - 0x37];
+                StickyItemChance = value[0x47 - 0x37];
                 KecleonShopChance = value[0x48 - 0x37];
                 BalanceFloorInfoByte49 = value[0x49 - 0x37];
                 BalanceFloorInfoByte4A = value[0x4A - 0x37];
@@ -117,6 +117,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 MysteryHouseSize = value[0x53 - 0x37];
             }
         }
+        [Obsolete($"Renamed to {nameof(StickyItemChance)}"), DeserializeOnly]
+        public byte BalanceFloorInfoByte47 { get => StickyItemChance; set => StickyItemChance = value; }
         [Obsolete($"Renamed to {nameof(MonsterHouseChance)}"), DeserializeOnly]
         public byte BalanceFloorInfoByte55 { get => MonsterHouseChance; set => MonsterHouseChance = value; }
         #endregion

@@ -46,6 +46,7 @@ namespace SkyEditorUI.Controllers
         [UI] private ComboBoxText? cbMysteryHouseSize;
         [UI] private Entry? entryMonsterHouseChance;
         [UI] private Entry? entryKecleonShopChance;
+        [UI] private Entry? entryStickyItemChance;
         [UI] private Entry? entryTurnLimit;
         [UI] private Entry? entryMinMoneyStackSize;
         [UI] private Entry? entryMaxMoneyStackSize;
@@ -105,6 +106,7 @@ namespace SkyEditorUI.Controllers
             cbMysteryHouseSize!.Active = floor.MysteryHouseSize;
             entryMonsterHouseChance!.Text = floor.MonsterHouseChance.ToString();
             entryKecleonShopChance!.Text = floor.KecleonShopChance.ToString();
+            entryStickyItemChance!.Text = floor.StickyItemChance.ToString();
             entryTurnLimit!.Text = floor.TurnLimit.ToString();
             entryMinMoneyStackSize!.Text = floor.MinMoneyStackSize.ToString();
             entryMaxMoneyStackSize!.Text = floor.MaxMoneyStackSize.ToString();
@@ -123,7 +125,6 @@ namespace SkyEditorUI.Controllers
             unknownsStore.AppendValues("Byte40", floor.BalanceFloorInfoByte40);
             unknownsStore.AppendValues("Byte41", floor.BalanceFloorInfoByte41);
             unknownsStore.AppendValues("Byte46", floor.BalanceFloorInfoByte46);
-            unknownsStore.AppendValues("Byte47", floor.BalanceFloorInfoByte47);
             unknownsStore.AppendValues("Byte49", floor.BalanceFloorInfoByte49);
             unknownsStore.AppendValues("Byte4A", floor.BalanceFloorInfoByte4A);
             unknownsStore.AppendValues("Byte4F", floor.BalanceFloorInfoByte4F);
@@ -378,7 +379,7 @@ namespace SkyEditorUI.Controllers
 
         private void OnMysteryHouseSizeChanged(object sender, EventArgs args)
         {
-            floor.MysteryHouseSize = (byte) cbMysteryHouseSize!.Active;
+            floor.MysteryHouseSize = (byte)cbMysteryHouseSize!.Active;
         }
 
         private void OnMonsterHouseChanceChanged(object sender, EventArgs args)
@@ -402,6 +403,18 @@ namespace SkyEditorUI.Controllers
             else if (!string.IsNullOrEmpty(entryKecleonShopChance!.Text))
             {
                 entryKecleonShopChance!.Text = floor.KecleonShopChance.ToString();
+            }
+        }
+
+        private void OnStickyItemChanceChanged(object sender, EventArgs args)
+        {
+            if (byte.TryParse(entryStickyItemChance!.Text, out byte value))
+            {
+                floor.StickyItemChance = value;
+            }
+            else if (!string.IsNullOrEmpty(entryStickyItemChance!.Text))
+            {
+                entryStickyItemChance!.Text = floor.StickyItemChance.ToString();
             }
         }
 
@@ -526,9 +539,6 @@ namespace SkyEditorUI.Controllers
                         break;
                     case 0x46:
                         floor.BalanceFloorInfoByte46 = value;
-                        break;
-                    case 0x47:
-                        floor.BalanceFloorInfoByte47 = value;
                         break;
                     case 0x49:
                         floor.BalanceFloorInfoByte49 = value;

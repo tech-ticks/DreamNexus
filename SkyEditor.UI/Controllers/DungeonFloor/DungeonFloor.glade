@@ -1258,18 +1258,6 @@ The place name and extra place names seem to be the same in all languages except
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkEntry" id="entryPossibleItemSetIndex3C">
-                        <property name="visible">True</property>
-                        <property name="can-focus">True</property>
-                        <property name="width-chars">3</property>
-                        <signal name="changed" handler="OnPossibleItemSetIndex3CChanged" swapped="no"/>
-                      </object>
-                      <packing>
-                        <property name="left-attach">5</property>
-                        <property name="top-attach">6</property>
-                      </packing>
-                    </child>
-                    <child>
                       <object class="GtkLabel">
                         <property name="visible">True</property>
                         <property name="can-focus">False</property>
@@ -1393,10 +1381,40 @@ The place name and extra place names seem to be the same in all languages except
                       </packing>
                     </child>
                     <child>
-                      <placeholder/>
+                      <object class="GtkLabel">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="halign">end</property>
+                        <property name="label" translatable="yes">Sticky item chance:</property>
+                      </object>
+                      <packing>
+                        <property name="left-attach">4</property>
+                        <property name="top-attach">5</property>
+                      </packing>
                     </child>
                     <child>
-                      <placeholder/>
+                      <object class="GtkEntry" id="entryPossibleItemSetIndex3C">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="width-chars">3</property>
+                        <signal name="changed" handler="OnPossibleItemSetIndex3CChanged" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left-attach">5</property>
+                        <property name="top-attach">6</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkEntry" id="entryStickyItemChance">
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="width-chars">3</property>
+                        <signal name="changed" handler="OnStickyItemChanceChanged" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="left-attach">5</property>
+                        <property name="top-attach">5</property>
+                      </packing>
                     </child>
                   </object>
                   <packing>

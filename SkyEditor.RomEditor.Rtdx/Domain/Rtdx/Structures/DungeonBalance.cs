@@ -215,7 +215,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 BuriedItemSetIndex = data.ReadByte(0x44);
                 MaxBuriedItems = data.ReadByte(0x45);
                 Byte46 = data.ReadByte(0x46);
-                Byte47 = data.ReadByte(0x47);
+                StickyItemChance = data.ReadByte(0x47);
                 KecleonShopChance = data.ReadByte(0x48);
                 Byte49 = data.ReadByte(0x49);
                 Byte4A = data.ReadByte(0x4A);
@@ -274,7 +274,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 accessor.Write(0x44, BuriedItemSetIndex);
                 accessor.Write(0x45, MaxBuriedItems);
                 accessor.Write(0x46, Byte46);
-                accessor.Write(0x47, Byte47);
+                accessor.Write(0x47, StickyItemChance);
                 accessor.Write(0x48, KecleonShopChance);
                 accessor.Write(0x49, Byte49);
                 accessor.Write(0x4A, Byte4A);
@@ -333,7 +333,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             public byte BuriedItemSetIndex { get; set; }
             public byte MaxBuriedItems { get; set; }
             public byte Byte46 { get; set; }
-            public byte Byte47 { get; set; }
+            public byte StickyItemChance { get; set; }
             public byte KecleonShopChance { get; set; }
             public byte Byte49 { get; set; }
             public byte Byte4A { get; set; }
