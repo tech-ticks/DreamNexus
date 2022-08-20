@@ -7,6 +7,8 @@ using SkyEditor.RomEditor.Domain.Common.Structures;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures;
 using SkyEditor.RomEditor.Infrastructure;
 using System.Threading.Tasks;
+using System.Text;
+using System.IO;
 
 namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 {
@@ -15,6 +17,14 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         Common,
         Dungeon,
         Script
+    }
+
+    public class LocalizedString
+    {
+        public int hash;
+        public string value = "";
+        public bool isOverrideString;
+        public string? hashName;
     }
 
     public class LocalizedStringCollection
@@ -86,8 +96,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             }
         }
 
-        public IEnumerable<(int hash, string value, bool isOverrideString)> GetStrings(StringType type)
+        public IEnumerable<LocalizedString> GetStrings(StringType type)
         {
+            var knownHashes = type != StringType.Script
+                ? new HashSet<int>(Enum.GetValues(typeof(TextIDHash)).Cast<int>()) : new HashSet<int>();
+
             var originalDict = type switch
             {
                 StringType.Common => CommonStringsOriginal.ToDictionary(kv => (int) kv.Key, kv => kv.Value),
@@ -103,22 +116,36 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 _ => throw new ArgumentOutOfRangeException(nameof(type)),
             };
 
-            Dictionary<int, (int hash, string value, bool isOverrideString)> newDict = originalDict
-                .ToDictionary(kv => kv.Key, kv => (kv.Key, kv.Value, false));
+            Dictionary<int, LocalizedString> newDict = originalDict
+                .ToDictionary(kv => kv.Key, kv => new LocalizedString
+                {
+                    hash = kv.Key,
+                    value = kv.Value,
+                    isOverrideString = false,
+                    hashName = knownHashes.Contains(kv.Key) ? ((TextIDHash) kv.Key).ToString() : null
+                });
 
             foreach (var item in overrideDict)
             {
-                if (newDict.ContainsKey(item.Key))
+                if (newDict.TryGetValue(item.Key, out var str))
                 {
-                    newDict[item.Key] = (item.Key, item.Value, true);
+                    str.value = item.Value;
+                    str.isOverrideString = true;
                 }
                 else
                 {
-                    newDict.Add(item.Key, (item.Key, item.Value, true));
+                    newDict.Add(item.Key, new LocalizedString
+                    {
+                        hash = item.Key,
+                        value = item.Value,
+                        isOverrideString = true,
+                        hashName = knownHashes.Contains(item.Key) ? ((TextIDHash) item.Key).ToString() : null,
+                    });
                 }
             }
 
-            return newDict.Values;
+            // HACK: ensure that unnamed hashes are placed at the end
+            return newDict.Values.OrderBy(val => val.hashName ?? "ZZZZZZZZZ");
         }
 
         public string? GetString(StringType type, int hash, out bool isOverrideString)
@@ -473,6 +500,44 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             farc.SetFile("common.bin", commonTask.Result);
             farc.SetFile("dungeon.bin", dungeonTask.Result);
             farc.SetFile("script.bin", scriptTask.Result);
+        }
+
+        public void ImportFromCsvFile(StringType type, string path)
+        {
+            var contents = File.ReadAllText(path);
+
+            var parser = new CsvParser(contents);
+
+            foreach (var line in parser.GetLines().Skip(1))
+            {
+                if (line.Count < 2)
+                {
+                    throw new Exception("Malformed CSV, each line must contain at least 2 items separated by ','");
+                }
+
+                int hash = int.Parse(line[0].Trim());
+                string value = line[1].Replace("[R]", "\n");
+                // key and changed are ignored
+
+                SetString(type, hash, value);
+            }
+        }
+
+        public void ExportToCsvFile(StringType type, string path)
+        {
+            var csvBuilder = new StringBuilder();
+
+            csvBuilder.AppendLine(string.Join(",", "Hash", "Value", "Key", "Changed?"));
+            foreach (var str in GetStrings(type))
+            {
+                var value = str.value.Replace("\n", "[R]");
+                if (value.Contains(",")) {
+                    value = '"' + value.Replace("\"", "\"\"") + '"';
+                }
+                csvBuilder.AppendLine(string.Join(",", str.hash, value, str.hashName, str.isOverrideString ? "*" : ""));
+            }
+            
+            File.WriteAllText(path, csvBuilder.ToString());
         }
     }
 

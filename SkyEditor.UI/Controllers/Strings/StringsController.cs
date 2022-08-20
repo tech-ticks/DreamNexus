@@ -4,8 +4,9 @@ using SkyEditor.RomEditor.Domain.Rtdx;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using SkyEditor.RomEditor.Domain.Rtdx.Constants;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using IOPath = System.IO.Path;
+using SkyEditorUI.Infrastructure;
+using System.IO;
 
 namespace SkyEditorUI.Controllers
 {
@@ -58,12 +59,61 @@ namespace SkyEditorUI.Controllers
 
         private void OnImportClicked(object sender, EventArgs args)
         {
-            throw new NotImplementedException();
+            var fileDialog = new FileChooserNative("Select a folder", MainWindow.Instance,
+                FileChooserAction.SelectFolder | FileChooserAction.Open, null, null);
+
+            var response = (ResponseType) fileDialog.Run();
+
+            if (response != ResponseType.Accept)
+            {
+                fileDialog.Destroy();
+                return;
+            }
+
+            var path = fileDialog.Filename;
+            fileDialog.Destroy();
+
+            var commonPath = IOPath.Combine(path, "common.csv");
+            var dungeonPath = IOPath.Combine(path, "dungeon.csv");
+            var scriptPath = IOPath.Combine(path, "script.csv");
+
+            if (!File.Exists(commonPath) || !File.Exists(dungeonPath) || !File.Exists(scriptPath)) {
+                UIUtils.ShowErrorDialog(MainWindow.Instance, "Import failed", "Folder must contain the files "
+                    + "'common.csv', 'dungeon.csv' and 'script.csv'");
+                return;
+            }
+
+            strings.ImportFromCsvFile(StringType.Common, commonPath);
+            strings.ImportFromCsvFile(StringType.Dungeon, dungeonPath);
+            strings.ImportFromCsvFile(StringType.Script, scriptPath);
+
+            UIUtils.ShowInfoDialog(MainWindow.Instance, "Import successful", "Strings have been successfully imported from CSV files");
+
+            LoadStrings(category);
         }
 
         private void OnExportClicked(object sender, EventArgs args)
         {
-            throw new NotImplementedException();
+            var fileDialog = new FileChooserNative("Select a folder", MainWindow.Instance,
+                FileChooserAction.SelectFolder | FileChooserAction.Save, null, null);
+
+            var response = (ResponseType) fileDialog.Run();
+
+            if (response != ResponseType.Accept)
+            {
+                fileDialog.Destroy();
+                return;
+            }
+
+            var path = fileDialog.Filename;
+            fileDialog.Destroy();
+
+            strings.ExportToCsvFile(StringType.Common, IOPath.Combine(path, "common.csv"));
+            strings.ExportToCsvFile(StringType.Dungeon, IOPath.Combine(path, "dungeon.csv"));
+            strings.ExportToCsvFile(StringType.Script, IOPath.Combine(path, "script.csv"));
+
+            UIUtils.ShowInfoDialog(MainWindow.Instance, "Export successful", "Exported 3 files: "
+                + "'common.csv', 'dungeon.csv' and 'script.csv'");
         }
 
         private void OnCategorySelectionChanged(object sender, EventArgs args)
@@ -122,19 +172,12 @@ namespace SkyEditorUI.Controllers
         private void LoadStrings(StringType type)
         {
             stringsStore!.Clear();
-            var knownHashes = type != StringType.Script
-                ? new HashSet<int>(Enum.GetValues<TextIDHash>().Cast<int>()) : new HashSet<int>();
-            var stringList = strings.GetStrings(type)
-                // Put strings without hashes at the end of the list
-                .OrderBy(str => knownHashes.Contains(str.hash) ? ((TextIDHash) str.hash).ToString() : "ZZZZZZZZZZZZ");
 
             int i = 0;
-            foreach (var str in stringList)
+            foreach (var str in strings.GetStrings(type))
             {
-                (int hash, string value, bool isOverrideString) = str;
                 int fontWeight = str.isOverrideString ? 600 : 400;
-                string hashName = knownHashes.Contains(str.hash) ? ((TextIDHash) str.hash).ToString() : "";
-                stringsStore!.AppendValues(str.hash, str.value, fontWeight, hashName, i++);
+                stringsStore!.AppendValues(str.hash, str.value, fontWeight, str.hashName, i++);
             }
 
             keyColumn!.Visible = type != StringType.Script;

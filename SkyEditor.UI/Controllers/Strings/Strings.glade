@@ -140,6 +140,7 @@
                         <property name="spacing">20</property>
                         <child>
                           <object class="GtkButton" id="btn_import">
+                            <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">True</property>
                             <signal name="clicked" handler="OnImportClicked" swapped="no"/>
@@ -184,6 +185,7 @@
                         </child>
                         <child>
                           <object class="GtkButton" id="btn_export">
+                            <property name="visible">True</property>
                             <property name="can-focus">True</property>
                             <property name="receives-default">True</property>
                             <signal name="clicked" handler="OnExportClicked" swapped="no"/>
