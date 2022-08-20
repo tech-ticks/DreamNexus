@@ -126,7 +126,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 .ToLookup(entry => entry.PokemonIndex);
 
             return data.Stats
-                .Where(stat => lookup.Contains((short) stat.CreatureIndex) || stat.StrongFoe != 0)
+                .Where(stat => lookup.Contains((short) stat.CreatureIndex) || stat.StrongFoe != 0 || stat.HitPoints != 0)
                 .Select(stat => new DungeonPokemonStatsModel
                 {
                     CreatureIndex = stat.CreatureIndex,
