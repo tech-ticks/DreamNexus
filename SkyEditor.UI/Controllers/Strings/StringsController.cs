@@ -52,7 +52,7 @@ namespace SkyEditorUI.Controllers
             }
 
             filter = new TreeModelFilter(stringsStore, null);
-            stringsTree!.Model = new TreeModelSort(filter);
+            stringsTree!.Model = filter;
             filter.VisibleFunc = StringVisibleFunc;
         }
 
@@ -122,16 +122,19 @@ namespace SkyEditorUI.Controllers
         private void LoadStrings(StringType type)
         {
             stringsStore!.Clear();
-            var stringList = strings.GetStrings(type).ToArray();
             var knownHashes = type != StringType.Script
                 ? new HashSet<int>(Enum.GetValues<TextIDHash>().Cast<int>()) : new HashSet<int>();
+            var stringList = strings.GetStrings(type)
+                // Put strings without hashes at the end of the list
+                .OrderBy(str => knownHashes.Contains(str.hash) ? ((TextIDHash) str.hash).ToString() : "ZZZZZZZZZZZZ");
 
-            for (int i = 0; i < stringList.Length; i++)
+            int i = 0;
+            foreach (var str in stringList)
             {
-                (int hash, string value, bool isOverrideString) str = stringList[i];
+                (int hash, string value, bool isOverrideString) = str;
                 int fontWeight = str.isOverrideString ? 600 : 400;
                 string hashName = knownHashes.Contains(str.hash) ? ((TextIDHash) str.hash).ToString() : "";
-                stringsStore!.AppendValues(str.hash, str.value, fontWeight, hashName, i);
+                stringsStore!.AppendValues(str.hash, str.value, fontWeight, hashName, i++);
             }
 
             keyColumn!.Visible = type != StringType.Script;
@@ -149,8 +152,8 @@ namespace SkyEditorUI.Controllers
             }
 
             string lowerSearchText = searchText.ToLower();
-            return hash.ToString().Contains(searchText) || (value?.ToLower()?.Contains(lowerSearchText) ?? false)
-                || (hashName?.ToLower()?.Contains(lowerSearchText) ?? false);
+            return hash.ToString().Contains(searchText) || (value?.ToLower()?.Contains(lowerSearchText) ?? false)
+                || (hashName?.ToLower()?.Contains(lowerSearchText) ?? false);
         }
     }
 }

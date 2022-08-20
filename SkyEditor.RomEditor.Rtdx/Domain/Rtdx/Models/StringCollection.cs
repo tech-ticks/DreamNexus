@@ -43,7 +43,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             var dungeonBin = farc.GetFile("dungeon.bin");
             var scriptBin = farc.GetFile("script.bin");
 
-            if (commonBin == null || dungeonBin == null || scriptBin == null)
+            if (commonBin == null || dungeonBin == null || scriptBin == null)
             {
                 throw new NoNullAllowedException("Farc must contain common.bin, dungeon.bin and script.bin");
             }
