@@ -11,6 +11,7 @@ namespace SkyEditorUI.Controllers
 {
     class StartersController : Widget
     {
+        [UI] private TreeView? startersTree;
         [UI] private ListStore? startersStore;
         [UI] private Entry? defaultPlayerSpecies;
         [UI] private ComboBox? defaultPlayerGender;
@@ -72,6 +73,7 @@ namespace SkyEditorUI.Controllers
 
             if (!modpack.Metadata.EnableCodeInjection)
             {
+                startersTree!.Sensitive = false;
                 defaultPlayerSpecies!.Sensitive = false;
                 defaultPlayerGender!.Sensitive = false;
                 defaultPlayerName!.Sensitive = false;

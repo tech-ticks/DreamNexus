@@ -1262,13 +1262,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                 EnsureDirectoryExists(actorDatabasePath);
                 fileSystem.WriteAllBytes(actorDatabasePath, mainExecutable.ActorDatabase.ToByteArray());
             }
-            else if (mainExecutable != null)
-            {
-                // Edit the executable instead
-                var path = GetNsoPath(directory);
-                EnsureDirectoryExists(path);
-                fileSystem.WriteAllBytes(path, mainExecutable!.ToNso());
-            }
 
             var jobs = new List<Action>();
 

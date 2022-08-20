@@ -20,9 +20,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
         int GetPlaceName2HashForNameId(int nameId);
         int GetPlaceName3HashForNameId(int nameId);
 
-        byte[] ToElf();
-        byte[] ToNso(INsoElfConverter? nsoElfConverter = null);
-
         byte[] StartersToByteArray();
     }
 
@@ -123,36 +120,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable
                 ? placeName3HashesOffsetUpdate : placeName3HashesOffsetOriginal;
 
             return BitConverter.ToInt32(Data, baseOffset + nameId * 4);
-        }
-
-        public byte[] ToElf()
-        {
-            if (actorDatabase != null) // No need to write if we haven't even accessed it
-            {
-                ActorDatabase.Write();
-            }
-
-            int starterFixedPokemonMapOffset = Version switch
-            {
-                ExecutableVersion.Original => starterFixedPokemonMapOffsetOriginal,
-                ExecutableVersion.Update1 => starterFixedPokemonMapOffsetUpdate,
-                _ => throw new InvalidOperationException("Unsupported executable version")
-            };
-
-            for (int i = 0; i < 16; i++)
-            {
-                var map = StarterFixedPokemonMaps[i];
-                var offset = starterFixedPokemonMapOffset + (8 * i);
-                BitConverter.GetBytes((int)map.PokemonId).CopyTo(Data, offset);
-                BitConverter.GetBytes((int)map.FixedPokemonId).CopyTo(Data, offset + 4);
-            }
-            return Data;
-        }
-
-        public byte[] ToNso(INsoElfConverter? nsoElfConverter = null)
-        {
-            nsoElfConverter ??= NsoElfConverter.Instance;
-            return nsoElfConverter.ConvertElfToNso(ToElf());
         }
 
         public byte[] StartersToByteArray()
