@@ -64,6 +64,7 @@ jobs:
         cp -r Arc SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/share/themes/
         cp -r Arc-Dark SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/share/themes/
         chmod +x SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/DreamNexus
+        zip -r DreamNexus-linux.zip SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/
 
     - name: Upload Linux build
       uses: actions/upload-artifact@v2
