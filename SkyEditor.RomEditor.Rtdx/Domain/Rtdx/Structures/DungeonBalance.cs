@@ -14,6 +14,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
     public interface IDungeonBalance
     {
         DungeonBalance.Entry GetEntry(int index, bool temporary = false);
+        void SetEntry(int index, DungeonBalance.Entry entry);
         Task<(byte[] bin, byte[] ent)> Build();
     }
 
@@ -89,7 +90,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             return (bin.ToArray(), ent);
         }
 
-        public Entry?[] Entries { get; set; }
+        private Entry?[] Entries { get; set; }
         public IReadOnlyBinaryDataAccessor[] EntryData { get; set; }
 
         /// <summary>Get a dungeon_balance entry. If `temporary` is true, the entry will not be cached.</summary>
@@ -104,6 +105,11 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 Entries[index] = new Entry(EntryData[index], index);
             }
             return Entries[index]!;
+        }
+
+        public void SetEntry(int index, Entry entry)
+        {
+            Entries[index] = entry;
         }
 
         public class Entry

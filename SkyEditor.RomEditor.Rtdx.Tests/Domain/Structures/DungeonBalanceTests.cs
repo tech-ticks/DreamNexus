@@ -14,7 +14,8 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             // Arrange
             var db = new DungeonBalance();
 
-            var d001 = db.Entries[(int)DungeonIndex.D001] = new DungeonBalance.Entry(2);
+            var d001 = new DungeonBalance.Entry(2);
+            db.SetEntry((int)DungeonIndex.D001, d001);
             d001.FloorInfos[0].Short02 = 0x02;
             d001.FloorInfos[0].Event = "@BOSS#0";
             d001.FloorInfos[0].TurnLimit = 0x24;
@@ -169,7 +170,8 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             d001Data4.Records[1].Entries[1].Short02 = 0x102;
             d001Data4.Records[1].Entries[1].Int04 = 0x104;
 
-            var d002 = db.Entries[(int)DungeonIndex.D002] = new DungeonBalance.Entry(1);
+            var d002 = new DungeonBalance.Entry(1);
+            db.SetEntry((int)DungeonIndex.D002, d002);
             d002.FloorInfos[0].Short02 = 0x302;
             d002.FloorInfos[0].Event = "@END";
             d002.FloorInfos[0].TurnLimit = 0x324;
@@ -227,7 +229,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
             // Assert
             var rebuiltDb = new DungeonBalance(bin, ent);
 
-            var rebuiltD001 = rebuiltDb.Entries[(int)DungeonIndex.D001];
+            var rebuiltD001 = rebuiltDb.GetEntry((int)DungeonIndex.D001);
             rebuiltD001.FloorInfos.Should().HaveCount(2);
             rebuiltD001.FloorInfos[0].Short02.Should().Be(0x02);
             rebuiltD001.FloorInfos[0].Event.Should().Be("@BOSS#0");
@@ -395,7 +397,7 @@ namespace SkyEditor.RomEditor.Tests.Domain.Structures
                 rebuiltD001Data4.Records[1].Entries[1].Int04.Should().Be(0x104);
             }
 
-            var rebuiltD002 = rebuiltDb.Entries[(int)DungeonIndex.D002];
+            var rebuiltD002 = rebuiltDb.GetEntry((int)DungeonIndex.D002);
             rebuiltD002.FloorInfos.Should().HaveCount(1);
             rebuiltD002.FloorInfos[0].Short02.Should().Be(0x302);
             rebuiltD002.FloorInfos[0].Event.Should().Be("@END");
