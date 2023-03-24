@@ -67,7 +67,7 @@ jobs:
         zip -r DreamNexus-linux.zip SkyEditor.UI/bin/Release/net7.0/linux-x64/publish/
 
     - name: Upload Linux build
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: linux-app
         path: |
@@ -146,7 +146,7 @@ jobs:
         npx create-dmg --dmg-title=DreamNexus SkyEditor.UI/Installer/DreamNexus.app . || true
 
     - name: Upload Mac .dmg
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: mac-dmg
         path: |
@@ -228,7 +228,7 @@ jobs:
         arguments: "/DPRODUCT_VERSION=${{ env.DREAMNEXUS_VERSION }}"
 
     - name: Upload Windows installer
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: windows-installer
         path: |
