@@ -222,7 +222,7 @@ jobs:
         cp -r gtk/* SkyEditor.UI/bin/Release/net7.0/win-x64/publish/
 
     - name: Create installer
-      uses: joncloud/makensis-action@v3.6
+      uses: joncloud/makensis-action@v3.7
       with:
         script-file: "SkyEditor.UI/Installer/dreamnexus.nsi"
         arguments: "/DPRODUCT_VERSION=${{ env.DREAMNEXUS_VERSION }}"
