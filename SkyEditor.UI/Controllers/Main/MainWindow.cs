@@ -253,7 +253,7 @@ namespace SkyEditorUI.Controllers
 
                     if (response == ResponseType.Accept)
                     {
-                        string folder = dialog.Filename;
+                        string folder = dialog.File.Path;
 
                         var metadata = new ModpackMetadata
                         {
@@ -293,7 +293,7 @@ namespace SkyEditorUI.Controllers
 
             if (response == ResponseType.Accept)
             {
-                LoadModpack(dialog.Filename);
+                LoadModpack(dialog.File.Path);
             }
             dialog.Destroy();
         }
@@ -390,7 +390,7 @@ namespace SkyEditorUI.Controllers
 
                 var dialog = new FileChooserNative("Save modpack", this, FileChooserAction.Save | FileChooserAction.SelectFolder, null, null);
                 var response = (ResponseType)dialog.Run();
-                string path = dialog.Filename;
+                string path = dialog.File.Path;
                 dialog.Dispose();
 
                 if (response == ResponseType.Accept && Directory.Exists(path))
@@ -478,8 +478,8 @@ namespace SkyEditorUI.Controllers
 
             if (response == ResponseType.Accept)
             {
-                BuildRom(dialog.Filename, PhysicalFileSystem.Instance, Settings.Load().BuildFileStructure,
-                    () => UIUtils.OpenInFileBrowser(dialog.Filename));
+                BuildRom(dialog.File.Path, PhysicalFileSystem.Instance, Settings.Load().BuildFileStructure,
+                    () => UIUtils.OpenInFileBrowser(dialog.File.Path));
             }
 
             dialog.Destroy();
@@ -1050,13 +1050,25 @@ namespace SkyEditorUI.Controllers
                 var dungeonIter = AddMainListItem<DungeonController>(parent, $"{dungeon!.Id}: {strings.GetDungeonName(dungeon!.Id)}",
                     "skytemple-e-dungeon-symbolic", new DungeonControllerContext((DungeonIndex)i));
 
-                foreach (var floor in dungeon.Floors)
+                for (int j = 0; j < dungeon.TotalFloorCount - 2; j++)
                 {
-                    bool unused = floor.Index <= 0 || floor.Index > dungeon.AccessibleFloorCount;
-                    AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor {floor.Index}{(unused ? " (unused)" : "")}",
+                    bool unused = j > dungeon.AccessibleFloorCount;
+                    AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor {j}{(unused ? " (unused)" : "")}",
                         "skytemple-e-dungeon-floor-symbolic",
-                        new DungeonFloorControllerContext((DungeonIndex)i, floor.Index));
+                        new DungeonFloorControllerContext((DungeonIndex)i, j));
                 }
+
+                // These three floors seem to always be present for some reason, but the actual indices
+                // are only present in `dungeon_balance.bin`, so we have to assume that they exist.
+                AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor 1001 (unused)",
+                    "skytemple-e-dungeon-floor-symbolic",
+                    new DungeonFloorControllerContext((DungeonIndex)i, 1001));
+                AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor 1002 (unused)",
+                    "skytemple-e-dungeon-floor-symbolic",
+                    new DungeonFloorControllerContext((DungeonIndex)i, 1002));
+                AddMainListItem<DungeonFloorController>(dungeonIter, $"Floor -1 (unused)",
+                    "skytemple-e-dungeon-floor-symbolic",
+                    new DungeonFloorControllerContext((DungeonIndex)i, -1));
             }
         }
 

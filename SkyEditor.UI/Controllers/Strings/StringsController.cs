@@ -70,7 +70,7 @@ namespace SkyEditorUI.Controllers
                 return;
             }
 
-            var path = fileDialog.Filename;
+            var path = fileDialog.File.Path;
             fileDialog.Destroy();
 
             var commonPath = IOPath.Combine(path, "common.csv");
@@ -105,7 +105,7 @@ namespace SkyEditorUI.Controllers
                 return;
             }
 
-            var path = fileDialog.Filename;
+            var path = fileDialog.File.Path;
             fileDialog.Destroy();
 
             strings.ExportToCsvFile(StringType.Common, IOPath.Combine(path, "common.csv"));

@@ -43,7 +43,7 @@ namespace SkyEditorUI.Controllers
 
             if (response == ResponseType.Accept)
             {
-                string folder = dialog.Filename;
+                string folder = dialog.File.Path;
                 rtdxRomPathEntry!.Text = folder;
             }
         }
@@ -67,7 +67,7 @@ namespace SkyEditorUI.Controllers
                     return;
                 }
 
-                keysFile = keysDialog.Filename;
+                keysFile = keysDialog.File.Path;
                 keysDialog.Destroy();
             }                
 
@@ -88,7 +88,7 @@ namespace SkyEditorUI.Controllers
                     return;
                 }
 
-                romFile = romDialog.Filename;
+                romFile = romDialog.File.Path;
                 romDialog.Destroy();
             }
 

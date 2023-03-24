@@ -392,7 +392,7 @@ namespace SkyEditorUI.Controllers
                 return;
             }
 
-            var path = fileDialog.Filename;
+            var path = fileDialog.File.Path;
             fileDialog.Destroy();
 
             using var image = SixLabors.ImageSharp.Image.Load<Bgra32>(path);
@@ -432,6 +432,11 @@ namespace SkyEditorUI.Controllers
             }).Start();
         }
 
+        private void OnSpriteBotFolderImportClicked(object sender, EventArgs args)
+        {
+            LoadFromSpriteBotFolder();
+        }
+
         private void ShowSpriteBotDialog()
         {
             entrySpriteBotPokedexId!.Text = pokemon.PokedexNumber.ToString();
@@ -447,6 +452,54 @@ namespace SkyEditorUI.Controllers
                 try
                 {
                     var downloadTask = SpriteBotImport.DownloadPortraitSheet(selectedTrackerEntry, trackerEntryPath, (progress) =>
+                    {
+                        GLib.Idle.Add(() =>
+                        {
+                            MainWindow.Instance?.ShowLoadingDialog(progress);
+                            return false;
+                        });
+                    });
+                    downloadTask.Wait();
+                    GLib.Idle.Add(() =>
+                    {
+                        MainWindow.Instance?.HideLoadingDialog();
+                        ImportPortrait(downloadTask.Result, true);
+                        downloadTask.Result.Dispose();
+                        return false;
+                    });
+                }
+                catch (Exception e)
+                {
+                    GLib.Idle.Add(() =>
+                    {
+                        MainWindow.Instance?.HideLoadingDialog();
+                        ExceptionDispatchInfo.Capture(e).Throw();
+                        return false;
+                    });
+                }
+            }).Start();
+        }
+
+        private void LoadFromSpriteBotFolder()
+        {
+            var dialog = new FileChooserNative("Select a folder", MainWindow.Instance, FileChooserAction.SelectFolder | FileChooserAction.Open, null, null);
+
+            var response = (ResponseType) dialog.Run();
+
+            if (response != ResponseType.Accept)
+            {
+                dialog.Destroy();
+                return;
+            }
+
+            var folderName = dialog.File.Path;
+            dialog.Destroy();
+
+            new Thread(() =>
+            {
+                try
+                {
+                    var downloadTask = SpriteBotImport.ImportFromFolder(folderName, (progress) =>
                     {
                         GLib.Idle.Add(() =>
                         {
@@ -568,7 +621,7 @@ namespace SkyEditorUI.Controllers
                 return;
             }
 
-            var path = dialog.Filename;
+            var path = dialog.File.Path;
             dialog.Destroy();
 
             lock (this)

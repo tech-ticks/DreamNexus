@@ -4,6 +4,7 @@ using SkyEditor.RomEditor.Domain.Rtdx;
 using SkyEditor.RomEditor.Infrastructure.Automation.Modpacks;
 using SkyEditor.RomEditor.Domain.Rtdx.Models;
 using SkyEditor.RomEditor.Domain.Rtdx.Structures.Executable;
+using UI = Gtk.Builder.ObjectAttribute;
 
 namespace SkyEditorUI.Controllers
 {
@@ -14,6 +15,8 @@ namespace SkyEditorUI.Controllers
         private Modpack modpack;
         private IMainExecutable executable;
         private Builder builder;
+
+        [UI] private Label? lblDojoDungeonWarning;
 
         public DungeonController(IRtdxRom rom, Modpack modpack, ControllerContext context)
             : this(new Builder("Dungeon.glade"), rom, modpack, context)
@@ -26,12 +29,23 @@ namespace SkyEditorUI.Controllers
             builder.Autoconnect(this);
             
             var dungeonId = (context as DungeonControllerContext)!.Index;
-            this.dungeon = rom.GetDungeons().GetDungeonById(dungeonId)
+            var isDojo = DungeonHelpers.IsDojoDungeon(dungeonId);
+            this.dungeon = rom.GetDungeons().GetDungeonById(dungeonId, !isDojo)
                 ?? throw new ArgumentException("Dungeon from context ID is null", nameof(context));
+
             this.rom = rom;
             this.modpack = modpack;
             this.builder = builder;
             this.executable = rom.GetMainExecutable();
+
+            if (isDojo)
+            {
+                this.Sensitive = false;
+            }
+            else
+            {
+                lblDojoDungeonWarning!.Visible = false;
+            }
 
             LoadGeneralTab();
             LoadStatsTab();

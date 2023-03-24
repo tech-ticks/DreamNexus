@@ -2,9 +2,10 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFrameworks>net6.0</TargetFrameworks>
-    <LangVersion>8</LangVersion>
+    <TargetFrameworks>net7.0</TargetFrameworks>
+    <LangVersion>11.0</LangVersion>
     <Nullable>enable</Nullable>
+    <TieredPGO>true</TieredPGO>
   </PropertyGroup>
 
   <ItemGroup>

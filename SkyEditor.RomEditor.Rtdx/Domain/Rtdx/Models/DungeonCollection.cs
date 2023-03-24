@@ -16,7 +16,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         List<DungeonModel> LoadAllDungeons(bool markAsDirty = true);
         void SetDungeon(DungeonIndex id, DungeonModel model);
         bool IsDungeonDirty(DungeonIndex id);
-        DungeonModel? GetDungeonById(DungeonIndex id, bool markAsDirty = true);
+        DungeonModel? GetDungeonById(DungeonIndex id, bool markAsDirty = true, bool forceTemporaryFullLoad = false);
         void Flush(IRtdxRom rom);
     }
 
@@ -32,15 +32,26 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             this.rom = rom ?? throw new ArgumentNullException(nameof(rom));
         }
 
-        public DungeonModel GetDungeonById(DungeonIndex id, bool markAsDirty = true)
+        public DungeonModel GetDungeonById(DungeonIndex id, bool markAsDirty = true, bool forceTemporaryFullLoad = false)
         {
             if (markAsDirty)
             {
+                if (LoadedDungeons.ContainsKey(id) && !DirtyDungeons.Contains(id))
+                {
+                    // Reload the dungeon with a full load
+                    LoadedDungeons.Remove(id);
+                }
                 DirtyDungeons.Add(id);
+            }
+            if (forceTemporaryFullLoad)
+            {
+
+                LoadedDungeons.Remove(id);
             }
             if (!LoadedDungeons.ContainsKey(id))
             {
-                LoadedDungeons.Add(id, LoadDungeon(id));
+                // HACK: Workaround to display, but not save dojo dungeons
+                LoadedDungeons.Add(id, LoadDungeon(id, markAsDirty || forceTemporaryFullLoad, forceTemporaryFullLoad));
             }
             return LoadedDungeons[id];
         }
@@ -66,7 +77,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         }
 
 #pragma warning disable CS0612
-        private DungeonModel LoadDungeon(DungeonIndex index)
+        /// <summary>
+        /// Load a dungeon from the ROM.
+        /// </summary>
+        /// <param name="index">The index of the dungeon to load</param>
+        /// <param name="fullLoad">Should be set to true if the dungeon is being edited. If false, the dungeon will be loaded faster, but some properties will be missing.</param>
+        /// <param name="temporary">If true, changes will not be written to dungeon_balance.bin</param>
+        private DungeonModel LoadDungeon(DungeonIndex index, bool fullLoad, bool temporary)
         {
             var dungeonData = rom.GetDungeonDataInfo();
             var dungeonExtra = rom.GetDungeonExtra();
@@ -77,7 +94,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
             var data = dungeonData.Entries[index];
             var extra = dungeonExtra.Entries.GetValueOrDefault(index);
-            var balance = dungeonBalance.Entries[data.DungeonBalanceIndex];
+            var balance = fullLoad ? dungeonBalance.GetEntry(data.DungeonBalanceIndex, temporary) : null;
             var requestLevel = requestLevels.Entries.GetValueOrDefault(index);
             var itemArrangeEntry = index > DungeonIndex.NONE
                 ? itemArrange.Entries[((int) index) - 1] : null;
@@ -103,8 +120,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                 TotalFloorCount = requestLevel?.MainEntry?.TotalFloorCount ?? -1,
 
                 ItemSets = LoadItemSets(itemArrangeEntry),
-                PokemonStats = balance.WildPokemon != null ? LoadStats(balance.WildPokemon) : null,
-                Floors = LoadFloors(balance, requestLevel),
+                PokemonStats = balance?.WildPokemon != null ? LoadStats(balance.WildPokemon) : null,
+                Floors = balance != null ? LoadFloors(balance, requestLevel) : null,
 
                 Extra = extra,
                 Balance = balance,
@@ -283,10 +300,16 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
             foreach (var dungeon in LoadedDungeons.Values)
             {
+                if (DungeonHelpers.IsDojoDungeon(dungeon.Id))
+                {
+                    // Skip dojo dungeons due to a bug
+                    continue;
+                }
+
                 var data = dungeonData.Entries[dungeon.Id];
                 var extra = dungeonExtra.Entries.GetValueOrDefault(dungeon.Id);
                 var requestLevel = requestLevels.Entries.GetValueOrDefault(dungeon.Id);
-                var balance = dungeonBalance.Entries[data.DungeonBalanceIndex];
+                var balance = dungeonBalance.GetEntry(data.DungeonBalanceIndex);
                 var itemArrangeEntry = dungeon.Id > DungeonIndex.NONE
                     ? itemArrange.Entries[((int) dungeon.Id) - 1] : null;
 
@@ -333,7 +356,10 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
                     FlushItemSets(dungeon.ItemSets, itemArrangeEntry);
                 }
 
-                FlushFloors(dungeon.Floors, balance, requestLevel);
+                if (dungeon.Floors != null)
+                {
+                    FlushFloors(dungeon.Floors, balance, requestLevel);
+                }
             }
         }
 

@@ -1,6 +1,6 @@
 !define PRODUCT_NAME "DreamNexus"
 
-!define DIST_DIR "..\bin\Release\net6.0\win-x64\publish"
+!define DIST_DIR "..\bin\Release\net7.0\win-x64\publish"
 !define APPEXE "DreamNexus.exe"
 !define PRODUCT_ICON "dreamnexus.ico"
 

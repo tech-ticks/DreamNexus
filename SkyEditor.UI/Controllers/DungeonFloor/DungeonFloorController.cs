@@ -28,13 +28,20 @@ namespace SkyEditorUI.Controllers
             builder.Autoconnect(this);
             
             var floorContext = (context as DungeonFloorControllerContext);
-            this.dungeon = rom.GetDungeons().GetDungeonById(floorContext!.DungeonIndex)
+            var isDojo = DungeonHelpers.IsDojoDungeon(floorContext!.DungeonIndex);
+            
+            this.dungeon = rom.GetDungeons().GetDungeonById(floorContext!.DungeonIndex, !isDojo, true)
                 ?? throw new ArgumentException("Dungeon from context ID is null", nameof(context));
-            this.floor = dungeon.Floors.First(floor => floor.Index == floorContext.FloorIndex);
+            this.floor = dungeon.Floors!.First(floor => floor.Index == floorContext.FloorIndex);
             this.rom = rom;
             this.modpack = modpack;
             this.executable = rom.GetMainExecutable();
             this.builder = builder;
+
+            if (isDojo)
+            {
+                this.Sensitive = false;
+            }
 
             LoadGeneralTab();
             LoadSpawnsTab();

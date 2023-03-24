@@ -206,8 +206,8 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                     .OrderBy(model => model.Index).ToArray();
 
                 // Floor -1 must be added last
-                dungeonModel.Floors.AddRange(sortedFloorModels.Where(model => model.Index > -1));
-                dungeonModel.Floors.AddRange(sortedFloorModels.Where(model => model.Index <= -1));
+                dungeonModel.Floors!.AddRange(sortedFloorModels.Where(model => model.Index > -1));
+                dungeonModel.Floors!.AddRange(sortedFloorModels.Where(model => model.Index <= -1));
 
                 dungeons.SetDungeon(index, dungeonModel);
             }
@@ -366,7 +366,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx
                             string path = Path.Combine(dungeonFolder, "itemsets", $"{i:D2}.yaml");
                             tasks.Add(mod.SaveModel(itemSet, path));
                         }
-                        for (int i = 0; i < dungeon.Value.Floors.Count; i++)
+                        for (int i = 0; i < dungeon.Value.Floors!.Count; i++)
                         {
                             var floor = dungeon.Value.Floors[i];
                             string path = Path.Combine(dungeonFolder, "floors", $"{floor.Index:D2}.yaml");

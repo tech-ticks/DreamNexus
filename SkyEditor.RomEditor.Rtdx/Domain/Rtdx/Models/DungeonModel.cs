@@ -50,7 +50,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
         public List<ItemSetModel> ItemSets { get; set; } = new List<ItemSetModel>();
 
         [YamlIgnore] // Saved in separate files
-        public List<DungeonFloorModel> Floors { get; set; } = new List<DungeonFloorModel>();
+        public List<DungeonFloorModel>? Floors { get; set; } = new List<DungeonFloorModel>();
 
         // Deprecated properties
         [Obsolete, YamlIgnore]

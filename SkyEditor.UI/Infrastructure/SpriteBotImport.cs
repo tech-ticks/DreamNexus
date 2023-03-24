@@ -10,6 +10,7 @@ using System;
 using Newtonsoft.Json.Serialization;
 using System.Threading.Tasks;
 using System.Linq;
+using System.IO;
 
 namespace SkyEditorUI.Infrastructure
 {
@@ -82,14 +83,38 @@ namespace SkyEditorUI.Infrastructure
 
             onProgress("Processing...");
             
+            return ProcessPortraits(downloadedPortraits);
+        }
+
+        public static async Task<Image<Bgra32>> ImportFromFolder(string folderPath, Action<string> onProgress)
+        {
+            onProgress("Reading files...");
+            var portraitFiles = new Dictionary<FaceType, byte[]>();
+
+            foreach (var file in new DirectoryInfo(folderPath).EnumerateFiles())
+            {
+                if (file.Extension == ".png")
+                {
+                    var portraitName = Path.GetFileNameWithoutExtension(file.FullName);
+                    var type = SpriteBotToRtdxIndex[portraitName];
+                    portraitFiles.Add(type, await File.ReadAllBytesAsync(file.FullName));
+                }
+            }
+
+            onProgress("Processing...");
+            return ProcessPortraits(portraitFiles);
+        }
+
+        public static Image<Bgra32> ProcessPortraits(Dictionary<FaceType, byte[]> portraits)
+        {
             var portraitSheet = new Image<Bgra32>(256, 256);
-            using var normalPortraitSheet = Image.Load<Bgra32>(downloadedPortraits[FaceType.NORMAL]);
+            using var normalPortraitSheet = Image.Load<Bgra32>(portraits[FaceType.NORMAL]);
             CreateBorder(normalPortraitSheet);
             for (int i = 0; i < (int) FaceType.MAX; i++)
             {
                 var dst = new Point(i % 6 * 40, i / 6 * 40);
 
-                if (downloadedPortraits.TryGetValue((FaceType) i, out var bytes) && (FaceType) i != FaceType.NORMAL)
+                if (portraits.TryGetValue((FaceType) i, out var bytes) && (FaceType) i != FaceType.NORMAL)
                 {
                     using var portrait = Image.Load<Bgra32>(bytes);
                     CreateBorder(portrait);
@@ -102,7 +127,7 @@ namespace SkyEditorUI.Infrastructure
                 }
             }
 
-            foreach (var (type, bytes) in downloadedPortraits)
+            foreach (var (type, bytes) in portraits)
             {
                 using var image = Image.Load<Bgra32>(bytes);
                 if (image.Width != 40 || image.Height != 40)

@@ -106,7 +106,7 @@ namespace SkyEditorUI.Controllers
             var dialog = new FileChooserNative("Add mod or modpack", MainWindow.Instance,
                 FileChooserAction.Open | FileChooserAction.SelectFolder, null, null);
             var response = (ResponseType) dialog.Run();
-            string path = dialog.Filename;
+            string path = dialog.File.Path;
             dialog.Dispose();
 
             if (response == ResponseType.Accept)

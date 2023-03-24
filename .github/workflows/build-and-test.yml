@@ -50,9 +50,9 @@ jobs:
     - name: Create version file
       run: |
         if [ ! -z $DREAMNEXUS_VERSION_SUFFIX ]; then
-          echo "$DREAMNEXUS_VERSION-$DREAMNEXUS_VERSION_SUFFIX" > SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/version.txt
+          echo "$DREAMNEXUS_VERSION-$DREAMNEXUS_VERSION_SUFFIX" > SkyEditor.UI/bin/Release/net7.0/linux-x64/publish/version.txt
         else
-          echo "$DREAMNEXUS_VERSION" > SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/version.txt
+          echo "$DREAMNEXUS_VERSION" > SkyEditor.UI/bin/Release/net7.0/linux-x64/publish/version.txt
         fi
 
     - name: Post-process builds, copy themes
@@ -60,11 +60,11 @@ jobs:
         curl https://skytemple.org/build_deps/Arc.zip -O
         unzip Arc.zip
 
-        mkdir -p SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/share/themes/
-        cp -r Arc SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/share/themes/
-        cp -r Arc-Dark SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/share/themes/
-        chmod +x SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/DreamNexus
-        zip -r DreamNexus-linux.zip SkyEditor.UI/bin/Release/net6.0/linux-x64/publish/
+        mkdir -p SkyEditor.UI/bin/Release/net7.0/linux-x64/publish/share/themes/
+        cp -r Arc SkyEditor.UI/bin/Release/net7.0/linux-x64/publish/share/themes/
+        cp -r Arc-Dark SkyEditor.UI/bin/Release/net7.0/linux-x64/publish/share/themes/
+        chmod +x SkyEditor.UI/bin/Release/net7.0/linux-x64/publish/DreamNexus
+        zip -r DreamNexus-linux.zip SkyEditor.UI/bin/Release/net7.0/linux-x64/publish/
 
     - name: Upload Linux build
       uses: actions/upload-artifact@v2
@@ -120,9 +120,9 @@ jobs:
     - name: Create version file
       run: |
         if [ ! -z $DREAMNEXUS_VERSION_SUFFIX ]; then
-          echo "$DREAMNEXUS_VERSION-$DREAMNEXUS_VERSION_SUFFIX" > SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/version.txt
+          echo "$DREAMNEXUS_VERSION-$DREAMNEXUS_VERSION_SUFFIX" > SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/version.txt
         else
-          echo "$DREAMNEXUS_VERSION" > SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/version.txt
+          echo "$DREAMNEXUS_VERSION" > SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/version.txt
         fi
 
     - name: Post-process builds, copy themes
@@ -130,10 +130,10 @@ jobs:
         curl https://skytemple.org/build_deps/Arc.zip -O
         unzip Arc.zip
 
-        mkdir -p SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/share/themes/
-        cp -r Arc SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/share/themes/
-        cp -r Arc-Dark SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/share/themes/
-        chmod +x SkyEditor.UI/bin/Release/net6.0/osx-x64/publish/DreamNexus
+        mkdir -p SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/share/themes/
+        cp -r Arc SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/share/themes/
+        cp -r Arc-Dark SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/share/themes/
+        chmod +x SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/DreamNexus
     
     - name: Create Mac .app
       run: | # sudo is required to access some dependency libraries
@@ -199,9 +199,9 @@ jobs:
     - name: Create version file
       run: |
         if [ ! -z $DREAMNEXUS_VERSION_SUFFIX ]; then
-          echo "$DREAMNEXUS_VERSION-$DREAMNEXUS_VERSION_SUFFIX" > SkyEditor.UI/bin/Release/net6.0/win-x64/publish/version.txt
+          echo "$DREAMNEXUS_VERSION-$DREAMNEXUS_VERSION_SUFFIX" > SkyEditor.UI/bin/Release/net7.0/win-x64/publish/version.txt
         else
-          echo "$DREAMNEXUS_VERSION" > SkyEditor.UI/bin/Release/net6.0/win-x64/publish/version.txt
+          echo "$DREAMNEXUS_VERSION" > SkyEditor.UI/bin/Release/net7.0/win-x64/publish/version.txt
         fi
 
     - name: Post-process build, copy themes
@@ -209,17 +209,17 @@ jobs:
         curl https://skytemple.org/build_deps/Arc.zip -O
         unzip Arc.zip
 
-        mkdir -p SkyEditor.UI/bin/Release/net6.0/win-x64/publish/share/themes/
+        mkdir -p SkyEditor.UI/bin/Release/net7.0/win-x64/publish/share/themes/
 
-        cp -r Arc SkyEditor.UI/bin/Release/net6.0/win-x64/publish/share/themes/
-        cp -r Arc-Dark SkyEditor.UI/bin/Release/net6.0/win-x64/publish/share/themes/
+        cp -r Arc SkyEditor.UI/bin/Release/net7.0/win-x64/publish/share/themes/
+        cp -r Arc-Dark SkyEditor.UI/bin/Release/net7.0/win-x64/publish/share/themes/
 
     - name: Copy GTK runtime
       run: |
         # Downloaded automatically on build
         mkdir -p gtk
         unzip /c/Users/runneradmin/AppData/Local/Gtk/3.24.24/gtk.zip -d gtk
-        cp -r gtk/* SkyEditor.UI/bin/Release/net6.0/win-x64/publish/
+        cp -r gtk/* SkyEditor.UI/bin/Release/net7.0/win-x64/publish/
 
     - name: Create installer
       uses: joncloud/makensis-action@v3.6

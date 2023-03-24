@@ -13,7 +13,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 {
     public interface IDungeonBalance
     {
-        DungeonBalance.Entry[] Entries { get; }
+        DungeonBalance.Entry GetEntry(int index, bool temporary = false);
         Task<(byte[] bin, byte[] ent)> Build();
     }
 
@@ -25,17 +25,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             IReadOnlyBinaryDataAccessor entFile = new BinaryFile(entData);
 
             var entCount = entFile.Length / sizeof(uint) - 1;
+            EntryData = new IReadOnlyBinaryDataAccessor[entCount];
             Entries = new Entry[entCount];
             for (var i = 0; i < entCount; i++)
             {
                 var curr = entFile.ReadInt32(i * sizeof(int));
                 var next = entFile.ReadInt32((i + 1) * sizeof(int));
-                Entries[i] = new Entry(binFile.Slice(curr, next - curr));
+                EntryData[i] = binFile.Slice(curr, next - curr);
             }
         }
 
         public DungeonBalance()
         {
+            EntryData = new IBinaryDataAccessor[0];
             Entries = new Entry[(int)DungeonIndex.END];
             for (int i = 0; i < (int)DungeonIndex.END; i++)
             {
@@ -49,8 +51,13 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             var entryPointers = new List<int>();
 
             // Compress entries in parallel
-            var compressedEntries = await Task.WhenAll(Entries.Select(entry => Task.Run(() =>
-            {
+            var compressedEntries = await Task.WhenAll(Entries.Select((entry, index) => Task.Run(() =>
+            {   
+                if (entry == null)
+                {
+                    return EntryData[index];
+                }
+
                 var sir0 = entry.ToSir0();
                 return Gyu0.Compress(sir0.Data);
             })));
@@ -82,7 +89,22 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
             return (bin.ToArray(), ent);
         }
 
-        public Entry[] Entries { get; set; }
+        public Entry?[] Entries { get; set; }
+        public IReadOnlyBinaryDataAccessor[] EntryData { get; set; }
+
+        /// <summary>Get a dungeon_balance entry. If `temporary` is true, the entry will not be cached.</summary>
+        public Entry GetEntry(int index, bool temporary = false)
+        {
+            if (temporary)
+            {
+                return new Entry(EntryData[index], index);
+            }
+            if (Entries[index] == null)
+            {
+                Entries[index] = new Entry(EntryData[index], index);
+            }
+            return Entries[index]!;
+        }
 
         public class Entry
         {
@@ -95,7 +117,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                 }
             }
 
-            public Entry(IReadOnlyBinaryDataAccessor accessor)
+            public Entry(IReadOnlyBinaryDataAccessor accessor, int index)
             {
                 var buffer = Gyu0.Decompress(accessor);
 
@@ -358,6 +380,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
 
         public class WildPokemonInfo
         {
+            // TODO: Dojo floor data is corrupted
             public WildPokemonInfo(IReadOnlyBinaryDataAccessor accessor)
             {
                 var sir0 = new Sir0(accessor);
@@ -517,8 +540,19 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                     {
                         PokemonIndex = accessor.ReadInt16(0x00);
                         SpawnRate = accessor.ReadByte(0x02);
+                        Byte03 = accessor.ReadByte(0x03);
+                        Byte04 = accessor.ReadByte(0x04);
+                        Byte05 = accessor.ReadByte(0x05);
+                        Byte06 = accessor.ReadByte(0x06);
+                        Byte07 = accessor.ReadByte(0x07);
+                        Byte08 = accessor.ReadByte(0x08);
+                        Byte09 = accessor.ReadByte(0x09);
                         RecruitmentLevel = accessor.ReadByte(0x0A);
                         Byte0B = accessor.ReadByte(0x0B);
+                        Byte0C = accessor.ReadByte(0x0C);
+                        Byte0D = accessor.ReadByte(0x0D);
+                        Byte0E = accessor.ReadByte(0x0E);
+                        Byte0F = accessor.ReadByte(0x0F);
                     }
 
                     public Entry() { }
@@ -530,16 +564,38 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Structures
                         using var accessor = new BinaryFile(data);
                         accessor.WriteInt16(0x00, PokemonIndex);
                         accessor.Write(0x02, SpawnRate);
+                        accessor.Write(0x03, Byte03);
+                        accessor.Write(0x04, Byte04);
+                        accessor.Write(0x05, Byte05);
+                        accessor.Write(0x06, Byte06);
+                        accessor.Write(0x07, Byte07);
+                        accessor.Write(0x08, Byte08);
+                        accessor.Write(0x09, Byte09);
                         accessor.Write(0x0A, RecruitmentLevel);
                         accessor.Write(0x0B, Byte0B);
+                        accessor.Write(0x0C, Byte0C);
+                        accessor.Write(0x0D, Byte0D);
+                        accessor.Write(0x0E, Byte0E);
+                        accessor.Write(0x0F, Byte0F);
 
                         return data;
                     }
 
                     public short PokemonIndex { get; set; }
                     public byte SpawnRate { get; set; }
+                    public byte Byte03 { get; set; }
+                    public byte Byte04 { get; set; }
+                    public byte Byte05 { get; set; }
+                    public byte Byte06 { get; set; }
+                    public byte Byte07 { get; set; }
+                    public byte Byte08 { get; set; }
+                    public byte Byte09 { get; set; }
                     public byte RecruitmentLevel { get; set; }
                     public byte Byte0B { get; set; }
+                    public byte Byte0C { get; set; }
+                    public byte Byte0D { get; set; }
+                    public byte Byte0E { get; set; }
+                    public byte Byte0F { get; set; }
                 }
 
                 public Entry[] Entries { get; set; }
