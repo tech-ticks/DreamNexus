@@ -16,9 +16,8 @@
 /usr/local/Cellar/gtk+3/*/lib/libgtk-3.0.dylib
 /usr/local/Cellar/gtksourceview4/*/lib/libgtksourceview-4.dylib
 /usr/local/Cellar/harfbuzz/*/lib/libharfbuzz.*.dylib
-/usr/local/Cellar/jpeg/*/lib/libjpeg.*.dylib
+/usr/local/Cellar/jpeg-turbo/*/lib/libjpeg.*.dylib
 /usr/local/Cellar/libepoxy/*/lib/libepoxy.0.dylib
-/usr/local/Cellar/libffi/*/lib/libffi.*.dylib
 /usr/local/Cellar/libpng/*/lib/libpng16.*.dylib
 /usr/local/Cellar/librsvg/*/lib/librsvg-2.*.dylib
 /usr/local/Cellar/libx11/*/lib/libX11.*.dylib

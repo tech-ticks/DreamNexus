@@ -95,7 +95,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
  
     - name: Install GTK with Homebrew
       run: brew install gtk+3 gtksourceview4 librsvg graphicsmagick imagemagick hicolor-icon-theme adwaita-icon-theme
@@ -177,7 +177,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 7.0.x
 
     - name: Install dependencies
       run: |
