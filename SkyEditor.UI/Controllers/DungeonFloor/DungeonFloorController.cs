@@ -30,7 +30,7 @@ namespace SkyEditorUI.Controllers
             var floorContext = (context as DungeonFloorControllerContext);
             var isDojo = DungeonHelpers.IsDojoDungeon(floorContext!.DungeonIndex);
             
-            this.dungeon = rom.GetDungeons().GetDungeonById(floorContext!.DungeonIndex, !isDojo, true)
+            this.dungeon = rom.GetDungeons().GetDungeonById(floorContext!.DungeonIndex, !isDojo, isDojo)
                 ?? throw new ArgumentException("Dungeon from context ID is null", nameof(context));
             this.floor = dungeon.Floors!.First(floor => floor.Index == floorContext.FloorIndex);
             this.rom = rom;
