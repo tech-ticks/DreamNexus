@@ -45,7 +45,6 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
             }
             if (forceTemporaryFullLoad)
             {
-
                 LoadedDungeons.Remove(id);
             }
             if (!LoadedDungeons.ContainsKey(id))
@@ -58,6 +57,7 @@ namespace SkyEditor.RomEditor.Domain.Rtdx.Models
 
         public void SetDungeon(DungeonIndex id, DungeonModel model)
         {
+            DirtyDungeons.Add(id);
             LoadedDungeons[id] = model;
         }
 
