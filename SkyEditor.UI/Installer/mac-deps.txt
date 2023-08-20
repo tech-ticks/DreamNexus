@@ -31,5 +31,4 @@
 /usr/local/Cellar/pango/*/lib/libpango-1.0.0.dylib
 /usr/local/Cellar/pango/*/lib/libpangocairo-1.0.0.dylib
 /usr/local/Cellar/pango/*/lib/libpangoft2-1.0.0.dylib
-/usr/local/Cellar/pcre/*/lib/libpcre.*.dylib
 /usr/local/Cellar/pixman/*/lib/libpixman-1.0.dylib
