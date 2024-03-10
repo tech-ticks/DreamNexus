@@ -15,6 +15,7 @@ Texture format converters are sourced from https://github.com/mafaca/UtinyRipper
 ## Building
 
 This is in the early stages of development, so you'll need to import the [skyeditor NuGet feed](https://dev.azure.com/project-pokemon/Sky%20Editor/_packaging?_a=feed&feed=skyeditor%40Local):
+
 ```
 https://pkgs.dev.azure.com/project-pokemon/4a5da2d7-09b8-4354-9450-562116aac7b5/_packaging/skyeditor/nuget/v3/index.json
 ```
