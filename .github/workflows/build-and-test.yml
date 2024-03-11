@@ -78,84 +78,84 @@ jobs:
         path: |
           DreamNexus-linux.zip
 
-  build-mac:
-    runs-on: macos-12
-    name: Build and package for Mac
+  # build-mac:
+  #   runs-on: macos-12
+  #   name: Build and package for Mac
     
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v2.4.0
-      with:
-        submodules: true
-        fetch-depth: 0
+  #   steps:
+  #   - name: Checkout
+  #     uses: actions/checkout@v2.4.0
+  #     with:
+  #       submodules: true
+  #       fetch-depth: 0
 
-    - name: Prepare environment
-      run: |
-        git fetch --tags -f
-        echo "DREAMNEXUS_VERSION=$(git describe --abbrev=0)" >> $GITHUB_ENV
-        if ! git describe --exact-match HEAD; then
-          echo "DREAMNEXUS_VERSION_SUFFIX=dev-$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
-        fi
+  #   - name: Prepare environment
+  #     run: |
+  #       git fetch --tags -f
+  #       echo "DREAMNEXUS_VERSION=$(git describe --abbrev=0)" >> $GITHUB_ENV
+  #       if ! git describe --exact-match HEAD; then
+  #         echo "DREAMNEXUS_VERSION_SUFFIX=dev-$(echo $GITHUB_SHA | cut -c 1-6)" >> $GITHUB_ENV
+  #       fi
 
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 7.0.x
+  #   - name: Setup .NET Core
+  #     uses: actions/setup-dotnet@v3
+  #     with:
+  #       dotnet-version: 7.0.x
  
-    - name: Install GTK with Homebrew
-      run: brew install gtk+3 gtksourceview4 librsvg graphicsmagick imagemagick hicolor-icon-theme adwaita-icon-theme
+  #   - name: Install GTK with Homebrew
+  #     run: brew install gtk+3 gtksourceview4 librsvg graphicsmagick imagemagick hicolor-icon-theme adwaita-icon-theme
 
-    - name: Install Nuget dependencies
-      run: |
-        # SkyEditor nuget feed is required to resolve dependencies
-        dotnet nuget add source "https://pkgs.dev.azure.com/project-pokemon/4a5da2d7-09b8-4354-9450-562116aac7b5/_packaging/skyeditor/nuget/v3/index.json" -n "skyeditor"
-        dotnet restore
+  #   - name: Install Nuget dependencies
+  #     run: |
+  #       # SkyEditor nuget feed is required to resolve dependencies
+  #       dotnet nuget add source "https://pkgs.dev.azure.com/project-pokemon/4a5da2d7-09b8-4354-9450-562116aac7b5/_packaging/skyeditor/nuget/v3/index.json" -n "skyeditor"
+  #       dotnet restore
 
-    - name: Copy mods folder
-      run: |
-        cp -r SkyEditor.RomEditor.Rtdx.ConsoleApp/Mods SkyEditor.UI/Mods
-        rm -rf SkyEditor.UI/Mods/AddMissingPokemonModels # The AddMissingPokemonModels mod is excluded
+  #   - name: Copy mods folder
+  #     run: |
+  #       cp -r SkyEditor.RomEditor.Rtdx.ConsoleApp/Mods SkyEditor.UI/Mods
+  #       rm -rf SkyEditor.UI/Mods/AddMissingPokemonModels # The AddMissingPokemonModels mod is excluded
 
-    - name: Build
-      run: dotnet build --no-restore
+  #   - name: Build
+  #     run: dotnet build --no-restore
 
-    - name: Publish UI for Mac
-      run: cd SkyEditor.UI && dotnet publish -c Release -r osx-x64 /p:VersionPrefix=$DREAMNEXUS_VERSION /p:VersionSuffix=$DREAMNEXUS_VERSION_SUFFIX
+  #   - name: Publish UI for Mac
+  #     run: cd SkyEditor.UI && dotnet publish -c Release -r osx-x64 /p:VersionPrefix=$DREAMNEXUS_VERSION /p:VersionSuffix=$DREAMNEXUS_VERSION_SUFFIX
 
-    - name: Create version file
-      run: |
-        if [ ! -z $DREAMNEXUS_VERSION_SUFFIX ]; then
-          echo "$DREAMNEXUS_VERSION-$DREAMNEXUS_VERSION_SUFFIX" > SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/version.txt
-        else
-          echo "$DREAMNEXUS_VERSION" > SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/version.txt
-        fi
+  #   - name: Create version file
+  #     run: |
+  #       if [ ! -z $DREAMNEXUS_VERSION_SUFFIX ]; then
+  #         echo "$DREAMNEXUS_VERSION-$DREAMNEXUS_VERSION_SUFFIX" > SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/version.txt
+  #       else
+  #         echo "$DREAMNEXUS_VERSION" > SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/version.txt
+  #       fi
 
-    - name: Post-process builds, copy themes
-      run: |
-        curl https://skytemple.org/build_deps/Arc.zip -O
-        unzip Arc.zip
+  #   - name: Post-process builds, copy themes
+  #     run: |
+  #       curl https://skytemple.org/build_deps/Arc.zip -O
+  #       unzip Arc.zip
 
-        mkdir -p SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/share/themes/
-        cp -r Arc SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/share/themes/
-        cp -r Arc-Dark SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/share/themes/
-        chmod +x SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/DreamNexus
+  #       mkdir -p SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/share/themes/
+  #       cp -r Arc SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/share/themes/
+  #       cp -r Arc-Dark SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/share/themes/
+  #       chmod +x SkyEditor.UI/bin/Release/net7.0/osx-x64/publish/DreamNexus
     
-    - name: Create Mac .app
-      run: | # sudo is required to access some dependency libraries
-        sudo -E ./SkyEditor.UI/Installer/create-mac-app.sh
+  #   - name: Create Mac .app
+  #     run: | # sudo is required to access some dependency libraries
+  #       sudo -E ./SkyEditor.UI/Installer/create-mac-app.sh
 
-    - name: Create .dmg
-      run: |
-        # See https://github.com/sindresorhus/create-dmg
-        # This tool returns exit code 2 if the DMG was created but code signing failed for some reason
-        npx create-dmg --dmg-title=DreamNexus SkyEditor.UI/Installer/DreamNexus.app . || true
+  #   - name: Create .dmg
+  #     run: |
+  #       # See https://github.com/sindresorhus/create-dmg
+  #       # This tool returns exit code 2 if the DMG was created but code signing failed for some reason
+  #       npx create-dmg --dmg-title=DreamNexus SkyEditor.UI/Installer/DreamNexus.app . || true
 
-    - name: Upload Mac .dmg
-      uses: actions/upload-artifact@v3
-      with:
-        name: mac-dmg
-        path: |
-          DreamNexus*.dmg
+  #   - name: Upload Mac .dmg
+  #     uses: actions/upload-artifact@v3
+  #     with:
+  #       name: mac-dmg
+  #       path: |
+  #         DreamNexus*.dmg
 
   build-windows:
     runs-on: windows-2019
