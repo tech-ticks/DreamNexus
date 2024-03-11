@@ -79,7 +79,7 @@ jobs:
           DreamNexus-linux.zip
 
   build-mac:
-    runs-on: macos-11
+    runs-on: macos-12
     name: Build and package for Mac
     
     steps:
